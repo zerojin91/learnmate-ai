@@ -3,105 +3,404 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCP Chat Agent</title>
+    <title>LearnAI - 개인화 학습 멘토</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #f5f5f5;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #fbfbfc 0%, #fbfafc 100%);
+            min-height: 100vh;
+            display: flex;
         }
-        
-        .chat-container {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+        /* 사이드바 */
+        .sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 20px rgba(0,0,0,0.1);
         }
-        
-        h1 {
+
+        .logo {
             text-align: center;
-            color: #333;
+            margin-bottom: 40px;
+        }
+
+        .logo h1 {
+            color: #4a5568;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 10px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: #4a5568;
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-link i {
+            margin-right: 12px;
+            width: 20px;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        /* 메인 컨텐츠 */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 30px;
         }
-        
-        .chat-messages {
-            height: 400px;
-            overflow-y: auto;
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin-bottom: 20px;
-            background-color: #fafafa;
-            border-radius: 5px;
+
+        .page-title {
+            color: rgb(0, 0, 0);
+            font-size: 32px;
+            font-weight: 700;
         }
-        
-        .message {
-            margin-bottom: 15px;
-            padding: 10px;
-            border-radius: 8px;
-        }
-        
-        .user-message {
-            background-color: #007bff;
-            color: white;
-            text-align: right;
-            margin-left: 50px;
-        }
-        
-        .agent-message {
-            background-color: #e9ecef;
-            color: #333;
-            margin-right: 50px;
-        }
-        
-        .input-container {
-            display: flex;
-            gap: 10px;
-        }
-        
-        #messageInput {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+
+        .page-subtitle {
+            color: rgba(8, 8, 8, 0.8);
             font-size: 16px;
+            margin-top: 5px;
         }
-        
-        #sendButton {
-            padding: 12px 20px;
-            background-color: #007bff;
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            color: white;
+        }
+
+        /* 카드 그리드 */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.15);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .card-description {
+            color: #718096;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .card-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             border: none;
-            border-radius: 5px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .card-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        /* 채팅 카드 - 특별한 스타일 */
+        .chat-card {
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            border: 2px dashed #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #f7fafc;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            max-width: 80%;
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+
+        .agent-message {
+            background: #e2e8f0;
+            color: #4a5568;
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-input-container {
+            display: flex;
+            gap: 12px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 14px 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
             font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
         }
-        
-        #sendButton:hover {
-            background-color: #0056b3;
+
+        .chat-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
-        
-        #sendButton:disabled {
-            background-color: #ccc;
+
+        .send-button {
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .send-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .send-button:disabled {
+            opacity: 0.6;
             cursor: not-allowed;
+            transform: none;
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding: 20px;
+            }
+            
+            .nav-menu {
+                display: flex;
+                overflow-x: auto;
+                gap: 10px;
+                padding-bottom: 10px;
+            }
+            
+            .nav-item {
+                margin-bottom: 0;
+                white-space: nowrap;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="chat-container">
-        <h1>MCP Chat Agent</h1>
-        
-        <div class="chat-messages" id="chatMessages">
-            <div class="message agent-message">
-                안녕하세요! 무엇을 도와드릴까요?
-            </div>
+    <!-- 사이드바 -->
+    <div class="sidebar">
+        <div class="logo">
+            <h1>LearnAI</h1>
+            <p>개인화 학습 멘토</p>
         </div>
         
-        <div class="input-container">
-            <input type="text" id="messageInput" placeholder="메시지를 입력하세요..." 
-                   onkeypress="handleKeyPress(event)">
-            <button id="sendButton" onclick="sendMessage()">전송</button>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="#" class="nav-link active">
+                    <i class="fas fa-comments"></i>
+                    AI 서비스
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-user-check"></i>
+                    프로필
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-graduation-cap"></i>
+                    나의 커리큘럼
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    나의 학습 계획
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    학습 진도
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    설정
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="main-content">
+        <div class="header">
+            <div>
+                <h1 class="page-title">AI 서비스</h1>
+                <p class="page-subtitle">당신만의 맞춤형 학습 계획을 만들어보세요</p>
+            </div>
+            <div class="user-info">
+                <i class="fas fa-user-circle" style="margin-right: 10px; font-size: 20px;"></i>
+                신민수님
+            </div>
+        </div>
+
+        <div class="cards-grid">
+            <!-- 1. 빠른 시작 (왼쪽 위) -->
+            <div class="card chat-card">
+                <div class="card-header">
+                    <div class="card-icon" style="background: #4299e1;"></div>
+                    <h3 class="card-title">빠른 시작</h3>
+                </div>
+                <p class="card-description">배우고 싶은 주제에 대해서 대화를 시작해보세요</p>
+                
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message agent-message">
+                        안녕하세요! LearnAI의 학습 멘토입니다. 어떤 것을 배우고 싶으신가요?
+                    </div>
+                </div>
+                
+                <div class="chat-input-container">
+                    <input 
+                        type="text" 
+                        id="messageInput" 
+                        class="chat-input"
+                        placeholder="메시지를 입력하세요..."
+                        onkeypress="handleKeyPress(event)"
+                    >
+                    <button id="sendButton" class="send-button" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 2. 수준 평가 (오른쪽 위) -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon" style="background: #9f7aea;"></div>
+                    <h3 class="card-title">수준 평가</h3>
+                </div>
+                <p class="card-description">현재 지식 수준을 평가하고 최적의 학습 경로를 찾아보세요</p>
+                <button class="card-button">평가 시작</button>
+            </div>
+
+            <!-- 3. 학습 목표 설정 (왼쪽 아래) -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon" style="background: #ed8936;"></div>
+                    <h3 class="card-title">학습 목표 설정</h3>
+                </div>
+                <p class="card-description">명확한 학습 목표를 설정하고 달성 가능한 계획을 세워보세요</p>
+                <button class="card-button">시작하기</button>
+            </div>
+
+            <!-- 4. AI 멘토와 대화 (오른쪽 아래) -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon" style="background: #48bb78;"></div>
+                    <h3 class="card-title">AI 멘토와 대화</h3>
+                </div>
+                <p class="card-description">개인화된 학습 상담과 질문을 통해 맞춤형 도움을 받아보세요</p>
+                <button class="card-button">상담 시작</button>
+            </div>
         </div>
     </div>
 
@@ -134,7 +433,7 @@
             
             // 버튼 비활성화 및 로딩 표시
             sendButton.disabled = true;
-            sendButton.textContent = '전송 중...';
+            sendButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
 
             try {
                 // API 호출
@@ -160,7 +459,7 @@
 
             // 버튼 다시 활성화
             sendButton.disabled = false;
-            sendButton.textContent = '전송';
+            sendButton.innerHTML = '<i class="fas fa-paper-plane"></i>';
         }
     </script>
 </body>
