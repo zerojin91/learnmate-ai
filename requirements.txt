@@ -1,0 +1,23 @@
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+jinja2==3.1.2
+python-multipart==0.0.6
+aiofiles==23.2.1
+
+# MCP 및 LangGraph 관련 (최신 버전으로 수정)
+langchain>=0.1.0
+langchain-openai>=0.0.5
+langgraph>=0.0.30
+mcp>=1.13.1
+langchain-mcp-adapters>=0.1.0
+
+# 기존 프로젝트 의존성
+fastmcp>=0.3.0
+
+# 개발 및 테스트
+pytest==7.4.3
+httpx==0.25.2
+
+# 추가 의존성 (필요한 경우)
+pydantic>=2.0.0
+typing-extensions>=4.5.0

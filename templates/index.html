@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP Chat Agent</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .chat-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .chat-messages {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #fafafa;
+            border-radius: 5px;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        
+        .user-message {
+            background-color: #007bff;
+            color: white;
+            text-align: right;
+            margin-left: 50px;
+        }
+        
+        .agent-message {
+            background-color: #e9ecef;
+            color: #333;
+            margin-right: 50px;
+        }
+        
+        .input-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        #messageInput {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        #sendButton {
+            padding: 12px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        #sendButton:hover {
+            background-color: #0056b3;
+        }
+        
+        #sendButton:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <h1>MCP Chat Agent</h1>
+        
+        <div class="chat-messages" id="chatMessages">
+            <div class="message agent-message">
+                안녕하세요! 무엇을 도와드릴까요?
+            </div>
+        </div>
+        
+        <div class="input-container">
+            <input type="text" id="messageInput" placeholder="메시지를 입력하세요..." 
+                   onkeypress="handleKeyPress(event)">
+            <button id="sendButton" onclick="sendMessage()">전송</button>
+        </div>
+    </div>
+
+    <script>
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+
+        function addMessage(message, isUser) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'agent-message'}`;
+            messageDiv.textContent = message;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            // 사용자 메시지 표시
+            addMessage(message, true);
+            messageInput.value = '';
+            
+            // 버튼 비활성화 및 로딩 표시
+            sendButton.disabled = true;
+            sendButton.textContent = '전송 중...';
+
+            try {
+                // API 호출
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+
+                const data = await response.json();
+                
+                if (data.error) {
+                    addMessage(`오류: ${data.error}`, false);
+                } else {
+                    addMessage(data.response, false);
+                }
+
+            } catch (error) {
+                addMessage(`연결 오류: ${error.message}`, false);
+            }
+
+            // 버튼 다시 활성화
+            sendButton.disabled = false;
+            sendButton.textContent = '전송';
+        }
+    </script>
+</body>
+</html>

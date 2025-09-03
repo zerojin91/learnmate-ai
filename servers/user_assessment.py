@@ -7,7 +7,6 @@ mcp = FastMCP(
     port=8005,  # Port number for the server
 )
 
-
 @mcp.tool()
 async def get_weather(location: str) -> str:
     """
@@ -23,7 +22,6 @@ async def get_weather(location: str) -> str:
         str: A string containing the weather information for the specified location
     """
     return f"It's always Sunny in {location}"
-
 
 if __name__ == "__main__":
     mcp.run(transport="stdio")
