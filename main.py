@@ -20,7 +20,7 @@ class ChatRequest(BaseModel):
 async def startup():
     global agent_instance
     print("Starting agent...")
-    agent_instance = MCPAgent("servers/user_assessment.py")
+    agent_instance = MCPAgent("servers/generate_curriculum.py")
     await agent_instance.initialize()
     print("Agent ready!")
 

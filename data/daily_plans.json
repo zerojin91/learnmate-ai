@@ -1,0 +1,896 @@
+{
+  "persistent_user_0": [
+    {
+      "week_number": 1,
+      "module_title": "Advanced Concepts",
+      "daily_plans": [
+        {
+          "day": 1,
+          "date": "2025-09-04",
+          "type": "concept",
+          "focus": "Learning new concepts",
+          "duration_hours": 2.6,
+          "tasks": [
+            {
+              "task": "Read primary resources",
+              "duration": "45 min",
+              "completed": true
+            },
+            {
+              "task": "Take notes on key concepts",
+              "duration": "30 min",
+              "completed": false
+            },
+            {
+              "task": "Watch explanatory videos",
+              "duration": "30 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        },
+        {
+          "day": 2,
+          "date": "2025-09-05",
+          "type": "practice",
+          "focus": "Hands-on practice",
+          "duration_hours": 2.8,
+          "tasks": [
+            {
+              "task": "Complete coding exercises",
+              "duration": "60 min",
+              "completed": false
+            },
+            {
+              "task": "Solve practice problems",
+              "duration": "45 min",
+              "completed": false
+            },
+            {
+              "task": "Debug and refactor code",
+              "duration": "30 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        },
+        {
+          "day": 3,
+          "date": "2025-09-06",
+          "type": "review",
+          "focus": "Review and consolidation",
+          "duration_hours": 2.4,
+          "tasks": [
+            {
+              "task": "Review notes from the week",
+              "duration": "30 min",
+              "completed": false
+            },
+            {
+              "task": "Summarize key learnings",
+              "duration": "30 min",
+              "completed": false
+            },
+            {
+              "task": "Identify knowledge gaps",
+              "duration": "20 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        },
+        {
+          "day": 4,
+          "date": "2025-09-07",
+          "type": "project",
+          "focus": "Project work",
+          "duration_hours": 2.2,
+          "tasks": [
+            {
+              "task": "Work on module project",
+              "duration": "90 min",
+              "completed": false
+            },
+            {
+              "task": "Document progress",
+              "duration": "20 min",
+              "completed": false
+            },
+            {
+              "task": "Seek feedback",
+              "duration": "15 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        },
+        {
+          "day": 5,
+          "date": "2025-09-08",
+          "type": "concept",
+          "focus": "Learning new concepts",
+          "duration_hours": 2.6,
+          "tasks": [
+            {
+              "task": "Read primary resources",
+              "duration": "45 min",
+              "completed": false
+            },
+            {
+              "task": "Take notes on key concepts",
+              "duration": "30 min",
+              "completed": false
+            },
+            {
+              "task": "Watch explanatory videos",
+              "duration": "30 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        }
+      ],
+      "created_at": "2025-09-04T21:27:33.694052"
+    }
+  ],
+  "final_test_user_0": [
+    {
+      "week_number": 1,
+      "module_title": "Introduction to React",
+      "daily_plans": [
+        {
+          "day": 1,
+          "date": "2025-09-04",
+          "type": "concept",
+          "focus": "Learning new concepts",
+          "duration_hours": 3.9,
+          "tasks": [
+            {
+              "task": "Read primary resources",
+              "duration": "45 min",
+              "completed": false
+            },
+            {
+              "task": "Take notes on key concepts",
+              "duration": "30 min",
+              "completed": false
+            },
+            {
+              "task": "Watch explanatory videos",
+              "duration": "30 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        },
+        {
+          "day": 2,
+          "date": "2025-09-05",
+          "type": "practice",
+          "focus": "Hands-on practice",
+          "duration_hours": 4.2,
+          "tasks": [
+            {
+              "task": "Complete coding exercises",
+              "duration": "60 min",
+              "completed": false
+            },
+            {
+              "task": "Solve practice problems",
+              "duration": "45 min",
+              "completed": false
+            },
+            {
+              "task": "Debug and refactor code",
+              "duration": "30 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        },
+        {
+          "day": 3,
+          "date": "2025-09-06",
+          "type": "review",
+          "focus": "Review and consolidation",
+          "duration_hours": 3.6,
+          "tasks": [
+            {
+              "task": "Review notes from the week",
+              "duration": "30 min",
+              "completed": false
+            },
+            {
+              "task": "Summarize key learnings",
+              "duration": "30 min",
+              "completed": false
+            },
+            {
+              "task": "Identify knowledge gaps",
+              "duration": "20 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        },
+        {
+          "day": 4,
+          "date": "2025-09-07",
+          "type": "project",
+          "focus": "Project work",
+          "duration_hours": 3.3,
+          "tasks": [
+            {
+              "task": "Work on module project",
+              "duration": "90 min",
+              "completed": false
+            },
+            {
+              "task": "Document progress",
+              "duration": "20 min",
+              "completed": false
+            },
+            {
+              "task": "Seek feedback",
+              "duration": "15 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        },
+        {
+          "day": 5,
+          "date": "2025-09-08",
+          "type": "concept",
+          "focus": "Learning new concepts",
+          "duration_hours": 3.9,
+          "tasks": [
+            {
+              "task": "Read primary resources",
+              "duration": "45 min",
+              "completed": false
+            },
+            {
+              "task": "Take notes on key concepts",
+              "duration": "30 min",
+              "completed": false
+            },
+            {
+              "task": "Watch explanatory videos",
+              "duration": "30 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        }
+      ],
+      "created_at": "2025-09-04T21:35:49.082089"
+    }
+  ],
+  "final_test_user_1": [
+    {
+      "week_number": 1,
+      "module_title": "Introduction to Full Stack Development",
+      "daily_plans": [
+        {
+          "day": 1,
+          "date": "2025-09-04",
+          "type": "concept",
+          "focus": "Learning new concepts",
+          "duration_hours": 2.6,
+          "tasks": [
+            {
+              "task": "Read primary resources",
+              "duration": "45 min",
+              "completed": false
+            },
+            {
+              "task": "Take notes on key concepts",
+              "duration": "30 min",
+              "completed": false
+            },
+            {
+              "task": "Watch explanatory videos",
+              "duration": "30 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        },
+        {
+          "day": 2,
+          "date": "2025-09-05",
+          "type": "practice",
+          "focus": "Hands-on practice",
+          "duration_hours": 2.8,
+          "tasks": [
+            {
+              "task": "Complete coding exercises",
+              "duration": "60 min",
+              "completed": false
+            },
+            {
+              "task": "Solve practice problems",
+              "duration": "45 min",
+              "completed": false
+            },
+            {
+              "task": "Debug and refactor code",
+              "duration": "30 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        },
+        {
+          "day": 3,
+          "date": "2025-09-06",
+          "type": "review",
+          "focus": "Review and consolidation",
+          "duration_hours": 2.4,
+          "tasks": [
+            {
+              "task": "Review notes from the week",
+              "duration": "30 min",
+              "completed": false
+            },
+            {
+              "task": "Summarize key learnings",
+              "duration": "30 min",
+              "completed": false
+            },
+            {
+              "task": "Identify knowledge gaps",
+              "duration": "20 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        },
+        {
+          "day": 4,
+          "date": "2025-09-07",
+          "type": "project",
+          "focus": "Project work",
+          "duration_hours": 2.2,
+          "tasks": [
+            {
+              "task": "Work on module project",
+              "duration": "90 min",
+              "completed": false
+            },
+            {
+              "task": "Document progress",
+              "duration": "20 min",
+              "completed": false
+            },
+            {
+              "task": "Seek feedback",
+              "duration": "15 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        },
+        {
+          "day": 5,
+          "date": "2025-09-08",
+          "type": "concept",
+          "focus": "Learning new concepts",
+          "duration_hours": 2.6,
+          "tasks": [
+            {
+              "task": "Read primary resources",
+              "duration": "45 min",
+              "completed": false
+            },
+            {
+              "task": "Take notes on key concepts",
+              "duration": "30 min",
+              "completed": false
+            },
+            {
+              "task": "Watch explanatory videos",
+              "duration": "30 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        }
+      ],
+      "created_at": "2025-09-04T21:40:52.393438"
+    }
+  ],
+  "final_test_user_2": [
+    {
+      "week_number": 1,
+      "module_title": "Introduction to Full Stack JavaScript Development",
+      "daily_plans": [
+        {
+          "day": 1,
+          "date": "2025-09-04",
+          "type": "concept",
+          "focus": "Learning new concepts",
+          "duration_hours": 3.1,
+          "tasks": [
+            {
+              "task": "Read primary resources",
+              "duration": "45 min",
+              "completed": false
+            },
+            {
+              "task": "Take notes on key concepts",
+              "duration": "30 min",
+              "completed": false
+            },
+            {
+              "task": "Watch explanatory videos",
+              "duration": "30 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        },
+        {
+          "day": 2,
+          "date": "2025-09-05",
+          "type": "practice",
+          "focus": "Hands-on practice",
+          "duration_hours": 3.4,
+          "tasks": [
+            {
+              "task": "Complete coding exercises",
+              "duration": "60 min",
+              "completed": false
+            },
+            {
+              "task": "Solve practice problems",
+              "duration": "45 min",
+              "completed": false
+            },
+            {
+              "task": "Debug and refactor code",
+              "duration": "30 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        },
+        {
+          "day": 3,
+          "date": "2025-09-06",
+          "type": "review",
+          "focus": "Review and consolidation",
+          "duration_hours": 2.9,
+          "tasks": [
+            {
+              "task": "Review notes from the week",
+              "duration": "30 min",
+              "completed": false
+            },
+            {
+              "task": "Summarize key learnings",
+              "duration": "30 min",
+              "completed": false
+            },
+            {
+              "task": "Identify knowledge gaps",
+              "duration": "20 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        },
+        {
+          "day": 4,
+          "date": "2025-09-07",
+          "type": "project",
+          "focus": "Project work",
+          "duration_hours": 2.6,
+          "tasks": [
+            {
+              "task": "Work on module project",
+              "duration": "90 min",
+              "completed": false
+            },
+            {
+              "task": "Document progress",
+              "duration": "20 min",
+              "completed": false
+            },
+            {
+              "task": "Seek feedback",
+              "duration": "15 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        },
+        {
+          "day": 5,
+          "date": "2025-09-08",
+          "type": "concept",
+          "focus": "Learning new concepts",
+          "duration_hours": 3.1,
+          "tasks": [
+            {
+              "task": "Read primary resources",
+              "duration": "45 min",
+              "completed": false
+            },
+            {
+              "task": "Take notes on key concepts",
+              "duration": "30 min",
+              "completed": false
+            },
+            {
+              "task": "Watch explanatory videos",
+              "duration": "30 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        }
+      ],
+      "created_at": "2025-09-04T21:44:54.402338"
+    }
+  ],
+  "final_test_user_3": [
+    {
+      "week_number": 1,
+      "module_title": "Introduction to Full Stack JavaScript",
+      "daily_plans": [
+        {
+          "day": 1,
+          "date": "2025-09-04",
+          "type": "concept",
+          "focus": "Learning new concepts",
+          "duration_hours": 3.9,
+          "tasks": [
+            {
+              "task": "Read primary resources",
+              "duration": "45 min",
+              "completed": false
+            },
+            {
+              "task": "Take notes on key concepts",
+              "duration": "30 min",
+              "completed": false
+            },
+            {
+              "task": "Watch explanatory videos",
+              "duration": "30 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        },
+        {
+          "day": 2,
+          "date": "2025-09-05",
+          "type": "practice",
+          "focus": "Hands-on practice",
+          "duration_hours": 4.2,
+          "tasks": [
+            {
+              "task": "Complete coding exercises",
+              "duration": "60 min",
+              "completed": false
+            },
+            {
+              "task": "Solve practice problems",
+              "duration": "45 min",
+              "completed": false
+            },
+            {
+              "task": "Debug and refactor code",
+              "duration": "30 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        },
+        {
+          "day": 3,
+          "date": "2025-09-06",
+          "type": "review",
+          "focus": "Review and consolidation",
+          "duration_hours": 3.6,
+          "tasks": [
+            {
+              "task": "Review notes from the week",
+              "duration": "30 min",
+              "completed": false
+            },
+            {
+              "task": "Summarize key learnings",
+              "duration": "30 min",
+              "completed": false
+            },
+            {
+              "task": "Identify knowledge gaps",
+              "duration": "20 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        },
+        {
+          "day": 4,
+          "date": "2025-09-07",
+          "type": "project",
+          "focus": "Project work",
+          "duration_hours": 3.3,
+          "tasks": [
+            {
+              "task": "Work on module project",
+              "duration": "90 min",
+              "completed": false
+            },
+            {
+              "task": "Document progress",
+              "duration": "20 min",
+              "completed": false
+            },
+            {
+              "task": "Seek feedback",
+              "duration": "15 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        },
+        {
+          "day": 5,
+          "date": "2025-09-08",
+          "type": "concept",
+          "focus": "Learning new concepts",
+          "duration_hours": 3.9,
+          "tasks": [
+            {
+              "task": "Read primary resources",
+              "duration": "45 min",
+              "completed": false
+            },
+            {
+              "task": "Take notes on key concepts",
+              "duration": "30 min",
+              "completed": false
+            },
+            {
+              "task": "Watch explanatory videos",
+              "duration": "30 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        }
+      ],
+      "created_at": "2025-09-04T21:47:26.529259"
+    }
+  ],
+  "test_user_new_0": [
+    {
+      "week_number": 1,
+      "module_title": "Introduction to Python for Web Development and Data Analysis",
+      "daily_plans": [
+        {
+          "day": 1,
+          "date": "2025-09-04",
+          "type": "concept",
+          "focus": "Learning new concepts",
+          "duration_hours": 3.9,
+          "tasks": [
+            {
+              "task": "Read primary resources",
+              "duration": "45 min",
+              "completed": false
+            },
+            {
+              "task": "Take notes on key concepts",
+              "duration": "30 min",
+              "completed": false
+            },
+            {
+              "task": "Watch explanatory videos",
+              "duration": "30 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        },
+        {
+          "day": 2,
+          "date": "2025-09-05",
+          "type": "practice",
+          "focus": "Hands-on practice",
+          "duration_hours": 4.2,
+          "tasks": [
+            {
+              "task": "Complete coding exercises",
+              "duration": "60 min",
+              "completed": false
+            },
+            {
+              "task": "Solve practice problems",
+              "duration": "45 min",
+              "completed": false
+            },
+            {
+              "task": "Debug and refactor code",
+              "duration": "30 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        },
+        {
+          "day": 3,
+          "date": "2025-09-06",
+          "type": "review",
+          "focus": "Review and consolidation",
+          "duration_hours": 3.6,
+          "tasks": [
+            {
+              "task": "Review notes from the week",
+              "duration": "30 min",
+              "completed": false
+            },
+            {
+              "task": "Summarize key learnings",
+              "duration": "30 min",
+              "completed": false
+            },
+            {
+              "task": "Identify knowledge gaps",
+              "duration": "20 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        },
+        {
+          "day": 4,
+          "date": "2025-09-07",
+          "type": "project",
+          "focus": "Project work",
+          "duration_hours": 3.3,
+          "tasks": [
+            {
+              "task": "Work on module project",
+              "duration": "90 min",
+              "completed": false
+            },
+            {
+              "task": "Document progress",
+              "duration": "20 min",
+              "completed": false
+            },
+            {
+              "task": "Seek feedback",
+              "duration": "15 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        },
+        {
+          "day": 5,
+          "date": "2025-09-08",
+          "type": "concept",
+          "focus": "Learning new concepts",
+          "duration_hours": 3.9,
+          "tasks": [
+            {
+              "task": "Read primary resources",
+              "duration": "45 min",
+              "completed": false
+            },
+            {
+              "task": "Take notes on key concepts",
+              "duration": "30 min",
+              "completed": false
+            },
+            {
+              "task": "Watch explanatory videos",
+              "duration": "30 min",
+              "completed": false
+            }
+          ],
+          "resources_for_today": {
+            "primary": [],
+            "practice": []
+          }
+        }
+      ],
+      "created_at": "2025-09-04T21:58:10.482565"
+    }
+  ]
+}

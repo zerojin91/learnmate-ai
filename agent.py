@@ -29,7 +29,7 @@ class MCPAgent:
         self.llm = ChatOpenAI(
             base_url="http://localhost:11434/v1",
             api_key="ollama",
-            model="midm-2.0-base-q8",
+            model="midm-2.0-fp16:base",
             temperature=0.0,
             max_tokens=8192,
         )
