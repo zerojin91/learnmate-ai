@@ -1,197 +1,824 @@
-from pydantic import BaseModel, Field
-from typing import TypedDict, List, Literal
-from langchain_openai import ChatOpenAI
-from langchain.schema import SystemMessage, HumanMessage, AIMessage
-from langgraph.graph import StateGraph, START, END
-import json
-import re
-from dotenv import load_dotenv
-load_dotenv()
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnAI - 개인화 학습 멘토</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-class ChatTemplateConstants:
-    BEGIN_OF_TEXT = "<|begin_of_text|>"
-    START_HEADER_ID = "<|start_header_id|>"
-    END_HEADER_ID = "<|end_header_id|>"
-    EOT_ID = "<|eot_id|>"
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f9fafb;
+            min-height: 100vh;
+            display: flex;
+        }
 
-def get_message_info(message):
-    if isinstance(message, dict):
-        return message.get('role'), message.get('content')
-    if hasattr(message, 'role') and hasattr(message, 'content'):
-        return message.role, message.content
-    message_type = type(message).__name__.lower()
-    if 'system' in message_type:
-        role = 'system'
-    elif 'human' in message_type or 'user' in message_type:
-        role = 'user'
-    elif 'ai' in message_type or 'assistant' in message_type:
-        role = 'assistant'
-    else:
-        role = getattr(message, 'role', 'user')
-    content = getattr(message, 'content', str(message))
-    return role, content
+        /* 사이드바 */
+        .sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
 
-def apply_chat_template(state_messages, turns=10, system_message=None):
-    template = ChatTemplateConstants.BEGIN_OF_TEXT
-    
-    # 시스템 메시지 처리
-    if system_message:
-        template += (
-            ChatTemplateConstants.START_HEADER_ID + "system" + ChatTemplateConstants.END_HEADER_ID + "\n\n" +
-            system_message + ChatTemplateConstants.EOT_ID
-        )
-    
-    # 최근 메시지들만 처리
-    for msg in state_messages[-turns:]:
-        if msg["type"] == "human":
-            role = "user"
-        elif msg["type"] == "ai":
-            role = "assistant"
-        else:
-            continue
+        .logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo h1 {
+            color: #4a5568;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 10px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: #4a5568;
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .nav-link i {
+            margin-right: 12px;
+            width: 20px;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        /* 메인 컨텐츠 */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        /* 웰컴 섹션 */
+        .welcome-section {
+            text-align: center;
+            max-width: 800px;
+            margin-bottom: 40px;
+        }
+
+        .ai-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 32px rgba(168, 85, 247, 0.3);
+        }
+
+        .welcome-title {
+            font-size: 32px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+
+        .welcome-subtitle {
+            font-size: 20px;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+        .welcome-subtitle .highlight {
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 600;
+        }
+
+        /* 채팅 컨테이너 */
+        .chat-container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .chat-messages {
+            min-height: 300px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 30px;
+            background: #ffffff;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .user-avatar {
+            background: #e5e7eb;
+            color: #6b7280;
+        }
+
+        .ai-avatar-small {
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            color: white;
+        }
+
+        .message-content {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .user-message .message-content {
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+
+        .ai-message .message-content {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            color: #374151;
+        }
+
+        /* 입력 영역 */
+        .input-container {
+            padding: 30px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: #a855f7;
+            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 16px 20px;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            outline: none;
+            resize: none;
+            min-height: 24px;
+            max-height: 120px;
+            font-family: inherit;
+        }
+
+        .input-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-right: 12px;
+        }
+
+        .attach-button, .clear-button {
+            padding: 8px;
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .attach-button:hover, .clear-button:hover {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .clear-button:hover {
+            color: #ef4444;
+        }
+
+        .send-button {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .send-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+        }
+
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* 파일 입력 숨김 */
+        .file-input {
+            display: none;
+        }
+
+        /* 예시 카드 */
+        .examples-section {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .examples-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .example-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .example-card:hover {
+            border-color: #a855f7;
+            box-shadow: 0 4px 16px rgba(168, 85, 247, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .example-icon {
+            font-size: 20px;
+            color: #a855f7;
+            margin-bottom: 8px;
+        }
+
+        .example-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .example-description {
+            font-size: 12px;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        /* 알림 메시지 */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+                padding: 20px;
+            }
             
-        template += (
-            ChatTemplateConstants.START_HEADER_ID + role + ChatTemplateConstants.END_HEADER_ID + "\n\n" +
-            msg["content"] + ChatTemplateConstants.EOT_ID
-        )
-    
-    # 마지막이 user 메시지면 assistant 프롬프트 추가
-    if state_messages and state_messages[-1]["type"] == "human":
-        template += (
-            ChatTemplateConstants.START_HEADER_ID + "assistant" + ChatTemplateConstants.END_HEADER_ID + "\n\n"
-        )
-    
-    return template
+            .main-content {
+                margin-left: 0;
+                padding: 20px 15px;
+            }
+            
+            .nav-menu {
+                display: flex;
+                overflow-x: auto;
+                gap: 10px;
+                padding-bottom: 10px;
+            }
+            
+            .nav-item {
+                margin-bottom: 0;
+                white-space: nowrap;
+            }
 
-def history(messages_list):
-    try:
-        rename = {"ai": "assistant", "human": "user"}
-        text = '\n'.join([f"{rename[i['type']]}:{i['content']}" for i in messages_list])
-        return text
-    except:
-        return ''
-    
-# 상태 정의
-class ConversationState(TypedDict):
-    messages: List[dict]
-    topic: str
-    constraints: str
-    goal: str
+            .welcome-title {
+                font-size: 24px;
+            }
 
-def user_assessment_node(state: ConversationState) -> ConversationState:
-    prompt = f'''### 역할
-당신은 LearnMate AI (러닝메이트 AI) 입니다.
-자신만의 맞춤형 학습 멘토로써 사용자와의 대화를 통해 현재 상태를 파악하는것을 목표로 합니다.
+            .welcome-subtitle {
+                font-size: 18px;
+            }
 
-### 대화 기록
-{history(state.get('messages', ''))}
+            .examples-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
 
-### 현재 사용자 정보
-- 공부하고자 하는 주제: {state.get('topic', '미파악')}
-  (사용자가 학습하고자 하는 전반적인 분야나 영역을 나타냅니다. 예: 프로그래밍, 영어, 자격증 등)
-- 제약 조건: {state.get('constraints', '미파악')}
-  (사용자가 학습 시 고려해야 할 구체적인 제한사항 또는 환경 조건입니다. 예: 시간, 수준, 장비, 장소 등)
-- 목표: {state.get('goal', '미파악')}
-  (해당 주제에서 사용자가 구체적으로 배우고 싶거나 달성하고자 하는 목표나 활동입니다. 예: 웹 개발자가 되고 싶다, 영어 회화 능력을 키우고 싶다)
+        @media (max-width: 480px) {
+            .examples-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 사이드바 -->
+    <div class="sidebar">
+        <div class="logo">
+            <h1>LearnAI</h1>
+            <p>개인화 학습 멘토</p>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a class="nav-link active" data-page="chat">
+                    <i class="fas fa-bullseye"></i>
+                    맞춤형 학습 추천
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-page="profile">
+                    <i class="fas fa-robot"></i>
+                    AI 멘토
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-page="curriculum">
+                    <i class="fas fa-graduation-cap"></i>
+                    나의 커리큘럼
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-page="schedule">
+                    <i class="fas fa-calendar-alt"></i>
+                    나의 학습 계획
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-page="progress">
+                    <i class="fas fa-chart-line"></i>
+                    학습 진도
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    설정
+                </a>
+            </li>
+        </ul>
+    </div>
 
-### 지시사항
-현재 사용자 정보에서 '미파악'된 정보를 얻기 위해 사용자 정보와 대화 기록을 바탕으로 이야기하세요.
-'''
-    response = llm.invoke(prompt)
-    state["messages"].append({"type": "ai", "content": response.content})
-    print("🤖 ", response.content)
+    <!-- 메인 컨텐츠 -->
+    <div class="main-content">
+        <!-- 웰컴 섹션 -->
+        <div class="welcome-section">
+            <div class="ai-avatar">
+            </div>
+            <h1 class="welcome-title">안녕하세요, <span id="userName">신민수</span>님</h1>
+            <p class="welcome-subtitle" id="welcomeSubtitle">오늘 <span class="highlight">무엇을</span> 배우고 싶으신가요?</p>
+        </div>
 
-    # 유저 응답
-    user_input = input("👤  ")
-    state["messages"].append({"type": "human", "content": user_input})
+        <!-- 채팅 컨테이너 -->
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai-message">
+                    <div class="message-avatar ai-avatar-small">AI</div>
+                    <div class="message-content" id="initialMessage">
+                        안녕하세요! LearnAI의 학습 멘토입니다. 어떤 주제에 대해 배우고 싶으신지 알려주세요. 맞춤형 학습 계획을 함께 만들어보겠습니다.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <textarea 
+                        id="messageInput" 
+                        class="message-input"
+                        placeholder="AI에게 질문하거나 요청을 입력하세요..."
+                        rows="1"
+                        onkeydown="handleKeyDown(event)"
+                        oninput="adjustTextareaHeight(this)"
+                    ></textarea>
+                    <div class="input-actions">
+                        <input type="file" id="fileInput" class="file-input" accept=".txt,.pdf,.doc,.docx">
+                        <button class="clear-button" onclick="clearChat()" title="대화 초기화">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <button id="sendButton" class="send-button" onclick="sendMessage()" title="전송">
+                            <i class="fas fa-arrow-up"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    return state
+        <!-- 예시 섹션 -->
+        <div class="examples-section">
+            <h3 class="examples-title">예시로 시작해보세요</h3>
+            <div class="examples-grid">
+                <div class="example-card" onclick="useExample('Python 프로그래밍을 처음부터 배우고 싶어요')">
+                    <div class="example-icon">
+                        <i class="fab fa-python"></i>
+                    </div>
+                    <div class="example-title">프로그래밍 학습</div>
+                    <div class="example-description">Python 처음부터 배우기</div>
+                </div>
+                
+                <div class="example-card" onclick="useExample('영어 회화 실력을 향상시키고 싶습니다')">
+                    <div class="example-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <div class="example-title">언어 학습</div>
+                    <div class="example-description">영어 회화 향상 계획</div>
+                </div>
+                
+                <div class="example-card" onclick="useExample('데이터 과학 공부 계획을 세워주세요')">
+                    <div class="example-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="example-title">데이터 과학</div>
+                    <div class="example-description">체계적인 학습 로드맵</div>
+                </div>
+                
+                <div class="example-card" onclick="useExample('AI와 머신러닝에 대해 알고 싶어요')">
+                    <div class="example-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="example-title">AI/ML 학습</div>
+                    <div class="example-description">인공지능 기초부터</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-class UserInfoSchema(BaseModel):
-    topic: str = Field(
-        default="",
-        description=(
-            "사용자가 공부하고자 하는 전반적인 주제나 분야를 나타냅니다. "
-            "예: 프로그래밍, 영어, 자격증 등. "
-            "더 구체적인 학습 목표나 하고 싶은 활동은 별도의 'goal' 필드에 기록됩니다."
-        )
-    )
-    constraints: str = Field(
-        default="",
-        description=(
-            "사용자가 명확하게 언급한 구체적인 제약 조건(예: 시간, 환경, 수준 등). "
-            "일반적인 행위나 동사는 포함하지 말고, "
-            "구체적인 제약 사항이 없으면 빈 문자열로 둡니다."
-        )
-    )
-    goal: str = Field(
-        default="",
-        description="사용자가 해당 주제에서 구체적으로 배우고 싶거나 하고 싶은 활동, 목표 등"
-    )
-    
-def extract_user_info_node(state: ConversationState) -> ConversationState:
-    system_prompt = f'''### 역할
-당신은 LearnMate AI 입니다. 다음 대화 기록을 바탕으로 아래 JSON 스키마에 맞게 사용자 정보를 추출하세요.
+    <!-- 알림 -->
+    <div id="notification" class="notification"></div>
 
-### 규칙
-1. 사용자가 언급한 모든 주요 정보 항목들을 핵심 키워드 또는 명사 형태로 간결하게 추출하세요.
-2. 특정 정보가 명확하게 언급되지 않았다면 해당 항목은 빈 문자열("")로 출력하세요.
-3. 불필요한 설명이나 추론은 하지 마시고, 있는 정보만 정확히 반영하세요.
-4. 항상 JSON 형식으로 출력하며, 모든 필드(있는 것, 없는 것)를 포함하세요.
+    <script>
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
 
-### 대화 기록
-'''
-    prompt = apply_chat_template(state["messages"], system_message=system_prompt)
+        // 사용자 이름 설정 (여기서 변경하세요)
+        const USER_NAME = "신민수"; // 원하는 이름으로 변경
 
-    # 모델을 pydantic 스키마 바인딩해 구조화 출력 생성
-    model_with_structure = llm.with_structured_output(UserInfoSchema)
-    structured_output = model_with_structure.invoke(prompt)
+        // 사용자 정보 관리
+        let currentUser = {
+            name: USER_NAME,
+            profile: {}
+        };
 
-    # 값 추출 후 state 반영
-    state['topic'] = structured_output.topic
-    state['constraints'] = structured_output.constraints
-    state['goal'] = structured_output.goal
+        // 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            updateUserDisplay(); // 페이지 로드시 이름 업데이트
+            loadUserProfile();
+            setupNavigation();
+        });
 
-    return state
+        // 네비게이션 설정
+        function setupNavigation() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // 활성 상태 변경
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const page = this.dataset.page;
+                    navigateToPage(page);
+                });
+            });
+        }
 
-def check_completion(state):
-    print("check_completion")
-    print("topic:",state.get('topic'))
-    print("constraints:",state.get('constraints'))
-    print("goal:",state.get('goal'))
-    print("=="*20)
-    if state.get('topic') and state.get('constraints') and state.get('goal'):
-        return True
-    else:
-        return False
+        // 페이지 네비게이션
+        function navigateToPage(page) {
+            const welcomeSubtitle = document.getElementById('welcomeSubtitle');
+            const initialMessage = document.getElementById('initialMessage');
+            
+            if (page === 'chat') {
+                // 맞춤형 학습 추천 모드
+                welcomeSubtitle.innerHTML = '오늘 <span class="highlight">무엇을</span> 배우고 싶으신가요?';
+                initialMessage.textContent = '안녕하세요! LearnAI의 학습 멘토입니다. 어떤 주제에 대해 배우고 싶으신지 알려주세요. 맞춤형 학습 계획을 함께 만들어보겠습니다.';
+                return;
+            } else if (page === 'profile') {
+                // AI 멘토 모드
+                welcomeSubtitle.innerHTML = '어떤 분야의 <span class="highlight">멘토가</span> 필요하신가요?';
+                initialMessage.textContent = '안녕하세요! 사내 지식이 풍부한 전문분야별 AI 멘토들이 여러분의 질문에 답변해드립니다. 궁금한 분야나 주제를 말씀해주시면, 해당 영역의 멘토들이 각자의 전문성을 살려 도움을 드리겠습니다.';
+                return;
+            }
+            // 다른 페이지들은 향후 SPA 라우팅 구현 예정
+            showNotification(`${page} 페이지로 이동 (개발 예정)`);
+        }
 
-# LLM 초기화
-llm = ChatOpenAI(
-    base_url="http://localhost:11434/v1",
-    api_key="ollama",
-    model="midm-2.0-base-q8",
-    temperature=0.7,
-    max_tokens=1024,
-)
+        // 사용자 프로필 로드
+        function loadUserProfile() {
+            // 로컬스토리지에서 사용자 정보 로드 (향후 서버에서 가져올 예정)
+            const savedUser = localStorage.getItem('learnai_user');
+            if (savedUser) {
+                const parsedUser = JSON.parse(savedUser);
+                currentUser = { ...currentUser, ...parsedUser };
+                updateUserDisplay();
+            }
+        }
 
-# StateGraph 생성
-workflow = StateGraph(ConversationState)
+        // 사용자 표시 업데이트
+        function updateUserDisplay() {
+            const userName = document.getElementById('userName');
+            userName.textContent = currentUser.name;
+        }
 
-# 노드 추가
-workflow.add_node("user_assessment_node", user_assessment_node)
-workflow.add_node("extract_user_info_node", extract_user_info_node)
+        // 메시지 추가
+        function addMessage(message, isUser) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = `message-avatar ${isUser ? 'user-avatar' : 'ai-avatar-small'}`;
+            avatar.textContent = isUser ? 'U' : 'AI';
+            
+            const content = document.createElement('div');
+            content.className = 'message-content';
+            content.textContent = message;
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
 
-# 엣지 추가
-workflow.add_edge(START, "user_assessment_node")
-workflow.add_edge("user_assessment_node", "extract_user_info_node")
-workflow.add_conditional_edges(
-    "extract_user_info_node",
-    check_completion,
-    {
-        True: END,
-        False: "user_assessment_node",
-    },
-)
+        // 키보드 이벤트 처리
+        function handleKeyDown(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
 
-# 그래프 컴파일
-app = workflow.compile()
+        // 텍스트영역 높이 조정
+        function adjustTextareaHeight(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+        }
+
+        // 예시 사용
+        function useExample(exampleText) {
+            messageInput.value = exampleText;
+            adjustTextareaHeight(messageInput);
+            messageInput.focus();
+        }
+
+        // 스트리밍 응답용 메시지 추가
+        function addStreamingMessage() {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message ai-message';
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar ai-avatar-small';
+            avatar.textContent = 'AI';
+            
+            const content = document.createElement('div');
+            content.className = 'message-content';
+            content.textContent = '';
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            return content;
+        }
+
+        // 메시지 전송
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            // 사용자 메시지 표시
+            addMessage(message, true);
+            messageInput.value = '';
+            messageInput.style.height = 'auto';
+            
+            // 버튼 비활성화 및 로딩 표시
+            sendButton.disabled = true;
+            sendButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+            // 스트리밍 응답용 메시지 컨테이너 생성
+            const streamingContent = addStreamingMessage();
+
+            try {
+                // EventSource로 스트리밍 응답 받기
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let buffer = '';
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    
+                    buffer += decoder.decode(value, { stream: true });
+                    const lines = buffer.split('\n');
+                    buffer = lines.pop() || ''; // 마지막 불완전한 라인은 버퍼에 유지
+                    
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            try {
+                                const data = JSON.parse(line.slice(6));
+                                if (data.content) {
+                                    streamingContent.textContent += data.content;
+                                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                                } else if (data.error) {
+                                    streamingContent.textContent = `오류: ${data.error}`;
+                                    break;
+                                } else if (data.done) {
+                                    break;
+                                }
+                            } catch (e) {
+                                console.error('JSON 파싱 오류:', e);
+                            }
+                        }
+                    }
+                }
+
+            } catch (error) {
+                streamingContent.textContent = `연결 오류: ${error.message}`;
+            }
+
+            // 버튼 다시 활성화
+            sendButton.disabled = false;
+            sendButton.innerHTML = '<i class="fas fa-arrow-up"></i>';
+        }
+
+        // 사용자 프로필 업데이트
+        function updateUserProfile(profileData) {
+            currentUser = { ...currentUser, ...profileData };
+            localStorage.setItem('learnai_user', JSON.stringify(currentUser));
+            updateUserDisplay();
+            showNotification('프로필이 업데이트되었습니다');
+        }
+
+        // 알림 표시
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // 대화 초기화
+        async function clearChat() {
+            try {
+                const response = await fetch('/clear-chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // 채팅 메시지 화면 초기화
+                    const chatMessages = document.getElementById('chatMessages');
+                    // 현재 모드에 따라 초기 메시지 설정
+                    const activeTab = document.querySelector('.nav-link.active').dataset.page;
+                    const initialMsg = activeTab === 'profile' 
+                        ? '안녕하세요! 사내 지식이 풍부한 전문분야별 AI 멘토들이 여러분의 질문에 답변해드립니다. 궁금한 분야나 주제를 말씀해주시면, 해당 영역의 멘토들이 각자의 전문성을 살려 도움을 드리겠습니다.'
+                        : '안녕하세요! LearnAI의 학습 멘토입니다. 어떤 주제에 대해 배우고 싶으신지 알려주세요. 맞춤형 학습 계획을 함께 만들어보겠습니다.';
+                    
+                    chatMessages.innerHTML = `
+                        <div class="message ai-message">
+                            <div class="message-avatar ai-avatar-small">AI</div>
+                            <div class="message-content" id="initialMessage">
+                                ${initialMsg}
+                            </div>
+                        </div>
+                    `;
+                    showNotification('대화가 초기화되었습니다');
+                } else {
+                    showNotification('대화 초기화에 실패했습니다', 'error');
+                }
+            } catch (error) {
+                showNotification(`오류: ${error.message}`, 'error');
+            }
+        }
+    </script>
+</body>
+</html>
