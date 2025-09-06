@@ -31,7 +31,7 @@ async def home(request: Request):
 
 @app.post("/chat")
 async def chat(request: ChatRequest):
-    """간단한 채팅 API"""
+    print(f"=== Chat request received: {request.message} ===")
     if not agent_instance:
         return {"error": "Agent not initialized"}
     
