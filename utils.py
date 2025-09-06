@@ -1,9 +1,95 @@
+"""
+통합 유틸리티 모듈 - 토큰 관리 + LangGraph 스트리밍
+"""
 from typing import Any, Dict, List, Callable, Optional
 from langchain_core.messages import BaseMessage
 from langchain_core.runnables import RunnableConfig
 from langgraph.graph.state import CompiledStateGraph
 import uuid
+from config import Config
 
+
+# =============================================================================
+# 토큰 관리 유틸리티
+# =============================================================================
+
+def estimate_tokens(text: str) -> int:
+    """
+    텍스트의 토큰 수를 대략적으로 추정합니다.
+    
+    Args:
+        text (str): 토큰 수를 계산할 텍스트
+        
+    Returns:
+        int: 추정된 토큰 수
+    """
+    return len(text) // Config.AVERAGE_CHARS_PER_TOKEN
+
+
+def calculate_conversation_tokens(conversation_history: List[Dict[str, str]]) -> int:
+    """
+    대화 기록의 총 토큰 수를 계산합니다.
+    
+    Args:
+        conversation_history: 대화 기록 리스트
+        
+    Returns:
+        int: 총 토큰 수
+    """
+    total_tokens = 0
+    for message in conversation_history:
+        total_tokens += estimate_tokens(message.get("content", ""))
+    return total_tokens
+
+
+def trim_conversation_history(conversation_history: List[Dict[str, str]], max_tokens: int) -> List[Dict[str, str]]:
+    """
+    대화 기록을 토큰 제한에 맞게 잘라냅니다.
+    최신 메시지부터 유지하며, 토큰 제한을 초과하지 않도록 합니다.
+    
+    Args:
+        conversation_history: 전체 대화 기록
+        max_tokens: 최대 토큰 수
+        
+    Returns:
+        List[Dict[str, str]]: 토큰 제한에 맞는 대화 기록
+    """
+    if not conversation_history:
+        return []
+    
+    # 최신 메시지부터 역순으로 확인
+    trimmed_history = []
+    current_tokens = 0
+    
+    for message in reversed(conversation_history):
+        message_tokens = estimate_tokens(message.get("content", ""))
+        
+        # 토큰 제한을 초과하지 않는 경우에만 추가
+        if current_tokens + message_tokens <= max_tokens:
+            trimmed_history.insert(0, message)  # 앞쪽에 삽입하여 순서 유지
+            current_tokens += message_tokens
+        else:
+            break
+    
+    return trimmed_history
+
+
+def log_token_usage(conversation_history: List[Dict[str, str]]):
+    """
+    토큰 사용량을 로그로 출력합니다.
+    """
+    current_tokens = calculate_conversation_tokens(conversation_history)
+    max_tokens = Config.get_effective_max_tokens()
+    
+    print(f"📊 토큰 사용량: {current_tokens}/{max_tokens} ({current_tokens/max_tokens*100:.1f}%)")
+    
+    if current_tokens > max_tokens * 0.8:  # 80% 이상 사용시 경고
+        print("⚠️  토큰 사용량이 높습니다. 대화 기록이 곧 정리될 예정입니다.")
+
+
+# =============================================================================
+# LangGraph 스트리밍 유틸리티
+# =============================================================================
 
 def random_uuid():
     return str(uuid.uuid4())
@@ -209,7 +295,6 @@ async def astream_graph(
 
     # 필요에 따라 최종 결과 반환
     return final_result
-
 
 async def ainvoke_graph(
     graph: CompiledStateGraph,

@@ -4,6 +4,7 @@ from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 
 from agent import MCPAgent
+from config import Config
 
 app = FastAPI(title="MCP Chat Agent")
 
@@ -31,13 +32,17 @@ async def home(request: Request):
 
 @app.post("/chat")
 async def chat(request: ChatRequest):
+<<<<<<< HEAD
     print(f"=== Chat request received: {request.message} ===")
+=======
+    """채팅 API - 에이전트가 대화 기록 관리"""
+>>>>>>> 33133373a9fd12ccb8a78887fc1275be058deb99
     if not agent_instance:
         return {"error": "Agent not initialized"}
     
     try:
         response = ""
-        async for chunk in agent_instance.chat_stream(request.message):
+        async for chunk in agent_instance.chat(request.message):
             if chunk.get("type") == "message":
                 response += chunk.get("content", "")
         
@@ -46,6 +51,15 @@ async def chat(request: ChatRequest):
     except Exception as e:
         return {"error": str(e)}
 
+@app.post("/clear-chat")
+async def clear_chat():
+    """대화 기록 초기화"""
+    if not agent_instance:
+        return {"error": "Agent not initialized"}
+    
+    agent_instance.clear_conversation()
+    return {"message": "대화 기록이 초기화되었습니다."}
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000, access_log=False)
+    uvicorn.run(app, host=Config.HOST, port=Config.PORT, access_log=False)
