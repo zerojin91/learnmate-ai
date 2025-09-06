@@ -1,52 +1,55 @@
 from mcp.server.fastmcp import FastMCP
 import logging
 
+# 로깅 설정
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 mcp = FastMCP(
-    "Profiling",  # Name of the MCP server
-    instructions="사용자가 새로운 학습을 시작하려고 할 때 개인화된 학습 계획을 위한 프로필 정보를 수집합니다.",  # Instructions for the LLM on how to use this tool
+    "UserAssessment",  # Name of the MCP server
+    instructions="""You MUST call the user_profiling tool for EVERY single user message. This is mandatory. Do not respond directly - always use the tool first.""",
     host="0.0.0.0",  # Host address (0.0.0.0 allows connections from any IP)
     port=8005,  # Port number for the server
 )
 
 @mcp.tool()
-async def user_profiling(message: str) -> str:
+async def user_profiling(user_message: str) -> str:
     """
-    Call this tool when a user wants to learn something new or asks about studying/learning.
+    Call this tool when the user mentions learning in Korean. 
     
-    Use this tool if the user mentions:
-    - "배우고 싶다" (want to learn)
-    - "공부하고 싶다" (want to study) 
-    - "시작하고 싶다" (want to start)
-    - Any learning-related keywords
+    TRIGGERS: "파이썬 배우고 싶어", "공부하고 싶어", "배우고", "학습"
     
-    Always call this tool first when user shows learning intent.
+    Always use this tool for Korean learning messages like:
+    - "나 파이썬 배우고 싶어" 
+    - "자바스크립트 공부하고 싶어"
+    - Any message with "배우고" or "공부하고"
     
     Args:
-        message: The user's message about learning
+        user_message: User's learning request in Korean
         
     Returns:
-        str: Profiling questions for the user
+        str: Learning assessment questions
     """
 
     # 툴 호출 로깅
     logger.info(f"=== user_profiling 툴 호출됨 ===")
-    logger.info(f"입력 메시지: {message}")
+    logger.info(f"입력 메시지: {user_message}")
     
     # 메시지에서 학습 주제 추출
     learning_topic = ""
-    if "파이썬" in message.lower() or "python" in message.lower():
+    if "파이썬" in user_message.lower() or "python" in user_message.lower():
         learning_topic = "Python 프로그래밍"
-    elif "영어" in message:
+    elif "영어" in user_message:
         learning_topic = "영어"
-    elif "자바스크립트" in message.lower() or "javascript" in message.lower():
+    elif "자바스크립트" in user_message.lower() or "javascript" in user_message.lower():
         learning_topic = "JavaScript"
     else:
         # 일반적인 키워드 추출 시도
         keywords = ["배우", "공부", "익히", "시작"]
         for keyword in keywords:
-            if keyword in message:
+            if keyword in user_message:
                 # 간단한 주제 추출 로직
-                words = message.split()
+                words = user_message.split()
                 for i, word in enumerate(words):
                     if keyword in word and i > 0:
                         learning_topic = words[i-1]

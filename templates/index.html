@@ -669,6 +669,27 @@
             messageInput.focus();
         }
 
+        // 스트리밍 응답용 메시지 추가
+        function addStreamingMessage() {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message ai-message';
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar ai-avatar-small';
+            avatar.textContent = 'AI';
+            
+            const content = document.createElement('div');
+            content.className = 'message-content';
+            content.textContent = '';
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            return content;
+        }
+
         // 메시지 전송
         async function sendMessage() {
             const message = messageInput.value.trim();
@@ -683,8 +704,11 @@
             sendButton.disabled = true;
             sendButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
 
+            // 스트리밍 응답용 메시지 컨테이너 생성
+            const streamingContent = addStreamingMessage();
+
             try {
-                // API 호출
+                // EventSource로 스트리밍 응답 받기
                 const response = await fetch('/chat', {
                     method: 'POST',
                     headers: {
@@ -693,21 +717,44 @@
                     body: JSON.stringify({ message: message })
                 });
 
-                const data = await response.json();
-                
-                if (data.error) {
-                    addMessage(`오류: ${data.error}`, false);
-                } else {
-                    addMessage(data.response, false);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let buffer = '';
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
                     
-                    // 사용자 프로필 정보가 있으면 업데이트
-                    if (data.userProfile) {
-                        updateUserProfile(data.userProfile);
+                    buffer += decoder.decode(value, { stream: true });
+                    const lines = buffer.split('\n');
+                    buffer = lines.pop() || ''; // 마지막 불완전한 라인은 버퍼에 유지
+                    
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            try {
+                                const data = JSON.parse(line.slice(6));
+                                if (data.content) {
+                                    streamingContent.textContent += data.content;
+                                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                                } else if (data.error) {
+                                    streamingContent.textContent = `오류: ${data.error}`;
+                                    break;
+                                } else if (data.done) {
+                                    break;
+                                }
+                            } catch (e) {
+                                console.error('JSON 파싱 오류:', e);
+                            }
+                        }
                     }
                 }
 
             } catch (error) {
-                addMessage(`연결 오류: ${error.message}`, false);
+                streamingContent.textContent = `연결 오류: ${error.message}`;
             }
 
             // 버튼 다시 활성화
