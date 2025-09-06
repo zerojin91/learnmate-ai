@@ -121,10 +121,7 @@ class MultiMCPAgent:
             await self.initialize()
         
         try:
-            # 모든 메시지에 "(툴 사용해)" 강제 추가
-            # modified_message = f"{message} (툴 사용해)"
-            modified_message = f"{message}"
-            print(f"🔧 메시지 수정: {modified_message}")
+            print(f"📝 사용자 메시지: {message}")
             
             # 사용자 메시지를 대화 기록에 추가 (원본 저장)
             self.conversation_history.append({"role": "user", "content": message})
@@ -165,11 +162,9 @@ class MultiMCPAgent:
             messages = [SystemMessage(content=system_prompt_text)]
             
             # 대화 기록 추가
-            for i, item in enumerate(self.conversation_history):
+            for item in self.conversation_history:
                 if item["role"] == "user":
-                    # 마지막 사용자 메시지만 "(툴 사용해)" 추가
-                    content = modified_message if i == len(self.conversation_history) - 1 else item["content"]
-                    messages.append(HumanMessage(content=content))
+                    messages.append(HumanMessage(content=item["content"]))
                 elif item["role"] == "assistant":
                     messages.append(AIMessage(content=item["content"]))
             
