@@ -3,36 +3,53 @@ from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 import json
+from contextlib import asynccontextmanager
 
-from agent import MCPAgent, MultiMCPAgent
+from agent import MultiMCPAgent
 from config import Config
-
-app = FastAPI(title="MCP Chat Agent")
-
-# 템플릿 설정
-templates = Jinja2Templates(directory="templates")
 
 # 전역 에이전트 (여러 서버 동시 사용)
 agent_instance: MultiMCPAgent = None
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
+    global agent_instance
+    try:
+        print("🚀 Starting multi-MCP agent...")
+        
+        # 일시적으로 user_assessment 서버만 사용 (테스트용)
+        servers = [
+            "servers/user_assessment.py",
+            # "servers/generate_curriculum.py",  # 임시 비활성화
+            # "servers/evaluate_user.py"         # 임시 비활성화
+        ]
+        
+        print(f"📋 서버 리스트: {servers}")
+        agent_instance = MultiMCPAgent(servers)
+        print("🔄 에이전트 인스턴스 생성 완료, 초기화 시작...")
+        
+        await agent_instance.initialize()
+        print("✅ Multi-MCP Agent ready!")
+        
+    except Exception as e:
+        print(f"❌ Startup failed: {e}")
+        import traceback
+        traceback.print_exc()
+    
+    yield
+    
+    # Shutdown
+    if agent_instance:
+        await agent_instance.cleanup()
+
+app = FastAPI(title="MCP Chat Agent", lifespan=lifespan)
+
+# 템플릿 설정
+templates = Jinja2Templates(directory="templates")
+
 class ChatRequest(BaseModel):
     message: str
-
-@app.on_event("startup")
-async def startup():
-    global agent_instance
-    print("Starting multi-MCP agent...")
-    
-    # 일시적으로 user_assessment 서버만 사용 (테스트용)
-    servers = [
-        "servers/user_assessment.py",
-        # "servers/generate_curriculum.py",  # 임시 비활성화
-        # "servers/evaluate_user.py"         # 임시 비활성화
-    ]
-    
-    agent_instance = MultiMCPAgent(servers)
-    await agent_instance.initialize()
-    print("Multi-MCP Agent ready!")
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
