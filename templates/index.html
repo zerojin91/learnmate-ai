@@ -323,6 +323,15 @@
             padding: 24px;
             box-shadow: 0 2px 12px rgba(0,0,0,0.08);
             border: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            transition: height 0.3s ease;
+        }
+
+        /* 커리큘럼 섹션이 표시될 때만 채팅창 높이에 맞춤 */
+        .profile-card.with-curriculum {
+            height: 450px;
+            overflow-y: auto;
         }
 
         .profile-card h3 {
@@ -337,10 +346,23 @@
             flex-direction: column;
         }
 
+        /* 커리큘럼 섹션이 있을 때만 flex 확장 */
+        .profile-card.with-curriculum .profile-progress {
+            flex: 1;
+            justify-content: space-between;
+            min-height: 200px;
+        }
+
         .profile-step {
             display: flex;
             align-items: flex-start;
             position: relative;
+            margin-bottom: 8px;
+        }
+
+        /* 커리큘럼 섹션이 있을 때만 간격 확대 */
+        .profile-card.with-curriculum .profile-step {
+            margin-bottom: 24px;
         }
 
         .step-indicator {
@@ -373,9 +395,9 @@
 
         .step-line {
             width: 2px;
-            height: 40px;
-            background: #e5e7eb;
-            margin-top: 4px;
+            height: 50px;
+            background: #d1d5db;
+            margin-top: 8px;
             transition: background 0.3s ease;
         }
 
@@ -385,7 +407,7 @@
 
         .step-content {
             flex: 1;
-            padding: 2px 0 20px 0;
+            padding: 2px 0 30px 0;
         }
 
         .step-label {
@@ -424,6 +446,92 @@
             color: #374151;
         }
 
+        /* 커리큘럼 생성 섹션 */
+        .curriculum-section {
+            margin-top: auto;
+            padding-top: 20px;
+            animation: slideIn 0.3s ease-out;
+            flex-shrink: 0;
+        }
+
+        .curriculum-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #e5e7eb, transparent);
+            margin: 0 0 20px 0;
+        }
+
+        .duration-selector {
+            margin-bottom: 16px;
+        }
+
+        .duration-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .duration-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+            font-size: 14px;
+            color: #374151;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .duration-select:focus {
+            border-color: #a855f7;
+            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+        }
+
+        .generate-curriculum-btn {
+            width: 100%;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .generate-curriculum-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(168, 85, 247, 0.3);
+        }
+
+        .generate-curriculum-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .generate-curriculum-btn i {
+            font-size: 16px;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
         /* 예시 카드 */
         .examples-section {
@@ -699,6 +807,28 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- 학습 기간 선택 및 커리큘럼 생성 -->
+                <div id="curriculumSection" class="curriculum-section" style="display: none;">
+                    <div class="curriculum-divider"></div>
+                    
+                    <div class="duration-selector">
+                        <label for="learningDuration" class="duration-label">학습 기간 설정</label>
+                        <select id="learningDuration" class="duration-select">
+                            <option value="1">1개월</option>
+                            <option value="2">2개월</option>
+                            <option value="3" selected>3개월</option>
+                            <option value="4">4개월</option>
+                            <option value="5">5개월</option>
+                            <option value="6">6개월</option>
+                        </select>
+                    </div>
+                    
+                    <button id="generateCurriculumBtn" class="generate-curriculum-btn" onclick="generateCurriculum()">
+                        <i class="fas fa-magic"></i>
+                        맞춤형 커리큘럼 생성
+                    </button>
+                </div>
             </div>
         </div>
         </div>
@@ -752,6 +882,10 @@
 
         // 사용자 이름 설정 (여기서 변경하세요)
         const USER_NAME = "신민수"; // 원하는 이름으로 변경
+        
+        // 서버에서 전달받은 세션 ID
+        const SESSION_ID = "{{ session_id }}";
+        console.log('세션 ID:', SESSION_ID);
 
         // 사용자 정보 관리
         let currentUser = {
@@ -807,6 +941,21 @@
                 profileGoal.textContent = '설정 필요';
                 stepGoal.classList.remove('completed');
             }
+
+            // 프로필이 모두 완성되었는지 확인하고 커리큘럼 섹션 표시/숨김
+            const profileComplete = topic && constraints && goal;
+            const curriculumSection = document.getElementById('curriculumSection');
+            const profileCard = document.querySelector('.profile-card');
+            
+            if (profileComplete && curriculumSection) {
+                curriculumSection.style.display = 'block';
+                profileCard.classList.add('with-curriculum');
+                console.log('✅ 프로필 완성 - 커리큘럼 섹션 표시, 카드 높이 조정');
+            } else if (curriculumSection) {
+                curriculumSection.style.display = 'none';
+                profileCard.classList.remove('with-curriculum');
+                console.log('❌ 프로필 미완성 - 커리큘럼 섹션 숨김, 카드 기본 높이');
+            }
         }
 
         // AI 응답에서 프로필 정보 추출 및 업데이트
@@ -818,6 +967,58 @@
                 if (profile.topic || profile.constraints || profile.goal) {
                     updateLearningProfile(profile.topic, profile.constraints, profile.goal);
                 }
+            }
+        }
+
+        // 커리큘럼 생성 함수
+        async function generateCurriculum() {
+            const generateBtn = document.getElementById('generateCurriculumBtn');
+            const durationSelect = document.getElementById('learningDuration');
+            
+            if (!generateBtn || !durationSelect) {
+                console.error('커리큘럼 생성 요소를 찾을 수 없습니다.');
+                return;
+            }
+            
+            const selectedDuration = durationSelect.value;
+            console.log(`🚀 커리큘럼 생성 시작 - 기간: ${selectedDuration}개월`);
+            
+            // 버튼 비활성화 및 로딩 상태
+            generateBtn.disabled = true;
+            generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 커리큘럼 생성 중...';
+            
+            try {
+                // 커리큘럼 생성 요청 메시지를 입력 필드에 설정하고 전송
+                const curriculumMessage = `${selectedDuration}개월 학습 기간으로 맞춤형 커리큘럼을 생성해주세요.`;
+                messageInput.value = curriculumMessage;
+                
+                // 일반 sendMessage 함수 호출
+                await sendMessage();
+                
+                console.log('✅ 커리큘럼 생성 요청 완료');
+                
+            } catch (error) {
+                console.error('❌ 커리큘럼 생성 오류:', error);
+                
+                // 에러 메시지 표시
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'ai-message';
+                errorMessage.innerHTML = `
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-header">LearnAI</div>
+                        <div class="message-text">죄송합니다. 커리큘럼 생성 중 오류가 발생했습니다. 다시 시도해주세요.</div>
+                    </div>
+                `;
+                chatMessages.appendChild(errorMessage);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+            } finally {
+                // 버튼 복원
+                generateBtn.disabled = false;
+                generateBtn.innerHTML = '<i class="fas fa-magic"></i> 맞춤형 커리큘럼 생성';
             }
         }
 
@@ -959,6 +1160,24 @@
             return content;
         }
 
+        // 세션 ID 가져오기 함수
+        function getSessionId() {
+            // 1. 서버에서 전달받은 세션 ID 우선 사용
+            if (SESSION_ID && SESSION_ID !== '') {
+                return SESSION_ID;
+            }
+            
+            // 2. 쿠키에서 session_id 추출
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                const [name, value] = cookie.trim().split('=');
+                if (name === 'session_id') {
+                    return value;
+                }
+            }
+            return null;
+        }
+
         // 메시지 전송
         async function sendMessage() {
             const message = messageInput.value.trim();
@@ -977,14 +1196,21 @@
             const streamingContent = addStreamingMessage();
 
             try {
+                // 세션 ID 가져오기
+                const sessionId = getSessionId();
+                
                 // EventSource로 스트리밍 응답 받기
                 const response = await fetch('/chat', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'X-Session-ID': sessionId || ''  // 헤더로도 전송
                     },
                     credentials: 'include', // 쿠키 포함
-                    body: JSON.stringify({ message: message })
+                    body: JSON.stringify({ 
+                        message: message,
+                        session_id: sessionId  // 바디에도 포함
+                    })
                 });
 
                 if (!response.ok) {
