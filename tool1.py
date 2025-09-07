@@ -1,0 +1,197 @@
+from pydantic import BaseModel, Field
+from typing import TypedDict, List, Literal
+from langchain_openai import ChatOpenAI
+from langchain.schema import SystemMessage, HumanMessage, AIMessage
+from langgraph.graph import StateGraph, START, END
+import json
+import re
+from dotenv import load_dotenv
+load_dotenv()
+
+class ChatTemplateConstants:
+    BEGIN_OF_TEXT = "<|begin_of_text|>"
+    START_HEADER_ID = "<|start_header_id|>"
+    END_HEADER_ID = "<|end_header_id|>"
+    EOT_ID = "<|eot_id|>"
+
+def get_message_info(message):
+    if isinstance(message, dict):
+        return message.get('role'), message.get('content')
+    if hasattr(message, 'role') and hasattr(message, 'content'):
+        return message.role, message.content
+    message_type = type(message).__name__.lower()
+    if 'system' in message_type:
+        role = 'system'
+    elif 'human' in message_type or 'user' in message_type:
+        role = 'user'
+    elif 'ai' in message_type or 'assistant' in message_type:
+        role = 'assistant'
+    else:
+        role = getattr(message, 'role', 'user')
+    content = getattr(message, 'content', str(message))
+    return role, content
+
+def apply_chat_template(state_messages, turns=10, system_message=None):
+    template = ChatTemplateConstants.BEGIN_OF_TEXT
+    
+    # 시스템 메시지 처리
+    if system_message:
+        template += (
+            ChatTemplateConstants.START_HEADER_ID + "system" + ChatTemplateConstants.END_HEADER_ID + "\n\n" +
+            system_message + ChatTemplateConstants.EOT_ID
+        )
+    
+    # 최근 메시지들만 처리
+    for msg in state_messages[-turns:]:
+        if msg["type"] == "human":
+            role = "user"
+        elif msg["type"] == "ai":
+            role = "assistant"
+        else:
+            continue
+            
+        template += (
+            ChatTemplateConstants.START_HEADER_ID + role + ChatTemplateConstants.END_HEADER_ID + "\n\n" +
+            msg["content"] + ChatTemplateConstants.EOT_ID
+        )
+    
+    # 마지막이 user 메시지면 assistant 프롬프트 추가
+    if state_messages and state_messages[-1]["type"] == "human":
+        template += (
+            ChatTemplateConstants.START_HEADER_ID + "assistant" + ChatTemplateConstants.END_HEADER_ID + "\n\n"
+        )
+    
+    return template
+
+def history(messages_list):
+    try:
+        rename = {"ai": "assistant", "human": "user"}
+        text = '\n'.join([f"{rename[i['type']]}:{i['content']}" for i in messages_list])
+        return text
+    except:
+        return ''
+    
+# 상태 정의
+class ConversationState(TypedDict):
+    messages: List[dict]
+    topic: str
+    constraints: str
+    goal: str
+
+def user_assessment_node(state: ConversationState) -> ConversationState:
+    prompt = f'''### 역할
+당신은 LearnMate AI (러닝메이트 AI) 입니다.
+자신만의 맞춤형 학습 멘토로써 사용자와의 대화를 통해 현재 상태를 파악하는것을 목표로 합니다.
+
+### 대화 기록
+{history(state.get('messages', ''))}
+
+### 현재 사용자 정보
+- 공부하고자 하는 주제: {state.get('topic', '미파악')}
+  (사용자가 학습하고자 하는 전반적인 분야나 영역을 나타냅니다. 예: 프로그래밍, 영어, 자격증 등)
+- 제약 조건: {state.get('constraints', '미파악')}
+  (사용자가 학습 시 고려해야 할 구체적인 제한사항 또는 환경 조건입니다. 예: 시간, 수준, 장비, 장소 등)
+- 목표: {state.get('goal', '미파악')}
+  (해당 주제에서 사용자가 구체적으로 배우고 싶거나 달성하고자 하는 목표나 활동입니다. 예: 웹 개발자가 되고 싶다, 영어 회화 능력을 키우고 싶다)
+
+### 지시사항
+현재 사용자 정보에서 '미파악'된 정보를 얻기 위해 사용자 정보와 대화 기록을 바탕으로 이야기하세요.
+'''
+    response = llm.invoke(prompt)
+    state["messages"].append({"type": "ai", "content": response.content})
+    print("🤖 ", response.content)
+
+    # 유저 응답
+    user_input = input("👤  ")
+    state["messages"].append({"type": "human", "content": user_input})
+
+    return state
+
+class UserInfoSchema(BaseModel):
+    topic: str = Field(
+        default="",
+        description=(
+            "사용자가 공부하고자 하는 전반적인 주제나 분야를 나타냅니다. "
+            "예: 프로그래밍, 영어, 자격증 등. "
+            "더 구체적인 학습 목표나 하고 싶은 활동은 별도의 'goal' 필드에 기록됩니다."
+        )
+    )
+    constraints: str = Field(
+        default="",
+        description=(
+            "사용자가 명확하게 언급한 구체적인 제약 조건(예: 시간, 환경, 수준 등). "
+            "일반적인 행위나 동사는 포함하지 말고, "
+            "구체적인 제약 사항이 없으면 빈 문자열로 둡니다."
+        )
+    )
+    goal: str = Field(
+        default="",
+        description="사용자가 해당 주제에서 구체적으로 배우고 싶거나 하고 싶은 활동, 목표 등"
+    )
+    
+def extract_user_info_node(state: ConversationState) -> ConversationState:
+    system_prompt = f'''### 역할
+당신은 LearnMate AI 입니다. 다음 대화 기록을 바탕으로 아래 JSON 스키마에 맞게 사용자 정보를 추출하세요.
+
+### 규칙
+1. 사용자가 언급한 모든 주요 정보 항목들을 핵심 키워드 또는 명사 형태로 간결하게 추출하세요.
+2. 특정 정보가 명확하게 언급되지 않았다면 해당 항목은 빈 문자열("")로 출력하세요.
+3. 불필요한 설명이나 추론은 하지 마시고, 있는 정보만 정확히 반영하세요.
+4. 항상 JSON 형식으로 출력하며, 모든 필드(있는 것, 없는 것)를 포함하세요.
+
+### 대화 기록
+'''
+    prompt = apply_chat_template(state["messages"], system_message=system_prompt)
+
+    # 모델을 pydantic 스키마 바인딩해 구조화 출력 생성
+    model_with_structure = llm.with_structured_output(UserInfoSchema)
+    structured_output = model_with_structure.invoke(prompt)
+
+    # 값 추출 후 state 반영
+    state['topic'] = structured_output.topic
+    state['constraints'] = structured_output.constraints
+    state['goal'] = structured_output.goal
+
+    return state
+
+def check_completion(state):
+    print("check_completion")
+    print("topic:",state.get('topic'))
+    print("constraints:",state.get('constraints'))
+    print("goal:",state.get('goal'))
+    print("=="*20)
+    if state.get('topic') and state.get('constraints') and state.get('goal'):
+        return True
+    else:
+        return False
+
+# LLM 초기화
+llm = ChatOpenAI(
+    base_url="http://localhost:11434/v1",
+    api_key="ollama",
+    model="midm-2.0-base-q8",
+    temperature=0.7,
+    max_tokens=1024,
+)
+
+# StateGraph 생성
+workflow = StateGraph(ConversationState)
+
+# 노드 추가
+workflow.add_node("user_assessment_node", user_assessment_node)
+workflow.add_node("extract_user_info_node", extract_user_info_node)
+
+# 엣지 추가
+workflow.add_edge(START, "user_assessment_node")
+workflow.add_edge("user_assessment_node", "extract_user_info_node")
+workflow.add_conditional_edges(
+    "extract_user_info_node",
+    check_completion,
+    {
+        True: END,
+        False: "user_assessment_node",
+    },
+)
+
+# 그래프 컴파일
+app = workflow.compile()

@@ -1,9 +1,10 @@
 """
-MCP Agent 모듈 - agent.ipynb의 로직을 모듈화
+MCP Agent 모듈 - Stateful Multi-Agent System과 연동
 """
 
 from typing import AsyncGenerator, Optional, List, Dict
 import json
+import re
 
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langgraph.prebuilt import create_react_agent
@@ -13,13 +14,17 @@ from config import Config
 
 
 class MultiMCPAgent:
-    """여러 MCP 서버를 동시에 연결하는 에이전트"""
+    """여러 MCP 서버를 동시에 연결하는 에이전트 with Stateful Assessment"""
     
     def __init__(self, server_scripts: List[str]):
         self.server_scripts = server_scripts
         self.client = None
         self.agent = None
         self.initialized = False
+        
+        # 세션 상태 관리
+        self.current_session_id = None
+        self.assessment_in_progress = False
         
         # 대화 기록 관리 - 기본 인사말 포함
         self.conversation_history: List[Dict[str, str]] = [
@@ -78,13 +83,35 @@ class MultiMCPAgent:
         """리소스 정리"""
         try:
             if self.client:
-                await self.client.close()
+                # MultiServerMCPClient는 close 메서드가 없으므로 제거
+                pass
             self.initialized = False
         except Exception as e:
             print(f"Cleanup error: {e}")
     
+    def _extract_session_id(self, response_content: str) -> Optional[str]:
+        """응답에서 세션 ID 추출"""
+        session_match = re.search(r'Session:\s*([a-zA-Z0-9-]+)', response_content)
+        if session_match:
+            return session_match.group(1)
+        return None
+    
+    def _should_use_assessment_tool(self, message: str) -> bool:
+        """Assessment 도구를 사용해야 하는지 판단"""
+        learning_keywords = [
+            "배우고 싶어", "공부하고 싶어", "학습", "익히고", "시작하고 싶어",
+            "배우기", "공부", "익히기", "시작하기", "가르쳐", "알고 싶어"
+        ]
+        
+        # 이미 assessment가 진행 중이라면 계속 사용
+        if self.assessment_in_progress:
+            return True
+            
+        # 새로운 학습 의도가 감지되면 사용
+        return any(keyword in message for keyword in learning_keywords)
+    
     async def chat(self, message: str) -> AsyncGenerator[dict, None]:
-        """멀티턴 대화 처리 - 모든 서버의 도구 사용 가능"""
+        """멀티턴 대화 처리 - Stateful Assessment 지원"""
         if not self.initialized:
             await self.initialize()
         
@@ -101,28 +128,109 @@ class MultiMCPAgent:
             # 토큰 사용량 로그
             log_token_usage(self.conversation_history)
             
+            # Assessment 도구 사용 여부 결정
+            should_assess = self._should_use_assessment_tool(message)
+            
+            if should_assess:
+                # Assessment 도구 직접 호출 (Stateful)
+                async for chunk in self._handle_assessment_flow(message):
+                    yield chunk
+            else:
+                # 일반 멘토링 대화 처리
+                async for chunk in self._handle_general_conversation(message):
+                    yield chunk
+                        
+        except Exception as e:
+            yield {
+                "type": "error",
+                "content": f"에러가 발생했습니다: {str(e)}"
+            }
+    
+    async def _handle_assessment_flow(self, message: str) -> AsyncGenerator[dict, None]:
+        """Assessment 플로우 처리"""
+        print(f"📊 Assessment 플로우 시작 (Session: {self.current_session_id})")
+        
+        try:
+            # user_profiling 도구 직접 호출
+            tools = await self.client.get_tools()
+            user_profiling_tool = None
+            
+            for tool in tools:
+                if tool.name == "user_profiling":
+                    user_profiling_tool = tool
+                    break
+            
+            if not user_profiling_tool:
+                yield {
+                    "type": "error", 
+                    "content": "Assessment 도구를 찾을 수 없습니다."
+                }
+                return
+            
+            # 도구 호출 인자 구성
+            tool_args = {"user_message": message}
+            if self.current_session_id:
+                tool_args["session_id"] = self.current_session_id
+            
+            print(f"🔧 도구 호출: user_profiling - {tool_args}")
+            
+            # 도구 실행
+            result = await user_profiling_tool.ainvoke(tool_args)
+            
+            # 세션 ID 추출 및 상태 업데이트
+            extracted_session_id = self._extract_session_id(result)
+            if extracted_session_id:
+                self.current_session_id = extracted_session_id
+            
+            # Assessment 상태 업데이트
+            if "Complete" in result:
+                self.assessment_in_progress = False
+                print("✅ Assessment 완료!")
+            else:
+                self.assessment_in_progress = True
+                print("🔄 Assessment 진행 중...")
+            
+            # 응답 스트리밍
+            if result:
+                print(result, end="", flush=True)
+                self.conversation_history.append({"role": "assistant", "content": result})
+                
+                yield {
+                    "type": "message",
+                    "content": result,
+                    "node": "assessment_tool"
+                }
+            
+        except Exception as e:
+            print(f"❌ Assessment 플로우 오류: {e}")
+            yield {
+                "type": "error",
+                "content": f"Assessment 중 오류가 발생했습니다: {str(e)}"
+            }
+    
+    async def _handle_general_conversation(self, message: str) -> AsyncGenerator[dict, None]:
+        """일반 멘토링 대화 처리"""
+        print(f"🏠 일반 멘토링 대화 시작")
+        
+        try:
             # 시스템 프롬프트 정의
-            system_prompt_text = """당신은 LearnAI의 학습 멘토입니다. 모든 상황에서 학습과 교육에 초점을 맞춘 전문가로 행동하세요.
+            system_prompt_text = """당신은 LearnAI의 학습 멘토입니다.
 
 ## 핵심 정체성
 - 이름: LearnAI 학습 멘토
 - 역할: 개인화된 학습 계획 수립 및 멘토링 전문가
-- 목표: 모든 대화를 학습과 성장 기회로 전환
+- 목표: 사용자의 학습과 성장을 지원
 
 ## 대화 원칙
-1. **모든 인사와 일반 질문**에 대해서도 학습 멘토로서 응답
-   - "안녕하세요! LearnAI의 학습 멘토입니다."로 시작
-   - 항상 "어떤 주제에 대해 배우고 싶으신지 알려주세요"와 같이 학습으로 유도
-   - "맞춤형 학습 계획을 함께 만들어보겠습니다"라는 제안 포함
+1. **친근하고 격려하는 톤**으로 응답하세요
+2. **구체적이고 실용적인 조언**을 제공하세요
+3. **학습 동기 부여**에 집중하세요
+4. 필요시 다른 도구들(learning_resources_finder, study_schedule_generator 등)을 활용하세요
 
-2. **응답 스타일**:
-   - 친근하고 격려하는 톤
-   - 구체적이고 실용적인 조언
-   - 학습 동기 부여에 집중
-
-## 도구 사용 규칙
-- <tool_call>{"name": "tool_name", "arguments": {"param":"value"}}</tool_call> 형식 사용
-- 학습 의도가 감지되면 반드시 user_profiling 도구 먼저 호출"""
+## 응답 스타일
+- 따뜻하고 지지적인 어조
+- 단계별 구체적 가이드라인 
+- 실현 가능한 목표 설정 도움"""
 
             # LangChain 메시지 형식으로 변환 (스트리밍을 위해)
             from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
@@ -138,7 +246,7 @@ class MultiMCPAgent:
             
             print(f"🔄 메시지 변환 완료 ({len(messages)}개 메시지)")
             
-            # 직접 스트리밍 실행 (더 나은 스트리밍을 위해)
+            # 직접 스트리밍 실행
             print(f"\n🤖 AI 응답 시작:")
             response_content = ""
             
@@ -171,16 +279,19 @@ class MultiMCPAgent:
             if response_content:
                 self.conversation_history.append({"role": "assistant", "content": response_content})
                 self.conversation_history = trim_conversation_history(self.conversation_history, max_tokens)
-                        
+                
         except Exception as e:
+            print(f"❌ 일반 대화 처리 오류: {e}")
             yield {
                 "type": "error",
-                "content": f"에러가 발생했습니다: {str(e)}"
+                "content": f"응답 생성 중 오류가 발생했습니다: {str(e)}"
             }
     
     def clear_conversation(self):
         """대화 기록 초기화"""
         self.conversation_history = []
+        self.current_session_id = None
+        self.assessment_in_progress = False
         print("💬 대화 기록이 초기화되었습니다.")
     
     def _extract_content(self, content) -> Optional[str]:
@@ -194,3 +305,5 @@ class MultiMCPAgent:
         return None
 
 
+# 기존 호환성을 위한 별칭
+MultiAgentSystem = MultiMCPAgent
