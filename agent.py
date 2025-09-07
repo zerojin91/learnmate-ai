@@ -5,6 +5,8 @@ MCP Agent 모듈 - Stateful Multi-Agent System과 연동
 from typing import AsyncGenerator, Optional, List, Dict
 import json
 import re
+from pydantic import BaseModel, Field
+from enum import Enum
 
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langgraph.prebuilt import create_react_agent
@@ -12,6 +14,16 @@ from langchain_openai import ChatOpenAI
 from utils import astream_graph, trim_conversation_history, log_token_usage, apply_chat_template
 from config import Config
 
+class ActionType(str, Enum):
+    """사용자 메시지에 대한 액션 유형"""
+    GENERAL_CHAT = "general_chat"           # 일반 대화
+    USER_PROFILING = "user_profiling"       # 학습 프로필 수집 필요
+    GENERATE_CURRICULUM = "generate_curriculum"  # 커리큘럼 생성
+
+class ActionClassification(BaseModel):
+    """액션 분류 결과"""
+    action: ActionType = Field(description="수행할 액션 타입")
+    
 class MultiMCPAgent:
     """여러 MCP 서버를 동시에 연결하는 에이전트 with Stateful Assessment"""
     
@@ -23,7 +35,6 @@ class MultiMCPAgent:
         
         # 세션 상태 관리
         self.current_session_id = None
-        self.assessment_in_progress = False
         
         # 대화 기록 관리 - 기본 인사말 포함
         self.conversation_history: List[Dict[str, str]] = [
@@ -96,19 +107,6 @@ class MultiMCPAgent:
             return session_match.group(1)
         return None
     
-    def _should_use_assessment_tool(self, message: str) -> bool:
-        """Assessment 도구를 사용해야 하는지 판단"""
-        learning_keywords = [
-            "배우고 싶어", "공부하고 싶어", "학습", "익히고", "시작하고 싶어",
-            "배우기", "공부", "익히기", "시작하기", "가르쳐", "알고 싶어"
-        ]
-        
-        # 이미 assessment가 진행 중이라면 계속 사용
-        if self.assessment_in_progress:
-            return True
-            
-        # 새로운 학습 의도가 감지되면 사용
-        return any(keyword in message for keyword in learning_keywords)
     
     async def chat(self, message: str) -> AsyncGenerator[dict, None]:
         """멀티턴 대화 처리 - Stateful Assessment 지원"""
@@ -127,17 +125,9 @@ class MultiMCPAgent:
             # 토큰 사용량 로그
             log_token_usage(self.conversation_history)
             
-            # Assessment 도구 사용 여부 결정
-            should_assess = self._should_use_assessment_tool(message)
-            
-            if should_assess:
-                # Assessment 도구 직접 호출 (Stateful)
-                async for chunk in self._handle_assessment_flow(message):
-                    yield chunk
-            else:
-                # 일반 멘토링 대화 처리
-                async for chunk in self._handle_general_conversation(message):
-                    yield chunk
+            # MCP 방식: ReAct 에이전트가 필요한 도구를 자동으로 선택
+            async for chunk in self._handle_unified_conversation(message):
+                yield chunk
                         
         except Exception as e:
             yield {
@@ -145,57 +135,58 @@ class MultiMCPAgent:
                 "content": f"에러가 발생했습니다: {str(e)}"
             }
     
-    async def _handle_assessment_flow(self, message: str) -> AsyncGenerator[dict, None]:
-        """Assessment 플로우 처리"""
-        print(f"📊 Assessment 플로우 시작 (Session: {self.current_session_id})")
+    
+    async def _classify_user_intent(self, message: str) -> ActionClassification:
+        """사용자 메시지를 분류하여 적절한 액션 결정"""
+        classification_prompt = f"""사용자 메시지를 다음 3가지 액션 중 하나로 분류하세요:
+
+1. **general_chat**: 일반적인 인사, 안부, 감사 등 학습과 무관한 대화
+2. **user_profiling**: 학습 관련 요청이지만 사용자 프로필이 필요한 경우
+3. **generate_curriculum**: 이미 학습 프로필이 있고 커리큘럼/계획 생성을 요청하는 경우
+
+사용자 메시지: "{message}"
+
+## 분류 기준:
+- "안녕", "고마워", "잘가" 등 → general_chat
+- "~배우고 싶어", "~공부하고 싶어", "~가르쳐줘" 등 → user_profiling  
+- "커리큘럼 만들어줘", "학습계획 세워줘", "로드맵 보여줘" 등 → generate_curriculum
+
+정확한 액션만 선택하세요."""
+
+        try:
+            classifier_model = self.llm.with_structured_output(ActionClassification)
+            result = classifier_model.invoke(classification_prompt)
+            print(f"🔍 의도 분류 결과: {result.action}")
+            return result
+        except Exception as e:
+            print(f"❌ 의도 분류 오류: {e}")
+            # 기본값으로 일반 대화 선택
+            return ActionClassification(action=ActionType.GENERAL_CHAT)
+
+    async def _handle_user_profiling(self, message: str) -> AsyncGenerator[dict, None]:
+        """user_profiling 도구를 사용한 프로필 수집"""
+        print(f"📊 사용자 프로필링 시작")
         
         try:
-            # user_profiling 도구 직접 호출
+            # user_profiling 도구 찾기
             tools = await self.client.get_tools()
-            user_profiling_tool = None
-            
-            for tool in tools:
-                if tool.name == "user_profiling":
-                    user_profiling_tool = tool
-                    break
+            user_profiling_tool = next((tool for tool in tools if tool.name == "user_profiling"), None)
             
             if not user_profiling_tool:
-                yield {
-                    "type": "error", 
-                    "content": "Assessment 도구를 찾을 수 없습니다."
-                }
+                yield {"type": "error", "content": "사용자 프로필링 도구를 찾을 수 없습니다."}
                 return
             
-            # 도구 호출 인자 구성 - 항상 세션 ID 포함
-            tool_args = {
-                "user_message": message,
-                "session_id": self.current_session_id
-            }
-            
-            print(f"🔧 도구 호출: user_profiling - {tool_args}")
-            
             # 도구 실행
+            tool_args = {"user_message": message, "session_id": self.current_session_id}
+            print(f"🔧 user_profiling 호출: {tool_args}")
+            
             result = await user_profiling_tool.ainvoke(tool_args)
             
-            # 세션 ID 추출 및 상태 업데이트
-            extracted_session_id = self._extract_session_id(result)
-            if extracted_session_id:
-                self.current_session_id = extracted_session_id
-            
-            # Assessment 상태 업데이트
-            if "Complete" in result:
-                self.assessment_in_progress = False
-                print("✅ Assessment 완료!")
-            else:
-                self.assessment_in_progress = True
-                print("🔄 Assessment 진행 중...")
-            
-            # 응답 스트리밍
             if result:
                 print(result, end="", flush=True)
                 self.conversation_history.append({"role": "assistant", "content": result})
                 
-                # 세션에서 프로필 정보 가져오기
+                # 도구 호출 후 최신 프로필 정보 로드
                 profile_data = None
                 try:
                     from servers.user_assessment import load_session
@@ -207,105 +198,110 @@ class MultiMCPAgent:
                                 'constraints': session_data.get('constraints', ''),
                                 'goal': session_data.get('goal', '')
                             }
-                            # 빈 값이 아닌 것만 포함
                             profile_data = {k: v for k, v in profile_info.items() if v}
-                            print(f"📊 Assessment에서 프로필 전송: {profile_data}")
+                            print(f"📊 최신 프로필 로드: {profile_data}")
                 except Exception as e:
                     print(f"프로필 로드 오류: {e}")
                 
-                response_chunk = {
-                    "type": "message",
-                    "content": result,
-                    "node": "assessment_tool"
-                }
-                
-                # 프로필 정보가 있으면 추가
+                response_data = {"type": "message", "content": result, "node": "user_profiling"}
                 if profile_data:
-                    response_chunk["profile"] = profile_data
+                    response_data["profile"] = profile_data
+                    
+                yield response_data
                 
-                yield response_chunk
-            
         except Exception as e:
-            print(f"❌ Assessment 플로우 오류: {e}")
-            yield {
-                "type": "error",
-                "content": f"Assessment 중 오류가 발생했습니다: {str(e)}"
-            }
-    
-    async def _handle_general_conversation(self, message: str) -> AsyncGenerator[dict, None]:
-        """일반 멘토링 대화 처리"""
-        print(f"🏠 일반 멘토링 대화 시작")
+            print(f"❌ 사용자 프로필링 오류: {e}")
+            yield {"type": "error", "content": f"프로필링 중 오류가 발생했습니다: {str(e)}"}
+
+    async def _handle_curriculum_generation(self, message: str) -> AsyncGenerator[dict, None]:
+        """generate_curriculum_from_session 도구를 사용한 커리큘럼 생성"""
+        print(f"📚 커리큘럼 생성 시작")
         
         try:
-            # 시스템 프롬프트 정의
-            system_prompt_text = """당신은 LearnAI의 학습 멘토입니다.
+            # generate_curriculum_from_session 도구 찾기
+            tools = await self.client.get_tools()
+            curriculum_tool = next((tool for tool in tools if tool.name == "generate_curriculum_from_session"), None)
+            
+            if not curriculum_tool:
+                yield {"type": "error", "content": "커리큘럼 생성 도구를 찾을 수 없습니다."}
+                return
+            
+            # 도구 실행
+            tool_args = {"session_id": self.current_session_id}
+            print(f"🔧 generate_curriculum_from_session 호출: {tool_args}")
+            
+            result = await curriculum_tool.ainvoke(tool_args)
+            
+            if result:
+                print(result, end="", flush=True)
+                self.conversation_history.append({"role": "assistant", "content": result})
+                yield {"type": "message", "content": result, "node": "generate_curriculum"}
+                
+        except Exception as e:
+            print(f"❌ 커리큘럼 생성 오류: {e}")
+            yield {"type": "error", "content": f"커리큘럼 생성 중 오류가 발생했습니다: {str(e)}"}
 
-## 핵심 정체성
-- 이름: LearnAI 학습 멘토
-- 역할: 개인화된 학습 계획 수립 및 멘토링 전문가
-- 목표: 사용자의 학습과 성장을 지원
+    async def _handle_general_chat(self, message: str) -> AsyncGenerator[dict, None]:
+        """일반 대화 처리 (도구 없이)"""
+        print(f"💬 일반 대화 처리")
+        
+        try:
+            # LearnAI 성격의 일반 대화 프롬프트
+            system_prompt = """당신은 LearnAI의 친근한 학습 멘토입니다.
+            
+따뜻하고 격려하는 성격으로 사용자와 자연스럽게 대화하세요.
+일반적인 인사, 안부, 감사 등에 친근하게 응답하되, 
+항상 학습에 대한 관심을 열어두고 도움이 필요하면 언제든 말해달라고 격려하세요."""
 
-## 대화 원칙
-1. **친근하고 격려하는 톤**으로 응답하세요
-2. **구체적이고 실용적인 조언**을 제공하세요
-3. **학습 동기 부여**에 집중하세요
-4. 필요시 다른 도구들을 활용하세요
-
-## 응답 스타일
-- 따뜻하고 지지적인 어조
-- 단계별 구체적 가이드라인 
-- 실현 가능한 목표 설정 도움"""
-
-            # LangChain 메시지 형식으로 변환 (스트리밍을 위해)
             from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
             
-            messages = [SystemMessage(content=system_prompt_text)]
+            messages = [SystemMessage(content=system_prompt)]
             
-            # 대화 기록 추가
-            for item in self.conversation_history:
+            # 최근 대화 기록만 포함 (토큰 절약)
+            for item in self.conversation_history[-4:]:
                 if item["role"] == "user":
                     messages.append(HumanMessage(content=item["content"]))
                 elif item["role"] == "assistant":
                     messages.append(AIMessage(content=item["content"]))
             
-            print(f"🔄 메시지 변환 완료 ({len(messages)}개 메시지)")
-            
-            # 직접 스트리밍 실행
-            print(f"\n🤖 AI 응답 시작:")
+            # LLM 직접 호출 (도구 없이)
             response_content = ""
+            async for chunk in self.llm.astream(messages):
+                if hasattr(chunk, 'content') and chunk.content:
+                    response_content += chunk.content
+                    print(chunk.content, end="", flush=True)
+                    yield {"type": "message", "content": chunk.content, "node": "general_chat"}
             
-            async for chunk in self.agent.astream(
-                {"messages": messages}, 
-                stream_mode="messages"
-            ):
-                chunk_msg, metadata = chunk
-                node = metadata.get("langgraph_node", "unknown")
-                
-                # 도구 호출 감지 및 로깅
-                if hasattr(chunk_msg, 'tool_calls') and chunk_msg.tool_calls:
-                    for tool_call in chunk_msg.tool_calls:
-                        print(f"\n🔧 도구 호출: {tool_call.get('name', 'Unknown')} - {tool_call.get('args', {})}")
-                
-                # 메시지 내용 추출 및 전송
-                if hasattr(chunk_msg, 'content'):
-                    content = self._extract_content(chunk_msg.content)
-                    if content:
-                        response_content += content
-                        # 터미널에 실시간 응답 출력
-                        print(content, end="", flush=True)
-                        yield {
-                            "type": "message",
-                            "content": content,
-                            "node": node
-                        }
-            
-            # AI 응답을 대화 기록에 추가
             if response_content:
                 self.conversation_history.append({"role": "assistant", "content": response_content})
-                self.conversation_history = trim_conversation_history(self.conversation_history, self.max_tokens)
                 
         except Exception as e:
-            print(f"❌ 일반 대화 처리 오류: {e}")
+            print(f"❌ 일반 대화 오류: {e}")
+            yield {"type": "error", "content": f"응답 생성 중 오류가 발생했습니다: {str(e)}"}
+
+    async def _handle_unified_conversation(self, message: str) -> AsyncGenerator[dict, None]:
+        """분류 기반 대화 처리 - with_structured_output으로 명확한 액션 선택"""
+        print(f"🤖 분류 기반 대화 처리 시작")
+        
+        try:
+            # 1. 사용자 의도 분류
+            classification = await self._classify_user_intent(message)
+            
+            # 2. 분류 결과에 따라 처리
+            if classification.action == ActionType.USER_PROFILING:
+                async for chunk in self._handle_user_profiling(message):
+                    yield chunk
+                    
+            elif classification.action == ActionType.GENERATE_CURRICULUM:
+                async for chunk in self._handle_curriculum_generation(message):
+                    yield chunk
+                    
+            else:  # GENERAL_CHAT
+                async for chunk in self._handle_general_chat(message):
+                    yield chunk
+                
+        except Exception as e:
+            print(f"❌ 통합 대화 처리 오류: {e}")
             yield {
                 "type": "error",
                 "content": f"응답 생성 중 오류가 발생했습니다: {str(e)}"
@@ -315,7 +311,6 @@ class MultiMCPAgent:
         """대화 기록 초기화"""
         self.conversation_history = []
         self.current_session_id = None
-        self.assessment_in_progress = False
         print("💬 대화 기록이 초기화되었습니다.")
     
     def _extract_content(self, content) -> Optional[str]:
