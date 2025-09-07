@@ -4,7 +4,7 @@ class Config:
     # LLM 설정
     LLM_BASE_URL = "http://localhost:11434/v1"
     LLM_API_KEY = "ollama"
-    LLM_MODEL = "midm-2.0-fp16:base"
+    LLM_MODEL = "midm-2.0-mini-q4"
     # LLM_MODEL = "midm-2.0-base-bf16"
     LLM_TEMPERATURE = 0.0
     LLM_MAX_TOKENS = 2048  # 응답 생성용 최대 토큰 수
