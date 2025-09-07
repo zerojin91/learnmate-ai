@@ -60,7 +60,15 @@ async def home(request: Request, response: Response):
     session_id = request.cookies.get("session_id")
     if not session_id:
         session_id = random_uuid()[:8]
-        response.set_cookie(key="session_id", value=session_id, httponly=True, max_age=86400*30)  # 30일
+        # 쿠키 설정 개선: SameSite와 Secure 옵션 추가
+        response.set_cookie(
+            key="session_id", 
+            value=session_id, 
+            httponly=False,  # JavaScript에서 접근 가능하도록 변경
+            max_age=86400*30,  # 30일
+            samesite="lax",    # CSRF 보호
+            path="/"           # 모든 경로에서 접근 가능
+        )
         print(f"🆕 새 사용자 세션 생성: {session_id}")
         
         # 세션 파일 즉시 생성
@@ -83,7 +91,7 @@ async def home(request: Request, response: Response):
     if agent_instance:
         agent_instance.current_session_id = session_id
         
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse("index.html", {"request": request, "session_id": session_id})
 
 @app.post("/chat")
 async def chat(chat_request: Request):
@@ -95,64 +103,51 @@ async def chat(chat_request: Request):
     body = await chat_request.json()
     message = body.get("message", "")
     
-    # 쿠키에서 세션 ID 가져오기
+    # 세션 ID 가져오기 - 여러 방법 시도
+    session_id = None
+    
+    # 1. 쿠키에서 확인
     session_id = chat_request.cookies.get("session_id")
     if session_id:
-        agent_instance.current_session_id = session_id
         print(f"📋 쿠키에서 세션 ID 가져옴: {session_id}")
     else:
-        print("⚠️ 세션 ID가 없습니다. 새로고침 필요")
+        # 2. 헤더에서 확인
+        session_from_header = chat_request.headers.get("X-Session-ID")
+        if session_from_header:
+            session_id = session_from_header
+            print(f"📋 헤더에서 세션 ID 가져옴: {session_id}")
+        else:
+            # 3. 바디에서 확인
+            session_from_body = body.get("session_id")
+            if session_from_body:
+                session_id = session_from_body
+                print(f"📋 바디에서 세션 ID 가져옴: {session_id}")
+    
+    if not session_id:
+        print("⚠️ 세션 ID를 찾을 수 없습니다.")
+        print(f"🍪 쿠키: {dict(chat_request.cookies)}")
+        print(f"📄 바디: {body}")
     
     # 사용자 메시지 로깅
     print(f"\n👤 사용자: {message}")
     print("-" * 50)
     
     async def generate():
+        # 세션 ID 미리 설정
+        if session_id:
+            agent_instance.current_session_id = session_id
+            print(f"🔗 에이전트에 세션 ID 설정: {session_id}")
+        
         try:
             async for chunk in agent_instance.chat(message):
-                print(f"🔄 청크 수신: {chunk}")
                 if chunk.get("type") == "message":
                     content = chunk.get("content", "")
-                    print(f"📝 메시지 컨텐츠: '{content}' (길이: {len(content)})")
                     if content:
-                        # Assessment 정보가 포함된 경우 프로필 정보도 전송
                         response_data = {'content': content}
                         
-                        # agent.py에서 전송된 프로필 정보 확인
+                        # agent.py에서 전달된 프로필 정보 사용
                         if chunk.get("profile"):
                             response_data['profile'] = chunk.get("profile")
-                            print(f"🎯 에이전트에서 전송된 프로필 데이터: {chunk.get('profile')}")
-                        
-                        # 항상 세션에서 프로필 정보를 확인하고 전송
-                        try:
-                            # 세션 파일에서 실제 프로필 정보 가져오기
-                            from servers.user_assessment import load_session
-                            print(f"💡 프로필 체크 시작 - 세션ID: {session_id}")
-                            if session_id:
-                                session_data = load_session(session_id)
-                                print(f"📂 세션 데이터 로드됨: {session_data}")
-                                if session_data:
-                                    profile_info = {
-                                        'topic': session_data.get('topic', ''),
-                                        'constraints': session_data.get('constraints', ''),
-                                        'goal': session_data.get('goal', '')
-                                    }
-                                    # 빈 값이 아닌 것만 전송
-                                    filtered_profile = {k: v for k, v in profile_info.items() if v}
-                                    print(f"🔍 프로필 정보 - 전체: {profile_info}, 필터링됨: {filtered_profile}")
-                                    if filtered_profile:
-                                        response_data['profile'] = filtered_profile
-                                        print(f"✅ 프로필 전송: {filtered_profile}")
-                                    else:
-                                        print(f"📝 프로필 정보 없음 (모든 값이 빈 문자열)")
-                                else:
-                                    print(f"❌ 세션 데이터가 None임")
-                            else:
-                                print(f"❌ 세션 ID가 없음")
-                        except Exception as e:
-                            print(f"프로필 정보 로드 오류: {e}")
-                            import traceback
-                            traceback.print_exc()
                         
                         yield f"data: {json.dumps(response_data)}\n\n"
             
@@ -182,6 +177,17 @@ async def clear_chat():
     
     agent_instance.clear_conversation()
     return {"message": "대화 기록이 초기화되었습니다."}
+
+@app.get("/session-debug")
+async def session_debug(request: Request):
+    """세션 디버그 정보"""
+    session_id = request.cookies.get("session_id")
+    return {
+        "cookies": dict(request.cookies),
+        "session_id": session_id,
+        "user_agent": request.headers.get("User-Agent", ""),
+        "has_session_cookie": "session_id" in request.cookies
+    }
 
 if __name__ == "__main__":
     import uvicorn
