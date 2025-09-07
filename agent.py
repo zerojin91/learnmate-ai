@@ -33,16 +33,17 @@ class MultiMCPAgent:
                 "content": "안녕하세요! LearnAI의 학습 멘토입니다. 어떤 주제에 대해 배우고 싶으신지 알려주세요. 맞춤형 학습 계획을 함께 만들어보겠습니다!"
             }
         ]
-        
+        self.max_tokens = Config.LLM_MAX_TOKENS
+
         # LLM 설정
         self.llm = ChatOpenAI(
             base_url=Config.LLM_BASE_URL,
             api_key=Config.LLM_API_KEY,
             model=Config.LLM_MODEL,
             temperature=Config.LLM_TEMPERATURE,
-            max_tokens=Config.LLM_MAX_TOKENS,
+            max_tokens=self.max_tokens,
         )
-    
+         
     async def initialize(self):
         """여러 MCP 서버 동시 초기화 - 공식 방법 사용"""
         if self.initialized:
@@ -122,8 +123,7 @@ class MultiMCPAgent:
             self.conversation_history.append({"role": "user", "content": message})
             
             # 토큰 제한에 맞게 대화 기록 정리
-            max_tokens = Config.get_effective_max_tokens()
-            self.conversation_history = trim_conversation_history(self.conversation_history, max_tokens)
+            self.conversation_history = trim_conversation_history(self.conversation_history, self.max_tokens)
             
             # 토큰 사용량 로그
             log_token_usage(self.conversation_history)
@@ -225,7 +225,7 @@ class MultiMCPAgent:
 1. **친근하고 격려하는 톤**으로 응답하세요
 2. **구체적이고 실용적인 조언**을 제공하세요
 3. **학습 동기 부여**에 집중하세요
-4. 필요시 다른 도구들(learning_resources_finder, study_schedule_generator 등)을 활용하세요
+4. 필요시 다른 도구들을 활용하세요
 
 ## 응답 스타일
 - 따뜻하고 지지적인 어조
@@ -278,7 +278,7 @@ class MultiMCPAgent:
             # AI 응답을 대화 기록에 추가
             if response_content:
                 self.conversation_history.append({"role": "assistant", "content": response_content})
-                self.conversation_history = trim_conversation_history(self.conversation_history, max_tokens)
+                self.conversation_history = trim_conversation_history(self.conversation_history, self.max_tokens)
                 
         except Exception as e:
             print(f"❌ 일반 대화 처리 오류: {e}")
