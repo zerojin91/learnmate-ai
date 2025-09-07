@@ -1,0 +1,84 @@
+{
+  "messages": [
+    {
+      "role": "user",
+      "content": "Python 프로그래밍을 처음부터 배우고 싶어요"
+    },
+    {
+      "role": "assistant",
+      "content": "📚 **Python 프로그래밍 학습 조건을 알려주세요!**\n\n**현재 수준**: 완전 초보자이신가요, 아니면 어느 정도 아시나요?\n**시간 투자**: 일주일에 몇 시간 정도 공부할 수 있으신가요?\n\n이런 정보가 있어야 현실적인 학습 계획을 세울 수 있어요!"
+    },
+    {
+      "role": "user",
+      "content": "초보자야 2일 정도"
+    },
+    {
+      "role": "assistant",
+      "content": "🚀 **Python 프로그래밍 학습 목표를 알려주세요!**\n\n어떤 목적으로 Python 프로그래밍을(를) 배우시나요?\n- 취업이나 이직을 위해서\n- 현재 업무에 활용하려고\n- 개인 프로젝트를 만들고 싶어서\n- 취미나 자기계발로\n\n구체적인 목표를 알면 더 맞춤형 로드맵을 제시할 수 있어요!"
+    },
+    {
+      "role": "user",
+      "content": "개인 프로젝트"
+    },
+    {
+      "role": "assistant",
+      "content": "🎯 **학습 프로필 분석 완료!**\n\n**📚 학습 주제**: Python 프로그래밍\n**⚠️ 제약 조건**: 초보자야 2일 정도\n**🚀 구체적 목표**: 개인 프로젝트\n\n완벽한 정보를 수집했습니다! 이제 맞춤형 학습 계획을 수립할 준비가 되었어요."
+    }
+  ],
+  "topic": "Python 프로그래밍",
+  "constraints": "초보자야 2일 정도",
+  "goal": "개인 프로젝트",
+  "current_agent": "response",
+  "session_id": "c427c19b",
+  "completed": true,
+  "curriculum": {
+    "curriculum_generated": true,
+    "curriculum_id": 15,
+    "title": "Python 프로그래밍 Learning Path",
+    "level": "beginner",
+    "duration_weeks": 2,
+    "overall_goal": "2주 동안 파이썬 기초를 탄탄히 다지고 자신만의 작은 프로그램을 직접 개발할 수 있는 능력 함양하기",
+    "generated_at": "2025-09-07T22:37:38.751480",
+    "original_constraints": "초보자야 2일 정도",
+    "original_goal": "개인 프로젝트",
+    "modules": [
+      {
+        "week": 1,
+        "title": "파이썬 기초 문법과 개발 환경 구축",
+        "description": "파이썬의 기본 문법을 익히고 개인 프로젝트를 위한 개발 환경을 설정하는 기초 단계입니다. 변수, 자료형, 조건문, 반복문 등 프로그래밍의 핵심 개념을 배우고 VSCode나 PyCharm 같은 IDE 설치 방법을 학습합니다.",
+        "objectives": [
+          "파이썬 기본 문법(변수, 연산자, 데이터 타입) 이해",
+          "조건문과 반복문 사용법 습득",
+          "개발 환경(VSCode/PyCharm) 설정 및 사용법 학습"
+        ],
+        "key_cepts": [
+          "변수와 자료형",
+          "제어 구조",
+          "입력 출력"
+        ],
+        "estimated_hours": 10
+      },
+      {
+        "week": 2,
+        "title": "함수와 모듈 활용으로 개인 프로젝트 시작하기",
+        "description": "함수를 정의하고 재사용하는 방법을 배우며, 외부 모듈과 패키지를 활용하여 개인 프로젝트의 기초를 구축합니다. 간단한 계산기나 메모장 같은 실습 프로젝트를 진행합니다.",
+        "objectives": [
+          "사용자 정의 함수 작성 및 호출 능력 습득",
+          "파이썬 표준 라이브러리와 외부 모듈 사용법 학습",
+          "작은 규모의 개인 프로젝트 구현 경험"
+        ],
+        "key_cepts": [
+          "함수 정의",
+          "모듈 import",
+          "프로젝트 구조화"
+        ],
+        "estimated_hours": 12
+      }
+    ],
+    "modules_count": 2,
+    "resources": [],
+    "resources_count": 0,
+    "total_estimated_hours": 22,
+    "average_hours_per_week": 11.0
+  }
+}

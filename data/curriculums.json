@@ -1291,5 +1291,2290 @@
       "id": 0,
       "created_at": "2025-09-04T22:10:30.579192"
     }
+  ],
+  "your_user_id": [
+    {
+      "title": "React programming Learning Path",
+      "level": "intermediate",
+      "duration_weeks": 6,
+      "modules": [
+        {
+          "week": 1,
+          "title": "module or equivalent knowledge.\"],",
+          "description": "module or equivalent knowledge.\"],\n      \"projects\": [\n        \"Implement a counter app with Redux.\",\n        \"Create a to-do list application that uses Redux for state management.\"\n      ],\n      \"as",
+          "objectives": [],
+          "key_concepts": [],
+          "estimated_hours": 10,
+          "prerequisites": [],
+          "projects": [],
+          "assessment": "Complete exercises and project",
+          "resources": {
+            "primary": [],
+            "supplementary": [],
+            "practice": []
+          }
+        },
+        {
+          "week": 2,
+          "title": "module or equivalent knowledge.\"],",
+          "description": "module or equivalent knowledge.\"],\n      \"projects\": [\n        \"Build a simple budget tracker app using MobX.\",\n        \"Create an application with real-time updates based on MobX observables.\"\n      ",
+          "objectives": [],
+          "key_concepts": [
+            "specific coding challenges. Review project implementation and ability to explain reactivity concepts in MobX.\""
+          ],
+          "estimated_hours": 12,
+          "prerequisites": [],
+          "projects": [
+            "specific coding challenges. Review project implementation and ability to explain reactivity concepts in MobX.\""
+          ],
+          "assessment": "Complete exercises and project",
+          "resources": {
+            "primary": [],
+            "supplementary": [],
+            "practice": []
+          }
+        },
+        {
+          "week": 4,
+          "title": "module or equivalent knowledge.\"],",
+          "description": "module or equivalent knowledge.\"],\n      \"projects\": [\n        \"Test a Redux middleware implementation.\",\n        \"Write tests for MobX observable mutations and computed values.\"\n      ],\n      \"asses",
+          "objectives": [],
+          "key_concepts": [],
+          "estimated_hours": 16,
+          "prerequisites": [],
+          "projects": [],
+          "assessment": "Complete exercises and project",
+          "resources": {
+            "primary": [],
+            "supplementary": [],
+            "practice": []
+          }
+        },
+        {
+          "week": 4,
+          "title": "module or equivalent knowledge.\"],",
+          "description": "module or equivalent knowledge.\"],\n      \"projects\": [\n        \"Test a complex form with React Testing Library.\",\n        \"Create a snapshot test for a dynamic UI element.\"\n      ],\n      \"assessment\"",
+          "objectives": [],
+          "key_concepts": [],
+          "estimated_hours": 16,
+          "prerequisites": [],
+          "projects": [],
+          "assessment": "Complete exercises and project",
+          "resources": {
+            "primary": [],
+            "supplementary": [],
+            "practice": []
+          }
+        }
+      ],
+      "overall_goal": "Master React programming in 6 weeks",
+      "recommended_pace": "Follow weekly schedule",
+      "resources": {
+        "tutorials": [],
+        "documentation": [],
+        "videos": [],
+        "courses": [],
+        "articles": [],
+        "tools": []
+      },
+      "generation_method": "llm_enhanced",
+      "user_id": "your_user_id",
+      "focus_areas": [
+        "state management",
+        "testing"
+      ],
+      "generated_at": "2025-09-05T10:57:12.678645",
+      "id": 0,
+      "created_at": "2025-09-05T10:57:12.678679",
+      "curriculum_id": 0
+    }
+  ],
+  "c427c19b": [
+    {
+      "title": "Python 프로그래밍 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 2,
+      "modules": [
+        {
+          "week": 1,
+          "title": "Introduction to Python and Programming Basics",
+          "description": "A foundational module covering the basics of programming in Python, including syntax, data types, and control structures.",
+          "objectives": [
+            "Understand basic programming concepts such as variables, data types, and loops.",
+            "Learn Python syntax and structure for writing simple programs.",
+            "Master control flow with if statements and while loops."
+          ],
+          "key_concepts": [
+            "Python Syntax",
+            "Data Types (int, float, str)",
+            "Control Structures (if, else, while, for)"
+          ],
+          "estimated_hours": 10,
+          "prerequisites": [],
+          "projects": [
+            "Create a simple greeting program that takes user name as input and greets them.",
+            "Write a program to calculate the sum of numbers from 1 to N."
+          ],
+          "assessment": "Review of basic programs written by the learner, focusing on syntax accuracy and logical structure.",
+          "resources": {
+            "primary": [],
+            "supplementary": [],
+            "practice": []
+          }
+        },
+        {
+          "week": 2,
+          "title": "Functions and Modules",
+          "description": "This module dives deeper into Python's functional programming capabilities and introduces modules.",
+          "objectives": [
+            "Understand how to define and use functions in Python.",
+            "Learn about built-in Python modules and how to import them.",
+            "Practice writing reusable code using functions."
+          ],
+          "key_concepts": [
+            "Functions",
+            "Defining Functions",
+            "Importing Modules"
+          ],
+          "estimated_hours": 12,
+          "prerequisites": [
+            "Completion of Week 1"
+          ],
+          "projects": [
+            "Create a function that calculates the area of different shapes (circle, rectangle).",
+            "Write a script to download and parse data from an online source using urllib or requests module."
+          ],
+          "assessment": "Assess understanding through peer review of code quality and functionality.",
+          "resources": {
+            "primary": [],
+            "supplementary": [],
+            "practice": []
+          }
+        },
+        {
+          "week": 3,
+          "title": "Lists, Tuples, and Dictionaries",
+          "description": "Explore Python's collection data types with an emphasis on practical usage.",
+          "objectives": [
+            "Master the use of lists, tuples, and dictionaries in Python.",
+            "Learn how to manipulate these data structures for different applications."
+          ],
+          "key_concepts": [
+            "Lists",
+            "Tuples",
+            "Dictionaries",
+            "Key-value pairs"
+          ],
+          "estimated_hours": 10,
+          "prerequisites": [
+            "Completion of Week 2"
+          ],
+          "projects": [
+            "Develop a simple address book program that uses dictionaries to store contacts.",
+            "Write a script to sort and filter lists based on user-defined criteria."
+          ],
+          "assessment": "Evaluate through testing the functionality and efficiency of list manipulation operations.",
+          "resources": {
+            "primary": [],
+            "supplementary": [],
+            "practice": []
+          }
+        },
+        {
+          "week": 4,
+          "title": "File Handling and Error Management",
+          "description": "Learn how to interact with files and handle errors effectively.",
+          "objectives": [
+            "Understand file handling in Python (reading, writing, appending).",
+            "Master error management techniques including try-except blocks."
+          ],
+          "key_concepts": [
+            "File I/O",
+            "Reading/Writing Files",
+            "Error Handling"
+          ],
+          "estimated_hours": 12,
+          "prerequisites": [
+            "Completion of Week 3"
+          ],
+          "projects": [
+            "Create a file-based to-do list application.",
+            "Develop a script that processes log files and extracts errors."
+          ],
+          "assessment": "Review of error handling techniques used in projects, focusing on robustness and clarity.",
+          "resources": {
+            "primary": [],
+            "supplementary": [],
+            "practice": []
+          }
+        },
+        {
+          "week": 5,
+          "title": "Object-Oriented Programming (OOP) in Python",
+          "description": "Dive into object-oriented programming principles as applied in Python.",
+          "objectives": [
+            "Understand OOP concepts such as classes, objects, inheritance, and polymorphism.",
+            "Learn how to design programs using OOP principles."
+          ],
+          "key_concepts": [
+            "OOP Concepts",
+            "Classes",
+            "Objects",
+            "Inheritance"
+          ],
+          "estimated_hours": 15,
+          "prerequisites": [
+            "Completion of Week 4"
+          ],
+          "projects": [
+            "Create a simple game where objects interact based on OOP principles.",
+            "Design a class hierarchy for different types of animals."
+          ],
+          "assessment": "Assess through evaluation of code organization, reusability, and adherence to OOP principles.",
+          "resources": {
+            "primary": [],
+            "supplementary": [],
+            "practice": []
+          }
+        },
+        {
+          "week": 6,
+          "title": "Web Scraping with Python",
+          "description": "Learn how to extract data from websites using Python tools.",
+          "objectives": [
+            "Master the use of libraries like BeautifulSoup and requests for web scraping.",
+            "Understand ethical considerations in web scraping."
+          ],
+          "key_concepts": [
+            "Web Scraping",
+            "BeautifulSoup",
+            "Requests"
+          ],
+          "estimated_hours": 10,
+          "prerequisites": [
+            "Completion of Week 5"
+          ],
+          "projects": [
+            "Scrape a simple website to collect data and store it in a CSV file.",
+            "Create a weather tracker that fetches current conditions from an online source."
+          ],
+          "assessment": "Evaluate based on the effectiveness of scraping logic and data handling.",
+          "resources": {
+            "primary": [],
+            "supplementary": [],
+            "practice": []
+          }
+        },
+        {
+          "week": 7,
+          "title": "Data Visualization with Matplotlib",
+          "description": "Learn how to create visualizations using Python's matplotlib library.",
+          "objectives": [
+            "Understand the basics of data visualization principles.",
+            "Master the use of Matplotlib for creating various types of plots."
+          ],
+          "key_concepts": [
+            "Matplotlib",
+            "Data Visualization Principles"
+          ],
+          "estimated_hours": 12,
+          "prerequisites": [
+            "Completion of Week 6"
+          ],
+          "projects": [
+            "Create a line graph to show trends over time.",
+            "Design a bar chart comparing different categories."
+          ],
+          "assessment": "Assess the clarity and effectiveness of visualizations produced.",
+          "resources": {
+            "primary": [],
+            "supplementary": [],
+            "practice": []
+          }
+        },
+        {
+          "week": 8,
+          "title": "Personal Project: Building an Application",
+          "description": "Apply all learned skills to build a comprehensive personal project.",
+          "objectives": [
+            "Develop a complete application using Python that solves a real-world problem.",
+            "Reflect on the development process and improve coding practices."
+          ],
+          "key_concepts": [
+            "Application Development",
+            "Real-World Problem Solving"
+          ],
+          "estimated_hours": 20,
+          "prerequisites": [
+            "Completion of Weeks 1-7"
+          ],
+          "projects": [
+            "Build a personal project idea (e.g., a calculator, game, or small web application).",
+            "Document the development process and challenges encountered."
+          ],
+          "assessment": "Evaluate based on functionality, creativity, documentation, and reflection on learning journey.",
+          "resources": {
+            "primary": [],
+            "supplementary": [],
+            "practice": []
+          }
+        }
+      ],
+      "overall_goal": "By the end of this curriculum, learners will have a solid foundation in Python programming and be able to build practical applications.",
+      "recommended_pace": "Aim for completing one module per week with dedicated study hours throughout.",
+      "resources": {
+        "tutorials": [],
+        "documentation": [],
+        "videos": [],
+        "courses": [],
+        "articles": [],
+        "tools": []
+      },
+      "generation_method": "llm_enhanced",
+      "user_id": "c427c19b",
+      "focus_areas": [
+        "personal projects",
+        "portfolio"
+      ],
+      "generated_at": "2025-09-07T21:39:26.483476",
+      "id": 0,
+      "created_at": "2025-09-07T21:39:26.483517"
+    },
+    {
+      "title": "Python 프로그래밍 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 2,
+      "modules": [
+        {
+          "week": 1,
+          "title": "Introduction to Python Basics",
+          "description": "This module provides a foundational understanding of Python, including syntax and basic data types.",
+          "objectives": [
+            "Understand the basics of Python syntax",
+            "Learn about fundamental data types in Python",
+            "Gain confidence in writing simple scripts"
+          ],
+          "key_ concepts": [
+            "Variables and Data Types",
+            "Basic Syntax and Indentation",
+            "Comments and Documentation"
+          ],
+          "estimated_hours": 10
+        },
+        {
+          "week": 2,
+          "title": "Control Flow and Functions",
+          "description": "This module focuses on control flow structures and creating functions to organize code.",
+          "objectives": [
+            "Master control flow using loops and conditional statements",
+            "Learn how to define and use functions effectively",
+            "Apply these concepts in small personal projects"
+          ],
+          "key_ concepts": [
+            "Loops (for, while)",
+            "Conditional Statements (if, elif, else)",
+            "Function Definition and Usage"
+          ],
+          "estimated_hours": 12
+        },
+        {
+          "week": 3,
+          "title": "Lists, Tuples, and Dictionaries",
+          "description": "Explore data structures in Python that are essential for organizing information.",
+          "objectives": [
+            "Understand how to use lists, tuples, and dictionaries",
+            "Learn when to use each data structure effectively",
+            "Create a personal project using these concepts"
+          ],
+          "key_ concepts": [
+            "Lists and Their Methods",
+            "Tuples Overview",
+            "Dictionaries and Key-Value Pairs"
+          ],
+          "estimated_hours": 10
+        },
+        {
+          "week": 4,
+          "title": "File I/O and Error Handling",
+          "description": "Learn how to read from and write to files in Python, as well as handle common errors gracefully.",
+          "objectives": [
+            "Understand file input/output operations",
+            "Implement basic error handling techniques",
+            "Build a personal project involving file operations"
+          ],
+          "key_ concepts": [
+            "Opening and Closing Files",
+            "Reading and Writing Data",
+            "Handling Exceptions"
+          ],
+          "estimated_hours": 10
+        }
+      ],
+      "overall_goal": "By the end of this curriculum, learners will have the skills to create personalized Python projects that apply foundational programming concepts.",
+      "resources": [],
+      "session_id": "c427c19b",
+      "original_constraints": "초보자야 2일 정도",
+      "original_goal": "개인 프로젝트",
+      "generated_at": "2025-09-07T21:46:06.301969",
+      "id": 1,
+      "created_at": "2025-09-07T21:46:06.301983"
+    },
+    {
+      "title": "Python 프로그래밍 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 2,
+      "modules": [
+        {
+          "week": 1,
+          "title": "Introduction to Python Programming",
+          "description": "Learn the basics of Python, including installation, syntax, and environment setup.",
+          "objectives": [
+            "Understand Python's basic syntax",
+            "Install and set up a Python development environment",
+            "Write simple Python scripts"
+          ],
+          "key_ concepts": [
+            "Variables",
+            "Data Types (int, str, float)",
+            "Basic Syntax"
+          ],
+          "estimated_hours": 10
+        },
+        {
+          "week": 2,
+          "title": "Control Flow and Functions",
+          "description": "Explore control structures and functions to enhance program logic and reusability.",
+          "objectives": [
+            "Master loops (for, while)",
+            "Understand conditional statements",
+            "Define and use functions"
+          ],
+          "key_ concepts": [
+            "Loops (for, while)",
+            "Conditional Statements (if, else)",
+            "Functions"
+          ],
+          "estimated_hours": 12
+        },
+        {
+          "week": 3,
+          "title": "Data Structures",
+          "description": "Learn to use Python's built-in data structures for efficient data handling.",
+          "objectives": [
+            "Understand lists and tuples",
+            "Use dictionaries and sets",
+            "Implement basic data structure operations"
+          ],
+          "key_ concepts": [
+            "Lists",
+            "Tuples",
+            "Dictionaries",
+            "Sets"
+          ],
+          "estimated_hours": 10
+        },
+        {
+          "week": 4,
+          "title": "Personal Project: Calculator Application",
+          "description": "Build a simple calculator application to apply learned concepts.",
+          "objectives": [
+            "Design and implement a functional calculator",
+            "Use functions for calculations",
+            "Enhance user interface with input handling"
+          ],
+          "key_ concepts": [
+            "Functions",
+            "Input Handling",
+            "Basic Math Operations"
+          ],
+          "estimated_hours": 15
+        },
+        {
+          "week": 5,
+          "title": "File I/O and Error Handling",
+          "description": "Learn to read from and write to files, as well as handle errors gracefully.",
+          "objectives": [
+            "Read and write text files",
+            "Implement basic error handling with try-except",
+            "Understand file modes"
+          ],
+          "key_ concepts": [
+            "File I/O (read/write)",
+            "Error Handling",
+            "File Modes"
+          ],
+          "estimated_hours": 12
+        },
+        {
+          "week": 6,
+          "title": "Personal Project: To-Do List Application",
+          "description": "Create a to-do list application that reads tasks from files and handles user input.",
+          "objectives": [
+            "Read and write to a file",
+            "Implement file-based data storage",
+            "Handle user interaction"
+          ],
+          "key_ concepts": [
+            "File I/O (read/write)",
+            "Data Storage",
+            "User Interaction"
+          ],
+          "estimated_hours": 15
+        }
+      ],
+      "overall_goal": "By the end of this curriculum, learners will be able to write Python programs for personal projects, demonstrating a strong grasp of basic programming concepts and file operations.",
+      "resources": [],
+      "session_id": "c427c19b",
+      "original_constraints": "초보자야 2일 정도",
+      "original_goal": "개인 프로젝트",
+      "generated_at": "2025-09-07T21:48:19.183526",
+      "id": 2,
+      "created_at": "2025-09-07T21:48:19.183542"
+    },
+    {
+      "title": "Python 프로그래밍 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 2,
+      "modules": [
+        {
+          "week": 1,
+          "title": "Introduction to Python",
+          "description": "This module introduces beginners to the basics of Python programming, focusing on understanding the syntax and environment setup.",
+          "objectives": [
+            "Understand basic Python syntax and data types.",
+            "Set up a Python development environment.",
+            "Write simple scripts to perform calculations."
+          ],
+          "key_cepts": [
+            "Variables",
+            "Data Types (int, float, string)",
+            "Print function"
+          ],
+          "estimated_hours": 10
+        },
+        {
+          "week": 2,
+          "title": "Control Flow and Functions",
+          "description": "Learn how to control the flow of your programs using loops and functions, essential for structuring personal projects.",
+          "objectives": [
+            "Implement conditional statements (if-else).",
+            "Use loops (for, while) effectively.",
+            "Create and use custom functions."
+          ],
+          "key_cepts": [
+            "Control Flow",
+            "Loop Structures",
+            "Function Definition"
+          ],
+          "estimated_hours": 10
+        }
+      ],
+      "overall_goal": "By the end of this 2-week course, learners will be able to write Python scripts for basic personal projects and have a solid foundation in programming concepts.",
+      "resources": [],
+      "session_id": "c427c19b",
+      "original_constraints": "초보자야 2일 정도",
+      "original_goal": "개인 프로젝트",
+      "generated_at": "2025-09-07T21:53:13.415140",
+      "id": 3,
+      "created_at": "2025-09-07T21:53:13.415173"
+    },
+    {
+      "title": "Python 프로그래밍 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 2,
+      "modules": [
+        {
+          "week": 1,
+          "title": "Introduction to Python Basics",
+          "description": "Learn the fundamental concepts of Python programming, including syntax and basic data types.",
+          "objectives": [
+            "Understand Python syntax and structure.",
+            "Use basic data types such as integers, strings, and floats.",
+            "Write simple scripts with print statements and comments."
+          ],
+          "key_cepts": [
+            "Syntax",
+            "Data Types",
+            "Comments"
+          ],
+          "estimated_hours": 10
+        },
+        {
+          "week": 2,
+          "title": "Control Structures and Functions",
+          "description": "Master control structures like loops and conditionals, and learn how to define functions for code reusability.",
+          "objectives": [
+            "Use if-else statements and loops (for and while).",
+            "Define and use functions in Python.",
+            "Implement basic algorithms with control structures."
+          ],
+          "key_cepts": [
+            "Control Structures",
+            "Functions",
+            "Loops"
+          ],
+          "estimated_hours": 12
+        },
+        {
+          "week": 3,
+          "title": "Data Structures and Personal Project Planning",
+          "description": "Explore Python's built-in data structures like lists, tuples, and dictionaries. Begin planning a personal project.",
+          "objectives": [
+            "Use lists, tuples, and dictionaries effectively.",
+            "Plan a simple Python project based on personal interests.",
+            "Understand the importance of data structures in programming."
+          ],
+          "key_cepts": [
+            "Data Structures",
+            "Project Planning"
+          ],
+          "estimated_hours": 10
+        },
+        {
+          "week": 4,
+          "title": "Personal Project Development",
+          "description": "Develop and complete a personal Python project, applying the concepts learned throughout the course.",
+          "objectives": [
+            "Implement a functional Python program from design to completion.",
+            "Apply problem-solving techniques to overcome challenges in your project.",
+            "Reflect on the learning process and identify areas for improvement."
+          ],
+          "key_cepts": [
+            "Project Development",
+            "Problem Solving"
+          ],
+          "estimated_hours": 15
+        }
+      ],
+      "overall_goal": "By the end of this curriculum, learners will have a solid foundation in Python programming and complete a personal project showcasing their new skills.",
+      "resources": [],
+      "session_id": "c427c19b",
+      "original_constraints": "초보자야 2일 정도",
+      "original_goal": "개인 프로젝트",
+      "generated_at": "2025-09-07T22:01:57.484558",
+      "id": 4,
+      "created_at": "2025-09-07T22:01:57.484571"
+    },
+    {
+      "title": "Python 프로그래밍 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 2,
+      "modules": [
+        {
+          "week": 1,
+          "title": "Introduction to Python Programming",
+          "description": "Learn the basics of Python programming, including how to set up your environment and write simple scripts.",
+          "objectives": [
+            "Set up a Python development environment on your computer.",
+            "Understand basic syntax and data types in Python.",
+            "Write and run simple Python programs."
+          ],
+          "key_cepts": [
+            "Variables",
+            "Data Types (int, float, str)",
+            "Basic Syntax"
+          ],
+          "estimated_0hours": 10
+        },
+        {
+          "week": 2,
+          "title": "Control Structures and Functions",
+          "description": "Explore control structures such as loops and conditionals, and learn how to create and use functions for organized code.",
+          "objectives": [
+            "Use conditional statements (if, else) in Python.",
+            "Understand and apply loops (for, while).",
+            "Define and call functions."
+          ],
+          "key_cepts": [
+            "Conditional Statements",
+            "Loops",
+            "Functions"
+          ],
+          "estimated_0hours": 10
+        },
+        {
+          "week": 3,
+          "title": "Lists, Tuples, and Dictionaries",
+          "description": "Master data structures like lists, tuples, and dictionaries to manage collections of data.",
+          "objectives": [
+            "Create and manipulate lists in Python.",
+            "Understand the difference between lists and tuples.",
+            "Use dictionaries for key-value pairs."
+          ],
+          "key_cepts": [
+            "Lists",
+            "Tuples",
+            "Dictionaries"
+          ],
+          "estimated_0hours": 10
+        },
+        {
+          "week": 4,
+          "title": "File Handling and Personal Project Setup",
+          "description": "Learn how to read and write files, and begin setting up personal projects.",
+          "objectives": [
+            "Read and write data from/to text files.",
+            "Understand the basics of file handling in Python.",
+            "Set up a personal project structure."
+          ],
+          "key_cepts": [
+            "File I/O",
+            "Project Structure"
+          ],
+          "estimated_0hours": 10
+        }
+      ],
+      "overall_goal": "By the end of this curriculum, learners will be able to write organized and functional Python programs that utilize basic data structures, control flow, and file handling, with a focus on developing personal projects.",
+      "resources": [],
+      "session_id": "c427c19b",
+      "original_constraints": "초보자야 2일 정도",
+      "original_goal": "개인 프로젝트",
+      "generated_at": "2025-09-07T22:04:00.828268",
+      "id": 5,
+      "created_at": "2025-09-07T22:04:00.828291"
+    },
+    {
+      "title": "Python 프로그래밍 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 2,
+      "modules": [
+        {
+          "week": 1,
+          "title": "Python 프로그래밍 - Week 1",
+          "description": "Week 1 learning content",
+          "objectives": [
+            "Learn week 1 concepts",
+            "Complete exercises"
+          ],
+          "key_concepts": [
+            "Week 1 fundamentals"
+          ],
+          "estimated_hours": 10
+        },
+        {
+          "week": 2,
+          "title": "Python 프로그래밍 - Week 2",
+          "description": "Week 2 learning content",
+          "objectives": [
+            "Learn week 2 concepts",
+            "Complete exercises"
+          ],
+          "key_concepts": [
+            "Week 2 fundamentals"
+          ],
+          "estimated_hours": 12
+        }
+      ],
+      "overall_goal": "Master Python 프로그래밍 fundamentals in 2 weeks",
+      "resources": [],
+      "session_id": "c427c19b",
+      "original_constraints": "초보자야 2일 정도",
+      "original_goal": "개인 프로젝트",
+      "generated_at": "2025-09-07T22:06:16.691353",
+      "id": 6,
+      "created_at": "2025-09-07T22:06:16.691393"
+    },
+    {
+      "title": "Python 프로그래밍 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 2,
+      "modules": [
+        {
+          "week": 1,
+          "title": "Introduction to Python Basics",
+          "description": "Learn the fundamental concepts of Python programming and set up your development environment.",
+          "objectives": [
+            "Understand basic syntax and data types",
+            "Set up a Python IDE or text editor",
+            "Write simple scripts"
+          ],
+          "key_ concepts": [
+            "Variables",
+            "Data Types (int, float, str)",
+            "Comments"
+          ],
+          "estimated_ hours": 10
+        },
+        {
+          "week": 2,
+          "title": "Control Structures and Functions",
+          "description": "Explore control structures and functions to make your programs dynamic.",
+          "objectives": [
+            "Use loops (for, while)",
+            "Implement conditional statements (if, elif, else)",
+            "Define and use functions"
+          ],
+          "key_ concepts": [
+            "Loops",
+            "Conditionals",
+            "Functions"
+          ],
+          "estimated_ hours": 10
+        }
+      ],
+      "overall_goal": "By the end of this course, learners will be able to write basic Python programs for personal projects and understand how to structure their code efficiently.",
+      "resources": [],
+      "session_id": "c427c19b",
+      "original_constraints": "초보자야 2일 정도",
+      "original_goal": "개인 프로젝트",
+      "generated_at": "2025-09-07T22:08:44.299527",
+      "id": 7,
+      "created_at": "2025-09-07T22:08:44.299547"
+    },
+    {
+      "title": "Python 프로그래밍 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 2,
+      "modules": [
+        {
+          "week": 1,
+          "title": "Introduction to Python Basics",
+          "description": "Learn fundamental concepts of Python programming with an emphasis on syntax and basic operations.",
+          "objectives": [
+            "Understand the basics of Python syntax",
+            "Use print statements and variables effectively",
+            "Master control structures like loops and conditionals"
+          ],
+          "key_ concepts": [
+            "Syntax basics",
+            "Variables",
+            "Data types (int, float, str)",
+            "Loops (for, while)",
+            "Conditional statements (if, else)"
+          ],
+          "estimated_ hours": 10
+        },
+        {
+          "week": 2,
+          "title": "Personal Project: Simple Calculator",
+          "description": "Create a personal project that applies Python basics to build a simple calculator with user input and arithmetic operations.",
+          "objectives": [
+            "Apply programming concepts into practical projects",
+            "Understand user input and output in Python",
+            "Enhance problem-solving skills"
+          ],
+          "key_ concepts": [
+            "Functions",
+            "User input/output",
+            "Mathematical operations",
+            "Error handling basics"
+          ],
+          "estimated_ hours": 12
+        }
+      ],
+      "overall_goal": "By the end of this course, learners will have a strong foundation in Python programming and will be able to create their own personal projects using basic programming concepts.",
+      "resources": [],
+      "session_id": "c427c19b",
+      "original_constraints": "초보자야 2일 정도",
+      "original_goal": "개인 프로젝트",
+      "generated_at": "2025-09-07T22:14:12.529614",
+      "id": 8,
+      "created_at": "2025-09-07T22:14:12.529646",
+      "curriculum_id": 8
+    },
+    {
+      "title": "Python 프로그래밍 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 2,
+      "modules": [
+        {
+          "week": 1,
+          "title": "Python 프로그래밍 - Week 1",
+          "description": "Week 1 learning content",
+          "objectives": [
+            "Learn week 1 concepts",
+            "Complete exercises"
+          ],
+          "key_concepts": [
+            "Week 1 fundamentals"
+          ],
+          "estimated_hours": 10
+        },
+        {
+          "week": 2,
+          "title": "Python 프로그래밍 - Week 2",
+          "description": "Week 2 learning content",
+          "objectives": [
+            "Learn week 2 concepts",
+            "Complete exercises"
+          ],
+          "key_concepts": [
+            "Week 2 fundamentals"
+          ],
+          "estimated_hours": 12
+        }
+      ],
+      "overall_goal": "Master Python 프로그래밍 fundamentals in 2 weeks",
+      "resources": [],
+      "session_id": "c427c19b",
+      "original_constraints": "초보자야 2일 정도",
+      "original_goal": "개인 프로젝트",
+      "generated_at": "2025-09-07T22:17:21.907578",
+      "id": 9,
+      "created_at": "2025-09-07T22:17:21.907599"
+    },
+    {
+      "title": "Python 프로그래밍 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 2,
+      "modules": [
+        {
+          "week": 1,
+          "title": "Introduction to Python Basics",
+          "description": "This module introduces learners to the fundamental concepts of Python programming, laying a strong foundation for further learning.",
+          "objectives": [
+            "Understand basic syntax and data types in Python",
+            "Learn how to create variables and perform simple operations",
+            "Gain familiarity with Python's built-in functions"
+          ],
+          "key_ concepts": [
+            "Syntax",
+            "Variables",
+            "Data Types (int, float, str)",
+            "Built-in Functions"
+          ],
+          "estimated_ hours": 10
+        },
+        {
+          "week": 2,
+          "title": "Control Structures and Personal Project",
+          "description": "This module delves into control structures like loops and conditional statements while introducing a personal project to apply learning.",
+          "objectives": [
+            "Master if-else statements and loops (for, while)",
+            "Understand how to use lists and dictionaries for data storage"
+          ],
+          "key_ concepts": [
+            "Control Structures",
+            "Loops",
+            "Conditional Statements",
+            "Lists",
+            "Dictionaries",
+            "Personal Project Initiation"
+          ],
+          "estimated_ hours": 10
+        }
+      ],
+      "overall_goal": "By the end of this curriculum, learners will be able to write basic Python programs and understand fundamental programming concepts through personal project development.",
+      "resources": [],
+      "session_id": "c427c19b",
+      "original_constraints": "초보자야 2일 정도",
+      "original_goal": "개인 프로젝트",
+      "generated_at": "2025-09-07T22:20:22.788263",
+      "id": 10,
+      "created_at": "2025-09-07T22:20:22.788282",
+      "curriculum_id": 10
+    },
+    {
+      "title": "Python 프로그래밍 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 2,
+      "modules": [
+        {
+          "week": 1,
+          "title": "Introduction to Python Programming",
+          "description": "Learn the basics of Python syntax, data types, and how to write simple programs.",
+          "objectives": [
+            "Understand the basic structure of a Python program",
+            "Be able to declare variables and use different data types",
+            "Write simple print statements and input/output operations"
+          ],
+          "key_ concepts": [
+            "Syntax basics",
+            "Variables and Data Types (int, float, str)",
+            "Print() function and Input() command"
+          ],
+          "estimated_ hours": 10
+        },
+        {
+          "week": 2,
+          "title": "Control Structures and Functions",
+          "description": "Learn how to control program flow with loops and conditionals, and create reusable functions.",
+          "objectives": [
+            "Apply conditional statements (if-else) in Python",
+            "Use loops (for, while) for iteration",
+            "Define and use functions to organize code"
+          ],
+          "key_ concepts": [
+            "Conditional Statements",
+            "Loops (For and While)",
+            "Defining Functions"
+          ],
+          "estimated_ hours": 10
+        }
+      ],
+      "overall_goal": "Master Python 프로그래밍",
+      "resources": [],
+      "session_id": "c427c19b",
+      "original_constraints": "초보자야 2일 정도",
+      "original_goal": "개인 프로젝트",
+      "generated_at": "2025-09-07T22:22:24.418214",
+      "id": 11,
+      "created_at": "2025-09-07T22:22:24.418231",
+      "curriculum_id": 11
+    },
+    {
+      "title": "Python 프로그래밍 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 2,
+      "modules": [
+        {
+          "week": 1,
+          "title": "파이썬 기본 문법 익히기",
+          "description": "Python의 기초 문법을 학습하여 간단한 프로그램을 작성할 수 있도록 합니다.",
+          "objectives": [
+            "변수와 자료형의 개념 이해하기",
+            "조건문과 반복문의 사용법 익히기",
+            "함수 정의 및 호출 방법 학습하기"
+          ],
+          "key_개념들": [
+            "변수 선언",
+            "자료형(int, str, bool)",
+            "if, else 조건문",
+            "for, while 반복문",
+            "def 함수 정의"
+          ],
+          "estimated_시간": 10
+        },
+        {
+          "week": 2,
+          "title": "개인 프로젝트를 위한 기초 다지기",
+          "description": "학습한 기초 문법을 활용하여 개인 프로젝트에 필요한 기본기를 완성합니다.",
+          "objectives": [
+            "리스트와 딕셔너리 자료구조 활용하기",
+            "파일 입출력 기본 이해하기",
+            "모듈과 패키지 사용법 학습하기"
+          ],
+          "key_개념들": [
+            "리스트 생성 및 조작",
+            "딕셔너리 키-값 쌍 관리",
+            "텍스트 파일 읽기/쓰기",
+            "import 모듈 사용"
+          ],
+          "estimated_시간": 10
+        }
+      ],
+      "overall_goal": "학습자는 2주 후 개인 프로젝트 아이디어를 구체화하고, Python을 활용하여 간단한 프로그램을 직접 구현할 수 있게 됩니다.",
+      "resources": [],
+      "session_id": "c427c19b",
+      "original_constraints": "초보자야 2일 정도",
+      "original_goal": "개인 프로젝트",
+      "generated_at": "2025-09-07T22:26:52.058327",
+      "id": 12,
+      "created_at": "2025-09-07T22:26:52.058349",
+      "curriculum_id": 12
+    },
+    {
+      "title": "Python 프로그래밍 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 2,
+      "modules": [
+        {
+          "week": 1,
+          "title": "파이썬 기초 문법과 개발 환경 설정",
+          "description": "Python 프로그래밍의 기본 개념을 배우고 개인 프로젝트를 위한 개발 환경을 구축합니다. 변수, 자료형, 조건문 등 기초적인 문법을 학습하여 간단한 프로그램을 작성할 수 있는 능력을 기릅니다.",
+          "objectives": [
+            "Python 설치 및 IDE 사용법 습득",
+            "변수와 자료형의 개념 이해",
+            "조건문(if, else) 활용 방법 학습",
+            "기본 반복문(for, while) 사용 실습"
+          ],
+          "key_ concepts": [
+            "인터프리터 언어로서의 Python 특징",
+            "파이썬 기본 데이터 타입(정수, 실수, 문자열)",
+            "들여쓰기 기반 문법 구조"
+          ],
+          "estimated_hours": 10
+        },
+        {
+          "week": 2,
+          "title": "리스트와 딕셔너리 활용한 개인 프로젝트 기획",
+          "description": "리스트와 딕셔너리라는 핵심 자료구조를 학습하고, 간단한 개인 프로젝트 아이디어를 구체화합니다. 데이터 관리 및 처리 능력을 기르는 것이 목표입니다.",
+          "objectives": [
+            "리스트의 생성과 활용 방법 학습",
+            "딕셔너리(해시) 구조 이해 및 사용",
+            "개인 프로젝트 아이디어 3가지 이상 구상",
+            "프로젝트 요구사항 명세 작성"
+          ],
+          "key_ concepts": [
+            "파이썬 리스트와 슬라이싱 기법",
+            "딕셔너리의 키-값 쌍 구조",
+            "데이터 구조 선택 기준"
+          ],
+          "estimated_hours": 10
+        }
+      ],
+      "overall_goal": "2주 후 개인이 관심 있는 분야의 간단한 Python 프로젝트를 직접 기획하고 구현할 수 있는 기초 역량 확보",
+      "resources": [],
+      "session_id": "c427c19b",
+      "original_constraints": "초보자야 2일 정도",
+      "original_goal": "개인 프로젝트",
+      "generated_at": "2025-09-07T22:32:57.406900",
+      "id": 13,
+      "created_at": "2025-09-07T22:32:57.406918",
+      "curriculum_id": 13
+    },
+    {
+      "title": "Python 프로그래밍 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 2,
+      "modules": [
+        {
+          "week": 1,
+          "title": "파이썬 프로그래밍 기초 다지기",
+          "description": "Python 개발 환경을 설정하고 기본 문법과 데이터 타입을 학습하는 입문 과정입니다. 간단한 콘솔 프로그램을 만들어보며 파이썬의 기본기를 익힙니다.",
+          "objectives": [
+            "IDLE와 VSCode 등 Python 개발 환경 설정하기",
+            "변수, 자료형(정수, 실수, 문자열, 불리언) 이해하기",
+            "기본 연산자 사용법 배우기"
+          ],
+          "key_ concepts": [
+            "파이썬 설치 및 환경 구성",
+            "데이터 타입과 변수 선언",
+            "조건문과 반복문의 기본 원리"
+          ],
+          "estimated_hours": 10
+        },
+        {
+          "week": 2,
+          "title": "제어문과 함수 활용",
+          "description": "조건문, 반복문을 활용하여 프로그램의 흐름을 제어하고, 재사용 가능한 코드 블록인 함수를 만들어 개인 프로젝트에 적용할 수 있는 능력을 키웁니다.",
+          "objectives": [
+            "if, else 조건문으로 프로그램 로직 구현하기",
+            "for, while 반복문 사용하여 효율적인 코드 작성하기",
+            "함수 정의하고 호출하는 방법 익히기"
+          ],
+          "key_ concepts": [
+            "조건문(conditional statements)",
+            "반복문(loops)",
+            "사용자 정의 함수(user-defined functions)"
+          ],
+          "estimated_hours": 10
+        },
+        {
+          "week": 3,
+          "title": "리스트와 딕셔너리 활용한 데이터 관리",
+          "description": "파이썬의 대표적인 자료구조인 리스트와 딕셔너리를 학습하여 개인 프로젝트에서 필요한 데이터를 효율적으로 관리하고 활용하는 방법을 배웁니다.",
+          "objectives": [
+            "리스트 생성, 탐색, 수정 방법 익히기",
+            "딕셔너리 구조 이해하고 사용하기",
+            "다양한 함수로 리스트와 딕셔너리 조작하기"
+          ],
+          "key_ concepts": [
+            "리스트(list) 자료구조",
+            "딕셔너리(dictionary) 자료구조",
+            "내장 함수 활용법"
+          ],
+          "estimated_hours": 10
+        },
+        {
+          "week": 4,
+          "title": "모듈과 패키지 활용 및 개인 프로젝트 시작",
+          "description": "외부 라이브러리를 불러와 활용하고, 지금까지 학습한 내용을 바탕으로 간단한 개인 프로젝트(예: 계산기, 할 일 관리)를 시작합니다.",
+          "objectives": [
+            "import 문으로 모듈 불러오기",
+            "기본 수학/날짜 관련 패키지 활용하기",
+            "개인 프로젝트 요구사항 분석 및 설계하기"
+          ],
+          "key_ concepts": [
+            "패키지와 모듈의 개념",
+            "외부 라이브러리 사용법",
+            "프로젝트 설계 프로세스"
+          ],
+          "estimated_hours": 10
+        }
+      ],
+      "overall_goal": "파이썬 언어의 기초부터 실생활 응용까지 학습하여 개인 프로젝트를 완성할 수 있는 프로그래밍 능력을 갖추는 것입니다.",
+      "resources": [],
+      "session_id": "c427c19b",
+      "original_constraints": "초보자야 2일 정도",
+      "original_goal": "개인 프로젝트",
+      "generated_at": "2025-09-07T22:35:25.901619",
+      "id": 14,
+      "created_at": "2025-09-07T22:35:25.901668",
+      "curriculum_id": 14
+    },
+    {
+      "title": "Python 프로그래밍 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 2,
+      "modules": [
+        {
+          "week": 1,
+          "title": "파이썬 기초 문법과 개발 환경 구축",
+          "description": "파이썬의 기본 문법을 익히고 개인 프로젝트를 위한 개발 환경을 설정하는 기초 단계입니다. 변수, 자료형, 조건문, 반복문 등 프로그래밍의 핵심 개념을 배우고 VSCode나 PyCharm 같은 IDE 설치 방법을 학습합니다.",
+          "objectives": [
+            "파이썬 기본 문법(변수, 연산자, 데이터 타입) 이해",
+            "조건문과 반복문 사용법 습득",
+            "개발 환경(VSCode/PyCharm) 설정 및 사용법 학습"
+          ],
+          "key_cepts": [
+            "변수와 자료형",
+            "제어 구조",
+            "입력 출력"
+          ],
+          "estimated_hours": 10
+        },
+        {
+          "week": 2,
+          "title": "함수와 모듈 활용으로 개인 프로젝트 시작하기",
+          "description": "함수를 정의하고 재사용하는 방법을 배우며, 외부 모듈과 패키지를 활용하여 개인 프로젝트의 기초를 구축합니다. 간단한 계산기나 메모장 같은 실습 프로젝트를 진행합니다.",
+          "objectives": [
+            "사용자 정의 함수 작성 및 호출 능력 습득",
+            "파이썬 표준 라이브러리와 외부 모듈 사용법 학습",
+            "작은 규모의 개인 프로젝트 구현 경험"
+          ],
+          "key_cepts": [
+            "함수 정의",
+            "모듈 import",
+            "프로젝트 구조화"
+          ],
+          "estimated_hours": 12
+        }
+      ],
+      "overall_goal": "2주 동안 파이썬 기초를 탄탄히 다지고 자신만의 작은 프로그램을 직접 개발할 수 있는 능력 함양하기",
+      "resources": [],
+      "session_id": "c427c19b",
+      "original_constraints": "초보자야 2일 정도",
+      "original_goal": "개인 프로젝트",
+      "generated_at": "2025-09-07T22:37:38.751480",
+      "id": 15,
+      "created_at": "2025-09-07T22:37:38.751527"
+    }
+  ],
+  "test_new_session": [
+    {
+      "title": "JavaScript 웹 개발 Learning Path",
+      "level": "intermediate",
+      "duration_weeks": 4,
+      "modules": [
+        {
+          "week": 1,
+          "title": "JavaScript 웹 개발 - Week 1",
+          "description": "Week 1 learning content",
+          "objectives": [
+            "Learn week 1 concepts",
+            "Complete exercises"
+          ],
+          "key_concepts": [
+            "Week 1 fundamentals"
+          ],
+          "estimated_hours": 10
+        },
+        {
+          "week": 2,
+          "title": "JavaScript 웹 개발 - Week 2",
+          "description": "Week 2 learning content",
+          "objectives": [
+            "Learn week 2 concepts",
+            "Complete exercises"
+          ],
+          "key_concepts": [
+            "Week 2 fundamentals"
+          ],
+          "estimated_hours": 12
+        },
+        {
+          "week": 3,
+          "title": "JavaScript 웹 개발 - Week 3",
+          "description": "Week 3 learning content",
+          "objectives": [
+            "Learn week 3 concepts",
+            "Complete exercises"
+          ],
+          "key_concepts": [
+            "Week 3 fundamentals"
+          ],
+          "estimated_hours": 14
+        },
+        {
+          "week": 4,
+          "title": "JavaScript 웹 개발 - Week 4",
+          "description": "Week 4 learning content",
+          "objectives": [
+            "Learn week 4 concepts",
+            "Complete exercises"
+          ],
+          "key_concepts": [
+            "Week 4 fundamentals"
+          ],
+          "estimated_hours": 16
+        }
+      ],
+      "overall_goal": "Master JavaScript 웹 개발 fundamentals in 4 weeks",
+      "resources": [],
+      "session_id": "test_new_session",
+      "original_constraints": "중급자야 1달 정도 시간 있어",
+      "original_goal": "웹 개발 취업하고 싶어",
+      "generated_at": "2025-09-07T22:07:05.400306",
+      "id": 0,
+      "created_at": "2025-09-07T22:07:05.400330"
+    }
+  ],
+  "test_update_session": [
+    {
+      "title": "React 웹 개발 Learning Path",
+      "level": "intermediate",
+      "duration_weeks": 12,
+      "modules": [
+        {
+          "week": 1,
+          "title": "Introduction to React",
+          "description": "Explore the basics of React, understanding its architecture and why it is popular in modern web development.",
+          "objectives": [
+            "Understand what React is and its role in web development",
+            "Learn about components and JSX syntax",
+            "Set up a basic React project"
+          ],
+          "key_ concepts": [
+            "React core principles",
+            "JSX basics",
+            "Component-based architecture"
+          ],
+          "estimated_ hours": 10
+        },
+        {
+          "week": 2,
+          "title": "State Management with React",
+          "description": "Learn how to manage state within a React application, including understanding the differences between state and props.",
+          "objectives": [
+            "Master state management principles in React",
+            "Implement useState for functional components",
+            "Use controlled components"
+          ],
+          "key_ concepts": [
+            "React state vs. props",
+            "useState hook",
+            "controlled vs. uncontrolled components"
+          ],
+          "estimated_ hours": 12
+        },
+        {
+          "week": 3,
+          "title": "Lifecycles and Performance",
+          "description": "Understand React component lifecycles and how to optimize performance in your applications.",
+          "objectives": [
+            "Learn about lifecycle methods",
+            "Optimize rendering performance with keys and shouldComponentUpdate",
+            "Implement shouldComponentUpdate"
+          ],
+          "key_ concepts": [
+            "React lifecycle methods",
+            "performance optimization techniques",
+            "keys usage"
+          ],
+          "estimated_ hours": 12
+        },
+        {
+          "week": 4,
+          "title": "Conditional Rendering and Lists",
+          "description": "Discover how to render dynamic content based on conditions and iterate over lists in React.",
+          "objectives": [
+            "Master conditional rendering with if-else statements",
+            "Learn methods for rendering lists (map, filter)",
+            "Implement useEffect hook"
+          ],
+          "key_ concepts": [
+            "conditional rendering",
+            "list iteration with map()",
+            "useEffect hook"
+          ],
+          "estimated_ hours": 12
+        },
+        {
+          "week": 5,
+          "title": "Forms and Input Handling",
+          "description": "Learn how to handle forms and input in React applications, ensuring proper state management.",
+          "objectives": [
+            "Build responsive forms using controlled components",
+            "Understand form validation techniques (react-validation)",
+            "Use React Hook Form library"
+          ],
+          "key_ concepts": [
+            "controlled vs. uncontrolled components for forms",
+            "validation libraries",
+            "handling form submissions"
+          ],
+          "estimated_ hours": 10
+        },
+        {
+          "week": 6,
+          "title": "Data Fetching and APIs",
+          "description": "Connect your React applications to external data sources using APIs.",
+          "objectives": [
+            "Fetch data from RESTful APIs",
+            "Use axios for HTTP requests",
+            "Implement fetching logic with useEffect"
+          ],
+          "key_ concepts": [
+            "HTTP methods (GET, POST)",
+            "axios library usage",
+            "useEffect hook for side effects"
+          ],
+          "estimated_ hours": 14
+        },
+        {
+          "week": 7,
+          "title": "Redux and State Management",
+          "description": "Explore Redux for centralized state management in your React applications.",
+          "objectives": [
+            "Understand the principles of Flux architecture",
+            "Implement Redux DevTools for debugging",
+            "Use React-Redux bindings"
+          ],
+          "key_ concepts": [
+            "Flux pattern",
+            "Redux Store, Actions, and Reducers",
+            "react-redux connect() method"
+          ],
+          "estimated_ hours": 15
+        },
+        {
+          "week": 8,
+          "title": "Component Composition and Reusability",
+          "description": "Learn how to compose reusable components in React for efficient development.",
+          "objectives": [
+            "Master higher-order components",
+            "Implement dynamic prop types with PropTypes",
+            "Use render props pattern"
+          ],
+          "key_ concepts": [
+            "higher-order components (HOCs)",
+            "render props",
+            "dynamic component composition"
+          ],
+          "estimated_ hours": 12
+        },
+        {
+          "week": 9,
+          "title": "Testing React Components",
+          "description": "Learn how to test your React components effectively using Jest and Enzyme.",
+          "objectives": [
+            "Set up testing environment with Jest",
+            "Write unit tests for functional components",
+            "Use Enzyme for component testing"
+          ],
+          "key_ concepts": [
+            "Jest setup and configuration",
+            "Enzyme shallow, mount, and simulate methods",
+            "testing strategies"
+          ],
+          "estimated_ hours": 13
+        },
+        {
+          "week": 10,
+          "title": "Advanced React Patterns",
+          "description": "Explore advanced patterns like context API, ref forwarding, and more.",
+          "objectives": [
+            "Implement context API for global state management",
+            "Understand higher-order components with custom props",
+            "Learn about forwardRef"
+          ],
+          "key_ concepts": [
+            "context API usage",
+            "custom HOCs",
+            "forwardRef"
+          ],
+          "estimated_ hours": 11
+        },
+        {
+          "week": 11,
+          "title": "Project Development and Deployment",
+          "description": "Develop a full-stack React application, deploying it to a production environment.",
+          "objectives": [
+            "Design a complete project with multiple components",
+            "Set up deployment using Netlify or Vercel",
+            "Implement CI/CD pipelines"
+          ],
+          "key_ concepts": [
+            "full-stack development workflow",
+            "serverless hosting",
+            "CI/CD basics"
+          ],
+          "estimated_ hours": 14
+        },
+        {
+          "week": 12,
+          "title": "Career Preparation and Job Readiness",
+          "description": "Prepare for job interviews with React, including coding challenges and portfolio building.",
+          "objectives": [
+            "Solve common coding interview problems",
+            "Create a professional portfolio showcasing projects",
+            "Understand industry best practices"
+          ],
+          "key_ concepts": [
+            "coding challenge preparation",
+            "portfolio presentation techniques",
+            "industry standards in web development"
+          ],
+          "estimated_ hours": 12
+        }
+      ],
+      "overall_goal": "By the end of this curriculum, learners will be proficient in intermediate-level React web development and prepared for job opportunities with a strong portfolio.",
+      "resources": [],
+      "session_id": "test_update_session",
+      "original_constraints": "중급 3달 정도",
+      "original_goal": "웹 개발 취업하고 싶어",
+      "generated_at": "2025-09-07T22:15:15.375331",
+      "id": 0,
+      "created_at": "2025-09-07T22:15:15.375342"
+    }
+  ],
+  "test_detailed_curriculum": [
+    {
+      "title": "Node.js 백엔드 개발 Learning Path",
+      "level": "intermediate",
+      "duration_weeks": 8,
+      "modules": [
+        {
+          "week": 1,
+          "title": "Introduction to Node.js and JavaScript Fundamentals",
+          "description": "This module introduces Node.js as a server-side technology and reviews essential JavaScript concepts needed for intermediate back-end development.",
+          "objectives": [
+            "Understand the role of Node.js in web development",
+            "Review core JavaScript syntax including variables, data types, control structures, functions, and objects"
+          ],
+          "key_ concepts": [
+            "JavaScript basics",
+            "Node.js architecture",
+            "Event loop"
+          ],
+          "estimated_ hours": 10
+        },
+        {
+          "week": 2,
+          "title": "Express Framework for Web Applications",
+          "description": "Learn how to set up and use the Express framework for building dynamic web applications with Node.js.",
+          "objectives": [
+            "Install and configure Express.js",
+            "Create routing and middleware in Express"
+          ],
+          "key_ concepts": [
+            "Express.js installation",
+            "Routing and Middleware"
+          ],
+          "estimated_ hours": 12
+        },
+        {
+          "week": 3,
+          "title": "Handling HTTP Requests and Responses",
+          "description": "Explore how to manage HTTP requests and responses in Node.js web applications.",
+          "objectives": [
+            "Understand the HTTP protocol",
+            "Handle GET, POST, PUT, DELETE methods"
+          ],
+          "key_ concepts": [
+            "HTTP Methods",
+            "Request-Response cycle"
+          ],
+          "estimated_ hours": 10
+        },
+        {
+          "week": 4,
+          "title": "Working with Databases in Node.js",
+          "description": "Learn to connect Node.js applications to databases for data storage and retrieval.",
+          "objectives": [
+            "Install and use a database (e.g., MongoDB, PostgreSQL)",
+            "Perform CRUD operations"
+          ],
+          "key_ concepts": [
+            "Database integration",
+            "CRUD operations"
+          ],
+          "estimated_ hours": 15
+        },
+        {
+          "week": 5,
+          "title": "API Development with Node.js",
+          "description": "Design and implement RESTful APIs using Node.js.",
+          "objectives": [
+            "Understand REST principles",
+            "Develop a simple API using Express"
+          ],
+          "key_ concepts": [
+            "REST architecture",
+            "JSON payloads"
+          ],
+          "estimated_ hours": 12
+        },
+        {
+          "week": 6,
+          "title": "Error Handling and Debugging in Node.js",
+          "description": "Learn techniques for effectively handling errors and debugging Node.js applications.",
+          "objectives": [
+            "Implement error handling strategies",
+            "Use debug tools like console.log, debugger"
+          ],
+          "key_ concepts": [
+            "Error handling",
+            "Debugging tools"
+          ],
+          "estimated_ hours": 10
+        },
+        {
+          "week": 7,
+          "title": "Security and Authentication",
+          "description": "Explore security best practices and implement basic authentication in Node.js applications.",
+          "objectives": [
+            "Understand common web security threats",
+            "Implement basic user authentication"
+          ],
+          "key_ concepts": [
+            "Security principles",
+            "Authentication mechanisms"
+          ],
+          "estimated_ hours": 12
+        },
+        {
+          "week": 8,
+          "title": "Deploying Node.js Applications",
+          "description": "Learn how to deploy a Node.js application to a production environment.",
+          "objectives": [
+            "Configure a development environment for deployment",
+            "Use a deployment service like Heroku or AWS"
+          ],
+          "key_ concepts": [
+            "Deployment strategies",
+            "Cloud services"
+          ],
+          "estimated_ hours": 15
+        }
+      ],
+      "overall_goal": "By the end of this curriculum, learners will be able to confidently develop and deploy intermediate-level Node.js back-end web applications with a solid understanding of key concepts including Express.js, database integration, API development, error handling, security, and deployment.",
+      "resources": [],
+      "session_id": "test_detailed_curriculum",
+      "original_constraints": "중급자 2달 정도",
+      "original_goal": "웹 개발 실력 향상",
+      "generated_at": "2025-09-07T22:21:03.537659",
+      "id": 0,
+      "created_at": "2025-09-07T22:21:03.537685"
+    }
+  ],
+  "test_final_detailed": [
+    {
+      "title": "Vue.js 프론트엔드 Learning Path",
+      "level": "intermediate",
+      "duration_weeks": 4,
+      "modules": [
+        {
+          "week": 1,
+          "title": "Introduction to Vue.js",
+          "description": "This module introduces learners to the fundamentals of Vue.js, focusing on its core concepts and why it's a popular choice for modern web development.",
+          "objectives": [
+            "Understand the basics of Vue.js and its architecture.",
+            "Learn how to set up a Vue project using Vue CLI.",
+            "Explore the key components of Vue applications."
+          ],
+          "key_ Concepts": [
+            "Vue CLI Setup",
+            "Vue Components",
+            "Templates"
+          ],
+          "estimated_ hours": 10
+        },
+        {
+          "week": 2,
+          "title": "Intermediate Vue.js Components",
+          "description": "In this module, learners will dive deeper into creating and managing complex components in Vue.js, understanding lifecycle hooks and advanced DOM manipulation techniques.",
+          "objectives": [
+            "Master the creation of reusable Vue components.",
+            "Learn how to use lifecycle methods effectively.",
+            "Understand and apply conditional rendering."
+          ],
+          "key_ Concepts": [
+            "Component Lifecycle",
+            "Render Functions",
+            "Conditional Rendering"
+          ],
+          "estimated_ hours": 12
+        },
+        {
+          "week": 3,
+          "title": "Data Management with Vuex",
+          "description": "This week focuses on managing state in Vue applications using Vuex, a state management library that provides tools for handling complex data flow efficiently.",
+          "objectives": [
+            "Understand the role of Vuex in Vue applications.",
+            "Learn how to create and use stores, modules, and actions."
+          ],
+          "key_ Concepts": [
+            "Vuex Stores",
+            "Module Patterns",
+            "State Management"
+          ],
+          "estimated_ hours": 15
+        },
+        {
+          "week": 4,
+          "title": "Advanced Vue.js Techniques",
+          "description": "In the final module, learners will explore advanced techniques such as routing with Vue Router, middleware management, and best practices for structuring large-scale Vue applications.",
+          "objectives": [
+            "Learn how to implement routing with Vue Router.",
+            "Understand middleware usage in Vue applications.",
+            "Explore strategies for optimizing performance in Vue apps."
+          ],
+          "key_ Concepts": [
+            "Routing",
+            "Vuex Middleware",
+            "Performance Optimization"
+          ],
+          "estimated_ hours": 13
+        }
+      ],
+      "overall_goal": "Master Vue.js 프론트엔드",
+      "resources": [],
+      "session_id": "test_final_detailed",
+      "original_constraints": "중급 1달",
+      "original_goal": "프론트엔드 마스터하기",
+      "generated_at": "2025-09-07T22:22:52.153812",
+      "id": 0,
+      "created_at": "2025-09-07T22:22:52.153873"
+    }
+  ],
+  "test_korean_curriculum": [
+    {
+      "title": "Django 웹 프레임워크 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 12,
+      "modules": [
+        {
+          "week": 1,
+          "title": "Django 소개 및 환경 설정",
+          "description": "Django 웹 프레임워크의 개요를 이해하고 개발 환경을 구축하는 기초 단계입니다.",
+          "objectives": [
+            "Python과 Django의 기본 개념을 이해한다",
+            "가상환경(virtual environment)을 설정하고 관리할 수 있다",
+            "Django 프로젝트와 앱을 생성하고 구조를 파악할 수 있다"
+          ],
+          "key_concepts": [
+            "프레임워크의 역할",
+            "Django 프로젝트 구조",
+            "venv 사용법"
+          ],
+          "estimated_hours": 10
+        },
+        {
+          "week": 2,
+          "title": "모델(Model) 설계 및 데이터베이스 상호작용",
+          "description": "Django ORM을 활용하여 데이터 모델을 설계하고 데이터베이스와 상호작용하는 방법을 학습합니다.",
+          "objectives": [
+            "Django의 ORM(Object-Relational Mapping) 개념을 이해한다",
+            "데이터베이스 테이블에 대응하는 Django 모델을 정의할 수 있다",
+            "모델 인스턴스를 생성, 조회, 수정, 삭제할 수 있다"
+          ],
+          "key_concepts": [
+            "ORM",
+            "모델 필드 타입",
+            "데이터베이스 마이그레이션"
+          ],
+          "estimated_hours": 12
+        },
+        {
+          "week": 3,
+          "title": "뷰(View)와 URL 구성",
+          "description": "웹 요청을 처리하는 뷰 함수를 작성하고 URL 패턴을 정의하는 방법을 학습합니다.",
+          "objectives": [
+            "Django에서의 MVC 아키텍처 개념을 이해한다",
+            "URLconf를 작성하여 URL과 뷰를 매핑할 수 있다",
+            "동적 데이터를 포함하는 템플릿으로 응답을 생성할 수 있다"
+          ],
+          "key_concepts": [
+            "뷰 함수",
+            "URL 패턴",
+            "템플릿 태그"
+          ],
+          "estimated_hours": 12
+        },
+        {
+          "week": 4,
+          "title": "템플릿 및 Jinja 문법",
+          "description": "Django 템플릿 엔진을 활용하여 동적 웹 페이지를 생성하는 방법을 학습합니다.",
+          "objectives": [
+            "Jinja2 템플릿 문법의 기본 요소를 이해한다",
+            "변수, 필터, 태그를 사용하여 HTML을 생성할 수 있다",
+            "상속과 블록을 활용한 재사용 가능한 템플릿 구조를 설계할 수 있다"
+          ],
+          "key_concepts": [
+            "템플릿 변수",
+            "필터 사용법",
+            "템플릿 상속"
+          ],
+          "estimated_hours": 10
+        },
+        {
+          "week": 5,
+          "title": "폼(Form) 처리 및 유효성 검사",
+          "description": "웹 폼을 처리하고 데이터 유효성을 검사하는 방법을 학습합니다.",
+          "objectives": [
+            "HTML 폼과 Django 폼의 차이점을 이해한다",
+            "Django 폼 클래스를 정의하고 처리할 수 있다",
+            "폼 유효성 검사 로직을 구현할 수 있다"
+          ],
+          "key_concepts": [
+            "폼 필드",
+            "유효성 검사 규칙",
+            "폼 처리 흐름"
+          ],
+          "estimated_hours": 12
+        },
+        {
+          "week": 6,
+          "title": "인증(Authentication) 및 세션",
+          "description": "사용자 인증 시스템과 세션 관리를 구현하는 방법을 학습합니다.",
+          "objectives": [
+            "Django의 기본 인증 시스템을 설정하고 활용한다",
+            "세션과 쿠키를 이용한 사용자 상태 관리를 이해한다",
+            "보안적인 측면에서 인증 구현 시 주의사항을 파악한다"
+          ],
+          "key_concepts": [
+            "사용자 모델",
+            "인증 미들웨어",
+            "CSRF 보호"
+          ],
+          "estimated_hours": 12
+        },
+        {
+          "week": 7,
+          "title": "장고 관리자(admin) 사이트 커스터마이징",
+          "description": "Django 관리자 인터페이스의 구조를 이해하고 사용자 정의하는 방법을 학습합니다.",
+          "objectives": [
+            "Django 관리자 사이트에 접근할 수 있다",
+            ".admin 파일을 작성하여 모델을 등록할 수 있다",
+            "관리자 폼과 목록 페이지를 커스터마이징할 수 있다"
+          ],
+          "key_concepts": [
+            "AdminSite",
+            "ModelAdmin 클래스",
+            "관리자 권한"
+          ],
+          "estimated_hours": 10
+        },
+        {
+          "week": 8,
+          "title": "장고 앱 배포 및 서버 설정",
+          "description": "개발한 Django 애플리케이션을 실제 서버에 배포하는 방법을 학습합니다.",
+          "objectives": [
+            "Django 프로젝트를 패키지로 만들어 배포할 수 있다",
+            "Heroku나 AWS EC2와 같은 클라우드 서비스에 호스팅할 수 있다",
+            ".env 파일을 활용한 환경 변수 관리를 이해한다"
+          ],
+          "key_concepts": [
+            "Docker",
+            "WSGI 서버 설정",
+            "배포 베스트 프랙티스"
+          ],
+          "estimated_hours": 10
+        },
+        {
+          "week": 9,
+          "title": "보안 기초와 최적화",
+          "description": "웹 애플리케이션 보안의 기본 원칙과 성능 최적화 기법을 학습합니다.",
+          "objectives": [
+            "CSRF, XSS 등 주요 웹 공격에 대해 이해하고 방어 방법을 구현할 수 있다",
+            ".gitignore 설정 및 코드 보안 규칙을 적용할 수 있다",
+            "캐싱 전략과 데이터베이스 쿼리 최적화를 구현할 수 있다"
+          ],
+          "key_concepts": [
+            "웹 보안 취약점",
+            "Django 보안 필터",
+            "캐싱 메커니즘"
+          ],
+          "estimated_hours": 10
+        },
+        {
+          "week": 10,
+          "title": "장고 확장 및 고급 기능",
+          "description": "Django의 확장 모듈과 고급 기능들을 살펴봅니다.",
+          "objectives": [
+            "RESTful API를 Django로 구현할 수 있다",
+            "신호(signals) 시스템을 활용하여 작업을 비동기적으로 처리할 수 있다",
+            "이메일 전송 및 사용자 알림 설정 방법을 이해한다"
+          ],
+          "key_concepts": [
+            "DRF",
+            "신호와 콜백",
+            "이메일 프레임워크"
+          ],
+          "estimated_hours": 12
+        },
+        {
+          "week": 11,
+          "title": "실전 프로젝트: 미니 블로그 구축",
+          "description": "지금까지 학습한 내용을 바탕으로 간단한 블로그 애플리케이션을 구현합니다.",
+          "objectives": [
+            "전체 프로젝트 구조를 설계하고 구현할 수 있다",
+            "모델-뷰-템플릿 간의 상호작용을 실제 앱에 적용할 수 있다",
+            "배포 가능한 상태로 프로젝트를 완성할 수 있다"
+          ],
+          "key_concepts": [
+            "프로젝트 아키텍처",
+            "모듈화 설계",
+            "테스트 작성"
+          ],
+          "estimated_hours": 15
+        },
+        {
+          "week": 12,
+          "title": "최종 검토 및 포트폴리오 준비",
+          "description": "전체 학습 내용을 정리하고 향후 학습 방향과 포트폴리오 구성 방법을 계획합니다.",
+          "objectives": [
+            "학습한 모든 개념을 복습하고 정리할 수 있다",
+            "완성된 프로젝트를 바탕으로 개인 포트폴리오를 준비한다",
+            "Django 커뮤니티와 리소스 활용 방법을 파악한다"
+          ],
+          "key_concepts": [
+            "프로젝트 리뷰",
+            "포트폴리오 구성",
+            "지속적 학습 전략"
+          ],
+          "estimated_hours": 8
+        }
+      ],
+      "overall_goal": "학습자는 Django 웹 프레임워크의 기본부터 고급 기능까지 이해하고, 실제 웹 애플리케이션을 개발 및 배포할 수 있는 능력을 갖추게 됩니다.",
+      "resources": [],
+      "session_id": "test_korean_curriculum",
+      "original_constraints": "초급자 3달",
+      "original_goal": "웹 개발 실력 향상",
+      "generated_at": "2025-09-07T22:28:04.195872",
+      "id": 0,
+      "created_at": "2025-09-07T22:28:04.195883"
+    }
+  ],
+  "test_final_korean": [
+    {
+      "title": "React Native 모바일 Learning Path",
+      "level": "intermediate",
+      "duration_weeks": 4,
+      "modules": [
+        {
+          "week": 1,
+          "title": "React Native 기본 구조 및 개발 환경 구축",
+          "description": "React Native의 핵심 아키텍처를 이해하고 실제 프로젝트에 필요한 개발 환경을 설정합니다.",
+          "objectives": [
+            "React Native 애플리케이션의 기본 구조와 컴포넌트 라이프사이클 이해하기",
+            "Android/iOS 개발 환경(react-native-cli 포함) 설정하기",
+            "기본 API 호출과 상태 관리 기초 익히기"
+          ],
+          "key_cepts": [
+            "Bridge 개념",
+            "JSX 문법",
+            "State Management"
+          ],
+          "estimated_hours": 20
+        },
+        {
+          "week": 2,
+          "title": "네이티브 모듈 및 성능 최적화",
+          "description": "네이티브 모듈과 웹뷰를 활용하여 복잡한 기능을 구현하고 앱 성능을 최적화하는 방법을 학습합니다.",
+          "objectives": [
+            "네이티브 모듈(JavaScript Bridge)의 동작 원리 학습하기",
+            "웹뷰와 네이티브 컴포넌트 연동 구현하기",
+            "앱 성능 진단 도구 사용법 익히기"
+          ],
+          "key_concepts": [
+            "Native Modules",
+            "WebView",
+            "Performance Optimization"
+          ],
+          "estimated_hours": 15
+        },
+        {
+          "week": 3,
+          "title": "UI/UX 디자인 및 애니메이션 구현",
+          "description": "반응형 UI 설계와 다양한 화면 전환 효과를 통해 사용자 경험을 향상시키는 방법을 학습합니다.",
+          "objectives": [
+            "React Native 스타일링 시스템 이해하기",
+            "Navigation 컴포넌트 활용하여 화면 전환하기",
+            "Animated 라이브러리로 자연스러운 UI 애니메이션 구현하기"
+          ],
+          "key_concepts": [
+            "StyleSheet",
+            "NavigationStack",
+            "Animated"
+          ],
+          "estimated_hours": 18
+        },
+        {
+          "week": 4,
+          "title": "배포 및 채용 준비 프로젝트",
+          "description": "실제 앱을 개발하고 배포 과정을 학습하며, 포트폴리오 제작과 취업 대비 기술 면접 준비를 합니다.",
+          "objectives": [
+            "App Store/iOS App Distribution 과정 이해하기",
+            "CI/CD 파이프라인 구축으로 자동화된 빌드 환경 만들기",
+            "모바일 개발 관련 기술적 면접 질문 준비하기"
+          ],
+          "key_concepts": [
+            "Packaging",
+            "CI/CD",
+            "Technical Interview Questions"
+          ],
+          "estimated_hours": 12
+        }
+      ],
+      "overall_goal": "React Native를 활용한 모바일 애플리케이션을 독립적으로 개발할 수 있는 중급 개발자 역량을 갖추고, 취업 시장에 바로 투입될 수 있도록 준비합니다.",
+      "resources": [],
+      "session_id": "test_final_korean",
+      "original_constraints": "중급 1달",
+      "original_goal": "앱 개발 취업",
+      "generated_at": "2025-09-07T22:29:08.288532",
+      "id": 0,
+      "created_at": "2025-09-07T22:29:08.288590"
+    }
+  ],
+  "test_correct_korean": [
+    {
+      "title": "Flutter 모바일 Learning Path",
+      "level": "intermediate",
+      "duration_weeks": 8,
+      "modules": [
+        {
+          "week": 1,
+          "title": "Flutter 기초 및 개발 환경 설정",
+          "description": "Flutter의 기본 개념을 이해하고 개발 환경을 구성하는 방법을 학습합니다. Dart 프로그래밍 언어의 기초와 함께 Flutter SDK를 설치하고 설정하는 과정을 다룹니다.",
+          "objectives": [
+            "Dart 프로그래밍 언어의 기초 문법을 이해할 수 있다.",
+            "Flutter SDK 설치 및 환경 설정을 수행할 수 있다.",
+            "기본적인 Dart 콘솔 애플리케이션 작성이 가능하다."
+          ],
+          "key_개념들": [
+            "Dart 언어 구조와 특징",
+            "Flutter 개발환경 설정 절차",
+            "Flutter 프로젝트 구조 이해"
+          ],
+          "estimated_시간": 10
+        },
+        {
+          "week": 2,
+          "title": "상태 관리 및 위젯 레이아웃",
+          "description": "Flutter에서 UI를 구성하는 핵심인 위젯을 다루고, 다양한 상황에서의 상태 관리 기법을 학습합니다. Material 디자인과 Cupertino 스타일을 구현해보세요.",
+          "objectives": [
+            "다양한 Flutter 위젯들의 종류와 용도를 구분할 수 있다.",
+            "레이아웃 구성을 위한 위젯 조합 방법을 익힐 수 있다.",
+            "상태 관리 패턴을 적용하여 애플리케이션을 개발할 수 있다."
+          ],
+          "key_개념들": [
+            "Stateful vs Stateless 위젯",
+            "Row, Column, Scaffold 레이아웃 사용법",
+            "getter/setter를 통한 상태 관리"
+          ],
+          "estimated_시간": 12
+        },
+        {
+          "week": 3,
+          "title": "플랫폼 간 UI 일관성 및 플랫폼별 기능",
+          "description": "iOS와 Android 양쪽에서 일관된 사용자 경험을 제공하기 위한 크로스 플랫폼 전략과 각 플랫폼별 고유 기능들을 활용하는 방법에 대해 학습합니다.",
+          "objectives": [
+            "Cross-platform 개발의 장단점을 설명할 수 있다.",
+            "플랫폼 특화 위젯과 API를 활용할 수 있다.",
+            "플랫폼 간 UI 일관성 유지 기법을 적용할 수 있다."
+          ],
+          "key_개념들": [
+            "Platform-specific 위젯 사용",
+            "iOS/Android 네이티브 기능 연동 방법",
+            "크로스 플랫폼 디자인 패턴"
+          ],
+          "estimated_시간": 11
+        },
+        {
+          "week": 4,
+          "title": "데이터 바인딩 및 사용자 상호작용 처리",
+          "description": "Flutter의 강력한 데이터 바인딩 시스템과 사용자와의 다양한 상호작용을 처리하는 방법에 대해 학습합니다. 상태 변화 감지 및 적절한 UI 업데이트를 구현해보세요.",
+          "objectives": [
+            "State, Listenable, Future 등의 데이터 바인딩 개념을 이해할 수 있다.",
+            "사용자 입력 이벤트 처리 로직을 구현할 수 있다.",
+            "비동기적 데이터 로딩과 UI 업데이트를 연동할 수 있다."
+          ],
+          "key_개념들": [
+            "데이터 바인딩 원리와 사용법",
+            "이벤트 처리와 위젯 반응성",
+            "Observation 패턴"
+          ],
+          "estimated_시간": 10
+        },
+        {
+          "week": 5,
+          "title": "네트워크 통신 및 API 연동",
+          "description": "Flutter 애플리케이션에서 외부 데이터를 가져오기 위한 네트워크 통신 기법과 REST, GraphQL 등의 API를 활용하는 방법을 학습합니다.",
+          "objectives": [
+            "Flutter 네트워킹 라이브러리 사용법을 익힐 수 있다.",
+            "API 요청/응답 처리 로직을 구현할 수 있다.",
+            "에러 핸들링 및 로딩 상태 관리를 적용할 수 있다."
+          ],
+          "key_개념들": [
+            "Http, WebClient 사용법",
+            "네트워크 에러 처리 방법",
+            "캐싱 전략과 메모리 최적화"
+          ],
+          "estimated_시간": 12
+        },
+        {
+          "week": 6,
+          "title": "애니메이션 및 성능 최적화",
+          "description": "Flutter에서 애니메이션을 구현하고 애플리케이션의 성능을 최적화하는 다양한 기법들에 대해 학습합니다. 사용자 경험을 향상시키는 시각적 효과를 구현해보세요.",
+          "objectives": [
+            "강체 애니메이션과 상태 머신 개념을 이해할 수 있다.",
+            "GPU 가속을 활용한 애니메이션 기법을 적용할 수 있다.",
+            "애플리케이션 메모리 및 CPU 사용량 최적화를 수행할 수 있다."
+          ],
+          "key_개념들": [
+            "AnimatedObject와 AnimationSet",
+            "RenderObject의 개념",
+            "메모리 프로파일링 및 성능 분석"
+          ],
+          "estimated_시간": 11
+        },
+        {
+          "week": 7,
+          "title": "디버깅 및 테스트 기법",
+          "description": "Flutter 애플리케이션 개발 시 발생할 수 있는 다양한 문제들을 해결하기 위한 디버깅 도구 사용법과 자동화된 테스트 작성 방법에 대해 학습합니다.",
+          "objectives": [
+            "Firebase Debugger와 IntelliJ 디버거를 활용할 수 있다.",
+            "단위 테스트 및 위젯 테스트 시나리오를 작성할 수 있다.",
+            "에러 로깅 및 크래시 리포팅 시스템을 구축할 수 있다."
+          ],
+          "key_개념들": [
+            "비동기 실행 컨텍스트 디버깅",
+            "UI 테스트 작성 기법",
+            "크래시 리포트 분석"
+          ],
+          "estimated_시간": 10
+        },
+        {
+          "week": 8,
+          "title": "실전 프로젝트 및 배포 준비",
+          "description": "실제 모바일 애플리케이션을 기획하고 개발하여 배포하는 전 과정을 경험합니다. 배운 개념들을 종합하여 자신만의 Flutter 앱을 완성해보세요.",
+          "objectives": [
+            "아이디어 기획부터 MVP 구현까지의 전체 개발 프로세스를 경험할 수 있다.",
+            "앱스토어/구글플레이에 배포 준비 작업을 수행할 수 있다.",
+            "사용자 피드백 기반 개선 작업을 계획할 수 있다."
+          ],
+          "key_개념들": [
+            "MVP 개발 방법론",
+            "앱 빌드 및 패키징 절차",
+            "배포 플랫폼별 요구사항"
+          ],
+          "estimated_시간": 12
+        }
+      ],
+      "overall_goal": "Flutter를 활용한 중급 수준의 모바일 애플리케이션을 효율적으로 개발하고 배포할 수 있는 실무 능력 습득",
+      "resources": [],
+      "session_id": "test_correct_korean",
+      "original_constraints": "중급 2달",
+      "original_goal": "앱 개발 실력 향상",
+      "generated_at": "2025-09-07T22:33:58.201761",
+      "id": 0,
+      "created_at": "2025-09-07T22:33:58.201800"
+    }
+  ],
+  "test_final_fixed_korean": [
+    {
+      "title": "Spring Boot 백엔드 Learning Path",
+      "level": "intermediate",
+      "duration_weeks": 6,
+      "modules": [
+        {
+          "week": 1,
+          "title": "Spring Boot 기초 및 개발 환경 설정",
+          "description": "스프링 부트의 기본 개념을 이해하고 프로젝트를 생성할 수 있는 개발 환경을 구축하는 과정입니다. Maven/Gradle 의존성 관리와 IDE 설정을 학습합니다.",
+          "objectives": [
+            "Maven/Gradle을 활용한 스프링 부트 프로젝트 구조 이해하기",
+            "이클립스/인텔리제이 등 IDE에서 스프링 개발 환경 구축하기",
+            "스프링 부트 스타터 의존성 설정하고 첫 번째 프로젝트 생성하기"
+          ],
+          "key_ concepts": [
+            "Maven과 Gradle의 차이점 및 사용법",
+            "스프링 부트 스타터 dependencies 개념",
+            "pom.xml 또는 build.gradle 설정 방법"
+          ],
+          "estimated_hours": 10
+        },
+        {
+          "week": 2,
+          "title": "RESTful API 설계 및 개발",
+          "description": "스프링 부트를 활용하여 RESTful 웹 서비스를 설계하고 구현하는 방법을 학습합니다. JPA와 데이터베이스 연동 기초를 다룹니다.",
+          "objectives": [
+            "RESTful 아키텍처 스타일과 HTTP 메서드 이해하기",
+            "Spring Data JPA로 엔티티 매핑 구현하기",
+            ".spring.datasource 설정으로 데이터베이스 연결하기"
+          ],
+          "key_ concepts": [
+            "HATEOS(Hypermedia as the Engine of Application State) 개념",
+            "JPA Entity Mapping 전략",
+            "MySQL/PostgreSQL 데이터베이스 연결 설정"
+          ],
+          "estimated_hours": 12
+        },
+        {
+          "week": 3,
+          "title": "데이터 엔티티 설계 및 JPA 심화",
+          "description": "복잡한 비즈니스 로직을 반영한 데이터 모델링과 영속성 컨텍스트, 트랜잭션 관리를 학습합니다. Spring Data의 QueryDSL도 다룹니다.",
+          "objectives": [
+            "복합 키와 관계형 데이터베이스 매핑 구현하기",
+            "영속성 컨텍스트와 트랜잭션 관리 전략 수립하기",
+            "QueryDSL을 활용한 커스텀 쿼리 작성하기"
+          ],
+          "key_ concepts": [
+            "One-to-Many, Many-to-One 관계 설정법",
+            "JPA의 캐싱 전략과 2차 캐시",
+            "QueryDSL 문법 및 활용법"
+          ],
+          "estimated_hours": 10
+        },
+        {
+          "week": 4,
+          "title": "웹 애플리케이션 보안 및 예외 처리",
+          "description": "스프링 시큐리티를 활용한 인증/인가 시스템 구축과 예외 상황에 대한 적절한 핸들링 방법을 학습합니다.",
+          "objectives": [
+            "Spring Security로 사용자 인증/인가 구현하기",
+            "@ExceptionHandler를 사용한 커스텀 에러 페이지 만들기",
+            "CSRF, XSS 등 웹 보안 취약점 대응방안 수립하기"
+          ],
+          "key_ concepts": [
+            "OAuth2 기반 소셜 로그인 구현 원리",
+            "@RequestMapping과 @GetMapping 사용법",
+            "스프링 시큐리티 필터 체인 동작 방식"
+          ],
+          "estimated_hours": 12
+        },
+        {
+          "week": 5,
+          "title": "마이크로서비스 아키텍처와 배포 전략",
+          "description": "도커를 활용한 컨테이너화 및 CI/CD 파이프라인 구축 방법을 학습합니다. 클라우드 네이티브 애플리케이션 개발에 필요한 기초 지식을 습득합니다.",
+          "objectives": [
+            "Dockerfile 작성법과 이미지 빌드 프로세스 이해하기",
+            ".gitlab-ci.yml을 이용한 CI/CD 파이프라인 구성하기",
+            "Kubernetes를 통한 애플리케이션 배포 전략 수립하기"
+          ],
+          "key_ concepts": [
+            "Docker 레이어링 개념과 최적화 방법",
+            "CI/CD 파이프라인의 주요 단계와 도구(Jenkins, GitLab CI)",
+            "kubectl 명령어 사용법과 파드 관리"
+          ],
+          "estimated_hours": 10
+        },
+        {
+          "week": 6,
+          "title": "실무 프로젝트 적용 및 성능 최적화",
+          "description": "지금까지 학습한 내용을 종합하여 실무 수준의 백엔드 애플리케이션을 구현하고 성능 튜닝 방법을 학습합니다.",
+          "objectives": [
+            "실제 비즈니스 로직이 반영된 스프링 부트 프로젝트 완성하기",
+            "Spring Cache를 활용한 캐싱 전략 구현하기",
+            "모니터링 도구 설치 및 성능 지표 분석하기"
+          ],
+          "key_ concepts": [
+            "캐싱 전략 선택 기준과 구현 방법",
+            "prometheus/grafana를 이용한 모니터링 설정",
+            "성능 병목점 식별 및 최적화 기법"
+          ],
+          "estimated_hours": 15
+        }
+      ],
+      "overall_goal": "스프링 부트 기반의 실무급 백엔드 개발자로서 RESTful API 설계, 데이터베이스 연동, 보안 구현, 컨테이너화까지 전 과정을 이해하고 적용할 수 있는 역량 확보",
+      "resources": [],
+      "session_id": "test_final_fixed_korean",
+      "original_constraints": "중급 6주",
+      "original_goal": "백엔드 실력 향상",
+      "generated_at": "2025-09-07T22:36:13.268051",
+      "id": 0,
+      "created_at": "2025-09-07T22:36:13.268065"
+    }
   ]
 }

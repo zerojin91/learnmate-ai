@@ -14,7 +14,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #fbfbfc 0%, #fbfafc 100%);
+            background: #f9fafb;
             min-height: 100vh;
             display: flex;
         }
@@ -28,6 +28,9 @@
             display: flex;
             flex-direction: column;
             box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
         }
 
         .logo {
@@ -64,6 +67,7 @@
             border-radius: 12px;
             transition: all 0.3s ease;
             font-weight: 500;
+            cursor: pointer;
         }
 
         .nav-link i {
@@ -80,107 +84,63 @@
         /* 메인 컨텐츠 */
         .main-content {
             flex: 1;
-            padding: 30px;
-            overflow-y: auto;
-        }
-
-        .header {
+            margin-left: 280px;
+            min-height: 100vh;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            margin-bottom: 30px;
+            justify-content: center;
+            padding: 40px 20px;
         }
 
-        .page-title {
-            color: rgb(0, 0, 0);
-            font-size: 32px;
-            font-weight: 700;
+        /* 웰컴 섹션 */
+        .welcome-section {
+            text-align: center;
+            max-width: 800px;
+            margin-bottom: 40px;
         }
 
-        .page-subtitle {
-            color: rgba(8, 8, 8, 0.8);
-            font-size: 16px;
-            margin-top: 5px;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            padding: 10px 20px;
-            border-radius: 25px;
-            color: white;
-        }
-
-        /* 카드 그리드 */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 16px 40px rgba(0,0,0,0.15);
-        }
-
-        .card-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
+        .ai-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            border-radius: 50%;
+            margin: 0 auto 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            color: white;
-            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(168, 85, 247, 0.3);
         }
 
-        .card-title {
-            font-size: 20px;
+        .welcome-title {
+            font-size: 32px;
             font-weight: 600;
-            color: #2d3748;
+            color: #1f2937;
             margin-bottom: 10px;
         }
 
-        .card-description {
-            color: #718096;
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 20px;
+        .welcome-subtitle {
+            font-size: 20px;
+            color: #6b7280;
+            margin-bottom: 5px;
         }
 
-        .card-button {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
+        .welcome-subtitle .highlight {
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
         }
 
-        .card-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        /* 채팅 카드 - 특별한 스타일 */
-        .chat-card {
-            min-height: 400px;
+        /* 채팅 컨테이너 - 예시 카드 3개 분량 */
+        .chat-container {
+            flex: 3;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+            overflow: hidden;
+            height: 450px;
             display: flex;
             flex-direction: column;
         }
@@ -188,84 +148,380 @@
         .chat-messages {
             flex: 1;
             overflow-y: auto;
-            border: 2px dashed #e2e8f0;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            background: #f7fafc;
+            padding: 30px;
+            background: #ffffff;
         }
 
         .message {
-            margin-bottom: 15px;
-            padding: 12px 16px;
-            border-radius: 12px;
-            max-width: 80%;
-        }
-
-        .user-message {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            margin-left: auto;
-            border-bottom-right-radius: 4px;
-        }
-
-        .agent-message {
-            background: #e2e8f0;
-            color: #4a5568;
-            border-bottom-left-radius: 4px;
-        }
-
-        .chat-input-container {
+            margin-bottom: 20px;
             display: flex;
             gap: 12px;
         }
 
-        .chat-input {
-            flex: 1;
-            padding: 14px 18px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 16px;
-            outline: none;
-            transition: all 0.3s ease;
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
         }
 
-        .chat-input:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        .user-avatar {
+            background: #e5e7eb;
+            color: #6b7280;
+        }
+
+        .ai-avatar-small {
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            color: white;
+        }
+
+        .message-content {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .user-message .message-content {
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+
+        .ai-message .message-content {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            color: #374151;
+            border-left: none !important;
+        }
+        
+        .ai-message .message-content * {
+            border-left: none !important;
+            margin-left: 0 !important;
+            padding-left: 0 !important;
+        }
+
+        /* 입력 영역 */
+        .input-container {
+            padding: 30px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            flex-shrink: 0;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: #a855f7;
+            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 16px 20px;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            outline: none;
+            resize: none;
+            min-height: 24px;
+            max-height: 120px;
+            font-family: inherit;
+        }
+
+        .input-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-right: 12px;
+        }
+
+        .attach-button, .clear-button {
+            padding: 8px;
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .attach-button:hover, .clear-button:hover {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .clear-button:hover {
+            color: #ef4444;
         }
 
         .send-button {
-            padding: 14px 20px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
             color: white;
             border: none;
-            border-radius: 12px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
         }
 
         .send-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
         }
 
         .send-button:disabled {
-            opacity: 0.6;
+            opacity: 0.5;
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
+        }
+
+        /* 파일 입력 숨김 */
+        .file-input {
+            display: none;
+        }
+
+        /* 채팅과 프로필 영역 */
+        .chat-with-profile {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            gap: 24px;
+            align-items: flex-start;
+            margin-bottom: 40px;
+        }
+
+        /* 프로필 사이드바 - 예시 카드 1개 분량 */
+        .profile-sidebar {
+            flex: 1;
+            min-width: 280px;
+            max-width: 350px;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+        }
+
+        .profile-card h3 {
+            margin: 0 0 20px 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .profile-progress {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-step {
+            display: flex;
+            align-items: flex-start;
+            position: relative;
+        }
+
+        .step-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-right: 16px;
+            z-index: 2;
+        }
+
+        .step-circle {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-circle i {
+            font-size: 12px;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .step-line {
+            width: 2px;
+            height: 40px;
+            background: #e5e7eb;
+            margin-top: 4px;
+            transition: background 0.3s ease;
+        }
+
+        .profile-step:last-child .step-line {
+            display: none;
+        }
+
+        .step-content {
+            flex: 1;
+            padding: 2px 0 20px 0;
+        }
+
+        .step-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .step-value {
+            font-size: 14px;
+            color: #9ca3af;
+            font-weight: 400;
+        }
+
+        /* 완료된 단계 스타일 */
+        .profile-step.completed .step-circle {
+            background: #10b981;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        }
+
+        .profile-step.completed .step-circle i {
+            opacity: 1;
+        }
+
+        .profile-step.completed .step-line {
+            background: #10b981;
+        }
+
+        .profile-step.completed .step-value {
+            color: #374151;
+            font-weight: 500;
+        }
+
+        .profile-step.completed .step-label {
+            color: #374151;
+        }
+
+
+        /* 예시 카드 */
+        .examples-section {
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 40px;
+        }
+
+        .examples-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .example-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .example-card:hover {
+            border-color: #a855f7;
+            box-shadow: 0 4px 16px rgba(168, 85, 247, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .example-icon {
+            font-size: 20px;
+            color: #a855f7;
+            margin-bottom: 8px;
+        }
+
+        .example-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .example-description {
+            font-size: 12px;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        /* 알림 메시지 */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
         }
 
         /* 반응형 디자인 */
         @media (max-width: 768px) {
-            body {
-                flex-direction: column;
-            }
-            
             .sidebar {
                 width: 100%;
+                height: auto;
+                position: static;
                 padding: 20px;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 20px 15px;
             }
             
             .nav-menu {
@@ -278,6 +534,30 @@
             .nav-item {
                 margin-bottom: 0;
                 white-space: nowrap;
+            }
+
+            .welcome-title {
+                font-size: 24px;
+            }
+
+            .welcome-subtitle {
+                font-size: 18px;
+            }
+
+            .examples-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+            }
+            
+            .chat-with-profile {
+                gap: 16px;
+                margin-bottom: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .examples-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -292,37 +572,37 @@
         
         <ul class="nav-menu">
             <li class="nav-item">
-                <a href="#" class="nav-link active">
-                    <i class="fas fa-comments"></i>
-                    AI 서비스
+                <a class="nav-link active" data-page="chat">
+                    <i class="fas fa-bullseye"></i>
+                    맞춤형 학습 추천
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-user-check"></i>
-                    프로필
+                <a class="nav-link" data-page="profile">
+                    <i class="fas fa-robot"></i>
+                    AI 멘토
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a class="nav-link" data-page="curriculum">
                     <i class="fas fa-graduation-cap"></i>
                     나의 커리큘럼
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a class="nav-link" data-page="schedule">
                     <i class="fas fa-calendar-alt"></i>
                     나의 학습 계획
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a class="nav-link" data-page="progress">
                     <i class="fas fa-chart-line"></i>
                     학습 진도
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a class="nav-link" data-page="settings">
                     <i class="fas fa-cog"></i>
                     설정
                 </a>
@@ -332,97 +612,354 @@
 
     <!-- 메인 컨텐츠 -->
     <div class="main-content">
-        <div class="header">
-            <div>
-                <h1 class="page-title">AI 서비스</h1>
-                <p class="page-subtitle">당신만의 맞춤형 학습 계획을 만들어보세요</p>
+        <!-- 웰컴 섹션 -->
+        <div class="welcome-section">
+            <div class="ai-avatar">
             </div>
-            <div class="user-info">
-                <i class="fas fa-user-circle" style="margin-right: 10px; font-size: 20px;"></i>
-                신민수님
-            </div>
+            <h1 class="welcome-title">안녕하세요, <span id="userName">신민수</span>님</h1>
+            <p class="welcome-subtitle" id="welcomeSubtitle">오늘 <span class="highlight">무엇을</span> 배우고 싶으신가요?</p>
         </div>
 
-        <div class="cards-grid">
-            <!-- 1. 빠른 시작 (왼쪽 위) -->
-            <div class="card chat-card">
-                <div class="card-header">
-                    <div class="card-icon" style="background: #4299e1;"></div>
-                    <h3 class="card-title">빠른 시작</h3>
-                </div>
-                <p class="card-description">배우고 싶은 주제에 대해서 대화를 시작해보세요</p>
-                
-                <div class="chat-messages" id="chatMessages">
-                    <div class="message agent-message">
-                        안녕하세요! LearnAI의 학습 멘토입니다. 어떤 것을 배우고 싶으신가요?
+        <!-- 채팅과 프로필 영역 -->
+        <div class="chat-with-profile">
+            <!-- 채팅 컨테이너 -->
+            <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai-message">
+                    <div class="message-avatar ai-avatar-small">AI</div>
+                    <div class="message-content" id="initialMessage">
+                        안녕하세요! LearnAI 입니다.<br>어떤 주제에 대해 배우고 싶으신지 알려주시면 맞춤형 학습 계획을 함께 만들어보겠습니다!
                     </div>
                 </div>
-                
-                <div class="chat-input-container">
-                    <input 
-                        type="text" 
+            </div>
+            
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <textarea 
                         id="messageInput" 
-                        class="chat-input"
-                        placeholder="메시지를 입력하세요..."
-                        onkeypress="handleKeyPress(event)"
-                    >
-                    <button id="sendButton" class="send-button" onclick="sendMessage()">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
+                        class="message-input"
+                        placeholder="AI에게 질문하거나 요청을 입력하세요..."
+                        rows="1"
+                        onkeydown="handleKeyDown(event)"
+                        oninput="adjustTextareaHeight(this)"
+                    ></textarea>
+                    <div class="input-actions">
+                        <input type="file" id="fileInput" class="file-input" accept=".txt,.pdf,.doc,.docx">
+                        <button class="clear-button" onclick="clearChat()" title="대화 초기화">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <button id="sendButton" class="send-button" onclick="sendMessage()" title="전송">
+                            <i class="fas fa-arrow-up"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
-
-            <!-- 2. 수준 평가 (오른쪽 위) -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon" style="background: #9f7aea;"></div>
-                    <h3 class="card-title">수준 평가</h3>
+        </div>
+        
+        <!-- 학습 프로필 카드 -->
+        <div class="profile-sidebar">
+            <div class="profile-card">
+                <h3>학습 프로필</h3>
+                <div class="profile-progress">
+                    <div class="profile-step" id="stepTopic">
+                        <div class="step-indicator">
+                            <div class="step-circle">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="step-line"></div>
+                        </div>
+                        <div class="step-content">
+                            <div class="step-label">주제</div>
+                            <div id="profileTopic" class="step-value">설정 필요</div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-step" id="stepConstraints">
+                        <div class="step-indicator">
+                            <div class="step-circle">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="step-line"></div>
+                        </div>
+                        <div class="step-content">
+                            <div class="step-label">조건</div>
+                            <div id="profileConstraints" class="step-value">설정 필요</div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-step" id="stepGoal">
+                        <div class="step-indicator">
+                            <div class="step-circle">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="step-label">목표</div>
+                            <div id="profileGoal" class="step-value">설정 필요</div>
+                        </div>
+                    </div>
                 </div>
-                <p class="card-description">현재 지식 수준을 평가하고 최적의 학습 경로를 찾아보세요</p>
-                <button class="card-button">평가 시작</button>
             </div>
+        </div>
+        </div>
 
-            <!-- 3. 학습 목표 설정 (왼쪽 아래) -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon" style="background: #ed8936;"></div>
-                    <h3 class="card-title">학습 목표 설정</h3>
+        <!-- 예시 섹션 -->
+        <div class="examples-section">
+            <h3 class="examples-title">예시로 시작해보세요</h3>
+            <div class="examples-grid">
+                <div class="example-card" onclick="useExample('Python 프로그래밍을 처음부터 배우고 싶어요')">
+                    <div class="example-icon">
+                        <i class="fab fa-python"></i>
+                    </div>
+                    <div class="example-title">프로그래밍 학습</div>
+                    <div class="example-description">Python 처음부터 배우기</div>
                 </div>
-                <p class="card-description">명확한 학습 목표를 설정하고 달성 가능한 계획을 세워보세요</p>
-                <button class="card-button">시작하기</button>
-            </div>
-
-            <!-- 4. AI 멘토와 대화 (오른쪽 아래) -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon" style="background: #48bb78;"></div>
-                    <h3 class="card-title">AI 멘토와 대화</h3>
+                
+                <div class="example-card" onclick="useExample('영어 회화 실력을 향상시키고 싶습니다')">
+                    <div class="example-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <div class="example-title">언어 학습</div>
+                    <div class="example-description">영어 회화 향상 계획</div>
                 </div>
-                <p class="card-description">개인화된 학습 상담과 질문을 통해 맞춤형 도움을 받아보세요</p>
-                <button class="card-button">상담 시작</button>
+                
+                <div class="example-card" onclick="useExample('데이터 과학 공부 계획을 세워주세요')">
+                    <div class="example-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="example-title">데이터 과학</div>
+                    <div class="example-description">체계적인 학습 로드맵</div>
+                </div>
+                
+                <div class="example-card" onclick="useExample('AI와 머신러닝에 대해 알고 싶어요')">
+                    <div class="example-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="example-title">AI/ML 학습</div>
+                    <div class="example-description">인공지능 기초부터</div>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- 알림 -->
+    <div id="notification" class="notification"></div>
 
     <script>
         const chatMessages = document.getElementById('chatMessages');
         const messageInput = document.getElementById('messageInput');
         const sendButton = document.getElementById('sendButton');
 
+        // 사용자 이름 설정 (여기서 변경하세요)
+        const USER_NAME = "신민수"; // 원하는 이름으로 변경
+
+        // 사용자 정보 관리
+        let currentUser = {
+            name: USER_NAME,
+            profile: {}
+        };
+
+        // 간단한 마크다운 포맷팅 함수
+        function formatSimpleMarkdown(text) {
+            return text
+                // **굵은글씨** -> <strong>굵은글씨</strong>
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                // 줄바꿈 처리
+                .replace(/\n/g, '<br>')
+                // 불릿 포인트 처리
+                .replace(/^- (.*$)/gim, '• $1')
+                .replace(/^\* (.*$)/gim, '• $1');
+        }
+
+        // 학습 프로필 업데이트 함수
+        function updateLearningProfile(topic, constraints, goal) {
+            const profileTopic = document.getElementById('profileTopic');
+            const profileConstraints = document.getElementById('profileConstraints');
+            const profileGoal = document.getElementById('profileGoal');
+            
+            const stepTopic = document.getElementById('stepTopic');
+            const stepConstraints = document.getElementById('stepConstraints');
+            const stepGoal = document.getElementById('stepGoal');
+            
+            // 주제 업데이트
+            if (topic) {
+                profileTopic.textContent = topic;
+                stepTopic.classList.add('completed');
+            } else {
+                profileTopic.textContent = '설정 필요';
+                stepTopic.classList.remove('completed');
+            }
+            
+            // 조건 업데이트
+            if (constraints) {
+                profileConstraints.textContent = constraints;
+                stepConstraints.classList.add('completed');
+            } else {
+                profileConstraints.textContent = '설정 필요';
+                stepConstraints.classList.remove('completed');
+            }
+            
+            // 목표 업데이트
+            if (goal) {
+                profileGoal.textContent = goal;
+                stepGoal.classList.add('completed');
+            } else {
+                profileGoal.textContent = '설정 필요';
+                stepGoal.classList.remove('completed');
+            }
+        }
+
+        // AI 응답에서 프로필 정보 추출 및 업데이트
+        function extractAndUpdateProfile(message) {
+            // Assessment 관련 메시지에서 프로필 정보 추출 시도
+            if (message.includes('파이썬 학습 조건') || message.includes('파이썬 학습 목표') || message.includes('학습 프로필 분석 완료')) {
+                // 실제로는 서버에서 전달받아야 하지만, 임시로 로컬 스토리지 사용
+                const profile = JSON.parse(localStorage.getItem('currentProfile') || '{}');
+                if (profile.topic || profile.constraints || profile.goal) {
+                    updateLearningProfile(profile.topic, profile.constraints, profile.goal);
+                }
+            }
+        }
+
+        // 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            updateUserDisplay(); // 페이지 로드시 이름 업데이트
+            loadUserProfile();
+            setupNavigation();
+            
+            // 프로필 카드 초기화 (새로운 세션용)
+            updateLearningProfile('', '', '');
+            // localStorage에서 이전 프로필 정보 삭제
+            localStorage.removeItem('currentProfile');
+            
+            // 초기 메시지는 이미 HTML로 포맷됨
+        });
+
+        // 네비게이션 설정
+        function setupNavigation() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // 활성 상태 변경
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const page = this.dataset.page;
+                    navigateToPage(page);
+                });
+            });
+        }
+
+        // 페이지 네비게이션
+        function navigateToPage(page) {
+            const welcomeSubtitle = document.getElementById('welcomeSubtitle');
+            const initialMessage = document.getElementById('initialMessage');
+            
+            if (page === 'chat') {
+                // 맞춤형 학습 추천 모드
+                welcomeSubtitle.innerHTML = '오늘 <span class="highlight">무엇을</span> 배우고 싶으신가요?';
+                initialMessage.textContent = '안녕하세요! LearnAI의 학습 멘토입니다. 어떤 주제에 대해 배우고 싶으신지 알려주세요. 맞춤형 학습 계획을 함께 만들어보겠습니다.';
+                return;
+            } else if (page === 'profile') {
+                // AI 멘토 모드
+                welcomeSubtitle.innerHTML = '어떤 분야의 <span class="highlight">멘토가</span> 필요하신가요?';
+                initialMessage.textContent = '안녕하세요! 사내 지식이 풍부한 전문분야별 AI 멘토들이 여러분의 질문에 답변해드립니다. 궁금한 분야나 주제를 말씀해주시면, 해당 영역의 멘토들이 각자의 전문성을 살려 도움을 드리겠습니다.';
+                return;
+            }
+            // 다른 페이지들은 향후 SPA 라우팅 구현 예정
+            showNotification(`${page} 페이지로 이동 (개발 예정)`);
+        }
+
+        // 사용자 프로필 로드
+        function loadUserProfile() {
+            // 로컬스토리지에서 사용자 정보 로드 (향후 서버에서 가져올 예정)
+            const savedUser = localStorage.getItem('learnai_user');
+            if (savedUser) {
+                const parsedUser = JSON.parse(savedUser);
+                currentUser = { ...currentUser, ...parsedUser };
+                updateUserDisplay();
+            }
+        }
+
+        // 사용자 표시 업데이트
+        function updateUserDisplay() {
+            const userName = document.getElementById('userName');
+            userName.textContent = currentUser.name;
+        }
+
+        // 메시지 추가
         function addMessage(message, isUser) {
             const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${isUser ? 'user-message' : 'agent-message'}`;
-            messageDiv.textContent = message;
+            messageDiv.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = `message-avatar ${isUser ? 'user-avatar' : 'ai-avatar-small'}`;
+            avatar.textContent = isUser ? 'U' : 'AI';
+            
+            const content = document.createElement('div');
+            content.className = 'message-content';
+            
+            if (isUser) {
+                // 사용자 메시지는 플레인 텍스트
+                content.textContent = message;
+            } else {
+                // AI 메시지는 간단한 마크다운 처리
+                content.innerHTML = formatSimpleMarkdown(message);
+                // 프로필 정보 추출 및 업데이트
+                extractAndUpdateProfile(message);
+            }
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
             chatMessages.appendChild(messageDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') {
+        // 키보드 이벤트 처리
+        function handleKeyDown(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
                 sendMessage();
             }
         }
 
+        // 텍스트영역 높이 조정
+        function adjustTextareaHeight(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+        }
+
+        // 예시 사용
+        function useExample(exampleText) {
+            messageInput.value = exampleText;
+            adjustTextareaHeight(messageInput);
+            messageInput.focus();
+        }
+
+        // 스트리밍 응답용 메시지 추가
+        function addStreamingMessage() {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message ai-message';
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar ai-avatar-small';
+            avatar.textContent = 'AI';
+            
+            const content = document.createElement('div');
+            content.className = 'message-content';
+            content.textContent = '';
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            return content;
+        }
+
+        // 메시지 전송
         async function sendMessage() {
             const message = messageInput.value.trim();
             if (!message) return;
@@ -430,36 +967,144 @@
             // 사용자 메시지 표시
             addMessage(message, true);
             messageInput.value = '';
+            messageInput.style.height = 'auto';
             
             // 버튼 비활성화 및 로딩 표시
             sendButton.disabled = true;
             sendButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
 
+            // 스트리밍 응답용 메시지 컨테이너 생성
+            const streamingContent = addStreamingMessage();
+
             try {
-                // API 호출
+                // EventSource로 스트리밍 응답 받기
                 const response = await fetch('/chat', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
+                    credentials: 'include', // 쿠키 포함
                     body: JSON.stringify({ message: message })
                 });
 
-                const data = await response.json();
-                
-                if (data.error) {
-                    addMessage(`오류: ${data.error}`, false);
-                } else {
-                    addMessage(data.response, false);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let buffer = '';
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    
+                    buffer += decoder.decode(value, { stream: true });
+                    const lines = buffer.split('\n');
+                    buffer = lines.pop() || ''; // 마지막 불완전한 라인은 버퍼에 유지
+                    
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            try {
+                                const data = JSON.parse(line.slice(6));
+                                if (data.content) {
+                                    // 스트리밍 중에는 텍스트 누적
+                                    const currentText = streamingContent.getAttribute('data-raw-text') || '';
+                                    const newText = currentText + data.content;
+                                    streamingContent.setAttribute('data-raw-text', newText);
+                                    
+                                    // 간단한 마크다운 처리
+                                    streamingContent.innerHTML = formatSimpleMarkdown(newText);
+                                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                                    
+                                    // 프로필 정보가 있는 경우 업데이트
+                                    if (data.profile) {
+                                        console.log('프로필 정보 수신:', data.profile);
+                                        
+                                        // 현재 세션의 프로필만 사용하고, 이전 세션 정보는 무시
+                                        updateLearningProfile(data.profile.topic || '', data.profile.constraints || '', data.profile.goal || '');
+                                    } else {
+                                        console.log('프로필 정보 없음:', data);
+                                    }
+                                } else if (data.error) {
+                                    streamingContent.textContent = `오류: ${data.error}`;
+                                    break;
+                                } else if (data.done) {
+                                    break;
+                                }
+                            } catch (e) {
+                                console.error('JSON 파싱 오류:', e);
+                            }
+                        }
+                    }
                 }
 
             } catch (error) {
-                addMessage(`연결 오류: ${error.message}`, false);
+                streamingContent.textContent = `연결 오류: ${error.message}`;
             }
 
             // 버튼 다시 활성화
             sendButton.disabled = false;
-            sendButton.innerHTML = '<i class="fas fa-paper-plane"></i>';
+            sendButton.innerHTML = '<i class="fas fa-arrow-up"></i>';
+        }
+
+        // 사용자 프로필 업데이트
+        function updateUserProfile(profileData) {
+            currentUser = { ...currentUser, ...profileData };
+            localStorage.setItem('learnai_user', JSON.stringify(currentUser));
+            updateUserDisplay();
+            showNotification('프로필이 업데이트되었습니다');
+        }
+
+        // 알림 표시
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // 대화 초기화
+        async function clearChat() {
+            try {
+                const response = await fetch('/clear-chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include' // 쿠키 포함
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // 채팅 메시지 화면 초기화
+                    const chatMessages = document.getElementById('chatMessages');
+                    // 현재 모드에 따라 초기 메시지 설정
+                    const activeTab = document.querySelector('.nav-link.active').dataset.page;
+                    const initialMsg = activeTab === 'profile' 
+                        ? '안녕하세요! 사내 지식이 풍부한 전문분야별 AI 멘토들이 여러분의 질문에 답변해드립니다. 궁금한 분야나 주제를 말씀해주시면, 해당 영역의 멘토들이 각자의 전문성을 살려 도움을 드리겠습니다.'
+                        : '안녕하세요! LearnAI의 학습 멘토입니다. 어떤 주제에 대해 배우고 싶으신지 알려주세요. 맞춤형 학습 계획을 함께 만들어보겠습니다.';
+                    
+                    chatMessages.innerHTML = `
+                        <div class="message ai-message">
+                            <div class="message-avatar ai-avatar-small">AI</div>
+                            <div class="message-content" id="initialMessage">
+                                ${initialMsg}
+                            </div>
+                        </div>
+                    `;
+                    showNotification('대화가 초기화되었습니다');
+                } else {
+                    showNotification('대화 초기화에 실패했습니다', 'error');
+                }
+            } catch (error) {
+                showNotification(`오류: ${error.message}`, 'error');
+            }
         }
     </script>
 </body>

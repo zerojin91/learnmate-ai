@@ -1,9 +1,148 @@
+"""
+통합 유틸리티 모듈 - 토큰 관리 + LangGraph 스트리밍
+"""
 from typing import Any, Dict, List, Callable, Optional
 from langchain_core.messages import BaseMessage
 from langchain_core.runnables import RunnableConfig
 from langgraph.graph.state import CompiledStateGraph
 import uuid
+from config import Config
 
+
+# =============================================================================
+# 토큰 관리 유틸리티
+# =============================================================================
+
+def estimate_tokens(text: str) -> int:
+    """
+    텍스트의 토큰 수를 대략적으로 추정합니다.
+    
+    Args:
+        text (str): 토큰 수를 계산할 텍스트
+        
+    Returns:
+        int: 추정된 토큰 수
+    """
+    return len(text) // Config.AVERAGE_CHARS_PER_TOKEN
+
+
+def calculate_conversation_tokens(conversation_history: List[Dict[str, str]]) -> int:
+    """
+    대화 기록의 총 토큰 수를 계산합니다.
+    
+    Args:
+        conversation_history: 대화 기록 리스트
+        
+    Returns:
+        int: 총 토큰 수
+    """
+    total_tokens = 0
+    for message in conversation_history:
+        total_tokens += estimate_tokens(message.get("content", ""))
+    return total_tokens
+
+
+def trim_conversation_history(conversation_history: List[Dict[str, str]], max_tokens: int) -> List[Dict[str, str]]:
+    """
+    대화 기록을 토큰 제한에 맞게 잘라냅니다.
+    최신 메시지부터 유지하며, 토큰 제한을 초과하지 않도록 합니다.
+    과거 기록부터 자동으로 삭제됩니다.
+    
+    Args:
+        conversation_history: 전체 대화 기록
+        max_tokens: 최대 토큰 수
+        
+    Returns:
+        List[Dict[str, str]]: 토큰 제한에 맞는 대화 기록
+    """
+    if not conversation_history:
+        return []
+    
+    original_count = len(conversation_history)
+    
+    # 최신 메시지부터 역순으로 확인
+    trimmed_history = []
+    current_tokens = 0
+    
+    for message in reversed(conversation_history):
+        message_tokens = estimate_tokens(message.get("content", ""))
+        
+        # 토큰 제한을 초과하지 않는 경우에만 추가
+        if current_tokens + message_tokens <= max_tokens:
+            trimmed_history.insert(0, message)  # 앞쪽에 삽입하여 순서 유지
+            current_tokens += message_tokens
+        else:
+            # 토큰 제한 초과시 더 이상 추가하지 않음 (과거 기록 삭제)
+            break
+    
+    # 대화 기록이 잘렸는지 로그 출력
+    if len(trimmed_history) < original_count:
+        deleted_count = original_count - len(trimmed_history)
+        print(f"🗑️  대화 기록 정리: {deleted_count}개 과거 메시지 삭제됨 (토큰 절약: {current_tokens}/{max_tokens})")
+    
+    return trimmed_history
+
+
+def log_token_usage(conversation_history: List[Dict[str, str]]):
+    """
+    토큰 사용량을 로그로 출력합니다.
+    """
+    current_tokens = calculate_conversation_tokens(conversation_history)
+    max_tokens = Config.get_effective_max_tokens()
+    usage_percent = current_tokens/max_tokens*100
+    
+    print(f"📊 토큰 사용량: {current_tokens}/{max_tokens} ({usage_percent:.1f}%)")
+    
+    # 단계별 경고
+    if usage_percent > 90:
+        print("🚨 토큰 사용량 위험! 곧 과거 메시지가 삭제됩니다.")
+    elif usage_percent > 80:
+        print("⚠️  토큰 사용량이 높습니다. 대화 기록이 곧 정리될 예정입니다.")
+    elif usage_percent > 60:
+        print("📈 토큰 사용량이 증가하고 있습니다.")
+
+
+def apply_chat_template(conversation_history: List[Dict[str, str]], modified_message: str, system_prompt: str) -> str:
+    """
+    HuggingFace 스타일 Chat Template으로 대화 기록을 하나의 프롬프트로 변환합니다.
+    
+    Args:
+        conversation_history: 전체 대화 기록
+        modified_message: 마지막 사용자 메시지 (툴 사용해 추가된)
+        system_prompt: 시스템 프롬프트
+        
+    Returns:
+        str: Chat Template 형식의 전체 프롬프트
+    """
+    template = ""
+    
+    # 시스템 메시지 추가
+    template += f"<|start_header_id|>system<|end_header_id|>\n\n{system_prompt}<|eot_id|>"
+    
+    # 대화 기록 처리
+    for i, item in enumerate(conversation_history):
+        role = item["role"]
+        if role == "user":
+            role = "user"
+            # 마지막 사용자 메시지만 "(툴 사용해)" 추가
+            content = modified_message if i == len(conversation_history) - 1 else item["content"]
+        elif role == "assistant":
+            role = "assistant"
+            content = item["content"]
+        else:
+            continue
+        
+        template += f"<|start_header_id|>{role}<|end_header_id|>\n\n{content}<|eot_id|>"
+    
+    # assistant 응답 시작 토큰 추가
+    template += "<|start_header_id|>assistant<|end_header_id|>\n\n"
+    
+    return template
+
+
+# =============================================================================
+# LangGraph 스트리밍 유틸리티
+# =============================================================================
 
 def random_uuid():
     return str(uuid.uuid4())
@@ -209,7 +348,6 @@ async def astream_graph(
 
     # 필요에 따라 최종 결과 반환
     return final_result
-
 
 async def ainvoke_graph(
     graph: CompiledStateGraph,
