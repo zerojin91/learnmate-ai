@@ -21,7 +21,7 @@ async def lifespan(app: FastAPI):
         # 일시적으로 user_assessment 서버만 사용 (테스트용)
         servers = [
             "servers/user_assessment.py",
-            # "servers/generate_curriculum.py",  # 임시 비활성화
+            "servers/generate_curriculum.py",  # 임시 비활성화
             # "servers/evaluate_user.py"         # 임시 비활성화
         ]
         
