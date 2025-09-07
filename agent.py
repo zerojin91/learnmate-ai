@@ -12,7 +12,6 @@ from langchain_openai import ChatOpenAI
 from utils import astream_graph, trim_conversation_history, log_token_usage, apply_chat_template
 from config import Config
 
-
 class MultiMCPAgent:
     """여러 MCP 서버를 동시에 연결하는 에이전트 with Stateful Assessment"""
     
@@ -30,7 +29,7 @@ class MultiMCPAgent:
         self.conversation_history: List[Dict[str, str]] = [
             {
                 "role": "assistant", 
-                "content": "안녕하세요! LearnAI의 학습 멘토입니다. 어떤 주제에 대해 배우고 싶으신지 알려주세요. 맞춤형 학습 계획을 함께 만들어보겠습니다!"
+                "content": "안녕하세요! LearnAI 입니다. 어떤 주제에 대해 배우고 싶으신지 알려주시면 맞춤형 학습 계획을 함께 만들어보겠습니다!"
             }
         ]
         self.max_tokens = Config.LLM_MAX_TOKENS
@@ -167,10 +166,11 @@ class MultiMCPAgent:
                 }
                 return
             
-            # 도구 호출 인자 구성
-            tool_args = {"user_message": message}
-            if self.current_session_id:
-                tool_args["session_id"] = self.current_session_id
+            # 도구 호출 인자 구성 - 항상 세션 ID 포함
+            tool_args = {
+                "user_message": message,
+                "session_id": self.current_session_id
+            }
             
             print(f"🔧 도구 호출: user_profiling - {tool_args}")
             
@@ -195,11 +195,35 @@ class MultiMCPAgent:
                 print(result, end="", flush=True)
                 self.conversation_history.append({"role": "assistant", "content": result})
                 
-                yield {
+                # 세션에서 프로필 정보 가져오기
+                profile_data = None
+                try:
+                    from servers.user_assessment import load_session
+                    if self.current_session_id:
+                        session_data = load_session(self.current_session_id)
+                        if session_data:
+                            profile_info = {
+                                'topic': session_data.get('topic', ''),
+                                'constraints': session_data.get('constraints', ''),
+                                'goal': session_data.get('goal', '')
+                            }
+                            # 빈 값이 아닌 것만 포함
+                            profile_data = {k: v for k, v in profile_info.items() if v}
+                            print(f"📊 Assessment에서 프로필 전송: {profile_data}")
+                except Exception as e:
+                    print(f"프로필 로드 오류: {e}")
+                
+                response_chunk = {
                     "type": "message",
                     "content": result,
                     "node": "assessment_tool"
                 }
+                
+                # 프로필 정보가 있으면 추가
+                if profile_data:
+                    response_chunk["profile"] = profile_data
+                
+                yield response_chunk
             
         except Exception as e:
             print(f"❌ Assessment 플로우 오류: {e}")

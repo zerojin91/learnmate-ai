@@ -2,7 +2,7 @@
   "messages": [
     {
       "role": "user",
-      "content": "나는 파이썬 배우고 싶어"
+      "content": "파이썬 공부하고 싶어"
     },
     {
       "role": "assistant",
@@ -13,6 +13,6 @@
   "constraints": "",
   "goal": "",
   "current_agent": "response",
-  "session_id": "3d2b5dfd",
+  "session_id": "a30505d9",
   "completed": false
 }

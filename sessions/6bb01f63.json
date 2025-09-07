@@ -1,0 +1,26 @@
+{
+  "messages": [
+    {
+      "role": "user",
+      "content": "안녕"
+    },
+    {
+      "role": "assistant",
+      "content": "🎯 **어떤 분야를 학습하고 싶으신가요?**\n\n구체적으로 말씀해주시면 더 정확한 계획을 세울 수 있어요:\n- 프로그래밍 (Python, JavaScript 등)\n- 언어 (영어, 중국어 등)\n- 데이터 분석/AI\n- 기타 분야\n\n자세히 알려주세요!"
+    },
+    {
+      "role": "user",
+      "content": "나 파이썬 공부하고 싶어"
+    },
+    {
+      "role": "assistant",
+      "content": "📚 **파이썬 학습 조건을 알려주세요!**\n\n**현재 수준**: 완전 초보자이신가요, 아니면 어느 정도 아시나요?\n**시간 투자**: 일주일에 몇 시간 정도 공부할 수 있으신가요?\n\n이런 정보가 있어야 현실적인 학습 계획을 세울 수 있어요!"
+    }
+  ],
+  "topic": "파이썬",
+  "constraints": "",
+  "goal": "",
+  "current_agent": "response",
+  "session_id": "6bb01f63",
+  "completed": false
+}

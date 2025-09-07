@@ -16,6 +16,12 @@ import logging
 from datetime import datetime
 import uuid
 import os
+import sys
+
+# 상위 디렉토리의 config 모듈 import
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from config import Config
+from utils import random_uuid
 
 # 로깅 설정
 logging.basicConfig(level=logging.INFO)
@@ -93,13 +99,13 @@ class UserInfoSchema(BaseModel):
     constraints: str = Field(default="", description="사용자가 명시적으로 말한 제약조건만. 예: '초보자', '주 3시간'. 없으면 빈 문자열") 
     goal: str = Field(default="", description="사용자가 직접 언급한 목표만. 예: '취업', '자격증'. 추측하지 말고 명시된 것만")
 
-# LLM 초기화
+# LLM 초기화 - config에서 설정값 가져오기
 llm = ChatOpenAI(
-    base_url="http://localhost:11434/v1",
-    api_key="ollama",
-    model="midm-2.0-base-q8",
-    temperature=0.7,
-    max_tokens=1024,
+    base_url=Config.LLM_BASE_URL,
+    api_key=Config.LLM_API_KEY,
+    model=Config.LLM_MODEL,
+    temperature=Config.LLM_TEMPERATURE,
+    max_tokens=Config.LLM_MAX_TOKENS,
 )
 
 class AssessmentAgentSystem:
@@ -325,8 +331,8 @@ mcp = FastMCP(
     topic, constraints, goal을 모두 수집할 때까지 계속됩니다.
     
     각 호출마다 session_id를 포함하여 상태를 유지하세요.""",
-    host="0.0.0.0",
-    port=8005,
+    host=Config.MCP_SERVER_HOST,
+    port=Config.MCP_SERVER_PORT,
 )
 
 @mcp.tool()
@@ -352,10 +358,9 @@ async def user_profiling(user_message: str, session_id: str = None) -> str:
     logger.info(f"세션 ID: {session_id}")
     logger.info(f"현재 SESSIONS 키들: {list(SESSIONS.keys())}")
     
-    # 세션 ID 생성 또는 가져오기
+    # 세션 ID가 없으면 오류 (main.py에서 항상 생성되어야 함)
     if not session_id:
-        session_id = str(uuid.uuid4())[:8]
-        logger.info(f"새 세션 생성: {session_id}")
+        return "오류: 세션 ID가 제공되지 않았습니다. 페이지를 새로고침해주세요."
     
     # 기존 세션 상태 가져오기 또는 새로 생성
     current_state = load_session(session_id)
@@ -394,11 +399,8 @@ async def user_profiling(user_message: str, session_id: str = None) -> str:
             if latest_response.get("role") == "assistant":
                 response_content = latest_response.get("content", "")
                 
-                # 세션 정보 포함
-                session_info = f"\n\n_Session: {session_id} | Status: {'Complete' if result.get('completed') else 'In Progress'}_"
-                
                 logger.info(f"응답 생성 완료 - Session: {session_id}")
-                return response_content + session_info
+                return response_content
         
         return f"처리 중 오류가 발생했습니다. (Session: {session_id})"
         
@@ -406,35 +408,6 @@ async def user_profiling(user_message: str, session_id: str = None) -> str:
         logger.error(f"워크플로우 실행 오류: {str(e)}")
         return f"오류가 발생했습니다: {str(e)} (Session: {session_id})"
 
-@mcp.tool()
-async def get_session_status(session_id: str) -> str:
-    """
-    세션 상태를 확인합니다.
-    
-    Args:
-        session_id: 확인할 세션 ID
-        
-    Returns:
-        str: 세션 상태 정보
-    """
-    
-    if session_id not in SESSIONS:
-        return f"세션 {session_id}를 찾을 수 없습니다."
-    
-    session = SESSIONS[session_id]
-    
-    status = f"""
-📊 **세션 {session_id} 상태**
-
-**완료 여부**: {'✅ 완료' if session.get('completed') else '🔄 진행중'}
-**학습 주제**: {session.get('topic', '미파악')}
-**제약 조건**: {session.get('constraints', '미파악')}
-**구체적 목표**: {session.get('goal', '미파악')}
-**메시지 수**: {len(session.get('messages', []))}
-**현재 에이전트**: {session.get('current_agent', 'unknown')}
-    """.strip()
-    
-    return status
 
 if __name__ == "__main__":
     mcp.run(transport="stdio")
