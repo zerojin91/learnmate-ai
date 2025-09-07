@@ -346,24 +346,19 @@
             flex-direction: column;
         }
 
-        /* 커리큘럼 섹션이 있을 때만 flex 확장 */
+        /* 커리큘럼 섹션이 있을 때는 프로필 진행 상황은 그대로 유지 */
         .profile-card.with-curriculum .profile-progress {
-            flex: 1;
-            justify-content: space-between;
-            min-height: 200px;
+            /* justify-content 제거하여 기본 간격 유지 */
         }
 
         .profile-step {
             display: flex;
             align-items: flex-start;
             position: relative;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
         }
 
-        /* 커리큘럼 섹션이 있을 때만 간격 확대 */
-        .profile-card.with-curriculum .profile-step {
-            margin-bottom: 24px;
-        }
+        /* 커리큘럼 섹션이 있을 때도 기본 간격 유지 */
 
         .step-indicator {
             display: flex;
@@ -395,9 +390,9 @@
 
         .step-line {
             width: 2px;
-            height: 50px;
+            height: 32px;
             background: #d1d5db;
-            margin-top: 8px;
+            margin-top: 6px;
             transition: background 0.3s ease;
         }
 
@@ -407,20 +402,23 @@
 
         .step-content {
             flex: 1;
-            padding: 2px 0 30px 0;
+            padding: 2px 0 16px 0;
         }
 
         .step-label {
             font-size: 14px;
             font-weight: 600;
             color: #6b7280;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
+            line-height: 1.2;
         }
 
         .step-value {
             font-size: 14px;
             color: #9ca3af;
             font-weight: 400;
+            line-height: 1.3;
+            margin-top: 2px;
         }
 
         /* 완료된 단계 스타일 */
