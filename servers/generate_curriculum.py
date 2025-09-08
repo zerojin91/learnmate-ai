@@ -35,10 +35,10 @@ def initialize_llm():
             temperature=0.7,
             max_tokens=Config.LLM_MAX_TOKENS,
         )
-        print(f"🤖 LLM initialized: {Config.LLM_MODEL}")
+        # print(f"🤖 LLM initialized: {Config.LLM_MODEL}")  # MCP 통신 방해 방지
         return llm, True
     except Exception as e:
-        print(f"❌ LLM initialization failed: {e}")
+        # print(f"❌ LLM initialization failed: {e}")  # MCP 통신 방해 방지
         return None, False
 
 llm, llm_available = initialize_llm()
@@ -52,7 +52,7 @@ class LevelEnum(str, Enum):
 class SessionParameters(BaseModel):
     """세션 파라미터 추출을 위한 구조화된 출력"""
     level: LevelEnum = Field(description="학습자의 레벨 (beginner/intermediate/advanced)")
-    duration_weeks: int = Field(description="학습 기간 (주 단위, 1-12 사이)", ge=1, le=12)
+    duration_weeks: int = Field(description="학습 기간 (주 단위, 1-52 사이)", ge=1, le=52)  # 1년까지 확장
     focus_areas: List[str] = Field(description="학습 포커스 영역들")
     
 class ExtractionRequest(BaseModel):
@@ -74,10 +74,11 @@ class CurriculumDB:
             if os.path.exists(file_path):
                 with open(file_path, 'r', encoding='utf-8') as f:
                     self.curriculums = json.load(f)
-                print(f"📚 Loaded {len(self.curriculums)} curriculums")
+                # print(f"📚 Loaded {len(self.curriculums)} curriculums")  # MCP 통신 방해 방지
         except Exception as e:
-            print(f"❌ Error loading data: {e}")
+            # print(f"❌ Error loading data: {e}")  # MCP 통신 방해 방지
             self.curriculums = {}
+            pass
     
     def _save_data(self):
         try:
@@ -85,7 +86,8 @@ class CurriculumDB:
             with open(file_path, 'w', encoding='utf-8') as f:
                 json.dump(self.curriculums, f, indent=2, ensure_ascii=False)
         except Exception as e:
-            print(f"❌ Error saving data: {e}")
+            # print(f"❌ Error saving data: {e}")  # MCP 통신 방해 방지
+            pass
     
     def save_curriculum(self, user_id: str, curriculum: Dict):
         if user_id not in self.curriculums:
@@ -129,7 +131,7 @@ class SessionLoader:
                         "goal": session_data.get("goal")
                     })
             except Exception as e:
-                print(f"⚠️ Error loading {session_file}: {e}")
+                # print(f"⚠️ Error loading {session_file}: {e}")  # MCP 통신 방해 방지
                 continue
         
         return completed_sessions
@@ -137,7 +139,7 @@ class SessionLoader:
     async def extract_parameters_with_llm(self, constraints: str, goal: str, max_retries: int = 3) -> Dict[str, Any]:
         """LLM을 사용하여 세션 파라미터를 추출합니다 (재시도 메커니즘 포함)"""
         if not llm_available:
-            print("⚠️ LLM not available, using fallback method")
+            # print("⚠️ LLM not available, using fallback method")  # MCP 통신 방해 방지
             return self.parse_constraints_fallback(constraints, goal)
         
         for attempt in range(max_retries):
@@ -157,9 +159,14 @@ class SessionLoader:
 2. 기간 (duration_weeks):
    - "1주", "일주일", "1week" → 1
    - "2주", "2week", "2일" → 2
-   - "1달", "한달", "1month" → 4
-   - "2달", "두달", "2month" → 8
-   - "3달", "세달", "3month" → 12
+   - "1달", "한달", "1month", "4주" → 4
+   - "2달", "두달", "2month", "8주" → 8
+   - "3달", "세달", "3month", "12주" → 12
+   - "4개월", "4month", "16주" → 16
+   - "5개월", "5month", "20주" → 20
+   - "6개월", "반년", "6month", "24주" → 24
+   - "9개월", "9month" → 36
+   - "1년", "12개월", "1year", "52주" → 52
    - 명시되지 않으면 → 4
 
 3. 포커스 영역 (focus_areas):
@@ -181,7 +188,7 @@ JSON 형식으로만 응답해주세요."""
                     HumanMessage(content=prompt)
                 ]
                 
-                print(f"🤖 LLM parameter extraction attempt {attempt + 1}/{max_retries}...")
+                # print(f"🤖 LLM parameter extraction attempt {attempt + 1}/{max_retries}...")  # MCP 통신 방해 방지
                 result = await structured_llm.ainvoke(messages)
                 
                 # 성공하면 결과 반환
@@ -190,18 +197,18 @@ JSON 형식으로만 응답해주세요."""
                     "duration_weeks": result.duration_weeks,
                     "focus_areas": result.focus_areas
                 }
-                print(f"✅ LLM extraction successful on attempt {attempt + 1}")
+                # print(f"✅ LLM extraction successful on attempt {attempt + 1}")  # MCP 통신 방해 방지
                 return extracted_params
             
             except Exception as e:
-                print(f"⚠️ LLM extraction attempt {attempt + 1} failed: {e}")
+                # print(f"⚠️ LLM extraction attempt {attempt + 1} failed: {e}")  # MCP 통신 방해 방지
                 
                 # 마지막 시도가 아니면 계속 재시도
                 if attempt < max_retries - 1:
-                    print(f"🔄 Retrying... ({max_retries - attempt - 1} attempts remaining)")
+                    # print(f"🔄 Retrying... ({max_retries - attempt - 1} attempts remaining)")  # MCP 통신 방해 방지
                     continue
                 else:
-                    print(f"❌ All {max_retries} LLM attempts failed, falling back to rule-based parsing")
+                    # print(f"❌ All {max_retries} LLM attempts failed, falling back to rule-based parsing")  # MCP 통신 방해 방지
                     break
         
         # 모든 재시도 실패시 fallback 사용
@@ -219,16 +226,28 @@ JSON 형식으로만 응답해주세요."""
         elif any(word in constraints_lower for word in ["고급", "전문", "advanced"]):
             level = "advanced"
         
-        # 기간 파싱 (주 단위)
+        # 기간 파싱 (주 단위) - 확장된 버전
         duration_weeks = 4  # 기본값
         if any(word in constraints_lower for word in ["1주", "1week"]):
             duration_weeks = 1
         elif any(word in constraints_lower for word in ["2주", "2week", "2일"]):
             duration_weeks = 2
-        elif any(word in constraints_lower for word in ["1달", "1month"]):
+        elif any(word in constraints_lower for word in ["1달", "1month", "4주"]):
             duration_weeks = 4
-        elif any(word in constraints_lower for word in ["2달", "2month"]):
+        elif any(word in constraints_lower for word in ["2달", "2month", "8주"]):
             duration_weeks = 8
+        elif any(word in constraints_lower for word in ["3달", "3month", "12주"]):
+            duration_weeks = 12
+        elif any(word in constraints_lower for word in ["4개월", "4month", "16주"]):
+            duration_weeks = 16
+        elif any(word in constraints_lower for word in ["5개월", "5month", "20주"]):
+            duration_weeks = 20
+        elif any(word in constraints_lower for word in ["6개월", "반년", "6month", "24주"]):
+            duration_weeks = 24
+        elif any(word in constraints_lower for word in ["9개월", "9month"]):
+            duration_weeks = 36
+        elif any(word in constraints_lower for word in ["1년", "12개월", "1year", "52주"]):
+            duration_weeks = 52
         
         # 포커스 영역 추출
         focus_areas = []
@@ -257,7 +276,7 @@ JSON 형식으로만 응답해주세요."""
             session_file_path = os.path.join(self.sessions_dir, f"{session_id}.json")
             
             if not os.path.exists(session_file_path):
-                print(f"⚠️ Session file not found: {session_file_path}")
+                # print(f"⚠️ Session file not found: {session_file_path}")  # MCP 통신 방해 방지
                 return False
             
             # 기존 세션 데이터 로드
@@ -333,14 +352,40 @@ JSON 형식으로만 응답해주세요."""
             with open(session_file_path, 'w', encoding='utf-8') as f:
                 json.dump(session_data, f, indent=2, ensure_ascii=False)
             
-            print(f"✅ Session {session_id} updated with curriculum info")
+            # print(f"✅ Session {session_id} updated with curriculum info")  # MCP 통신 방해 방지
             return True
             
         except Exception as e:
-            print(f"❌ Failed to update session {session_id}: {e}")
+            # print(f"❌ Failed to update session {session_id}: {e}")  # MCP 통신 방해 방지
             return False
 
 session_loader = SessionLoader()
+
+# 사용자 메시지에서 기간 추출하는 함수
+def extract_duration_from_message(message: str) -> int:
+    """사용자 메시지에서 기간을 추출하여 주 단위로 반환"""
+    message_lower = message.lower()
+    
+    # 기간 키워드 매핑 (주 단위)
+    duration_patterns = {
+        "1주": 1, "1week": 1, "일주일": 1,
+        "2주": 2, "2week": 2, "이주": 2,
+        "1개월": 4, "1month": 4, "한달": 4, "4주": 4,
+        "2개월": 8, "2month": 8, "두달": 8, "8주": 8,
+        "3개월": 12, "3month": 12, "세달": 12, "12주": 12,
+        "4개월": 16, "4month": 16, "16주": 16,
+        "5개월": 20, "5month": 20, "20주": 20,
+        "6개월": 24, "6month": 24, "반년": 24, "24주": 24,
+        "9개월": 36, "9month": 36,
+        "1년": 52, "12개월": 52, "1year": 52, "52주": 52
+    }
+    
+    # 메시지에서 기간 키워드 찾기
+    for keyword, weeks in duration_patterns.items():
+        if keyword in message_lower:
+            return weeks
+    
+    return None  # 기간 정보가 없으면 None 반환
 
 # 학습 자료 검색
 async def search_resources(topic: str, num_results: int = 10) -> List[Dict[str, str]]:
@@ -368,7 +413,8 @@ async def search_resources(topic: str, num_results: int = 10) -> List[Dict[str, 
                 
                 return results
     except Exception as e:
-        print(f"❌ Search failed: {e}")
+        # print(f"❌ Search failed: {e}")  # MCP 통신 방해 방지
+        pass
     
     return []
 
@@ -423,7 +469,7 @@ JSON 형식 (키는 영어, 값은 한국어):
             HumanMessage(content=prompt)
         ]
         
-        print("🤖 Generating curriculum with LLM...")
+        # print("🤖 Generating curriculum with LLM...")  # MCP 통신 방해 방지
         response = await llm.agenerate([messages])
         
         if response.generations and response.generations[0]:
@@ -433,7 +479,8 @@ JSON 형식 (키는 영어, 값은 한국어):
                 return json.loads(json_match.group())
     
     except Exception as e:
-        print(f"❌ LLM generation failed: {e}")
+        # print(f"❌ LLM generation failed: {e}")  # MCP 통신 방해 방지
+        pass
     
     return create_basic_curriculum(topic, level, duration_weeks)
 
@@ -479,8 +526,8 @@ async def list_session_topics() -> Dict[str, Any]:
     }
 
 @mcp.tool()
-async def generate_curriculum_from_session(session_id: str) -> Dict[str, Any]:
-    """Generate curriculum from a specific session"""
+async def generate_curriculum_from_session(session_id: str, user_message: str = "") -> Dict[str, Any]:
+    """Generate curriculum from a specific session with optional user message for duration override"""
     sessions = session_loader.get_completed_sessions()
     session_data = None
     
@@ -499,10 +546,23 @@ async def generate_curriculum_from_session(session_id: str) -> Dict[str, Any]:
     
     params = await session_loader.extract_parameters_with_llm(constraints, goal)
     
-    print(f"📚 Generating curriculum for {session_id}:")
-    print(f"  Topic: {topic}")
-    print(f"  Level: {params['level']}")
-    print(f"  Duration: {params['duration_weeks']} weeks")
+    # 사용자 메시지에서 기간 정보 추출 및 오버라이드
+    if user_message:
+        message_duration = extract_duration_from_message(user_message)
+        print(f"DEBUG: user_message='{user_message}'", file=sys.stderr, flush=True)
+        print(f"DEBUG: extracted duration={message_duration}", file=sys.stderr, flush=True)
+        print(f"DEBUG: original params duration={params.get('duration_weeks')}", file=sys.stderr, flush=True)
+        
+        if message_duration is not None:
+            params["duration_weeks"] = message_duration
+            print(f"DEBUG: overridden to {message_duration} weeks", file=sys.stderr, flush=True)
+        else:
+            print(f"DEBUG: no duration found in message", file=sys.stderr, flush=True)
+    
+    # print(f"📚 Generating curriculum for {session_id}:")  # MCP 통신 방해 방지
+    # print(f"  Topic: {topic}")  # MCP 통신 방해 방지
+    # print(f"  Level: {params['level']}")  # MCP 통신 방해 방지
+    # print(f"  Duration: {params['duration_weeks']} weeks")  # MCP 통신 방해 방지
     
     # 학습 자료 검색
     resources = await search_resources(topic)
@@ -561,7 +621,7 @@ async def generate_curriculums_from_all_sessions() -> Dict[str, Any]:
             # 이미 존재하는지 확인
             existing = db.get_curriculum(session_id, 0)
             if existing:
-                print(f"⚠️ Curriculum already exists for {session_id}")
+                # print(f"⚠️ Curriculum already exists for {session_id}")  # MCP 통신 방해 방지
                 continue
             
             result = await generate_curriculum_from_session(session_id)
@@ -574,7 +634,7 @@ async def generate_curriculums_from_all_sessions() -> Dict[str, Any]:
                     "topic": session["topic"],
                     "curriculum_id": result.get("curriculum_id")
                 })
-                print(f"✅ Generated curriculum for {session_id}")
+                # print(f"✅ Generated curriculum for {session_id}")  # MCP 통신 방해 방지
                 
         except Exception as e:
             failed.append({"session_id": session_id, "error": str(e)})

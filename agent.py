@@ -226,8 +226,11 @@ class MultiMCPAgent:
                 yield {"type": "error", "content": "커리큘럼 생성 도구를 찾을 수 없습니다."}
                 return
             
-            # 도구 실행
-            tool_args = {"session_id": self.current_session_id}
+            # 도구 실행 (사용자 메시지도 전달)
+            tool_args = {
+                "session_id": self.current_session_id,
+                "user_message": message
+            }
             print(f"🔧 generate_curriculum_from_session 호출: {tool_args}")
             
             result = await curriculum_tool.ainvoke(tool_args)
