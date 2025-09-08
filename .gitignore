@@ -1,3 +1,9 @@
+# data
+data/
+
+# config
+config.py
+
 # sessions json files
 sessions/
 
