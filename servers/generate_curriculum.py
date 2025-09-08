@@ -17,6 +17,54 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import Config
 
+# 진행 상태 관리 클래스
+class CurriculumProgress:
+    """커리큘럼 생성 과정의 진행 상태를 추적하고 공유하는 클래스"""
+    
+    def __init__(self, session_id: str):
+        self.session_id = session_id
+        self.progress_file = f"/home/elicer/learnmate-ai/data/progress/{session_id}.json"
+        self.current_phase = None
+        self.phase_start_time = None
+        
+    async def update(self, phase: str, message: str, details: dict = None, thinking: str = None):
+        """진행 상태를 업데이트하고 파일에 저장"""
+        try:
+            # 새로운 페이즈 시작 시 시간 기록
+            if phase != self.current_phase:
+                self.current_phase = phase
+                self.phase_start_time = datetime.now()
+            
+            progress_data = {
+                "session_id": self.session_id,
+                "timestamp": datetime.now().isoformat(),
+                "phase": phase,
+                "message": message,
+                "details": details or {},
+                "thinking": thinking,  # LLM의 사고 과정
+                "phase_duration": (datetime.now() - self.phase_start_time).total_seconds() if self.phase_start_time else 0
+            }
+            
+            # 파일에 저장 (덮어쓰기)
+            with open(self.progress_file, 'w', encoding='utf-8') as f:
+                json.dump(progress_data, f, ensure_ascii=False, indent=2)
+            
+            # 디버깅용 stderr 출력
+            print(f"PROGRESS: [{phase}] {message}", file=sys.stderr, flush=True)
+            if thinking:
+                print(f"THINKING: {thinking[:100]}...", file=sys.stderr, flush=True)
+                
+        except Exception as e:
+            print(f"DEBUG: Progress update failed: {e}", file=sys.stderr, flush=True)
+    
+    def cleanup(self):
+        """완료 후 진행 상태 파일 삭제"""
+        try:
+            if os.path.exists(self.progress_file):
+                os.remove(self.progress_file)
+        except Exception:
+            pass
+
 # MCP 서버 설정
 mcp = FastMCP(
     "CurriculumGenerator",
@@ -544,7 +592,176 @@ async def search_resources(topic: str, num_results: int = 10) -> List[Dict[str, 
     
     return []
 
-# LLM을 사용한 커리큘럼 생성
+# LLM을 사용한 단계별 커리큘럼 생성 (스트리밍 버전)
+async def generate_with_llm_streaming(topic: str, level: str, duration_weeks: int, focus_areas: List[str], resources: List[Dict[str, str]] = None, session_id: str = None) -> Dict[str, Any]:
+    """LLM을 사용하여 단계별로 커리큘럼을 생성하며 진행 상태를 공유"""
+    if not llm_available:
+        return create_basic_curriculum(topic, level, duration_weeks)
+    
+    # 진행 상태 추적기 초기화
+    progress = CurriculumProgress(session_id) if session_id else None
+    
+    try:
+        focus_text = ', '.join(focus_areas) if focus_areas else 'General coverage'
+        
+        # Phase 1: 학습 경로 분석
+        if progress:
+            await progress.update("analysis", "🧠 학습 경로를 분석하는 중...")
+        
+        analysis_prompt = f"""다음 학습 요구사항을 분석하여 체계적인 학습 계획을 수립해주세요:
+
+학습 주제: {topic}
+학습 레벨: {level}
+학습 기간: {duration_weeks}주
+포커스 영역: {focus_text}
+
+먼저 다음을 분석해주세요:
+1. 이 주제의 핵심 학습 영역은 무엇인가?
+2. {level} 수준에서 시작하여 어떤 순서로 학습해야 하는가?
+3. {focus_areas}를 고려할 때 중점을 둬야 할 부분은?
+4. {duration_weeks}주 동안 현실적으로 달성 가능한 목표는?
+
+분석 결과를 자세히 설명하고, 전체 학습 로드맵을 제시해주세요."""
+        
+        analysis_messages = [
+            SystemMessage(content="당신은 전문 교육 설계자입니다. 학습자의 요구에 맞는 최적의 학습 경로를 분석하고 설계해주세요."),
+            HumanMessage(content=analysis_prompt)
+        ]
+        
+        print(f"DEBUG: Starting Phase 1 - Learning Path Analysis", file=sys.stderr, flush=True)
+        analysis_response = await llm.agenerate([analysis_messages])
+        analysis_text = analysis_response.generations[0][0].text if analysis_response.generations else ""
+        
+        if progress:
+            await progress.update("analysis", "💡 분석 완료", thinking=analysis_text[:500])
+        
+        # Phase 2: 전체 모듈 구조 설계
+        if progress:
+            await progress.update("structure_design", "📋 전체 모듈 구조를 설계하는 중...")
+        
+        structure_prompt = f"""앞선 분석을 바탕으로 {duration_weeks}주 커리큘럼의 전체 구조를 설계해주세요.
+
+이전 분석 결과:
+{analysis_text}
+
+각 주차별로 다음 정보만 포함하여 JSON 형태로 생성해주세요:
+- week: 주차 번호
+- title: 주차 제목 (한국어)
+- main_topic: 주요 학습 주제 (한국어)
+- learning_goals: 이번 주차의 핵심 목표 2-3개 (한국어 리스트)
+- difficulty_level: 난이도 (1-10)
+
+JSON 형식:
+{{
+    "modules": [
+        {{
+            "week": 1,
+            "title": "주차 제목",
+            "main_topic": "주요 학습 주제", 
+            "learning_goals": ["목표1", "목표2"],
+            "difficulty_level": 3
+        }}
+    ],
+    "overall_goal": "전체 학습 목표"
+}}"""
+        
+        structure_messages = [
+            SystemMessage(content="전체 커리큘럼 구조를 설계하는 전문가입니다. 논리적이고 체계적인 학습 흐름을 만들어주세요."),
+            HumanMessage(content=structure_prompt)
+        ]
+        
+        print(f"DEBUG: Starting Phase 2 - Structure Design", file=sys.stderr, flush=True)
+        structure_response = await llm.agenerate([structure_messages])
+        structure_text = structure_response.generations[0][0].text if structure_response.generations else ""
+        
+        # JSON 파싱
+        json_match = re.search(r'\{[\s\S]*\}', structure_text)
+        if not json_match:
+            if progress:
+                await progress.update("structure_design", "❌ 구조 설계 실패", details={"error": "JSON 파싱 실패"})
+            return create_basic_curriculum(topic, level, duration_weeks)
+        
+        structure_data = json.loads(json_match.group())
+        modules = structure_data.get("modules", [])
+        
+        if progress:
+            # f-string 중첩 문제를 피하기 위해 분리
+            module_titles = [m.get('title', f"{m.get('week')}주차") for m in modules[:5]]
+            flow_text = ' → '.join(module_titles)
+            await progress.update("structure_design", f"✅ {len(modules)}개 모듈 구조 설계 완료", 
+                                thinking=f"전체 학습 흐름: {flow_text}...")
+        
+        # Phase 3: 각 모듈 상세 내용 생성
+        detailed_modules = []
+        for i, module in enumerate(modules):
+            if progress:
+                # f-string 중첩 문제를 피하기 위해 분리
+                module_title = module.get('title', f"{module.get('week')}주차")
+                await progress.update("detail_generation", 
+                                    f"📝 {module_title} 상세 내용 생성 중...",
+                                    details={"current": i + 1, "total": len(modules)})
+            
+            detail_prompt = f"""다음 모듈의 상세 내용을 생성해주세요:
+
+모듈 정보:
+- 주차: {module.get('week')}주차
+- 제목: {module.get('title')}
+- 주요 주제: {module.get('main_topic')}
+- 학습 목표: {module.get('learning_goals')}
+
+이전 모듈들: {[m.get('title') for m in detailed_modules[-2:]] if detailed_modules else '없음'}
+
+다음 내용을 포함한 상세 모듈을 JSON으로 생성해주세요:
+{{
+    "week": {module.get('week')},
+    "title": "{module.get('title')}",
+    "description": "모듈에 대한 상세한 설명 (한국어)",
+    "objectives": ["구체적인 학습목표1", "학습목표2", "학습목표3"],
+    "learning_outcomes": ["내가 배울 수 있는 것1", "내가 배울 수 있는 것2"],
+    "key_concepts": ["핵심개념1", "핵심개념2", "핵심개념3"],
+    "estimated_hours": 예상학습시간(숫자)
+}}"""
+            
+            detail_messages = [
+                SystemMessage(content="각 모듈의 상세 내용을 설계하는 전문가입니다. 실용적이고 구체적인 학습 내용을 만들어주세요."),
+                HumanMessage(content=detail_prompt)
+            ]
+            
+            detail_response = await llm.agenerate([detail_messages])
+            detail_text = detail_response.generations[0][0].text if detail_response.generations else ""
+            
+            # JSON 파싱
+            detail_json_match = re.search(r'\{[\s\S]*\}', detail_text)
+            if detail_json_match:
+                try:
+                    detailed_module = json.loads(detail_json_match.group())
+                    detailed_modules.append(detailed_module)
+                    
+                    if progress:
+                        await progress.update("detail_generation", 
+                                            f"✅ {module.get('title')} 완료",
+                                            thinking=f"핵심 개념: {', '.join(detailed_module.get('key_concepts', [])[:2])}")
+                except json.JSONDecodeError:
+                    # 파싱 실패 시 기본 구조 사용
+                    detailed_modules.append(module)
+            else:
+                detailed_modules.append(module)
+        
+        if progress:
+            await progress.update("completion", "✅ 커리큘럼 생성 완료!")
+        
+        return {
+            "modules": detailed_modules,
+            "overall_goal": structure_data.get("overall_goal", f"Master {topic}")
+        }
+        
+    except Exception as e:
+        print(f"DEBUG: Streaming curriculum generation failed: {e}", file=sys.stderr, flush=True)
+        if progress:
+            await progress.update("error", f"❌ 생성 실패: {str(e)}")
+        return create_basic_curriculum(topic, level, duration_weeks)
+
+# LLM을 사용한 커리큘럼 생성 (기존 버전)
 async def generate_with_llm(topic: str, level: str, duration_weeks: int, focus_areas: List[str], resources: List[Dict[str, str]] = None) -> Dict[str, Any]:
     if not llm_available:
         return create_basic_curriculum(topic, level, duration_weeks)
@@ -772,12 +989,14 @@ async def generate_curriculum_from_session(session_id: str, user_message: str = 
     print(f"DEBUG: llm_available status: {llm_available}", file=sys.stderr, flush=True)
     
     try:
-        curriculum_data = await generate_with_llm(
+        # 스트리밍 버전을 사용하여 진행 상태 공유
+        curriculum_data = await generate_with_llm_streaming(
             topic=topic,
             level=params["level"],
             duration_weeks=params["duration_weeks"],
             focus_areas=params["focus_areas"],
-            resources=basic_resources
+            resources=basic_resources,
+            session_id=session_id
         )
         print(f"DEBUG: LLM curriculum generation completed successfully", file=sys.stderr, flush=True)
         print(f"DEBUG: Generated {len(curriculum_data.get('modules', []))} modules", file=sys.stderr, flush=True)

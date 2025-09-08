@@ -214,7 +214,7 @@ class MultiMCPAgent:
             yield {"type": "error", "content": f"프로필링 중 오류가 발생했습니다: {str(e)}"}
 
     async def _handle_curriculum_generation(self, message: str) -> AsyncGenerator[dict, None]:
-        """generate_curriculum_from_session 도구를 사용한 커리큘럼 생성"""
+        """generate_curriculum_from_session 도구를 사용한 커리큘럼 생성 (진행 상태 스트리밍)"""
         print(f"📚 커리큘럼 생성 시작")
         
         try:
@@ -233,7 +233,70 @@ class MultiMCPAgent:
             }
             print(f"🔧 generate_curriculum_from_session 호출: {tool_args}")
             
-            result = await curriculum_tool.ainvoke(tool_args)
+            # 진행 상태 파일 경로
+            progress_file = f"/home/elicer/learnmate-ai/data/progress/{self.current_session_id}.json"
+            
+            # 커리큘럼 생성을 비동기 태스크로 시작
+            import asyncio
+            import os
+            import json
+            
+            curriculum_task = asyncio.create_task(curriculum_tool.ainvoke(tool_args))
+            
+            # 진행 상태 모니터링 및 스트리밍
+            last_progress = None
+            last_file_check = 0
+            
+            while not curriculum_task.done():
+                try:
+                    # 파일 존재 여부 확인 및 수정 시간 체크
+                    if os.path.exists(progress_file):
+                        file_stat = os.stat(progress_file)
+                        if file_stat.st_mtime > last_file_check:
+                            last_file_check = file_stat.st_mtime
+                            
+                            with open(progress_file, 'r', encoding='utf-8') as f:
+                                current_progress = json.load(f)
+                                
+                            # 새로운 업데이트가 있는 경우만 스트리밍
+                            if current_progress != last_progress:
+                                progress_message = current_progress.get("message", "처리 중...")
+                                thinking_text = current_progress.get("thinking")
+                                
+                                # 사고 과정이 있는 경우 우선적으로 전송
+                                if thinking_text and thinking_text != last_progress.get("thinking") if last_progress else True:
+                                    yield {
+                                        "type": "thinking",
+                                        "content": f"💭 {thinking_text}",
+                                        "phase": current_progress.get("phase", "processing")
+                                    }
+                                
+                                # 진행 상태 메시지 전송
+                                yield {
+                                    "type": "progress",
+                                    "content": progress_message,
+                                    "phase": current_progress.get("phase", "processing"),
+                                    "details": current_progress.get("details", {})
+                                }
+                                
+                                last_progress = current_progress
+                                
+                except Exception:
+                    # 진행 상태 읽기 실패 시 무시
+                    pass
+                    
+                # 0.5초마다 체크
+                await asyncio.sleep(0.5)
+            
+            # 커리큘럼 생성 완료 - 결과 반환
+            result = await curriculum_task
+            
+            # 진행 상태 파일 정리
+            try:
+                if os.path.exists(progress_file):
+                    os.remove(progress_file)
+            except Exception:
+                pass
             
             if result:
                 print(result, end="", flush=True)
