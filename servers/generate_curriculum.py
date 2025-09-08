@@ -387,7 +387,132 @@ def extract_duration_from_message(message: str) -> int:
     
     return None  # 기간 정보가 없으면 None 반환
 
-# 학습 자료 검색
+# K-MOOC Summary 파싱 헬퍼 함수
+def parse_kmooc_summary(summary: str) -> Dict[str, str]:
+    """K-MOOC summary에서 강좌 정보를 추출합니다"""
+    try:
+        if not summary:
+            return {}
+        
+        parsed_info = {}
+        
+        # 강좌 목표 추출
+        goal_match = re.search(r'\*\*강좌 목표:\*\*\s*([^\n*]+)', summary)
+        if goal_match:
+            parsed_info["course_goal"] = goal_match.group(1).strip()
+            # 강좌 목표에서 첫 번째 문장을 제목으로 사용
+            goal_text = goal_match.group(1).strip()
+            # 첫 번째 문장이나 핵심 키워드를 제목으로 추출
+            if "," in goal_text:
+                parsed_info["title"] = goal_text.split(",")[0].strip()
+            else:
+                parsed_info["title"] = goal_text[:50] + "..." if len(goal_text) > 50 else goal_text
+        
+        # 주요 내용 추출
+        content_match = re.search(r'\*\*주요 내용:\*\*\s*([^\n*]+)', summary)
+        if content_match:
+            content = content_match.group(1).strip()
+            parsed_info["main_content"] = content
+            # 주요 내용을 요약하여 설명으로 사용
+            if len(content) > 100:
+                parsed_info["description"] = content[:97] + "..."
+            else:
+                parsed_info["description"] = content
+        
+        # 강좌 기간 추출
+        duration_match = re.search(r'\*\*강좌 기간:\*\*[^()]*\((\d+주)\)', summary)
+        if duration_match:
+            parsed_info["duration"] = duration_match.group(1)
+        
+        # 난이도 추출
+        difficulty_match = re.search(r'\*\*난이도:\*\*\s*([^\n*]+)', summary)
+        if difficulty_match:
+            parsed_info["difficulty"] = difficulty_match.group(1).strip()
+        
+        # 수업 시간 추출
+        time_match = re.search(r'\*\*수업 시간:\*\*[^()]*약\s*([^\n*()]+)', summary)
+        if time_match:
+            parsed_info["class_time"] = time_match.group(1).strip()
+        
+        print(f"DEBUG: Parsed summary - title: {parsed_info.get('title', 'N/A')}, description: {parsed_info.get('description', 'N/A')[:50]}...", file=sys.stderr, flush=True)
+        
+        return parsed_info
+        
+    except Exception as e:
+        print(f"DEBUG: Summary parsing failed: {e}", file=sys.stderr, flush=True)
+        return {}
+
+# K-MOOC DB 검색 (Pinecone API 연동)
+async def search_kmooc_resources(topic: str, week_title: str = None, top_k: int = 5) -> List[Dict[str, Any]]:
+    """K-MOOC DB에서 관련 영상을 검색합니다"""
+    try:
+        # Pinecone 검색 API 호출
+        search_query = f"{topic}"
+        if week_title:
+            search_query += f" {week_title}"
+            
+        search_payload = {
+            "query": search_query,
+            "top_k": top_k,
+            "namespace": "kmooc_engineering",
+            "filter": {"institution": {"$ne": ""}},
+            "rerank": True,
+            "include_metadata": True
+        }
+        
+        # pinecone_use.py 서버가 localhost:8000에서 실행 중이라고 가정
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                "http://localhost:8001/search",
+                json=search_payload,
+                timeout=10.0
+            )
+            
+        if response.status_code == 200:
+            result = response.json()
+            kmooc_videos = []
+            
+            for item in result.get("results", []):
+                metadata = item.get("metadata", {})
+                if metadata:
+                    # Summary 파싱하여 강좌 정보 추출
+                    summary = metadata.get("summary", "")
+                    parsed_info = parse_kmooc_summary(summary)
+                    
+                    # 제목 결정: 파싱된 제목 > 기본 "K-MOOC 강좌"
+                    course_title = parsed_info.get("title") or "K-MOOC 강좌"
+                    
+                    # 설명 결정: 파싱된 설명 > 주요 내용 > 강좌 목표 > 기본 메시지
+                    description = (
+                        parsed_info.get("description") or 
+                        parsed_info.get("main_content") or 
+                        parsed_info.get("course_goal") or 
+                        "K-MOOC 온라인 강좌"
+                    )
+                    
+                    video_info = {
+                        "title": course_title,
+                        "description": description,
+                        "url": metadata.get("url", ""),
+                        "institution": metadata.get("institution", "").replace(" 운영기관 바로가기새창열림", ""),
+                        "course_goal": parsed_info.get("course_goal", ""),
+                        "duration": parsed_info.get("duration", ""),
+                        "difficulty": parsed_info.get("difficulty", ""),
+                        "class_time": parsed_info.get("class_time", ""),
+                        "score": item.get("score", 0.0),
+                        "source": "K-MOOC"
+                    }
+                    kmooc_videos.append(video_info)
+            
+            return kmooc_videos
+            
+    except Exception as e:
+        print(f"DEBUG: K-MOOC search failed: {e}", file=sys.stderr, flush=True)
+        pass
+    
+    return []
+
+# 학습 자료 검색 (웹 검색)
 async def search_resources(topic: str, num_results: int = 10) -> List[Dict[str, str]]:
     try:
         encoded_query = quote(f"{topic} tutorial")
@@ -408,7 +533,8 @@ async def search_resources(topic: str, num_results: int = 10) -> List[Dict[str, 
                         break
                     results.append({
                         "title": re.sub(r'<[^>]+>', '', match.group(2)).strip(),
-                        "url": match.group(1)
+                        "url": match.group(1),
+                        "source": "Web Search"
                     })
                 
                 return results
@@ -424,16 +550,21 @@ async def generate_with_llm(topic: str, level: str, duration_weeks: int, focus_a
         return create_basic_curriculum(topic, level, duration_weeks)
     
     try:
+        print(f"DEBUG: generate_with_llm called - topic:{topic}, level:{level}, duration:{duration_weeks}", file=sys.stderr, flush=True)
+        
         focus_text = ', '.join(focus_areas) if focus_areas else 'General coverage'
+        print(f"DEBUG: Focus areas processed: {focus_text}", file=sys.stderr, flush=True)
         
         # 학습 자료가 있으면 프롬프트에 포함
         resources_text = ""
         if resources and len(resources) > 0:
+            print(f"DEBUG: Processing {len(resources)} resources for prompt", file=sys.stderr, flush=True)
             resources_text = "\n\nAvailable learning resources:\n"
             for i, resource in enumerate(resources[:5], 1):
                 resources_text += f"{i}. {resource.get('title', 'No title')} - {resource.get('url', 'No URL')}\n"
             resources_text += "\nConsider these resources when designing the curriculum modules.\n"
         else:
+            print(f"DEBUG: No resources found, using fallback text", file=sys.stderr, flush=True)
             resources_text = "\n\nNote: No specific learning resources were found, but design a comprehensive curriculum anyway.\n"
         
         prompt = f"""다음 조건에 맞는 {duration_weeks}주 커리큘럼을 생성해주세요:
@@ -446,6 +577,7 @@ async def generate_with_llm(topic: str, level: str, duration_weeks: int, focus_a
 각 모듈은 다음을 포함해야 합니다:
 - 명확한 제목과 설명 (한국어)
 - 3-4개의 학습 목표 (한국어)
+- 학습 성과 ("내가 배울 수 있는 것") (한국어)
 - 예상 학습 시간
 - 핵심 개념들 (한국어)
 
@@ -457,6 +589,7 @@ JSON 형식 (키는 영어, 값은 한국어):
             "title": "모듈 제목 (한국어)",
             "description": "모듈에 대한 상세한 설명 (한국어)",
             "objectives": ["학습목표1 (한국어)", "학습목표2 (한국어)", "학습목표3 (한국어)"],
+            "learning_outcomes": ["내가 배울 수 있는 것1 (한국어)", "내가 배울 수 있는 것2 (한국어)"],
             "key_concepts": ["핵심개념 1 (한국어)", "핵심개념 2 (한국어)"],
             "estimated_hours": 10
         }}
@@ -464,25 +597,88 @@ JSON 형식 (키는 영어, 값은 한국어):
     "overall_goal": "전체 학습 목표 (한국어)"
 }}"""
         
+        print(f"DEBUG: Prompt constructed. Length: {len(prompt)} chars", file=sys.stderr, flush=True)
+        
         messages = [
             SystemMessage(content="당신은 전문 커리큘럼 설계자입니다. 반드시 JSON 키는 영어로, 모든 값(내용)은 한국어로 작성해주세요. 예시: 'key_concepts', 'estimated_hours' 같은 키는 영어를 유지하고, 그 값들만 한국어로 작성합니다."),
             HumanMessage(content=prompt)
         ]
         
+        print(f"DEBUG: Calling LLM.agenerate() - this may take a while for {duration_weeks} weeks...", file=sys.stderr, flush=True)
+        import time
+        start_time = time.time()
+        
         # print("🤖 Generating curriculum with LLM...")  # MCP 통신 방해 방지
         response = await llm.agenerate([messages])
         
+        end_time = time.time()
+        print(f"DEBUG: LLM.agenerate() completed in {end_time - start_time:.2f} seconds", file=sys.stderr, flush=True)
+        
         if response.generations and response.generations[0]:
             response_text = response.generations[0][0].text
+            print(f"DEBUG: LLM response received. Length: {len(response_text)} chars", file=sys.stderr, flush=True)
+            
             json_match = re.search(r'\{[\s\S]*\}', response_text)
             if json_match:
-                return json.loads(json_match.group())
+                print(f"DEBUG: JSON found in response. Parsing...", file=sys.stderr, flush=True)
+                parsed_json = json.loads(json_match.group())
+                print(f"DEBUG: JSON parsed successfully. Modules count: {len(parsed_json.get('modules', []))}", file=sys.stderr, flush=True)
+                return parsed_json
+            else:
+                print(f"DEBUG: No valid JSON found in LLM response", file=sys.stderr, flush=True)
+        else:
+            print(f"DEBUG: No generations found in LLM response", file=sys.stderr, flush=True)
     
     except Exception as e:
+        print(f"DEBUG: Exception in generate_with_llm: {type(e).__name__}: {e}", file=sys.stderr, flush=True)
         # print(f"❌ LLM generation failed: {e}")  # MCP 통신 방해 방지
         pass
     
     return create_basic_curriculum(topic, level, duration_weeks)
+
+# 모듈별 리소스 수집 함수
+async def collect_module_resources(topic: str, module_info: Dict[str, Any]) -> Dict[str, List[Dict[str, Any]]]:
+    """주차별 모듈에 대한 K-MOOC 영상과 웹 리소스를 수집합니다"""
+    try:
+        # K-MOOC 검색과 웹 검색을 병렬로 실행
+        import asyncio
+        
+        # 검색 쿼리 생성
+        week_title = module_info.get('title', '')
+        key_concepts = module_info.get('key_concepts', [])
+        search_keywords = f"{topic} {week_title}"
+        if key_concepts:
+            search_keywords += f" {key_concepts[0]}"
+        
+        # 병렬 검색 실행
+        kmooc_task = search_kmooc_resources(topic, week_title, top_k=3)
+        web_task = search_resources(search_keywords, num_results=3)
+        
+        kmooc_results, web_results = await asyncio.gather(
+            kmooc_task, web_task, return_exceptions=True
+        )
+        
+        # 예외 처리
+        if isinstance(kmooc_results, Exception):
+            print(f"DEBUG: K-MOOC search exception: {kmooc_results}", file=sys.stderr, flush=True)
+            kmooc_results = []
+        if isinstance(web_results, Exception):
+            print(f"DEBUG: Web search exception: {web_results}", file=sys.stderr, flush=True)
+            web_results = []
+        
+        return {
+            "videos": kmooc_results or [],
+            "web_links": web_results or [],
+            "documents": []  # 향후 구현 예정
+        }
+        
+    except Exception as e:
+        print(f"DEBUG: collect_module_resources failed: {e}", file=sys.stderr, flush=True)
+        return {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+        }
 
 # 기본 커리큘럼 생성 (LLM 실패시 fallback)
 def create_basic_curriculum(topic: str, level: str, duration_weeks: int) -> Dict[str, Any]:
@@ -494,6 +690,7 @@ def create_basic_curriculum(topic: str, level: str, duration_weeks: int) -> Dict
             "title": f"{topic} - {i}주차",
             "description": f"{i}주차 학습 내용",
             "objectives": [f"{i}주차 핵심 개념 학습", "실습 과제 완료", "이론 이해 및 적용"],
+            "learning_outcomes": [f"{topic} 기본 개념 이해", f"{i}주차 실무 지식 습득"],
             "key_concepts": [f"{i}주차 기초 개념", "실습 예제"],
             "estimated_hours": 8 + i * 2
         })
@@ -564,26 +761,60 @@ async def generate_curriculum_from_session(session_id: str, user_message: str = 
     # print(f"  Level: {params['level']}")  # MCP 통신 방해 방지
     # print(f"  Duration: {params['duration_weeks']} weeks")  # MCP 통신 방해 방지
     
-    # 학습 자료 검색
-    resources = await search_resources(topic)
+    # 기본 학습 자료 검색 (프롬프트용)
+    print(f"DEBUG: Starting basic resource search for topic: {topic}", file=sys.stderr, flush=True)
+    basic_resources = await search_resources(topic)
+    print(f"DEBUG: Basic resource search completed. Found {len(basic_resources)} resources", file=sys.stderr, flush=True)
     
-    # 커리큘럼 생성
-    curriculum_data = await generate_with_llm(
-        topic=topic,
-        level=params["level"],
-        duration_weeks=params["duration_weeks"],
-        focus_areas=params["focus_areas"],
-        resources=resources
-    )
+    # 커리큘럼 생성 (기본 구조)
+    print(f"DEBUG: Starting LLM curriculum generation...", file=sys.stderr, flush=True)
+    print(f"DEBUG: LLM parameters - topic:{topic}, level:{params['level']}, duration:{params['duration_weeks']}, focus_areas:{params['focus_areas']}", file=sys.stderr, flush=True)
+    print(f"DEBUG: llm_available status: {llm_available}", file=sys.stderr, flush=True)
+    
+    try:
+        curriculum_data = await generate_with_llm(
+            topic=topic,
+            level=params["level"],
+            duration_weeks=params["duration_weeks"],
+            focus_areas=params["focus_areas"],
+            resources=basic_resources
+        )
+        print(f"DEBUG: LLM curriculum generation completed successfully", file=sys.stderr, flush=True)
+        print(f"DEBUG: Generated {len(curriculum_data.get('modules', []))} modules", file=sys.stderr, flush=True)
+    except Exception as e:
+        print(f"DEBUG: LLM curriculum generation failed with error: {type(e).__name__}: {e}", file=sys.stderr, flush=True)
+        raise
+    
+    # 각 모듈에 대해 구조화된 리소스 수집
+    modules = curriculum_data.get("modules", [])
+    print(f"DEBUG: Processing {len(modules)} modules for resource collection", file=sys.stderr, flush=True)
+    
+    for module in modules:
+        module_topic = f"{topic} {module.get('title', '')}"
+        week_title = module.get('title', '')
+        
+        print(f"DEBUG: Collecting resources for module: {week_title}", file=sys.stderr, flush=True)
+        
+        # 병렬로 리소스 수집 (K-MOOC + 웹 검색)
+        module_resources = await collect_module_resources(module_topic, module)
+        
+        # 모듈에 리소스 추가
+        module["resources"] = {
+            "videos": module_resources.get("videos", []),
+            "web_links": module_resources.get("web_links", []),
+            "documents": []  # 추후 문서 검색 API 연동 시 사용
+        }
+        
+        print(f"DEBUG: Added {len(module_resources.get('videos', []))} videos and {len(module_resources.get('web_links', []))} web links", file=sys.stderr, flush=True)
     
     # 최종 커리큘럼 구성
     curriculum = {
         "title": f"{topic} Learning Path",
         "level": params["level"],
         "duration_weeks": params["duration_weeks"],
-        "modules": curriculum_data.get("modules", []),
+        "modules": modules,  # 리소스가 포함된 모듈들
         "overall_goal": curriculum_data.get("overall_goal", f"Master {topic}"),
-        "resources": resources[:5] if resources else [],  # 상위 5개 자료만 (없으면 빈 리스트)
+        "resources": basic_resources[:5] if basic_resources else [],  # 전체 참고 자료
         "session_id": session_id,
         "original_constraints": constraints,
         "original_goal": goal,
