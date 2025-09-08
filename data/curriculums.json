@@ -6246,5 +6246,310 @@
       "id": 0,
       "created_at": "2025-09-08T10:53:29.000325"
     }
+  ],
+  "dbf2a716": [
+    {
+      "title": "파이썬 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 12,
+      "modules": [
+        {
+          "week": 1,
+          "title": "파이썬 - 1주차",
+          "description": "1주차 학습 내용",
+          "objectives": [
+            "1주차 핵심 개념 학습",
+            "실습 과제 완료",
+            "이론 이해 및 적용"
+          ],
+          "learning_outcomes": [
+            "파이썬 기본 개념 이해",
+            "1주차 실무 지식 습득"
+          ],
+          "key_concepts": [
+            "1주차 기초 개념",
+            "실습 예제"
+          ],
+          "estimated_hours": 10,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 2,
+          "title": "파이썬 - 2주차",
+          "description": "2주차 학습 내용",
+          "objectives": [
+            "2주차 핵심 개념 학습",
+            "실습 과제 완료",
+            "이론 이해 및 적용"
+          ],
+          "learning_outcomes": [
+            "파이썬 기본 개념 이해",
+            "2주차 실무 지식 습득"
+          ],
+          "key_concepts": [
+            "2주차 기초 개념",
+            "실습 예제"
+          ],
+          "estimated_hours": 12,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 3,
+          "title": "파이썬 - 3주차",
+          "description": "3주차 학습 내용",
+          "objectives": [
+            "3주차 핵심 개념 학습",
+            "실습 과제 완료",
+            "이론 이해 및 적용"
+          ],
+          "learning_outcomes": [
+            "파이썬 기본 개념 이해",
+            "3주차 실무 지식 습득"
+          ],
+          "key_concepts": [
+            "3주차 기초 개념",
+            "실습 예제"
+          ],
+          "estimated_hours": 14,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 4,
+          "title": "파이썬 - 4주차",
+          "description": "4주차 학습 내용",
+          "objectives": [
+            "4주차 핵심 개념 학습",
+            "실습 과제 완료",
+            "이론 이해 및 적용"
+          ],
+          "learning_outcomes": [
+            "파이썬 기본 개념 이해",
+            "4주차 실무 지식 습득"
+          ],
+          "key_concepts": [
+            "4주차 기초 개념",
+            "실습 예제"
+          ],
+          "estimated_hours": 16,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 5,
+          "title": "파이썬 - 5주차",
+          "description": "5주차 학습 내용",
+          "objectives": [
+            "5주차 핵심 개념 학습",
+            "실습 과제 완료",
+            "이론 이해 및 적용"
+          ],
+          "learning_outcomes": [
+            "파이썬 기본 개념 이해",
+            "5주차 실무 지식 습득"
+          ],
+          "key_concepts": [
+            "5주차 기초 개념",
+            "실습 예제"
+          ],
+          "estimated_hours": 18,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 6,
+          "title": "파이썬 - 6주차",
+          "description": "6주차 학습 내용",
+          "objectives": [
+            "6주차 핵심 개념 학습",
+            "실습 과제 완료",
+            "이론 이해 및 적용"
+          ],
+          "learning_outcomes": [
+            "파이썬 기본 개념 이해",
+            "6주차 실무 지식 습득"
+          ],
+          "key_concepts": [
+            "6주차 기초 개념",
+            "실습 예제"
+          ],
+          "estimated_hours": 20,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 7,
+          "title": "파이썬 - 7주차",
+          "description": "7주차 학습 내용",
+          "objectives": [
+            "7주차 핵심 개념 학습",
+            "실습 과제 완료",
+            "이론 이해 및 적용"
+          ],
+          "learning_outcomes": [
+            "파이썬 기본 개념 이해",
+            "7주차 실무 지식 습득"
+          ],
+          "key_concepts": [
+            "7주차 기초 개념",
+            "실습 예제"
+          ],
+          "estimated_hours": 22,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 8,
+          "title": "파이썬 - 8주차",
+          "description": "8주차 학습 내용",
+          "objectives": [
+            "8주차 핵심 개념 학습",
+            "실습 과제 완료",
+            "이론 이해 및 적용"
+          ],
+          "learning_outcomes": [
+            "파이썬 기본 개념 이해",
+            "8주차 실무 지식 습득"
+          ],
+          "key_concepts": [
+            "8주차 기초 개념",
+            "실습 예제"
+          ],
+          "estimated_hours": 24,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 9,
+          "title": "파이썬 - 9주차",
+          "description": "9주차 학습 내용",
+          "objectives": [
+            "9주차 핵심 개념 학습",
+            "실습 과제 완료",
+            "이론 이해 및 적용"
+          ],
+          "learning_outcomes": [
+            "파이썬 기본 개념 이해",
+            "9주차 실무 지식 습득"
+          ],
+          "key_concepts": [
+            "9주차 기초 개념",
+            "실습 예제"
+          ],
+          "estimated_hours": 26,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 10,
+          "title": "파이썬 - 10주차",
+          "description": "10주차 학습 내용",
+          "objectives": [
+            "10주차 핵심 개념 학습",
+            "실습 과제 완료",
+            "이론 이해 및 적용"
+          ],
+          "learning_outcomes": [
+            "파이썬 기본 개념 이해",
+            "10주차 실무 지식 습득"
+          ],
+          "key_concepts": [
+            "10주차 기초 개념",
+            "실습 예제"
+          ],
+          "estimated_hours": 28,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 11,
+          "title": "파이썬 - 11주차",
+          "description": "11주차 학습 내용",
+          "objectives": [
+            "11주차 핵심 개념 학습",
+            "실습 과제 완료",
+            "이론 이해 및 적용"
+          ],
+          "learning_outcomes": [
+            "파이썬 기본 개념 이해",
+            "11주차 실무 지식 습득"
+          ],
+          "key_concepts": [
+            "11주차 기초 개념",
+            "실습 예제"
+          ],
+          "estimated_hours": 30,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 12,
+          "title": "파이썬 - 12주차",
+          "description": "12주차 학습 내용",
+          "objectives": [
+            "12주차 핵심 개념 학습",
+            "실습 과제 완료",
+            "이론 이해 및 적용"
+          ],
+          "learning_outcomes": [
+            "파이썬 기본 개념 이해",
+            "12주차 실무 지식 습득"
+          ],
+          "key_concepts": [
+            "12주차 기초 개념",
+            "실습 예제"
+          ],
+          "estimated_hours": 32,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        }
+      ],
+      "overall_goal": "12주 동안 파이썬 기초를 마스터하기",
+      "resources": [],
+      "session_id": "dbf2a716",
+      "original_constraints": "초보자, 2시간",
+      "original_goal": "개인 프로젝트",
+      "generated_at": "2025-09-08T22:44:59.625879",
+      "id": 0,
+      "created_at": "2025-09-08T22:44:59.625905"
+    }
   ]
 }
