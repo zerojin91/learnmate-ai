@@ -531,6 +531,36 @@
             }
         }
 
+        /* 모달 애니메이션 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
         /* 예시 카드 */
         .examples-section {
             width: 100%;
@@ -1332,6 +1362,9 @@
                     
                     localStorage.setItem('generatedCurriculum', JSON.stringify(testCurriculumData));
                     
+                    // 새 커리큘럼 생성 시 진행도 초기화
+                    resetCurriculumProgress();
+                    
                     // 생성 완료 상태로 변경
                     isGeneratingCurriculum = false;
                     
@@ -1854,6 +1887,12 @@
             const modules = data.modules || [];
             let cardsHtml = '';
             
+            // 진행도 상태 가져오기
+            const completedWeeks = JSON.parse(localStorage.getItem('curriculumProgress') || '[]');
+            const totalWeeks = modules.length;
+            const completedCount = completedWeeks.length;
+            const progressPercentage = totalWeeks > 0 ? (completedCount / totalWeeks) * 100 : 0;
+
             // 헤더 정보
             cardsHtml += `
                 <div style="margin-bottom: 24px;">
@@ -1872,20 +1911,139 @@
                         <div style="color: #6b7280; font-size: 14px;">
                             ${data.duration_weeks || 0}주 과정
                         </div>
+                        <div style="
+                            background: ${progressPercentage > 0 ? '#10b981' : '#f3f4f6'};
+                            color: ${progressPercentage > 0 ? 'white' : '#6b7280'};
+                            padding: 4px 8px;
+                            border-radius: 12px;
+                            font-size: 11px;
+                            font-weight: 600;
+                            margin-left: auto;
+                        ">
+                            ${completedCount}/${totalWeeks} 완료
+                        </div>
                     </div>
                     <h2 style="
                         font-size: 18px;
                         font-weight: 700;
                         color: #1f2937;
-                        margin: 0;
+                        margin: 0 0 16px 0;
                     ">
                         ${data.title || '커리큘럼'}
                     </h2>
+                    
+                    <!-- 학습 진행도 트래커 -->
+                    <div style="
+                        background: #f9fafb;
+                        border: 1px solid #e5e7eb;
+                        border-radius: 12px;
+                        padding: 16px;
+                        margin-bottom: 20px;
+                    ">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                            <h3 style="
+                                font-size: 14px;
+                                font-weight: 600;
+                                color: #374151;
+                                margin: 0;
+                            ">학습 진행도</h3>
+                            <span style="
+                                font-size: 12px;
+                                color: #6b7280;
+                                font-weight: 500;
+                            ">${Math.round(progressPercentage)}% 완료</span>
+                        </div>
+                        
+                        <!-- 진행바 -->
+                        <div style="
+                            background: #e5e7eb;
+                            height: 6px;
+                            border-radius: 3px;
+                            overflow: hidden;
+                            margin-bottom: 16px;
+                        ">
+                            <div style="
+                                background: linear-gradient(90deg, #a855f7, #ec4899);
+                                height: 100%;
+                                width: ${progressPercentage}%;
+                                transition: width 0.3s ease;
+                                border-radius: 3px;
+                            "></div>
+                        </div>
+                        
+                        <!-- 주차별 단계 표시 -->
+                        <div style="
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            gap: 4px;
+                            overflow-x: auto;
+                            padding: 4px 0;
+                        ">
+                            ${modules.map((module, index) => {
+                                const isCompleted = completedWeeks.includes(index);
+                                const weekColor = index < 4 ? '#a855f7' : index < 8 ? '#ec4899' : '#10b981';
+                                return `
+                                    <div style="
+                                        display: flex;
+                                        flex-direction: column;
+                                        align-items: center;
+                                        min-width: 50px;
+                                        position: relative;
+                                    ">
+                                        <div style="
+                                            width: 32px;
+                                            height: 32px;
+                                            border-radius: 50%;
+                                            background: ${isCompleted ? weekColor : '#e5e7eb'};
+                                            color: ${isCompleted ? 'white' : '#9ca3af'};
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            font-size: 12px;
+                                            font-weight: 600;
+                                            transition: all 0.3s ease;
+                                            cursor: pointer;
+                                            border: 2px solid ${isCompleted ? weekColor : '#e5e7eb'};
+                                            box-shadow: ${isCompleted ? '0 2px 8px rgba(168, 85, 247, 0.3)' : 'none'};
+                                        " onclick="toggleModuleDetail(${index})">
+                                            ${isCompleted ? '✓' : (index + 1)}
+                                        </div>
+                                        <div style="
+                                            font-size: 9px;
+                                            color: #6b7280;
+                                            text-align: center;
+                                            margin-top: 4px;
+                                            max-width: 40px;
+                                            overflow: hidden;
+                                            text-overflow: ellipsis;
+                                            white-space: nowrap;
+                                        ">
+                                            ${index + 1}주차
+                                        </div>
+                                        ${index < modules.length - 1 ? `
+                                            <div style="
+                                                position: absolute;
+                                                top: 16px;
+                                                right: -27px;
+                                                width: 20px;
+                                                height: 2px;
+                                                background: ${index < completedCount - 1 ? weekColor : '#e5e7eb'};
+                                                z-index: 1;
+                                            "></div>
+                                        ` : ''}
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
                 </div>
             `;
             
-            // 모듈 카드들을 그리드로 배치 (4x3 그리드, 모든 모듈 표시)
-            cardsHtml += '<div id="curriculumGrid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; height: 480px;">';
+            // 모듈 카드들을 그리드로 배치 (동적 높이, 모든 모듈 표시)
+            const rows = Math.ceil(modules.length / 4);
+            const gridHeight = rows * 120 + (rows - 1) * 12; // 카드 높이 120px + 간격 12px
+            cardsHtml += `<div id="curriculumGrid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; min-height: ${gridHeight}px; height: auto;">`;
             
             modules.forEach((module, index) => {
                 const weekColor = index < 4 ? '#a855f7' : index < 8 ? '#ec4899' : '#10b981';
@@ -1968,97 +2126,6 @@
                                 ${module.key_concepts.length > 2 ? `<span style="color: #9ca3af; font-size: 8px;">+${module.key_concepts.length - 2}</span>` : ''}
                             </div>
                         ` : ''}
-                        
-                        <!-- 확장된 내용 (처음에는 숨김) -->
-                        <div id="expanded-${index}" style="
-                            display: none;
-                            margin-top: 12px;
-                            padding-top: 8px;
-                            border-top: 1px solid #f3f4f6;
-                            font-size: 10px;
-                            line-height: 1.4;
-                        ">
-                            ${module.objectives ? `
-                                <div style="margin-bottom: 8px;">
-                                    <h4 style="font-size: 10px; font-weight: 600; color: #374151; margin-bottom: 4px;">🎯 학습 목표:</h4>
-                                    <ul style="margin: 0; padding-left: 12px; color: #6b7280;">
-                                        ${module.objectives.map(obj => `<li style="margin-bottom: 2px;">${obj}</li>`).join('')}
-                                    </ul>
-                                </div>
-                            ` : ''}
-                            
-                            ${module.key_concepts && module.key_concepts.length > 2 ? `
-                                <div style="margin-bottom: 8px;">
-                                    <h4 style="font-size: 10px; font-weight: 600; color: #374151; margin-bottom: 4px;">🔑 핵심 개념:</h4>
-                                    <div style="display: flex; gap: 2px; flex-wrap: wrap;">
-                                        ${module.key_concepts.map(concept => `
-                                            <span style="
-                                                background: #f3f4f6;
-                                                color: #6b7280;
-                                                padding: 2px 4px;
-                                                border-radius: 3px;
-                                                font-size: 8px;
-                                                font-weight: 500;
-                                            ">${concept}</span>
-                                        `).join('')}
-                                    </div>
-                                </div>
-                            ` : ''}
-                            
-                            ${module.resources ? `
-                                <div>
-                                    <h4 style="font-size: 10px; font-weight: 600; color: #374151; margin-bottom: 4px;">📚 추천 학습 자료:</h4>
-                                    
-                                    ${module.resources.videos && module.resources.videos.length > 0 ? `
-                                        <div style="margin-bottom: 6px;">
-                                            <h5 style="font-size: 9px; font-weight: 500; color: #4b5563; margin-bottom: 2px;">📹 추천 영상:</h5>
-                                            ${module.resources.videos.map(video => `
-                                                <div style="margin-bottom: 1px;">
-                                                    <a href="${video.url}" target="_blank" style="color: #3b82f6; text-decoration: none; font-size: 8px;">
-                                                        ${video.title}
-                                                    </a>
-                                                </div>
-                                            `).join('')}
-                                        </div>
-                                    ` : ''}
-                                    
-                                    ${module.resources.web_links && module.resources.web_links.length > 0 ? `
-                                        <div style="margin-bottom: 6px;">
-                                            <h5 style="font-size: 9px; font-weight: 500; color: #4b5563; margin-bottom: 2px;">🔗 웹 자료:</h5>
-                                            ${module.resources.web_links.map(link => `
-                                                <div style="margin-bottom: 1px;">
-                                                    <a href="${link.url}" target="_blank" style="color: #059669; text-decoration: none; font-size: 8px;">
-                                                        ${link.title}
-                                                    </a>
-                                                </div>
-                                            `).join('')}
-                                        </div>
-                                    ` : ''}
-                                    
-                                    ${module.resources.documents && module.resources.documents.length > 0 ? `
-                                        <div style="margin-bottom: 6px;">
-                                            <h5 style="font-size: 9px; font-weight: 500; color: #4b5563; margin-bottom: 2px;">📄 문서 자료:</h5>
-                                            ${module.resources.documents.map(doc => `
-                                                <div style="margin-bottom: 1px;">
-                                                    <a href="${doc.url}" target="_blank" style="color: #dc2626; text-decoration: none; font-size: 8px;">
-                                                        ${doc.title}
-                                                    </a>
-                                                </div>
-                                            `).join('')}
-                                        </div>
-                                    ` : ''}
-                                </div>
-                            ` : ''}
-                        </div>
-                        
-                        <!-- 확장/축소 아이콘 -->
-                        <div id="toggle-icon-${index}" style="
-                            position: absolute;
-                            bottom: 4px;
-                            right: 6px;
-                            font-size: 8px;
-                            color: #9ca3af;
-                        ">▼</div>
                     </div>
                 `;
             });
@@ -2067,35 +2134,721 @@
             container.innerHTML = cardsHtml;
         }
 
-        // 모듈 상세 정보 토글 (확장/축소)
+        // 모듈 상세 정보 모달 표시
         function toggleModuleDetail(moduleIndex) {
-            const expandedDiv = document.getElementById(`expanded-${moduleIndex}`);
-            const toggleIcon = document.getElementById(`toggle-icon-${moduleIndex}`);
-            const card = document.getElementById(`card-${moduleIndex}`);
+            const curriculumData = JSON.parse(localStorage.getItem('generatedCurriculum') || '{}');
+            const module = curriculumData.modules?.[moduleIndex];
             
-            if (expandedDiv && toggleIcon && card) {
-                const isExpanded = expandedDiv.style.display !== 'none';
+            if (!module) return;
+            
+            showModuleModal(module, moduleIndex);
+        }
+        
+        // 모듈 모달 생성 및 표시
+        function showModuleModal(module, moduleIndex) {
+            // 기존 모달 제거
+            const existingModal = document.getElementById('moduleModal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+            
+            const weekColor = moduleIndex < 4 ? '#a855f7' : moduleIndex < 8 ? '#ec4899' : '#10b981';
+            
+            // 모달 HTML 생성 (현대적 디자인)
+            const modalHtml = `
+                <div id="moduleModal" style="
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(15, 23, 42, 0.6);
+                    backdrop-filter: blur(8px);
+                    z-index: 1000;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    animation: fadeIn 0.3s ease;
+                    padding: 20px;
+                " onclick="closeModuleModal(event)">
+                    <div style="
+                        background: white;
+                        border-radius: 20px;
+                        width: 100%;
+                        max-width: 800px;
+                        max-height: 90vh;
+                        overflow-y: auto;
+                        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.05);
+                        animation: slideUp 0.3s ease;
+                        position: relative;
+                    " onclick="event.stopPropagation()">
+                        <!-- 헤더 -->
+                        <div style="
+                            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+                            border: 1px solid #e2e8f0;
+                            padding: 32px;
+                            border-radius: 20px 20px 0 0;
+                            position: relative;
+                        ">
+                            <button onclick="closeModuleModal()" style="
+                                position: absolute;
+                                top: 20px;
+                                right: 20px;
+                                background: #f1f5f9;
+                                border: 1px solid #e2e8f0;
+                                color: #64748b;
+                                font-size: 16px;
+                                width: 36px;
+                                height: 36px;
+                                border-radius: 50%;
+                                cursor: pointer;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                transition: all 0.2s ease;
+                                font-weight: 400;
+                            " onmouseover="this.style.background='#e2e8f0'; this.style.color='#475569'" onmouseout="this.style.background='#f1f5f9'; this.style.color='#64748b'">
+                                ×
+                            </button>
+                            <div style="
+                                background: linear-gradient(135deg, ${weekColor} 0%, ${weekColor}dd 100%);
+                                color: white;
+                                padding: 8px 16px;
+                                border-radius: 12px;
+                                font-size: 13px;
+                                font-weight: 600;
+                                margin-bottom: 16px;
+                                display: inline-flex;
+                                align-items: center;
+                                gap: 6px;
+                                box-shadow: 0 2px 8px ${weekColor}30;
+                            ">
+                                <span style="font-size: 12px;">📅</span>
+                                Week ${module.week}
+                            </div>
+                            <h2 style="
+                                margin: 0;
+                                font-size: 28px;
+                                font-weight: 800;
+                                line-height: 1.2;
+                                color: #1e293b;
+                                letter-spacing: -0.025em;
+                            ">
+                                ${module.title}
+                            </h2>
+                            <p style="
+                                margin: 16px 0 0 0;
+                                color: #64748b;
+                                font-size: 16px;
+                                line-height: 1.6;
+                                font-weight: 400;
+                            ">
+                                ${module.description}
+                            </p>
+                        </div>
+                        
+                        <!-- 컨텐츠 -->
+                        <div style="padding: 32px; background: #fafafa; border-top: 1px solid #f1f5f9;">
+                            ${module.objectives ? `
+                                <div style="
+                                    background: white;
+                                    border-radius: 16px;
+                                    padding: 24px;
+                                    margin-bottom: 24px;
+                                    border: 1px solid #e2e8f0;
+                                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+                                ">
+                                    <h3 style="
+                                        font-size: 20px;
+                                        font-weight: 700;
+                                        color: #1e293b;
+                                        margin-bottom: 20px;
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 12px;
+                                    ">
+                                        <span style="
+                                            background: linear-gradient(135deg, ${weekColor}20, ${weekColor}10);
+                                            color: ${weekColor};
+                                            width: 36px;
+                                            height: 36px;
+                                            border-radius: 12px;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            font-size: 16px;
+                                        ">🎯</span>
+                                        학습 목표
+                                    </h3>
+                                    <div style="
+                                        display: grid;
+                                        gap: 12px;
+                                    ">
+                                        ${module.objectives.map((obj, idx) => `
+                                            <div style="
+                                                background: #f8fafc;
+                                                border: 1px solid #f1f5f9;
+                                                border-left: 4px solid ${weekColor};
+                                                padding: 16px;
+                                                border-radius: 0 12px 12px 0;
+                                                color: #475569;
+                                                line-height: 1.6;
+                                                font-weight: 500;
+                                                position: relative;
+                                            ">
+                                                <div style="
+                                                    position: absolute;
+                                                    top: -8px;
+                                                    left: 12px;
+                                                    background: ${weekColor};
+                                                    color: white;
+                                                    width: 24px;
+                                                    height: 24px;
+                                                    border-radius: 50%;
+                                                    display: flex;
+                                                    align-items: center;
+                                                    justify-content: center;
+                                                    font-size: 12px;
+                                                    font-weight: 700;
+                                                ">${idx + 1}</div>
+                                                <div style="margin-top: 8px;">
+                                                    ${obj}
+                                                </div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                            
+                            ${module.key_concepts && module.key_concepts.length > 0 ? `
+                                <div style="
+                                    background: white;
+                                    border-radius: 16px;
+                                    padding: 24px;
+                                    margin-bottom: 24px;
+                                    border: 1px solid #e2e8f0;
+                                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+                                ">
+                                    <h3 style="
+                                        font-size: 20px;
+                                        font-weight: 700;
+                                        color: #1e293b;
+                                        margin-bottom: 20px;
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 12px;
+                                    ">
+                                        <span style="
+                                            background: linear-gradient(135deg, ${weekColor}20, ${weekColor}10);
+                                            color: ${weekColor};
+                                            width: 36px;
+                                            height: 36px;
+                                            border-radius: 12px;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            font-size: 16px;
+                                        ">🔑</span>
+                                        핵심 개념
+                                    </h3>
+                                    <div style="
+                                        display: grid;
+                                        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                                        gap: 16px;
+                                    ">
+                                        ${module.key_concepts.map((concept, idx) => `
+                                            <div style="
+                                                background: linear-gradient(135deg, ${weekColor}08, ${weekColor}03);
+                                                border: 2px solid ${weekColor}15;
+                                                color: #475569;
+                                                padding: 16px 20px;
+                                                border-radius: 12px;
+                                                font-size: 15px;
+                                                font-weight: 600;
+                                                text-align: center;
+                                                position: relative;
+                                                transition: all 0.2s ease;
+                                                cursor: default;
+                                            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px ${weekColor}20'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                                <div style="
+                                                    position: absolute;
+                                                    top: -10px;
+                                                    right: 8px;
+                                                    background: ${weekColor};
+                                                    color: white;
+                                                    width: 20px;
+                                                    height: 20px;
+                                                    border-radius: 50%;
+                                                    display: flex;
+                                                    align-items: center;
+                                                    justify-content: center;
+                                                    font-size: 11px;
+                                                    font-weight: 700;
+                                                ">${idx + 1}</div>
+                                                ${concept}
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                            
+                            ${module.resources ? `
+                                <div style="
+                                    background: white;
+                                    border-radius: 16px;
+                                    padding: 24px;
+                                    border: 1px solid #e2e8f0;
+                                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+                                ">
+                                    <h3 style="
+                                        font-size: 20px;
+                                        font-weight: 700;
+                                        color: #1e293b;
+                                        margin-bottom: 24px;
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 12px;
+                                    ">
+                                        <span style="
+                                            background: linear-gradient(135deg, ${weekColor}20, ${weekColor}10);
+                                            color: ${weekColor};
+                                            width: 36px;
+                                            height: 36px;
+                                            border-radius: 12px;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            font-size: 16px;
+                                        ">📚</span>
+                                        학습 자료
+                                    </h3>
+                                    
+                                    <!-- 탭 네비게이션 -->
+                                    <div style="
+                                        display: flex;
+                                        gap: 8px;
+                                        margin-bottom: 20px;
+                                        border-bottom: 1px solid #f1f5f9;
+                                        padding-bottom: 16px;
+                                    ">
+                                        ${module.resources.videos && module.resources.videos.length > 0 ? `
+                                            <div style="
+                                                background: linear-gradient(135deg, #fef3c7, #fde68a);
+                                                color: #92400e;
+                                                padding: 8px 16px;
+                                                border-radius: 8px;
+                                                font-size: 13px;
+                                                font-weight: 600;
+                                                display: flex;
+                                                align-items: center;
+                                                gap: 6px;
+                                            ">
+                                                📹 동영상 ${module.resources.videos.length}개
+                                            </div>
+                                        ` : ''}
+                                        ${module.resources.web_links && module.resources.web_links.length > 0 ? `
+                                            <div style="
+                                                background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+                                                color: #1e40af;
+                                                padding: 8px 16px;
+                                                border-radius: 8px;
+                                                font-size: 13px;
+                                                font-weight: 600;
+                                                display: flex;
+                                                align-items: center;
+                                                gap: 6px;
+                                            ">
+                                                🌐 웹자료 ${module.resources.web_links.length}개
+                                            </div>
+                                        ` : ''}
+                                        ${module.resources.documents && module.resources.documents.length > 0 ? `
+                                            <div style="
+                                                background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+                                                color: #065f46;
+                                                padding: 8px 16px;
+                                                border-radius: 8px;
+                                                font-size: 13px;
+                                                font-weight: 600;
+                                                display: flex;
+                                                align-items: center;
+                                                gap: 6px;
+                                            ">
+                                                📄 문서 ${module.resources.documents.length}개
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                    
+                                    <!-- 리소스 리스트 -->
+                                    <div style="display: grid; gap: 20px;">
+                                        ${module.resources.videos && module.resources.videos.length > 0 ? `
+                                            <div>
+                                                <h4 style="
+                                                    font-size: 17px;
+                                                    font-weight: 700;
+                                                    color: #374151;
+                                                    margin-bottom: 12px;
+                                                    display: flex;
+                                                    align-items: center;
+                                                    gap: 8px;
+                                                ">
+                                                    <span style="color: #f59e0b;">📹</span>
+                                                    동영상 강의
+                                                </h4>
+                                                <div style="display: grid; gap: 10px;">
+                                                    ${module.resources.videos.map((video, idx) => `
+                                                        <a href="${video.url}" target="_blank" style="
+                                                            display: flex;
+                                                            align-items: center;
+                                                            gap: 12px;
+                                                            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+                                                            border: 1px solid #fed7aa;
+                                                            border-radius: 12px;
+                                                            padding: 16px;
+                                                            text-decoration: none;
+                                                            color: #92400e;
+                                                            transition: all 0.2s ease;
+                                                            position: relative;
+                                                            overflow: hidden;
+                                                        " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(245, 158, 11, 0.15)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                                            <div style="
+                                                                background: #f59e0b;
+                                                                color: white;
+                                                                width: 32px;
+                                                                height: 32px;
+                                                                border-radius: 8px;
+                                                                display: flex;
+                                                                align-items: center;
+                                                                justify-content: center;
+                                                                font-weight: 700;
+                                                                font-size: 12px;
+                                                                flex-shrink: 0;
+                                                            ">${idx + 1}</div>
+                                                            <div style="flex: 1;">
+                                                                <div style="font-weight: 600; font-size: 15px; line-height: 1.4;">
+                                                                    ${video.title}
+                                                                </div>
+                                                            </div>
+                                                            <div style="
+                                                                background: rgba(245, 158, 11, 0.2);
+                                                                color: #92400e;
+                                                                padding: 4px 8px;
+                                                                border-radius: 6px;
+                                                                font-size: 11px;
+                                                                font-weight: 600;
+                                                            ">▶ 재생</div>
+                                                        </a>
+                                                    `).join('')}
+                                                </div>
+                                            </div>
+                                        ` : ''}
+                                        
+                                        ${module.resources.web_links && module.resources.web_links.length > 0 ? `
+                                            <div>
+                                                <h4 style="
+                                                    font-size: 17px;
+                                                    font-weight: 700;
+                                                    color: #374151;
+                                                    margin-bottom: 12px;
+                                                    display: flex;
+                                                    align-items: center;
+                                                    gap: 8px;
+                                                ">
+                                                    <span style="color: #3b82f6;">🌐</span>
+                                                    웹 자료
+                                                </h4>
+                                                <div style="display: grid; gap: 10px;">
+                                                    ${module.resources.web_links.map((link, idx) => `
+                                                        <a href="${link.url}" target="_blank" style="
+                                                            display: flex;
+                                                            align-items: center;
+                                                            gap: 12px;
+                                                            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+                                                            border: 1px solid #93c5fd;
+                                                            border-radius: 12px;
+                                                            padding: 16px;
+                                                            text-decoration: none;
+                                                            color: #1e40af;
+                                                            transition: all 0.2s ease;
+                                                        " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(59, 130, 246, 0.15)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                                            <div style="
+                                                                background: #3b82f6;
+                                                                color: white;
+                                                                width: 32px;
+                                                                height: 32px;
+                                                                border-radius: 8px;
+                                                                display: flex;
+                                                                align-items: center;
+                                                                justify-content: center;
+                                                                font-weight: 700;
+                                                                font-size: 12px;
+                                                                flex-shrink: 0;
+                                                            ">${idx + 1}</div>
+                                                            <div style="flex: 1;">
+                                                                <div style="font-weight: 600; font-size: 15px; line-height: 1.4;">
+                                                                    ${link.title}
+                                                                </div>
+                                                            </div>
+                                                            <div style="
+                                                                background: rgba(59, 130, 246, 0.2);
+                                                                color: #1e40af;
+                                                                padding: 4px 8px;
+                                                                border-radius: 6px;
+                                                                font-size: 11px;
+                                                                font-weight: 600;
+                                                            ">🔗 링크</div>
+                                                        </a>
+                                                    `).join('')}
+                                                </div>
+                                            </div>
+                                        ` : ''}
+                                        
+                                        ${module.resources.documents && module.resources.documents.length > 0 ? `
+                                            <div>
+                                                <h4 style="
+                                                    font-size: 17px;
+                                                    font-weight: 700;
+                                                    color: #374151;
+                                                    margin-bottom: 12px;
+                                                    display: flex;
+                                                    align-items: center;
+                                                    gap: 8px;
+                                                ">
+                                                    <span style="color: #10b981;">📄</span>
+                                                    문서 자료
+                                                </h4>
+                                                <div style="display: grid; gap: 10px;">
+                                                    ${module.resources.documents.map((doc, idx) => `
+                                                        <a href="${doc.url}" target="_blank" style="
+                                                            display: flex;
+                                                            align-items: center;
+                                                            gap: 12px;
+                                                            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+                                                            border: 1px solid #86efac;
+                                                            border-radius: 12px;
+                                                            padding: 16px;
+                                                            text-decoration: none;
+                                                            color: #065f46;
+                                                            transition: all 0.2s ease;
+                                                        " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(16, 185, 129, 0.15)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                                            <div style="
+                                                                background: #10b981;
+                                                                color: white;
+                                                                width: 32px;
+                                                                height: 32px;
+                                                                border-radius: 8px;
+                                                                display: flex;
+                                                                align-items: center;
+                                                                justify-content: center;
+                                                                font-weight: 700;
+                                                                font-size: 12px;
+                                                                flex-shrink: 0;
+                                                            ">${idx + 1}</div>
+                                                            <div style="flex: 1;">
+                                                                <div style="font-weight: 600; font-size: 15px; line-height: 1.4;">
+                                                                    ${doc.title}
+                                                                </div>
+                                                            </div>
+                                                            <div style="
+                                                                background: rgba(16, 185, 129, 0.2);
+                                                                color: #065f46;
+                                                                padding: 4px 8px;
+                                                                border-radius: 6px;
+                                                                font-size: 11px;
+                                                                font-weight: 600;
+                                                            ">📁 다운로드</div>
+                                                        </a>
+                                                    `).join('')}
+                                                </div>
+                                            </div>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            ` : ''}
+                            
+                            <!-- 학습 완료 체크박스 -->
+                            <div style="
+                                margin-top: 24px;
+                                background: white;
+                                border-radius: 16px;
+                                padding: 24px;
+                                border: 1px solid #e2e8f0;
+                                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+                                text-align: center;
+                            ">
+                                ${(() => {
+                                    const completedWeeks = JSON.parse(localStorage.getItem('curriculumProgress') || '[]');
+                                    const isCompleted = completedWeeks.includes(moduleIndex);
+                                    return `
+                                        <div style="
+                                            background: ${isCompleted ? 'linear-gradient(135deg, #dcfce7, #bbf7d0)' : 'linear-gradient(135deg, #f8fafc, #e2e8f0)'};
+                                            border: 2px solid ${isCompleted ? '#10b981' : '#cbd5e1'};
+                                            border-radius: 16px;
+                                            padding: 20px;
+                                            margin-bottom: 16px;
+                                            transition: all 0.3s ease;
+                                            cursor: pointer;
+                                        " onclick="document.getElementById('completeWeek-${moduleIndex}').click()">
+                                            <div style="
+                                                display: flex;
+                                                align-items: center;
+                                                justify-content: center;
+                                                gap: 16px;
+                                                margin-bottom: 12px;
+                                            ">
+                                                <div style="
+                                                    position: relative;
+                                                    width: 28px;
+                                                    height: 28px;
+                                                ">
+                                                    <input 
+                                                        type="checkbox" 
+                                                        id="completeWeek-${moduleIndex}"
+                                                        ${isCompleted ? 'checked' : ''}
+                                                        onchange="toggleWeekCompletion(${moduleIndex})"
+                                                        style="
+                                                            width: 28px;
+                                                            height: 28px;
+                                                            accent-color: ${weekColor};
+                                                            cursor: pointer;
+                                                            border-radius: 8px;
+                                                        "
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <div style="
+                                                        font-size: 18px;
+                                                        font-weight: 700;
+                                                        color: ${isCompleted ? '#065f46' : '#475569'};
+                                                        margin-bottom: 4px;
+                                                        display: flex;
+                                                        align-items: center;
+                                                        gap: 8px;
+                                                    ">
+                                                        <span style="font-size: 20px;">
+                                                            ${isCompleted ? '✅' : '📚'}
+                                                        </span>
+                                                        ${isCompleted ? '학습 완료됨' : '학습 완료하기'}
+                                                    </div>
+                                                    <div style="
+                                                        font-size: 13px;
+                                                        color: ${isCompleted ? '#059669' : '#64748b'};
+                                                        font-weight: 500;
+                                                    ">
+                                                        ${isCompleted ? '이 주차의 모든 학습을 마쳤습니다' : '학습을 완료하면 체크해주세요'}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        ${isCompleted ? `
+                                            <div style="
+                                                background: linear-gradient(135deg, #059669, #10b981);
+                                                color: white;
+                                                padding: 12px 20px;
+                                                border-radius: 12px;
+                                                font-size: 14px;
+                                                font-weight: 600;
+                                                text-align: center;
+                                            ">
+                                                🎉 축하합니다! Week ${module.week} 학습을 완료하셨습니다!
+                                            </div>
+                                        ` : `
+                                            <div style="
+                                                background: #f8fafc;
+                                                border: 1px dashed #cbd5e1;
+                                                color: #64748b;
+                                                padding: 16px;
+                                                border-radius: 12px;
+                                                font-size: 13px;
+                                                line-height: 1.5;
+                                                text-align: center;
+                                            ">
+                                                모든 학습 목표를 달성하셨다면 위 체크박스를 선택해주세요.<br>
+                                                <strong>진행도가 자동으로 업데이트</strong>되어 전체 학습 현황을 확인할 수 있습니다.
+                                            </div>
+                                        `}
+                                    `;
+                                })()}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // 모달을 body에 추가
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+        }
+        
+        // 모달 닫기
+        function closeModuleModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            
+            const modal = document.getElementById('moduleModal');
+            if (modal) {
+                modal.style.animation = 'fadeOut 0.3s ease';
+                setTimeout(() => {
+                    modal.remove();
+                }, 300);
+            }
+        }
+        
+        // 주차 완료 상태 토글
+        function toggleWeekCompletion(moduleIndex) {
+            const completedWeeks = JSON.parse(localStorage.getItem('curriculumProgress') || '[]');
+            const isCurrentlyCompleted = completedWeeks.includes(moduleIndex);
+            
+            if (isCurrentlyCompleted) {
+                // 완료 해제
+                const updatedWeeks = completedWeeks.filter(week => week !== moduleIndex);
+                localStorage.setItem('curriculumProgress', JSON.stringify(updatedWeeks));
+                showNotification(`${moduleIndex + 1}주차 완료 상태가 해제되었습니다.`, 'info');
+            } else {
+                // 완료 추가
+                const updatedWeeks = [...completedWeeks, moduleIndex].sort((a, b) => a - b);
+                localStorage.setItem('curriculumProgress', JSON.stringify(updatedWeeks));
+                showNotification(`🎉 ${moduleIndex + 1}주차를 완료하셨습니다!`, 'success');
                 
-                if (isExpanded) {
-                    // 축소
-                    expandedDiv.style.display = 'none';
-                    toggleIcon.textContent = '▼';
-                    card.style.zIndex = '1';
-                } else {
-                    // 확장
-                    expandedDiv.style.display = 'block';
-                    toggleIcon.textContent = '▲';
-                    card.style.zIndex = '10';
-                    card.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.15)';
-                    
-                    // 3초 후 그림자 제거
-                    setTimeout(() => {
-                        if (card.style.zIndex === '10') {
-                            card.style.boxShadow = 'none';
-                        }
-                    }, 3000);
+                // 완료 효과 애니메이션
+                setTimeout(() => {
+                    const checkbox = document.getElementById(`completeWeek-${moduleIndex}`);
+                    if (checkbox) {
+                        checkbox.style.transform = 'scale(1.2)';
+                        setTimeout(() => {
+                            checkbox.style.transform = 'scale(1)';
+                        }, 200);
+                    }
+                }, 100);
+            }
+            
+            // 모달 내용 업데이트
+            setTimeout(() => {
+                closeModuleModal();
+                const curriculumData = JSON.parse(localStorage.getItem('generatedCurriculum') || '{}');
+                const module = curriculumData.modules?.[moduleIndex];
+                if (module) {
+                    showModuleModal(module, moduleIndex);
+                }
+            }, 300);
+            
+            // 전체 커리큘럼 진행도 업데이트
+            updateCurriculumProgress();
+        }
+        
+        // 커리큘럼 진행도 업데이트
+        function updateCurriculumProgress() {
+            const curriculumContent = document.getElementById('curriculumContent');
+            if (curriculumContent && curriculumContent.style.display === 'block') {
+                const curriculumData = JSON.parse(localStorage.getItem('generatedCurriculum') || '{}');
+                if (curriculumData.modules) {
+                    displayCurriculumCards(curriculumContent, curriculumData);
                 }
             }
+        }
+        
+        // 진행도 초기화 (새 세션이나 커리큘럼 재생성 시)
+        function resetCurriculumProgress() {
+            localStorage.removeItem('curriculumProgress');
+            updateCurriculumProgress();
         }
 
         // 대화 초기화
@@ -2133,6 +2886,7 @@
                     updateLearningProfile('', '', '');
                     localStorage.removeItem('currentProfile');
                     localStorage.removeItem('generatedCurriculum');
+                    localStorage.removeItem('curriculumProgress'); // 진행도도 초기화
                     // 생성 상태 초기화
                     isGeneratingCurriculum = false;
                     

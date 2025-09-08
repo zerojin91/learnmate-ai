@@ -5898,5 +5898,1561 @@
       "id": 0,
       "created_at": "2025-09-08T17:18:59.154364"
     }
+  ],
+  "812f8dea": [
+    {
+      "title": "파이썬 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 12,
+      "modules": [
+        {
+          "week": 1,
+          "title": "파이썬 - 1주차",
+          "description": "1주차 학습 내용",
+          "objectives": [
+            "1주차 핵심 개념 학습",
+            "실습 과제 완료",
+            "이론 이해 및 적용"
+          ],
+          "learning_outcomes": [
+            "파이썬 기본 개념 이해",
+            "1주차 실무 지식 습득"
+          ],
+          "key_concepts": [
+            "1주차 기초 개념",
+            "실습 예제"
+          ],
+          "estimated_hours": 10,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 2,
+          "title": "파이썬 - 2주차",
+          "description": "2주차 학습 내용",
+          "objectives": [
+            "2주차 핵심 개념 학습",
+            "실습 과제 완료",
+            "이론 이해 및 적용"
+          ],
+          "learning_outcomes": [
+            "파이썬 기본 개념 이해",
+            "2주차 실무 지식 습득"
+          ],
+          "key_concepts": [
+            "2주차 기초 개념",
+            "실습 예제"
+          ],
+          "estimated_hours": 12,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 3,
+          "title": "파이썬 - 3주차",
+          "description": "3주차 학습 내용",
+          "objectives": [
+            "3주차 핵심 개념 학습",
+            "실습 과제 완료",
+            "이론 이해 및 적용"
+          ],
+          "learning_outcomes": [
+            "파이썬 기본 개념 이해",
+            "3주차 실무 지식 습득"
+          ],
+          "key_concepts": [
+            "3주차 기초 개념",
+            "실습 예제"
+          ],
+          "estimated_hours": 14,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 4,
+          "title": "파이썬 - 4주차",
+          "description": "4주차 학습 내용",
+          "objectives": [
+            "4주차 핵심 개념 학습",
+            "실습 과제 완료",
+            "이론 이해 및 적용"
+          ],
+          "learning_outcomes": [
+            "파이썬 기본 개념 이해",
+            "4주차 실무 지식 습득"
+          ],
+          "key_concepts": [
+            "4주차 기초 개념",
+            "실습 예제"
+          ],
+          "estimated_hours": 16,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 5,
+          "title": "파이썬 - 5주차",
+          "description": "5주차 학습 내용",
+          "objectives": [
+            "5주차 핵심 개념 학습",
+            "실습 과제 완료",
+            "이론 이해 및 적용"
+          ],
+          "learning_outcomes": [
+            "파이썬 기본 개념 이해",
+            "5주차 실무 지식 습득"
+          ],
+          "key_concepts": [
+            "5주차 기초 개념",
+            "실습 예제"
+          ],
+          "estimated_hours": 18,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 6,
+          "title": "파이썬 - 6주차",
+          "description": "6주차 학습 내용",
+          "objectives": [
+            "6주차 핵심 개념 학습",
+            "실습 과제 완료",
+            "이론 이해 및 적용"
+          ],
+          "learning_outcomes": [
+            "파이썬 기본 개념 이해",
+            "6주차 실무 지식 습득"
+          ],
+          "key_concepts": [
+            "6주차 기초 개념",
+            "실습 예제"
+          ],
+          "estimated_hours": 20,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 7,
+          "title": "파이썬 - 7주차",
+          "description": "7주차 학습 내용",
+          "objectives": [
+            "7주차 핵심 개념 학습",
+            "실습 과제 완료",
+            "이론 이해 및 적용"
+          ],
+          "learning_outcomes": [
+            "파이썬 기본 개념 이해",
+            "7주차 실무 지식 습득"
+          ],
+          "key_concepts": [
+            "7주차 기초 개념",
+            "실습 예제"
+          ],
+          "estimated_hours": 22,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 8,
+          "title": "파이썬 - 8주차",
+          "description": "8주차 학습 내용",
+          "objectives": [
+            "8주차 핵심 개념 학습",
+            "실습 과제 완료",
+            "이론 이해 및 적용"
+          ],
+          "learning_outcomes": [
+            "파이썬 기본 개념 이해",
+            "8주차 실무 지식 습득"
+          ],
+          "key_concepts": [
+            "8주차 기초 개념",
+            "실습 예제"
+          ],
+          "estimated_hours": 24,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 9,
+          "title": "파이썬 - 9주차",
+          "description": "9주차 학습 내용",
+          "objectives": [
+            "9주차 핵심 개념 학습",
+            "실습 과제 완료",
+            "이론 이해 및 적용"
+          ],
+          "learning_outcomes": [
+            "파이썬 기본 개념 이해",
+            "9주차 실무 지식 습득"
+          ],
+          "key_concepts": [
+            "9주차 기초 개념",
+            "실습 예제"
+          ],
+          "estimated_hours": 26,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 10,
+          "title": "파이썬 - 10주차",
+          "description": "10주차 학습 내용",
+          "objectives": [
+            "10주차 핵심 개념 학습",
+            "실습 과제 완료",
+            "이론 이해 및 적용"
+          ],
+          "learning_outcomes": [
+            "파이썬 기본 개념 이해",
+            "10주차 실무 지식 습득"
+          ],
+          "key_concepts": [
+            "10주차 기초 개념",
+            "실습 예제"
+          ],
+          "estimated_hours": 28,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 11,
+          "title": "파이썬 - 11주차",
+          "description": "11주차 학습 내용",
+          "objectives": [
+            "11주차 핵심 개념 학습",
+            "실습 과제 완료",
+            "이론 이해 및 적용"
+          ],
+          "learning_outcomes": [
+            "파이썬 기본 개념 이해",
+            "11주차 실무 지식 습득"
+          ],
+          "key_concepts": [
+            "11주차 기초 개념",
+            "실습 예제"
+          ],
+          "estimated_hours": 30,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 12,
+          "title": "파이썬 - 12주차",
+          "description": "12주차 학습 내용",
+          "objectives": [
+            "12주차 핵심 개념 학습",
+            "실습 과제 완료",
+            "이론 이해 및 적용"
+          ],
+          "learning_outcomes": [
+            "파이썬 기본 개념 이해",
+            "12주차 실무 지식 습득"
+          ],
+          "key_concepts": [
+            "12주차 기초 개념",
+            "실습 예제"
+          ],
+          "estimated_hours": 32,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        }
+      ],
+      "overall_goal": "12주 동안 파이썬 기초를 마스터하기",
+      "resources": [],
+      "session_id": "812f8dea",
+      "original_constraints": "초보자, 주 2시간",
+      "original_goal": "자기계발",
+      "generated_at": "2025-09-08T18:28:41.491570",
+      "id": 0,
+      "created_at": "2025-09-08T18:28:41.491600"
+    }
+  ],
+  "8b94ee75": [
+    {
+      "title": "파이썬 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 12,
+      "modules": [
+        {
+          "week": 1,
+          "title": "파이썬 기초 문법",
+          "description": "프로그래밍 초보자를 위한 파이썬 기본 개념과 문법을 익히는 과정입니다. 변수, 자료형, 연산자 등 프로그래밍의 핵심 요소를 학습합니다.",
+          "objectives": [
+            "변수와 상수의 개념을 이해하고 활용할 수 있다",
+            "다양한 자료형(int, float, string, boolean)의 특징을 구분할 수 있다",
+            "기본 연산자와 조건문(if/else)을 사용할 수 있다"
+          ],
+          "learning_outcomes": [
+            "파이썬에서 데이터를 저장하고 조작하는 방법을 익힐 수 있다",
+            "기본적인 프로그래밍 논리를 이해할 수 있다"
+          ],
+          "key_concepts": [
+            "변수와 자료형",
+            "연산자 우선순위",
+            "조건문과 반복문 기초"
+          ],
+          "estimated_hours": 10,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 2,
+          "title": "리스트와 튜플 활용",
+          "description": "파이썬의 기본 시퀀스 자료형인 리스트와 튜플을 깊이 있게 학습하고 실무에서 활용하는 방법을 배웁니다.",
+          "objectives": [
+            "리스트와 튜플의 생성 및 사용법을 익힐 수 있다",
+            "리스트 메서드(add, remove, sort 등)를 활용할 수 있다",
+            "반복문과 함께 리스트/튜플을 효과적으로 사용할 수 있다"
+          ],
+          "learning_outcomes": [
+            "데이터 컬렉션 관리 능력을 기를 수 있다",
+            "알고리즘 문제 해결에 필요한 기초 도구를 습득할 수 있다"
+          ],
+          "key_concepts": [
+            "리스트와 튜플의 차이점",
+            "리스트 메서드 활용법",
+            "슬라이싱 기법"
+          ],
+          "estimated_hours": 10,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 3,
+          "title": "함수와 모듈 이해",
+          "description": "코드 재사용성을 높이는 함수 개념과 외부 라이브러리 활용 방법을 학습하여 실무 프로그래밍 능력을 키웁니다.",
+          "objectives": [
+            "사용자 정의 함수를 정의하고 호출할 수 있다",
+            "모듈과 패키지의 개념을 이해할 수 있다",
+            "표준 라이브러리(math, datetime 등)를 활용할 수 있다"
+          ],
+          "learning_outcomes": [
+            "체계적인 코드 구조화 능력을 기를 수 있다",
+            "효율적인 프로그래밍 기법을 습득할 수 있다"
+          ],
+          "key_concepts": [
+            "함수 정의와 호출",
+            "매개변수와 반환값",
+            "모듈 임포트 방법"
+          ],
+          "estimated_hours": 10,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 4,
+          "title": "파일 입출력과 예외 처리",
+          "description": "실제 업무에서 필요한 파일 다루기 기술과 안정적인 프로그램 개발을 위한 예외 처리를 학습합니다.",
+          "objectives": [
+            "텍스트 파일 읽기/쓰기 방법을 익힐 수 있다",
+            "파일 작업 시 발생할 수 있는 오류를 처리할 수 있다",
+            "with 문과 try-except 구문을 활용할 수 있다"
+          ],
+          "learning_outcomes": [
+            "데이터 저장 및 불러오기 기술을 습득할 수 있다",
+            "안정적인 프로그램 개발 능력을 기를 수 있다"
+          ],
+          "key_concepts": [
+            "open() 함수와 파일 모드",
+            "read/write 메서드",
+            "try-except 블록"
+          ],
+          "estimated_hours": 10,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 5,
+          "title": "제어문 심화",
+          "description": "복잡한 프로그램 로직 구현을 위한 제어문의 고급 활용법과 알고리즘 기초를 다집니다.",
+          "objectives": [
+            "for/while 반복문의 조건 연산자를 활용할 수 있다",
+            "break/continue 문으로 반복문을 제어할 수 있다",
+            "재귀 함수 개념을 이해하고 구현할 수 있다"
+          ],
+          "learning_outcomes": [
+            "복잡한 로직을 효율적으로 구현할 수 있다",
+            "알고리즘 문제 해결 기초 능력을 기를 수 있다"
+          ],
+          "key_concepts": [
+            "중첩 반복문",
+            "재귀 알고리즘",
+            "제어문의 최적화"
+          ],
+          "estimated_hours": 10,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 6,
+          "title": "자료구조와 알고리즘 입문",
+          "description": "실무에서 자주 사용되는 자료구조 스택, 큐, 연결리스트의 개념과 기본 알고리즘을 학습합니다.",
+          "objectives": [
+            "스택과 큐의 동작 원리를 이해할 수 있다",
+            "연결리스트를 구현하고 활용할 수 있다",
+            "정렬 알고리즘의 기초를 익힐 수 있다"
+          ],
+          "learning_outcomes": [
+            "효율적인 데이터 관리 방법을 습득할 수 있다",
+            "알고리즘적 사고 능력을 기를 수 있다"
+          ],
+          "key_concepts": [
+            "스택과 큐의 LIFO/FIFO 특성",
+            "노드와 포인터",
+            "버블 정렬, 선택 정렬"
+          ],
+          "estimated_hours": 10,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 7,
+          "title": "클래스와 객체지향 프로그래밍",
+          "description": "객체지향 프로그래밍의 핵심 개념을 학습하고 파이썬에서 클래스를 활용하는 방법을 배웁니다.",
+          "objectives": [
+            "클래스와 인스턴스의 차이점을 이해할 수 있다",
+            "메서드와 속성을 정의하고 활용할 수 있다",
+            "상속과 다형성을 구현할 수 있다"
+          ],
+          "learning_outcomes": [
+            "객체지향적 사고방식을 기를 수 있다",
+            "복잡한 시스템 설계 능력을 습득할 수 있다"
+          ],
+          "key_concepts": [
+            "클래스 정의 문법",
+            "캡슐화 원리",
+            "상속과 오버라이딩"
+          ],
+          "estimated_hours": 10,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 8,
+          "title": "데이터 분석 기초",
+          "description": "파이썬 데이터 분석 라이브러리(Pandas, NumPy)의 기본 사용법을 익혀 실무에서 활용할 수 있는 능력을 키웁니다.",
+          "objectives": [
+            "Pandas DataFrame과 Series를 생성할 수 있다",
+            "데이터 필터링 및 정렬 방법을 익힐 수 있다",
+            "기본적인 통계 연산을 수행할 수 있다"
+          ],
+          "learning_outcomes": [
+            "데이터 분석 기초 도구 활용 능력을 기를 수 있다",
+            "실무 데이터 처리 경험을 쌓을 수 있다"
+          ],
+          "key_concepts": [
+            "DataFrame 생성과 조회",
+            "데이터 프레임 연산",
+            "통계 함수 활용"
+          ],
+          "estimated_hours": 10,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 9,
+          "title": "웹 크롤링 기초",
+          "description": "파이썬으로 웹에서 데이터를 수집하는 웹 크롤링 기술을 학습합니다.",
+          "objectives": [
+            "requests와 BeautifulSoup 사용법을 익힐 수 있다",
+            "HTML 구조를 분석하고 필요한 데이터를 추출할 수 있다",
+            "크롤링 윤리와 법적 제약사항을 이해할 수 있다"
+          ],
+          "learning_outcomes": [
+            "웹 데이터 수집 자동화 능력을 기를 수 있다",
+            "실제 웹 서비스 개발 기초를 습득할 수 있다"
+          ],
+          "key_concepts": [
+            "HTTP 요청과 응답",
+            "DOM 파싱 방법",
+            "크롤링 제한 사항"
+          ],
+          "estimated_hours": 10,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 10,
+          "title": "프로젝트 개발 실습",
+          "description": "지금까지 학습한 내용을 바탕으로 실무형 파이썬 프로젝트를 직접 구현해보는 과정입니다.",
+          "objectives": [
+            "실전 프로젝트 요구사항을 분석하고 설계할 수 있다",
+            "전체 시스템을 모듈별로 나누어 구현할 수 있다",
+            "테스트와 디버깅 방법을 적용할 수 있다"
+          ],
+          "learning_outcomes": [
+            "실제 업무에서 활용 가능한 프로젝트 개발 능력을 기를 수 있다",
+            "문제 해결형 코딩 능력을 향상시킬 수 있다"
+          ],
+          "key_concepts": [
+            "프로젝트 설계 방법론",
+            "단위 테스트 작성",
+            "버전 관리 시스템 기초"
+          ],
+          "estimated_hours": 15,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 11,
+          "title": "알고리즘 심화",
+          "description": "고급 알고리즘과 자료구조를 학습하여 프로그래밍 문제 해결 능력을 한 단계 높입니다.",
+          "objectives": [
+            "정렬 알고리즘의 시간 복잡도를 분석할 수 있다",
+            "트리와 그래프 구조를 이해하고 구현할 수 있다",
+            "동적 프로그래밍 기법을 활용할 수 있다"
+          ],
+          "learning_outcomes": [
+            "복잡한 알고리즘 문제 해결 능력을 기를 수 있다",
+            "고급 자료구조 활용 능력을 습득할 수 있다"
+          ],
+          "key_concepts": [
+            "정렬 알고리즘 비교 분석",
+            "트리 순회 방법",
+            "메모이제이션 기법"
+          ],
+          "estimated_hours": 10,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 12,
+          "title": "취업 준비 및 포트폴리오",
+          "description": "파이썬 개발자로서의 취업 준비와 개인 프로젝트 포트폴리오 구성 방법을 학습합니다.",
+          "objectives": [
+            "이력서 작성법과 면접 준비 방법을 익힐 수 있다",
+            "개인 프로젝트를 체계적으로 정리할 수 있다",
+            "Git을 활용한 버전 관리를 실습할 수 있다"
+          ],
+          "learning_outcomes": [
+            "취업 시장에서 경쟁력 있는 개발자로 준비할 수 있다",
+            "실무 능력을 보여주는 포트폴리오를 구성할 수 있다"
+          ],
+          "key_concepts": [
+            "포트폴리오 작성 가이드",
+            "깃허브 활용 방법",
+            "기술 면접 대비 전략"
+          ],
+          "estimated_hours": 15,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        }
+      ],
+      "overall_goal": "파이썬 기초부터 실무 프로젝트까지 체계적으로 학습하여 취업 가능한 개발자로 성장할 수 있는 탄탄한 기본기를 확보합니다",
+      "resources": [],
+      "session_id": "8b94ee75",
+      "original_constraints": "초보자, 주에 1시간",
+      "original_goal": "취업이나 이직을 위해",
+      "generated_at": "2025-09-08T18:44:48.116223",
+      "id": 0,
+      "created_at": "2025-09-08T18:44:48.116254"
+    }
+  ],
+  "c1a931b7": [
+    {
+      "title": "전지지식 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 24,
+      "modules": [
+        {
+          "week": 1,
+          "title": "전지지식 기초 개념 이해",
+          "description": "전지의 기본 원리와 구성 요소를 학습하고 전기 에너지에 대한 기초 지식을 습득합니다.",
+          "objectives": [
+            "전기와 전지의 차이점을 설명할 수 있다",
+            "전지의 주요 구성 요소(양극, 음극, 전해질)를 식별할 수 있다",
+            "간단한 전지 회로를 이해할 수 있다"
+          ],
+          "learning_outcomes": [
+            "일상에서 사용되는 다양한 전지 종류를 파악할 수 있다",
+            "배터리 작동 원리에 대한 기본 이해를 갖출 수 있다"
+          ],
+          "key_concepts": [
+            "전기화학 반응",
+            "전위차",
+            "전류 흐름 원리"
+          ],
+          "estimated_hours": 10,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 2,
+          "title": "이차전지의 종류와 특성",
+          "description": "리튬이온, 납축전지 등 주요 이차전지 기술을 비교 분석하고 각 특성을 학습합니다.",
+          "objectives": [
+            "주요 이차전지 종류별 장단점을 비교할 수 있다",
+            "각 전지가 사용되는 응용 분야를 설명할 수 있다",
+            "에너지 밀도 개념을 이해할 수 있다"
+          ],
+          "learning_outcomes": [
+            "스마트폰과 전기차에 적용되는 배터리 기술의 차이를 구분할 수 있다",
+            "리튬이온과 납축전지의 수명 특성을 파악할 수 있다"
+          ],
+          "key_concepts": [
+            "리튬이온 배터리 화학반응",
+            "에너지 밀도",
+            "용량 유지율"
+          ],
+          "estimated_hours": 12,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 3,
+          "title": "배터리 관리 시스템(BMS) 기초",
+          "description": "배터리의 안전한 사용과 성능 최적화를 위한 BMS 기술을 학습합니다.",
+          "objectives": [
+            "BMS의 주요 기능을 설명할 수 있다",
+            "충전/방전 제어 방식을 이해할 수 있다",
+            "온도 관리 원리를 파악할 수 있다"
+          ],
+          "learning_outcomes": [
+            "전기차 배터리가 과열되지 않도록 하는 보호 메커니즘을 설명할 수 있다",
+            "배터리 수명 연장 기술에 대해 이해할 수 있다"
+          ],
+          "key_concepts": [
+            "셀 밸런싱",
+            "과충전 방지",
+            "온도 센서 작동원리"
+          ],
+          "estimated_hours": 12,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 4,
+          "title": "전력 저장 시스템 개요",
+          "description": "태양광, 풍력 등 재생에너지와 연계된 대규모 배터리 시스템을 학습합니다.",
+          "objectives": [
+            "재생에너지 연계 ESS의 필요성을 설명할 수 있다",
+            "분산형 전력망에서 배터리 역할을 이해할 수 있다",
+            "계통 안정화 원리를 파악할 수 있다"
+          ],
+          "learning_outcomes": [
+            "독립형 발전시스템 구성 요소를 분석할 수 있다",
+            "전력 품질 향상 기술을 설명할 수 있다"
+          ],
+          "key_concepts": [
+            "에너지 저장 용량 계산법",
+            "피크 셰이빙",
+            "주파수 조정"
+          ],
+          "estimated_hours": 13,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 5,
+          "title": "배터리 재활용과 환경 영향",
+          "description": "배터리 폐기물 처리와 자원 순환 체계에 대해 학습합니다.",
+          "objectives": [
+            "리튬이온 배터리 재활용 과정을 설명할 수 있다",
+            "환경 규제 요구사항을 이해할 수 있다",
+            "지속가능한 배터리 개발 동향을 파악할 수 있다"
+          ],
+          "learning_outcomes": [
+            "폐배터리에서 추출할 수 있는 주요 금속들을 구분할 수 있다",
+            "친환경 배터리 설계 기준을 분석할 수 있다"
+          ],
+          "key_concepts": [
+            "유가금속 회수 기술",
+            "순환 경제 모델",
+            "환경 영향 평가"
+          ],
+          "estimated_hours": 11,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 6,
+          "title": "전기화학 기초 이론",
+          "description": "전지 작동 원리의 핵심인 전기화학 반응 메커니즘을 학습합니다.",
+          "objectives": [
+            "산화환원 반응 개념을 이해할 수 있다",
+            "전극 반응식을 작성할 수 있다",
+            "기전력 계산 방법을 학습할 수 있다"
+          ],
+          "learning_outcomes": [
+            "다양한 금속의 표준환원전위를 비교할 수 있다",
+            "배터리 전압 저하 원인을 분석할 수 있다"
+          ],
+          "key_concepts": [
+            "Nernst 방정식",
+            "Faraday 법칙",
+            "과전압"
+          ],
+          "estimated_hours": 14,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 7,
+          "title": "차세대 배터리 기술 동향",
+          "description": "전고체 전지, 나트륨이온 등 차세대 배터리 기술을 살펴봅니다.",
+          "objectives": [
+            "기존 리튬이온 한계를 설명할 수 있다",
+            "각 차세대 기술의 핵심 특징을 비교할 수 있다",
+            "상용화 전망을 예측할 수 있다"
+          ],
+          "learning_outcomes": [
+            "전고체 전해질의 안전성 장점을 분석할 수 있다",
+            "나트륨이온 배터리 경제성을 평가할 수 있다"
+          ],
+          "key_concepts": [
+            "황화물계/산화물계 고체 전해질",
+            "나트륨-금속 합금 전극",
+            "안전성 평가 지표"
+          ],
+          "estimated_hours": 12,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 8,
+          "title": "배터리 안전성과 신뢰성",
+          "description": "배터리 화재 위험 요소와 안전성 확보 방안을 학습합니다.",
+          "objectives": [
+            "열폭주 현상 원인을 설명할 수 있다",
+            "안전성 테스트 기준을 이해할 수 있다",
+            "신뢰성 평가 방법을 파악할 수 있다"
+          ],
+          "learning_outcomes": [
+            "배터리 발화 메커니즘을 분석할 수 있다",
+            "수명 예측 모델을 적용할 수 있다"
+          ],
+          "key_concepts": [
+            "열확산계수",
+            "내전압 시험",
+            "가속 수명시험"
+          ],
+          "estimated_hours": 11,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 9,
+          "title": "충전 기술과 스마트 그리드",
+          "description": "고속 충전 기술과 지능형 전력망 연계 방안을 학습합니다.",
+          "objectives": [
+            "DC/AC 변환 원리를 이해할 수 있다",
+            "스마트 그리드 구성요소를 설명할 수 있다",
+            "V2G 기술 개념을 파악할 수 있다"
+          ],
+          "learning_outcomes": [
+            "충전 인프라 구축 계획을 수립할 수 있다",
+            "전력 품질 개선 효과를 분석할 수 있다"
+          ],
+          "key_concepts": [
+            "직류-교류 변환",
+            "에너지 관리 시스템",
+            "주파수 제어"
+          ],
+          "estimated_hours": 13,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 10,
+          "title": "배터리 성능 평가 방법",
+          "description": "정량적 성능 측정 기법과 데이터 분석 방법을 학습합니다.",
+          "objectives": [
+            "방전곡선 해석 방법을 이해할 수 있다",
+            "수명 예측 모델을 적용할 수 있다",
+            "데이터 기반 최적화 방법을 파악할 수 있다"
+          ],
+          "learning_outcomes": [
+            "충전상태(SOC)와 건강상태(SOH)를 분석할 수 있다",
+            "배터리 데이터로 잔여 수명을 예측할 수 있다"
+          ],
+          "key_concepts": [
+            "방전율(C-rate)",
+            "사이클 테스트",
+            "머신러닝 기반 예측모델"
+          ],
+          "estimated_hours": 12,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 11,
+          "title": "에너지 밀도 향상 기술",
+          "description": "배터리 용량 증대를 위한 최신 소재 및 구조 개선 기술을 학습합니다.",
+          "objectives": [
+            "전극 재료별 특성을 비교할 수 있다",
+            "나노구조 설계 원리를 이해할 수 있다",
+            "전해질 최적화 방법을 파악할 수 있다"
+          ],
+          "learning_outcomes": [
+            "고용량 음극재 적용 사례를 분석할 수 있다",
+            "고체 전해질 설계 기준을 설명할 수 있다"
+          ],
+          "key_concepts": [
+            "실리콘 음극 소재",
+            "그래핀 나노시트",
+            "전해액 조성 최적화"
+          ],
+          "estimated_hours": 12,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 12,
+          "title": "배터리 시스템 설계 원리",
+          "description": "실제 응용 분야별 배터리 시스템 구성 방법을 학습합니다.",
+          "objectives": [
+            "전기차용 배터리 팩 구조를 설계할 수 있다",
+            "ESS 용량 산정 방법을 이해할 수 있다",
+            "모듈화 설계 개념을 파악할 수 있다"
+          ],
+          "learning_outcomes": [
+            "배터리 관리 전략을 수립할 수 있다",
+            "시스템 요구사항에 맞는 사양을 결정할 수 있다"
+          ],
+          "key_concepts": [
+            "열관리 시스템",
+            "냉각 방식 비교",
+            "전력 변환 효율"
+          ],
+          "estimated_hours": 14,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 13,
+          "title": "산업 현장 적용 사례",
+          "description": "실제 배터리 산업의 적용 사례와 시장 동향을 분석합니다.",
+          "objectives": [
+            "국내 주요 배터리 기업 현황을 파악할 수 있다",
+            "글로벌 시장 점유율 변화를 분석할 수 있다",
+            "제품별 기술 로드맵을 이해할 수 있다"
+          ],
+          "learning_outcomes": [
+            "기업별 차별화 전략을 비교할 수 있다",
+            "향후 5년 시장 전망을 예측할 수 있다"
+          ],
+          "key_concepts": [
+            "LG에너지솔루션 전략",
+            "삼성SDI 특화 제품",
+            "SK온 기술 개발 방향"
+          ],
+          "estimated_hours": 13,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 14,
+          "title": "배터리 품질 관리 시스템",
+          "description": "제조 공정에서의 품질 보증 체계와 검사 방법을 학습합니다.",
+          "objectives": [
+            "품질관리 프로세스를 설명할 수 있다",
+            "비파괴 검사 기술을 이해할 수 있다",
+            "통계적 품질관리 기법을 적용할 수 있다"
+          ],
+          "learning_outcomes": [
+            "육안검사 기준을 수립할 수 있다",
+            "신뢰성 시험 계획을 설계할 수 있다"
+          ],
+          "key_concepts": [
+            "AOI 시스템",
+            "X-ray 검사",
+            "가속 수명시험 설계"
+          ],
+          "estimated_hours": 12,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 15,
+          "title": "배터리 재료 과학 기초",
+          "description": "전극 및 전해질 소재의 물리적·화학적 특성을 학습합니다.",
+          "objectives": [
+            "재료 결정구조를 분석할 수 있다",
+            "표면 처리 기술을 이해할 수 있다",
+            "나노소재 합성법을 파악할 수 있다"
+          ],
+          "learning_outcomes": [
+            "전극 활성물질 메커니즘을 설명할 수 있다",
+            "고체전해질 상용화 조건을 분석할 수 있다"
+          ],
+          "key_concepts": [
+            "결정립 성장 제어",
+            "계면 저항 최소화",
+            "박막 증착 기술"
+          ],
+          "estimated_hours": 13,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 16,
+          "title": "배터리 특허와 지적재산권",
+          "description": "배터리 기술 관련 특허 체계와 보호 전략을 학습합니다.",
+          "objectives": [
+            "특허 출원 프로세스를 이해할 수 있다",
+            "지적재산권 관리 방안을 파악할 수 있다",
+            "기술 라이선싱 개념을 설명할 수 있다"
+          ],
+          "learning_outcomes": [
+            "경쟁사 핵심기술을 분석할 수 있다",
+            "자체 개발 기술의 보호 전략을 수립할 수 있다"
+          ],
+          "key_concepts": [
+            "권리 범위 설정",
+            "선행기술 조사",
+            "국제 특허 분류 체계"
+          ],
+          "estimated_hours": 11,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 17,
+          "title": "배터리 재활용 산업 동향",
+          "description": "재활용 공정 기술과 경제성 분석 방법을 학습합니다.",
+          "objectives": [
+            "리튬 및 코발트 회수 프로세스를 설명할 수 있다",
+            "상업적 재활용 사례를 분석할 수 있다",
+            "경제성 평가 모델을 적용할 수 있다"
+          ],
+          "learning_outcomes": [
+            "도시광산 개념을 이해할 수 있다",
+            "재자원화 비즈니스 모델을 설계할 수 있다"
+          ],
+          "key_concepts": [
+            "침출 공정",
+            "정련 기술",
+            "환경 규제 준수 사항"
+          ],
+          "estimated_hours": 13,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 18,
+          "title": "배터리 테스트 장비와 분석",
+          "description": "전문적 성능 평가 도구 사용법을 학습합니다.",
+          "objectives": [
+            " 충방전 시험기 작동 원리를 이해할 수 있다",
+            "분석 소프트웨어 활용법을 익힐 수 있다",
+            "데이터 해석 방법을 파악할 수 있다"
+          ],
+          "learning_outcomes": [
+            "테스트 결과 보고서를 작성할 수 있다",
+            "이상 징후 원인을 진단할 수 있다"
+          ],
+          "key_concepts": [
+            "Multi-channel analyzer",
+            "LabVIEW 프로그래밍",
+            "통계적 유의성 검증"
+          ],
+          "estimated_hours": 14,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 19,
+          "title": "배터리 안전성 규제와 인증",
+          "description": "국내외 안전 기준과 인증 절차를 학습합니다.",
+          "objectives": [
+            "KC, UL 등 인증 요구사항을 파악할 수 있다",
+            "화재 안전성 평가 방법을 이해할 수 있다",
+            "국제 표준 체계를 설명할 수 있다"
+          ],
+          "learning_outcomes": [
+            "인증 획득 전략을 수립할 수 있다",
+            "규제 변화에 대응하는 방안을 모색할 수 있다"
+          ],
+          "key_concepts": [
+            "UL 62341 규격",
+            "IEC 62619 표준",
+            "안전 시험 절차"
+          ],
+          "estimated_hours": 12,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 20,
+          "title": "배터리 기술과 환경 영향",
+          "description": "자원 채취부터 폐기까지 전 과정의 환경 영향을 학습합니다.",
+          "objectives": [
+            "광물 채굴이 환경에 미치는 영향을 분석할 수 있다",
+            "전과정평가(LCA) 방법론을 이해할 수 있다",
+            "탄소발자국 계산법을 적용할 수 있다"
+          ],
+          "learning_outcomes": [
+            "친환경 배터리 소재 대안을 제시할 수 있다",
+            "환경 규제 대응 방안을 설계할 수 있다"
+          ],
+          "key_concepts": [
+            "지속가능성 지수",
+            "생애주기비용 분석",
+            "환경영향평가 기준"
+          ],
+          "estimated_hours": 13,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 21,
+          "title": "배터리 품질 관리와 공정 개선",
+          "description": "제조 공정별 품질 이슈 해결 방안을 학습합니다.",
+          "objectives": [
+            "공정별 주요 불량 원인을 진단할 수 있다",
+            "통계적 공정관리 기법을 적용할 수 있다",
+            "자동화 검사 시스템을 이해할 수 있다"
+          ],
+          "learning_outcomes": [
+            "불량률 개선 목표를 설정할 수 있다",
+            "공정 최적화 전략을 수립할 수 있다"
+          ],
+          "key_concepts": [
+            "SPC 관리도",
+            "머신비전 시스템",
+            "6시그마 방법론"
+          ],
+          "estimated_hours": 14,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 22,
+          "title": "배터리 기술 로드맵과 미래 전망",
+          "description": "향후 배터리 산업 발전 방향을 예측하고 분석합니다.",
+          "objectives": [
+            "2030년 이후 차세대 배터리 로드맵을 분석할 수 있다",
+            "기술 변곡점 시점을 예측할 수 있다",
+            "시장 진입 전략을 수립할 수 있다"
+          ],
+          "learning_outcomes": [
+            "혁신적 배터리 소재 동향을 파악할 수 있다",
+            "미래 기술 투자 방향성을 제시할 수 있다"
+          ],
+          "key_concepts": [
+            "꿈의 배터리 기술",
+            "기술 융합 사례",
+            "글로벌 공급망 분석"
+          ],
+          "estimated_hours": 12,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 23,
+          "title": "배터리 프로젝트 관리",
+          "description": "배터리 개발 및 생산 프로젝트 관리 방법론을 학습합니다.",
+          "objectives": [
+            "프로젝트 일정 계획 수립 방법을 이해할 수 있다",
+            "리스크 관리 체계를 설계할 수 있다",
+            "성과 측정 지표를 설정할 수 있다"
+          ],
+          "learning_outcomes": [
+            "개발 단계별 마일스톤을 설정할 수 있다",
+            "예산 배분 방안을 수립할 수 있다"
+          ],
+          "key_concepts": [
+            "WBS 작성법",
+            "PERT/CPM 분석",
+            "MOE 평가 기준"
+          ],
+          "estimated_hours": 13,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 24,
+          "title": "배터리 산업 취업 전략",
+          "description": "배터리 업계 진출을 위한 실무 역량과 준비사항을 학습합니다.",
+          "objectives": [
+            "주요 기업 채용 동향을 분석할 수 있다",
+            "필수 자격증 요구사항을 파악할 수 있다",
+            "기술 면접 대비 전략을 수립할 수 있다"
+          ],
+          "learning_outcomes": [
+            "포트폴리오 구성 방안을 설계할 수 있다",
+            "네트워킹 기회 발굴 방법을 이해할 수 있다"
+          ],
+          "key_concepts": [
+            "산업계 인재상",
+            "현장 실무 역량",
+            "커리어 로드맵"
+          ],
+          "estimated_hours": 15,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        }
+      ],
+      "overall_goal": "배터리 산업 전반에 대한 기초부터 심화까지 체계적으로 학습하여 취업 및 실무 현장에서 활용할 수 있는 전지지식 전문가로 성장하는 것",
+      "resources": [],
+      "session_id": "c1a931b7",
+      "original_constraints": "초보자, 주 2시간",
+      "original_goal": "현재 업무에 활용",
+      "generated_at": "2025-09-08T18:56:37.435115",
+      "id": 0,
+      "created_at": "2025-09-08T18:56:37.435129"
+    }
+  ],
+  "52328185": [
+    {
+      "title": "전지지식 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 12,
+      "modules": [
+        {
+          "week": 1,
+          "title": "전지지식의 기초 개념 이해",
+          "description": "전지에 대한 기본 원리와 화학 반응을 학습하고, 일상생활에서 사용되는 다양한 전지 유형을 탐구합니다.",
+          "objectives": [
+            "전지의 기본 구조와 작동 원리를 설명할 수 있다",
+            "일상생활에서 사용되는 주요 전지 종류를 구분할 수 있다",
+            "전기화학 반응의 기초 개념을 이해한다"
+          ],
+          "learning_outcomes": [
+            "다양한 전지의 화학적 특성을 이해할 수 있다",
+            "간단한 전지 회로를 분석할 수 있는 능력을 기른다"
+          ],
+          "key_concepts": [
+            "산화-환원 반응",
+            "기전력과 내부저항",
+            "전해액과 전극의 역할"
+          ],
+          "estimated_hours": 10,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 2,
+          "title": "리튬이온 전지의 원리와 응용",
+          "description": "현대 모바일 기기에서 널리 사용되는 리튬이온 전지의 작동 원리를 학습하고, 개인적 프로젝트 아이디어를 구상합니다.",
+          "objectives": [
+            "리튬이온 전지의 충전 및 방전 메커니즘을 이해한다",
+            "에너지 밀도와 수명에 영향을 주는 요인을 분석한다",
+            "스마트폰 배터리 성능 향상 방안을 제안할 수 있다"
+          ],
+          "learning_outcomes": [
+            "리튬이온 전지의 장단점을 평가할 수 있다",
+            "배터리 관리 시스템(BMS)의 기본 원리를 설명할 수 있다"
+          ],
+          "key_concepts": [
+            "리튬 이온 이동 메커니즘",
+            "충전 상태(SOC)와 건강 상태(SOH)",
+            "열관리 기술"
+          ],
+          "estimated_hours": 10,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 3,
+          "title": "태양전지의 구조와 제작 실습",
+          "description": "태양광 에너지를 전기로 변환하는 태양전지의 원리를 학습하고, 간단한 DIY 키트를 활용한 제작 프로젝트를 진행합니다.",
+          "objectives": [
+            "광전효과의 기본 원리를 이해한다",
+            "다양한 종류의 태양전지 패널을 비교할 수 있다",
+            "간단한 태양전지 모듈을 제작해본다"
+          ],
+          "learning_outcomes": [
+            "태양전지 효율에 영향을 주는 요소들을 파악할 수 있다",
+            "태양광 발전 시스템의 기본 구성을 설계할 수 있다"
+          ],
+          "key_concepts": [
+            "광전효과와 광전변환 효율",
+            "실리콘 웨이퍼 제조 과정",
+            "전력 변환 및 저장 기술"
+          ],
+          "estimated_hours": 12,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 4,
+          "title": "에너지 저장 프로젝트 기획",
+          "description": "개인용 에너지 저장 시스템 설계를 위한 기초 지식을 습득하고, 자신만의 전지지식 기반 프로젝트를 구체화합니다.",
+          "objectives": [
+            "배터리 관리 시스템(BMS)의 구성 요소를 이해한다",
+            "에너지 효율성 계산 방법을 적용할 수 있다",
+            "소규모 에너지 저장 솔루션을 설계할 수 있다"
+          ],
+          "learning_outcomes": [
+            "개인용 ESS(에너지 저장장치) 설계 계획서를 작성할 수 있다",
+            "프로젝트 구현에 필요한 기술적 요구사항을 도출할 수 있다"
+          ],
+          "key_concepts": [
+            "피크 시프트와 부하 관리",
+            "충전 알고리즘과 방전 전략",
+            "안전성 평가 기준"
+          ],
+          "estimated_hours": 8,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 5,
+          "title": "배터리 재활용과 환경 영향",
+          "description": "사용된 배터리의 재활용 과정을 학습하고, 환경적 측면에서 전지지식이 갖는 중요성을 이해합니다.",
+          "objectives": [
+            "배터리 재활용 프로세스를 설명할 수 있다",
+            "환경 친화적 전지 기술 동향을 파악한다",
+            "자원 순환 경제와 전지기술의 연관성을 이해한다"
+          ],
+          "learning_outcomes": [
+            "리튬이온 배터리 처리 방법을 비교할 수 있다",
+            "친환경 전지 개발 방향성을 제안할 수 있다"
+          ],
+          "key_concepts": [
+            "도시광산 개념과 리튬 회수 기술",
+            "환경 규제와 폐기물 관리 규정",
+            "순환경제 모델"
+          ],
+          "estimated_hours": 10,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 6,
+          "title": "스마트 배터리 프로젝트 구현",
+          "description": "학습한 전지지식을 활용하여 실제 작동하는 스마트 배터리 모니터링 시스템을 제작합니다.",
+          "objectives": [
+            "전압, 전류 측정 센서를 활용할 수 있다",
+            "데이터 수집 및 간단한 분석 알고리즘을 구현할 수 있다",
+            "사용자 인터페이스를 설계할 수 있다"
+          ],
+          "learning_outcomes": [
+            "실시간 배터리 상태 모니터링 시스템을 구축할 수 있다",
+            "수집된 데이터로 충전 패턴을 분석할 수 있다"
+          ],
+          "key_concepts": [
+            "센서 네트워크 구성",
+            "아두이노/마이크로컨트롤러 프로그래밍",
+            "데이터 시각화 기법"
+          ],
+          "estimated_hours": 15,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 7,
+          "title": "슈퍼커패시터 기술 탐구",
+          "description": "차세대 에너지 저장 장치인 슈퍼커패시터의 원리와 응용 분야를 학습하고 미래 전지기술 트렌드를 살펴봅니다.",
+          "objectives": [
+            "커패시턴스 개념과 배터리와의 차이점을 이해한다",
+            "초고용량 커패시터의 작동 메커니즘을 설명할 수 있다",
+            "슈퍼커패시터 상용화 사례를 분석한다"
+          ],
+          "learning_outcomes": [
+            "에너지 밀도와 출력 밀도의 trade-off 관계를 파악할 수 있다",
+            "하이브리드 에너지 저장 시스템 설계 원리를 이해할 수 있다"
+          ],
+          "key_concepts": [
+            "전기이중층과 전기화학적 이중층",
+            "출력 특성과 충전 속도",
+            "친환경 전해액 개발 동향"
+          ],
+          "estimated_hours": 10,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 8,
+          "title": "전기자동차 배터리 시스템",
+          "description": "전기차의 핵심 부품인 배터리 시스템을 분석하고, 전지기반 모빌리티 혁신 기술을 탐구합니다.",
+          "objectives": [
+            "EV용 전지팩 구성 요소를 설명할 수 있다",
+            "배터리 열관리 시스템 원리를 이해한다",
+            "충전 인프라와 연계 기술을 파악한다"
+          ],
+          "learning_outcomes": [
+            "전기차 주행거리 최적화 방안을 도출할 수 있다",
+            "배터리 수명 예측 모델을 이해할 수 있다"
+          ],
+          "key_concepts": [
+            "모듈형 배터리 팩 설계",
+            "열확산과 냉각 메커니즘",
+            "V2G(Vehicle-to-Grid) 기술"
+          ],
+          "estimated_hours": 12,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 9,
+          "title": "휴대용 에너지 솔루션 개발",
+          "description": "일상에서 활용 가능한 휴대용 전지 기반 혁신 제품 아이디어를 구체화하고 프로토타입을 제작합니다.",
+          "objectives": [
+            "소형 디바이스 전력 요구사항을 분석할 수 있다",
+            "효율적인 에너지 관리 회로를 설계할 수 있다",
+            "사용자 중심의 인터페이스를 개발할 수 있다"
+          ],
+          "learning_outcomes": [
+            "개인용 웨어러블 기기 배터리 시스템을 설계할 수 있다",
+            "모듈식 전원 공급 장치를 제작할 수 있다"
+          ],
+          "key_concepts": [
+            "저전력 설계 원칙",
+            "무선 전력 전송 기술",
+            "에너지 하베스팅 응용"
+          ],
+          "estimated_hours": 10,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 10,
+          "title": "스마트 그리드와 에너지 저장",
+          "description": "신재생에너지 시대의 핵심 기술인 스마트 그리드에서 전지기술이 담당하는 역할을 학습합니다.",
+          "objectives": [
+            "스마트 그리드 구성 요소를 설명할 수 있다",
+            "전력 품질 향상 기술을 이해한다",
+            "분산형 전원과 ESS 연계 방안을 파악한다"
+          ],
+          "learning_outcomes": [
+            "에너지 저장 시스템 스케줄링 알고리즘을 이해할 수 있다",
+            "주파수 조정 및 예비력 확보 원리를 설명할 수 있다"
+          ],
+          "key_concepts": [
+            "수요반응 관리",
+            "피크 셰이빙과 부하 평준화",
+            "계통 안정성 유지 기술"
+          ],
+          "estimated_hours": 10,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 11,
+          "title": "미래 전지기술 트렌드",
+          "description": "차세대 전지 기술 동향을 분석하고 개인 프로젝트의 기술적 타당성을 검토합니다.",
+          "objectives": [
+            "고체 전해질 배터리 원리를 이해한다",
+            "차세대 에너지 저장 소재를 파악할 수 있다",
+            "기술 상용화 장벽과 해결책을 분석한다"
+          ],
+          "learning_outcomes": [
+            "향후 10년간 전지기술 발전 방향을 예측할 수 있다",
+            "혁신적 에너지 솔루션의 시장성을 평가할 수 있다"
+          ],
+          "key_concepts": [
+            "전고체 전지와 겔 전해질",
+            "나트륨이온 배터리 개발 동향",
+            "리튬 대체 기술 탐색"
+          ],
+          "estimated_hours": 8,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        },
+        {
+          "week": 12,
+          "title": "개인 프로젝트 발표 및 평가",
+          "description": "12주간 학습한 전지지식을 바탕으로 개인 프로젝트를 완성하고 발표하며, 향후 발전 방향을 모색합니다.",
+          "objectives": [
+            "개인 프로젝트 결과물을 전문적으로 발표할 수 있다",
+            "동료 리뷰를 통한 개선점을 도출할 수 있다",
+            "전지기식 관련 창업 아이디어를 구체화할 수 있다"
+          ],
+          "learning_outcomes": [
+            "실제 동작하는 전지지식 기반 프로토타입을 제작할 수 있다",
+            "시장 진출 전략과 사업화 방안을 제시할 수 있다"
+          ],
+          "key_concepts": [
+            "기술 사업화 프로세스",
+            "시장 분석 및 포지셔닝",
+            "창업 생태계 이해"
+          ],
+          "estimated_hours": 15,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": []
+          }
+        }
+      ],
+      "overall_goal": "전지기식 기초부터 실용화까지 체계적으로 학습하여 개인 프로젝트를 통한 응용 능력을 배양한다",
+      "resources": [],
+      "session_id": "52328185",
+      "original_constraints": "완전 초보, 주 3시간",
+      "original_goal": "취미, 자기계발",
+      "generated_at": "2025-09-08T19:10:14.267415",
+      "id": 0,
+      "created_at": "2025-09-08T19:10:14.267452"
+    }
   ]
 }
