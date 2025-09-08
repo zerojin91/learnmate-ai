@@ -1,3 +1,6 @@
+# sessions json files
+sessions/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
@@ -81,6 +84,9 @@ target/
 # IPython
 profile_default/
 ipython_config.py
+
+# 
+.DS_Store
 
 # pyenv
 #   For a library or package, you might want to ignore these files since the code is

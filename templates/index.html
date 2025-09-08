@@ -1,0 +1,2155 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnAI - 개인화 학습 멘토</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f9fafb;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* 사이드바 */
+        .sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo h1 {
+            color: #4a5568;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 10px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: #4a5568;
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .nav-link i {
+            margin-right: 12px;
+            width: 20px;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        /* 메인 컨텐츠 */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        /* 웰컴 섹션 */
+        .welcome-section {
+            text-align: center;
+            max-width: 800px;
+            margin-bottom: 40px;
+        }
+
+        .ai-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 32px rgba(168, 85, 247, 0.3);
+        }
+
+        .welcome-title {
+            font-size: 32px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+
+        .welcome-subtitle {
+            font-size: 20px;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+        .welcome-subtitle .highlight {
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 600;
+        }
+
+        /* 채팅 컨테이너 - 예시 카드 3개 분량 */
+        .chat-container {
+            flex: 3;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+            overflow: hidden;
+            height: 450px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+            background: #ffffff;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .user-avatar {
+            background: #e5e7eb;
+            color: #6b7280;
+        }
+
+        .ai-avatar-small {
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            color: white;
+        }
+
+        .message-content {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .user-message .message-content {
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+
+        .ai-message .message-content {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            color: #374151;
+            border-left: none !important;
+        }
+        
+        .ai-message .message-content * {
+            border-left: none !important;
+            margin-left: 0 !important;
+            padding-left: 0 !important;
+        }
+
+        /* 입력 영역 */
+        .input-container {
+            padding: 30px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            flex-shrink: 0;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: #a855f7;
+            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 16px 20px;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            outline: none;
+            resize: none;
+            min-height: 24px;
+            max-height: 120px;
+            font-family: inherit;
+        }
+
+        .input-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-right: 12px;
+        }
+
+        .attach-button, .clear-button {
+            padding: 8px;
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .attach-button:hover, .clear-button:hover {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .clear-button:hover {
+            color: #ef4444;
+        }
+
+        .send-button {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .send-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+        }
+
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* 파일 입력 숨김 */
+        .file-input {
+            display: none;
+        }
+
+        /* 채팅과 프로필 영역 */
+        .chat-with-profile {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            gap: 24px;
+            align-items: flex-start;
+            margin-bottom: 40px;
+        }
+
+        /* 프로필 사이드바 - 예시 카드 1개 분량 */
+        .profile-sidebar {
+            flex: 1;
+            min-width: 280px;
+            max-width: 350px;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            transition: height 0.3s ease;
+        }
+
+        /* 커리큘럼 섹션이 표시될 때만 채팅창 높이에 맞춤 */
+        .profile-card.with-curriculum {
+            height: 450px;
+            overflow-y: auto;
+        }
+
+        .profile-card h3 {
+            margin: 0 0 20px 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .profile-progress {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 커리큘럼 섹션이 있을 때는 프로필 진행 상황은 그대로 유지 */
+        .profile-card.with-curriculum .profile-progress {
+            /* justify-content 제거하여 기본 간격 유지 */
+        }
+
+        .profile-step {
+            display: flex;
+            align-items: flex-start;
+            position: relative;
+            margin-bottom: 4px;
+        }
+
+        /* 커리큘럼 섹션이 있을 때도 기본 간격 유지 */
+
+        .step-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-right: 16px;
+            z-index: 2;
+        }
+
+        .step-circle {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-circle i {
+            font-size: 12px;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .step-line {
+            width: 2px;
+            height: 32px;
+            background: #d1d5db;
+            margin-top: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .profile-step:last-child .step-line {
+            display: none;
+        }
+
+        .step-content {
+            flex: 1;
+            padding: 2px 0 16px 0;
+        }
+
+        .step-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #6b7280;
+            margin-bottom: 2px;
+            line-height: 1.2;
+        }
+
+        .step-value {
+            font-size: 14px;
+            color: #9ca3af;
+            font-weight: 400;
+            line-height: 1.3;
+            margin-top: 2px;
+        }
+
+        /* 완료된 단계 스타일 */
+        .profile-step.completed .step-circle {
+            background: #10b981;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        }
+
+        .profile-step.completed .step-circle i {
+            opacity: 1;
+        }
+
+        .profile-step.completed .step-line {
+            background: #10b981;
+        }
+
+        .profile-step.completed .step-value {
+            color: #374151;
+            font-weight: 500;
+        }
+
+        .profile-step.completed .step-label {
+            color: #374151;
+        }
+
+        /* 커리큘럼 생성 섹션 */
+        .curriculum-section {
+            margin-top: auto;
+            padding-top: 20px;
+            animation: slideIn 0.3s ease-out;
+            flex-shrink: 0;
+        }
+
+        .curriculum-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #e5e7eb, transparent);
+            margin: 0 0 20px 0;
+        }
+
+        .duration-selector {
+            margin-bottom: 16px;
+        }
+
+        .duration-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .duration-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+            font-size: 14px;
+            color: #374151;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .duration-select:focus {
+            border-color: #a855f7;
+            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+        }
+
+        .generate-curriculum-btn {
+            width: 100%;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .generate-curriculum-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(168, 85, 247, 0.3);
+        }
+
+        .generate-curriculum-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .generate-curriculum-btn i {
+            font-size: 16px;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 예시 카드 */
+        .examples-section {
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 40px;
+        }
+
+        .examples-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .example-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .example-card:hover {
+            border-color: #a855f7;
+            box-shadow: 0 4px 16px rgba(168, 85, 247, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .example-icon {
+            font-size: 20px;
+            color: #a855f7;
+            margin-bottom: 8px;
+        }
+
+        .example-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .example-description {
+            font-size: 12px;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        /* 알림 메시지 */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+                padding: 20px;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 20px 15px;
+            }
+            
+            .nav-menu {
+                display: flex;
+                overflow-x: auto;
+                gap: 10px;
+                padding-bottom: 10px;
+            }
+            
+            .nav-item {
+                margin-bottom: 0;
+                white-space: nowrap;
+            }
+
+            .welcome-title {
+                font-size: 24px;
+            }
+
+            .welcome-subtitle {
+                font-size: 18px;
+            }
+
+            .examples-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+            }
+            
+            .chat-with-profile {
+                gap: 16px;
+                margin-bottom: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .examples-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 사이드바 -->
+    <div class="sidebar">
+        <div class="logo">
+            <h1>LearnAI</h1>
+            <p>개인화 학습 멘토</p>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a class="nav-link active" data-page="chat">
+                    <i class="fas fa-bullseye"></i>
+                    맞춤형 학습 추천
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-page="profile">
+                    <i class="fas fa-robot"></i>
+                    AI 멘토
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-page="curriculum">
+                    <i class="fas fa-graduation-cap"></i>
+                    나의 커리큘럼
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-page="schedule">
+                    <i class="fas fa-calendar-alt"></i>
+                    나의 학습 계획
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-page="progress">
+                    <i class="fas fa-chart-line"></i>
+                    학습 진도
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    설정
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="main-content">
+        <!-- 웰컴 섹션 -->
+        <div class="welcome-section">
+            <div class="ai-avatar">
+            </div>
+            <h1 class="welcome-title">안녕하세요, <span id="userName">신민수</span>님</h1>
+            <p class="welcome-subtitle" id="welcomeSubtitle">오늘 <span class="highlight">무엇을</span> 배우고 싶으신가요?</p>
+        </div>
+
+        <!-- 채팅과 프로필 영역 -->
+        <div class="chat-with-profile">
+            <!-- 채팅 컨테이너 -->
+            <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai-message">
+                    <div class="message-avatar ai-avatar-small">AI</div>
+                    <div class="message-content" id="initialMessage">
+                        안녕하세요! LearnAI 입니다.<br>어떤 주제에 대해 배우고 싶으신지 알려주시면 맞춤형 학습 계획을 함께 만들어보겠습니다!
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <textarea 
+                        id="messageInput" 
+                        class="message-input"
+                        placeholder="AI에게 질문하거나 요청을 입력하세요..."
+                        rows="1"
+                        onkeydown="handleKeyDown(event)"
+                        oninput="adjustTextareaHeight(this)"
+                    ></textarea>
+                    <div class="input-actions">
+                        <input type="file" id="fileInput" class="file-input" accept=".txt,.pdf,.doc,.docx">
+                        <button class="clear-button" onclick="clearChat()" title="대화 초기화">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <button id="sendButton" class="send-button" onclick="sendMessage()" title="전송">
+                            <i class="fas fa-arrow-up"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 학습 프로필 카드 -->
+        <div class="profile-sidebar">
+            <div class="profile-card">
+                <h3>학습 프로필</h3>
+                <div class="profile-progress">
+                    <div class="profile-step" id="stepTopic">
+                        <div class="step-indicator">
+                            <div class="step-circle">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="step-line"></div>
+                        </div>
+                        <div class="step-content">
+                            <div class="step-label">주제</div>
+                            <div id="profileTopic" class="step-value">설정 필요</div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-step" id="stepConstraints">
+                        <div class="step-indicator">
+                            <div class="step-circle">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="step-line"></div>
+                        </div>
+                        <div class="step-content">
+                            <div class="step-label">조건</div>
+                            <div id="profileConstraints" class="step-value">설정 필요</div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-step" id="stepGoal">
+                        <div class="step-indicator">
+                            <div class="step-circle">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        <div class="step-content">
+                            <div class="step-label">목표</div>
+                            <div id="profileGoal" class="step-value">설정 필요</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 학습 기간 선택 및 커리큘럼 생성 -->
+                <div id="curriculumSection" class="curriculum-section" style="display: none;">
+                    <div class="curriculum-divider"></div>
+                    
+                    <div class="duration-selector">
+                        <label for="learningDuration" class="duration-label">학습 기간 설정</label>
+                        <select id="learningDuration" class="duration-select">
+                            <option value="1">1개월</option>
+                            <option value="2">2개월</option>
+                            <option value="3" selected>3개월</option>
+                            <option value="4">4개월</option>
+                            <option value="5">5개월</option>
+                            <option value="6">6개월</option>
+                        </select>
+                    </div>
+                    
+                    <button id="generateCurriculumBtn" class="generate-curriculum-btn" onclick="generateCurriculum()">
+                        <i class="fas fa-magic"></i>
+                        맞춤형 커리큘럼 생성
+                    </button>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- 예시 섹션 -->
+        <div class="examples-section">
+            <h3 class="examples-title">예시로 시작해보세요</h3>
+            <div class="examples-grid">
+                <div class="example-card" onclick="useExample('Python 프로그래밍을 처음부터 배우고 싶어요')">
+                    <div class="example-icon">
+                        <i class="fab fa-python"></i>
+                    </div>
+                    <div class="example-title">프로그래밍 학습</div>
+                    <div class="example-description">Python 처음부터 배우기</div>
+                </div>
+                
+                <div class="example-card" onclick="useExample('영어 회화 실력을 향상시키고 싶습니다')">
+                    <div class="example-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <div class="example-title">언어 학습</div>
+                    <div class="example-description">영어 회화 향상 계획</div>
+                </div>
+                
+                <div class="example-card" onclick="useExample('데이터 과학 공부 계획을 세워주세요')">
+                    <div class="example-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="example-title">데이터 과학</div>
+                    <div class="example-description">체계적인 학습 로드맵</div>
+                </div>
+                
+                <div class="example-card" onclick="useExample('AI와 머신러닝에 대해 알고 싶어요')">
+                    <div class="example-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="example-title">AI/ML 학습</div>
+                    <div class="example-description">인공지능 기초부터</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 알림 -->
+    <div id="notification" class="notification"></div>
+
+    <script>
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+
+        // 사용자 이름 설정 (여기서 변경하세요)
+        const USER_NAME = "신민수"; // 원하는 이름으로 변경
+        
+        // 서버에서 전달받은 세션 ID
+        const SESSION_ID = "{{ session_id }}";
+        console.log('세션 ID:', SESSION_ID);
+
+        // 커리큘럼 생성 상태 추적
+        let isGeneratingCurriculum = false;
+
+        // 사용자 정보 관리
+        let currentUser = {
+            name: USER_NAME,
+            profile: {}
+        };
+
+        // 간단한 마크다운 포맷팅 함수
+        function formatSimpleMarkdown(text) {
+            return text
+                // **굵은글씨** -> <strong>굵은글씨</strong>
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                // 줄바꿈 처리
+                .replace(/\n/g, '<br>')
+                // 불릿 포인트 처리
+                .replace(/^- (.*$)/gim, '• $1')
+                .replace(/^\* (.*$)/gim, '• $1');
+        }
+
+        // 학습 프로필 업데이트 함수
+        function updateLearningProfile(topic, constraints, goal) {
+            const profileTopic = document.getElementById('profileTopic');
+            const profileConstraints = document.getElementById('profileConstraints');
+            const profileGoal = document.getElementById('profileGoal');
+            
+            const stepTopic = document.getElementById('stepTopic');
+            const stepConstraints = document.getElementById('stepConstraints');
+            const stepGoal = document.getElementById('stepGoal');
+            
+            // 주제 업데이트
+            if (topic) {
+                profileTopic.textContent = topic;
+                stepTopic.classList.add('completed');
+            } else {
+                profileTopic.textContent = '설정 필요';
+                stepTopic.classList.remove('completed');
+            }
+            
+            // 조건 업데이트
+            if (constraints) {
+                profileConstraints.textContent = constraints;
+                stepConstraints.classList.add('completed');
+            } else {
+                profileConstraints.textContent = '설정 필요';
+                stepConstraints.classList.remove('completed');
+            }
+            
+            // 목표 업데이트
+            if (goal) {
+                profileGoal.textContent = goal;
+                stepGoal.classList.add('completed');
+            } else {
+                profileGoal.textContent = '설정 필요';
+                stepGoal.classList.remove('completed');
+            }
+
+            // 프로필이 모두 완성되었는지 확인하고 커리큘럼 섹션 표시/숨김
+            const profileComplete = topic && constraints && goal;
+            const curriculumSection = document.getElementById('curriculumSection');
+            const profileCard = document.querySelector('.profile-card');
+            
+            if (profileComplete && curriculumSection) {
+                curriculumSection.style.display = 'block';
+                profileCard.classList.add('with-curriculum');
+                console.log('✅ 프로필 완성 - 커리큘럼 섹션 표시, 카드 높이 조정');
+            } else if (curriculumSection) {
+                curriculumSection.style.display = 'none';
+                profileCard.classList.remove('with-curriculum');
+                console.log('❌ 프로필 미완성 - 커리큘럼 섹션 숨김, 카드 기본 높이');
+            }
+        }
+
+        // AI 응답에서 프로필 정보 추출 및 업데이트
+        function extractAndUpdateProfile(message) {
+            // Assessment 관련 메시지에서 프로필 정보 추출 시도
+            if (message.includes('파이썬 학습 조건') || message.includes('파이썬 학습 목표') || message.includes('학습 프로필 분석 완료')) {
+                // 실제로는 서버에서 전달받아야 하지만, 임시로 로컬 스토리지 사용
+                const profile = JSON.parse(localStorage.getItem('currentProfile') || '{}');
+                if (profile.topic || profile.constraints || profile.goal) {
+                    updateLearningProfile(profile.topic, profile.constraints, profile.goal);
+                }
+            }
+        }
+
+        // 커리큘럼 생성 함수
+        async function generateCurriculum() {
+            const generateBtn = document.getElementById('generateCurriculumBtn');
+            const durationSelect = document.getElementById('learningDuration');
+            
+            if (!generateBtn || !durationSelect) {
+                console.error('커리큘럼 생성 요소를 찾을 수 없습니다.');
+                return;
+            }
+            
+            const selectedDuration = durationSelect.value;
+            console.log(`🚀 커리큘럼 생성 시작 - 기간: ${selectedDuration}개월`);
+            
+            // 1. 생성 상태 시작
+            isGeneratingCurriculum = true;
+            
+            // 2. 먼저 "나의 커리큘럼" 탭으로 이동
+            switchToTab('curriculum');
+            
+            // 3. 로딩 상태 표시
+            const curriculumContent = document.getElementById('curriculumContent');
+            if (curriculumContent) {
+                displayLoadingState(curriculumContent);
+            }
+            
+            // 4. 버튼 비활성화 및 로딩 상태
+            generateBtn.disabled = true;
+            generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 커리큘럼 생성 중...';
+            
+            try {
+                // 커리큘럼 생성 요청 메시지를 입력 필드에 설정하고 전송
+                const curriculumMessage = `${selectedDuration}개월 학습 기간으로 맞춤형 커리큘럼을 생성해주세요.`;
+                messageInput.value = curriculumMessage;
+                
+                // 일반 sendMessage 함수 호출
+                await sendMessage();
+                
+                // 임시로 테스트용 커리큘럼 데이터 저장 (실제로는 서버 응답에서 가져올 예정)
+                setTimeout(() => {
+                    const testCurriculumData = {
+                        "title": "전지지식 Learning Path",
+                        "level": "beginner", 
+                        "duration_weeks": 12,
+                        "modules": [
+                            {
+                                "week": 1,
+                                "title": "전지지식의 기초 개념 이해하기",
+                                "description": "전지가 무엇인지 알아보고 기본적인 물리학적 원리와 에너지 저장 메커니즘을 통해 전지지식이 우리 생활에 미치는 영향을 학습합니다.",
+                                "objectives": [
+                                    "전기와 자기의 기본 개념을 설명할 수 있다",
+                                    "배터리의 작동 원리를 이해할 수 있다",
+                                    "전지지식의 현대적 활용 사례를 파악할 수 있다"
+                                ],
+                                "key_concepts": ["전자기 유도", "산화환원 반응", "전압과 전류의 관계"],
+                                "estimated_hours": 10,
+                                "resources": {
+                                    "videos": [
+                                        {"title": "전기기초 이론", "url": "https://kmooc.kr/courses/course-123"},
+                                        {"title": "배터리 원리 설명", "url": "https://kmooc.kr/courses/course-124"}
+                                    ],
+                                    "web_links": [
+                                        {"title": "전자기학 기초", "url": "https://physics.stackexchange.com/basics"},
+                                        {"title": "전지 기술 개론", "url": "https://batteryuniversity.com/basics"}
+                                    ],
+                                    "documents": [
+                                        {"title": "전기회로 입문서.pdf", "url": "/docs/electric-circuits-101.pdf"},
+                                        {"title": "배터리 기술 가이드.pdf", "url": "/docs/battery-tech-guide.pdf"}
+                                    ]
+                                }
+                            },
+                            {
+                                "week": 2,
+                                "title": "일상생활 속 전지기기 분석",
+                                "description": "스마트폰, 노트북, 전기차 등 일상생활에서 사용하는 전자기기들에 적용된 전지 기술을 분석하고 각 기기별 에너지 효율성을 비교합니다.",
+                                "objectives": [
+                                    "다양한 전기기기의 배터리 구성을 분석할 수 있다",
+                                    "에너지 효율 측정 방법을 이해할 수 있다",
+                                    "친환경 전지기기 선택 기준을 제시할 수 있다"
+                                ],
+                                "key_concepts": ["리튬이온 배터리", "에너지 밀도", "재생 에너지"],
+                                "estimated_hours": 12,
+                                "resources": {
+                                    "videos": [
+                                        {"title": "리튬이온 배터리 분석", "url": "https://kmooc.kr/courses/course-125"},
+                                        {"title": "전기차 배터리 기술", "url": "https://kmooc.kr/courses/course-126"}
+                                    ],
+                                    "web_links": [
+                                        {"title": "배터리 효율성 가이드", "url": "https://energyefficiency.org/battery"},
+                                        {"title": "친환경 배터리 선택법", "url": "https://greenenergy.org/battery-guide"}
+                                    ],
+                                    "documents": [
+                                        {"title": "에너지 효율 측정법.pdf", "url": "/docs/energy-efficiency-measurement.pdf"},
+                                        {"title": "친환경 배터리 기술.pdf", "url": "/docs/green-battery-tech.pdf"}
+                                    ]
+                                }
+                            },
+                            {
+                                "week": 3,
+                                "title": "전지지식 향상을 위한 개인 학습 계획 수립",
+                                "description": "자신의 현재 전지기식 수준을 진단하고 향후 6개월 동안의 개인 프로젝트와 자기개발 목표를 설정하여 체계적인 학습 로드맵을 작성합니다.",
+                                "objectives": [
+                                    "자기진단 도구를 활용해 자신의 지식수준을 평가할 수 있다",
+                                    "개인 맞춤형 학습 계획을 수립할 수 있다",
+                                    "실현 가능한 단계별 목표를 설정할 수 있다"
+                                ],
+                                "key_concepts": ["SMART 목표설정", "학습 진도 관리", "지식 습득"],
+                                "estimated_hours": 15,
+                                "resources": {
+                                    "videos": [
+                                        {"title": "효과적인 학습계획 수립", "url": "https://kmooc.kr/courses/course-127"},
+                                        {"title": "자기주도 학습법", "url": "https://kmooc.kr/courses/course-128"}
+                                    ],
+                                    "web_links": [
+                                        {"title": "SMART 목표설정 가이드", "url": "https://smartgoals.org/guide"},
+                                        {"title": "학습 진도 관리 도구", "url": "https://studytracker.com/tools"}
+                                    ],
+                                    "documents": [
+                                        {"title": "개인 학습 계획 템플릿.pdf", "url": "/docs/personal-study-plan-template.pdf"},
+                                        {"title": "목표설정 워크시트.pdf", "url": "/docs/goal-setting-worksheet.pdf"}
+                                    ]
+                                }
+                            },
+                            {
+                                "week": 4,
+                                "title": "개인 전지기기 프로젝트 기획",
+                                "description": "일상생활에서 발견한 불편함을 해결할 수 있는 소형 전지 관련 DIY 프로젝트를 구상하고 필요한 기술 요소들을 분석합니다.",
+                                "objectives": [
+                                    "아이디어 발상 기법을 활용할 수 있다",
+                                    "프로젝트 요구사항을 문서화할 수 있다",
+                                    "필요한 부품과 재료를 선정할 수 있다"
+                                ],
+                                "key_concepts": ["디자인 씽킹", "프로토타이핑", "회로 설계"],
+                                "estimated_hours": 12,
+                                "resources": {
+                                    "videos": [
+                                        {"title": "DIY 전자제품 만들기", "url": "https://kmooc.kr/courses/course-129"},
+                                        {"title": "회로 설계 기초", "url": "https://kmooc.kr/courses/course-130"}
+                                    ],
+                                    "web_links": [
+                                        {"title": "Arduino 프로젝트 아이디어", "url": "https://arduino.cc/projects"},
+                                        {"title": "전자부품 구매 가이드", "url": "https://electronics-parts.com/guide"}
+                                    ],
+                                    "documents": [
+                                        {"title": "프로젝트 기획서 양식.pdf", "url": "/docs/project-proposal-template.pdf"},
+                                        {"title": "회로 설계 가이드.pdf", "url": "/docs/circuit-design-guide.pdf"}
+                                    ]
+                                }
+                            },
+                            {
+                                "week": 5,
+                                "title": "기초 회로 제작 실습",
+                                "description": "간단한 전지 관련 회로를 직접 제작해보고 측정된 데이터를 통해 이론과 실제의 차이를 분석하는 기초 실습을 진행합니다.",
+                                "objectives": [
+                                    "브레드보드를 활용한 회로 구성이 가능하다",
+                                    "멀티미터 사용법을 익힐 수 있다",
+                                    "기본 전자 부품의 역할을 이해할 수 있다"
+                                ],
+                                "key_concepts": ["저항, 커패시터", "전압 강하", "안전 수칙"],
+                                "estimated_hours": 15,
+                                "resources": {
+                                    "videos": [
+                                        {"title": "브레드보드 사용법", "url": "https://kmooc.kr/courses/course-131"},
+                                        {"title": "멀티미터 활용 실습", "url": "https://kmooc.kr/courses/course-132"}
+                                    ],
+                                    "web_links": [
+                                        {"title": "전자부품 사용법", "url": "https://electronics.howstuffworks.com/components"},
+                                        {"title": "회로 실습 가이드", "url": "https://circuitlab.com/tutorials"}
+                                    ],
+                                    "documents": [
+                                        {"title": "실습 안전 수칙.pdf", "url": "/docs/lab-safety-rules.pdf"},
+                                        {"title": "회로 실습 매뉴얼.pdf", "url": "/docs/circuit-lab-manual.pdf"}
+                                    ]
+                                }
+                            },
+                            {
+                                "week": 6,
+                                "title": "개인 프로젝트 구현 및 테스트",
+                                "description": "5주차에 기획한 개인 프로젝트를 실제로 구현하고 실험을 통해 성능을 검증하며 개선점을 도출합니다.",
+                                "objectives": [
+                                    "회로 설계 도면을 작성할 수 있다",
+                                    "실제 제작 과정에서 문제 해결이 가능하다",
+                                    "테스트 결과를 분석하고 개선방안을 제시할 수 있다"
+                                ],
+                                "key_concepts": ["회로 시뮬레이션", "오류 진단", "성능 최적화"],
+                                "estimated_hours": 20,
+                                "resources": {
+                                    "videos": [
+                                        {"title": "프로젝트 구현 과정", "url": "https://kmooc.kr/courses/course-133"},
+                                        {"title": "회로 테스트 방법", "url": "https://kmooc.kr/courses/course-134"}
+                                    ],
+                                    "web_links": [
+                                        {"title": "회로 시뮬레이션 도구", "url": "https://circuitsimulator.org"},
+                                        {"title": "디버깅 기법 가이드", "url": "https://debugging-electronics.com/techniques"}
+                                    ],
+                                    "documents": [
+                                        {"title": "프로젝트 보고서 양식.pdf", "url": "/docs/project-report-template.pdf"},
+                                        {"title": "성능 테스트 체크리스트.pdf", "url": "/docs/performance-test-checklist.pdf"}
+                                    ]
+                                }
+                            },
+                            {
+                                "week": 7,
+                                "title": "전지기식 공유 커뮤니티 활용",
+                                "description": "온라인 전지지식 공유 플랫폼을 활용하여 학습 경험을 공유하고 다른 학습자의 프로젝트를 분석하며 네트워킹 방법을 배웁니다.",
+                                "objectives": [
+                                    "지식공유 플랫폼 사용법을 익힐 수 있다",
+                                    "효과적인 피드백 제공과 수용이 가능하다",
+                                    "학습 네트워크 구축 방법을 이해할 수 있다"
+                                ],
+                                "key_concepts": ["온라인 협업", "커뮤니티 가이드라인", "지식 전파"],
+                                "estimated_hours": 10,
+                                "resources": {
+                                    "videos": [
+                                        {"title": "온라인 학습 커뮤니티 활용", "url": "https://kmooc.kr/courses/course-135"},
+                                        {"title": "지식공유 플랫폼 사용법", "url": "https://kmooc.kr/courses/course-136"}
+                                    ],
+                                    "web_links": [
+                                        {"title": "전문가 네트워킹 가이드", "url": "https://networking.org/professionals"},
+                                        {"title": "온라인 협업 도구", "url": "https://collaboration-tools.com/online"}
+                                    ],
+                                    "documents": [
+                                        {"title": "커뮤니티 참여 가이드.pdf", "url": "/docs/community-participation-guide.pdf"},
+                                        {"title": "효과적인 피드백 방법.pdf", "url": "/docs/effective-feedback-methods.pdf"}
+                                    ]
+                                }
+                            },
+                            {
+                                "week": 8,
+                                "title": "전문 자료 활용 능력 개발",
+                                "description": "논문, 기술 문서 등 전문적 전지기식 자료를 읽고 분석하는 능력을 키우며 고급 정보에 접근하는 방법을 학습합니다.",
+                                "objectives": [
+                                    "기술 논문 구조를 이해할 수 있다",
+                                    "전문 용어 해석이 가능하다",
+                                    "정보 검색 및 선별 능력을 기를 수 있다"
+                                ],
+                                "key_concepts": ["학술 데이터베이스", "연구 방법론", "전문적 글쓰기"],
+                                "estimated_hours": 15,
+                                "resources": {
+                                    "videos": [
+                                        {"title": "논문 읽기 전략", "url": "https://kmooc.kr/courses/course-137"},
+                                        {"title": "학술 데이터베이스 활용", "url": "https://kmooc.kr/courses/course-138"}
+                                    ],
+                                    "web_links": [
+                                        {"title": "학술논문 검색 가이드", "url": "https://scholar.google.com/intl/ko/scholar/help.html"},
+                                        {"title": "연구 방법론 자료", "url": "https://research-methods.org/resources"}
+                                    ],
+                                    "documents": [
+                                        {"title": "논문 분석 워크시트.pdf", "url": "/docs/paper-analysis-worksheet.pdf"},
+                                        {"title": "기술 문서 작성 가이드.pdf", "url": "/docs/technical-writing-guide.pdf"}
+                                    ]
+                                }
+                            },
+                            {
+                                "week": 9,
+                                "title": "개인 프로젝트 고도화",
+                                "description": "6주차에 완료한 개인 프로젝트를 개선하고 확장하여 더 복잡한 기능이나 성능 향상을 시도합니다.",
+                                "objectives": [
+                                    "기존 회로를 효율적으로 개선할 수 있다",
+                                    "추가 기능 구현이 가능하다",
+                                    "성능과 안정성 모두 고려한 설계가 가능하다"
+                                ],
+                                "key_concepts": ["전력 관리 시스템", "소음 감소 기술", "열 관리"],
+                                "estimated_hours": 18,
+                                "resources": {
+                                    "videos": [
+                                        {"title": "고급 회로 설계", "url": "https://kmooc.kr/courses/course-139"},
+                                        {"title": "전력 효율 최적화", "url": "https://kmooc.kr/courses/course-140"}
+                                    ],
+                                    "web_links": [
+                                        {"title": "고급 전자회로 기법", "url": "https://advanced-circuits.com/techniques"},
+                                        {"title": "열 관리 솔루션", "url": "https://thermal-management.org/solutions"}
+                                    ],
+                                    "documents": [
+                                        {"title": "고급 설계 기법.pdf", "url": "/docs/advanced-design-techniques.pdf"},
+                                        {"title": "성능 최적화 가이드.pdf", "url": "/docs/performance-optimization-guide.pdf"}
+                                    ]
+                                }
+                            },
+                            {
+                                "week": 10,
+                                "title": "고급 전지 기술 탐구",
+                                "description": "최신 전지 기술 트렌드를 파악하고 미래 기술에 대한 이해도를 높입니다.",
+                                "objectives": [
+                                    "최신 배터리 기술 동향을 파악할 수 있다",
+                                    "미래 에너지 저장 기술을 이해할 수 있다",
+                                    "기술 발전 방향을 예측할 수 있다"
+                                ],
+                                "key_concepts": ["고체 전지", "무선 충전", "에너지 하베스팅"],
+                                "estimated_hours": 14,
+                                "resources": {
+                                    "videos": [
+                                        {"title": "미래 배터리 기술", "url": "https://kmooc.kr/courses/course-141"},
+                                        {"title": "에너지 하베스팅 기술", "url": "https://kmooc.kr/courses/course-142"}
+                                    ],
+                                    "web_links": [
+                                        {"title": "배터리 기술 뉴스", "url": "https://battery-news.com/trends"},
+                                        {"title": "에너지 기술 연구소", "url": "https://energy-research-institute.org"}
+                                    ],
+                                    "documents": [
+                                        {"title": "차세대 배터리 기술.pdf", "url": "/docs/next-gen-battery-tech.pdf"},
+                                        {"title": "에너지 저장 동향.pdf", "url": "/docs/energy-storage-trends.pdf"}
+                                    ]
+                                }
+                            },
+                            {
+                                "week": 11,
+                                "title": "프로젝트 최종 발표 준비",
+                                "description": "지금까지 학습한 내용을 바탕으로 최종 프로젝트를 완성하고 발표 자료를 준비합니다.",
+                                "objectives": [
+                                    "효과적인 프레젠테이션 자료를 제작할 수 있다",
+                                    "기술적 내용을 명확하게 설명할 수 있다",
+                                    "질문에 대한 적절한 답변을 준비할 수 있다"
+                                ],
+                                "key_concepts": ["프레젠테이션 스킬", "기술 문서화", "데모 시연"],
+                                "estimated_hours": 16,
+                                "resources": {
+                                    "videos": [
+                                        {"title": "효과적인 프레젠테이션 기법", "url": "https://kmooc.kr/courses/course-143"},
+                                        {"title": "기술 발표 스킬", "url": "https://kmooc.kr/courses/course-144"}
+                                    ],
+                                    "web_links": [
+                                        {"title": "발표 자료 제작 팁", "url": "https://presentation-tips.com/technical"},
+                                        {"title": "데모 시연 가이드", "url": "https://demo-guide.org/best-practices"}
+                                    ],
+                                    "documents": [
+                                        {"title": "발표자료 템플릿.pdf", "url": "/docs/presentation-template.pdf"},
+                                        {"title": "기술 발표 체크리스트.pdf", "url": "/docs/tech-presentation-checklist.pdf"}
+                                    ]
+                                }
+                            },
+                            {
+                                "week": 12,
+                                "title": "학습 성과 평가 및 향후 계획",
+                                "description": "12주간의 학습 성과를 종합적으로 평가하고 향후 지속적인 학습을 위한 계획을 수립합니다.",
+                                "objectives": [
+                                    "학습 목표 달성도를 객관적으로 평가할 수 있다",
+                                    "개인 포트폴리오를 완성할 수 있다",
+                                    "지속적인 학습 계획을 수립할 수 있다"
+                                ],
+                                "key_concepts": ["자기 평가", "포트폴리오 구성", "지속 학습"],
+                                "estimated_hours": 12,
+                                "resources": {
+                                    "videos": [
+                                        {"title": "학습 성과 평가 방법", "url": "https://kmooc.kr/courses/course-145"},
+                                        {"title": "포트폴리오 제작 가이드", "url": "https://kmooc.kr/courses/course-146"}
+                                    ],
+                                    "web_links": [
+                                        {"title": "자기평가 도구", "url": "https://self-assessment-tools.com"},
+                                        {"title": "평생 학습 가이드", "url": "https://lifelong-learning.org/guide"}
+                                    ],
+                                    "documents": [
+                                        {"title": "자기평가 체크리스트.pdf", "url": "/docs/self-assessment-checklist.pdf"},
+                                        {"title": "포트폴리오 작성 가이드.pdf", "url": "/docs/portfolio-creation-guide.pdf"}
+                                    ]
+                                }
+                            }
+                        ]
+                    };
+                    
+                    localStorage.setItem('generatedCurriculum', JSON.stringify(testCurriculumData));
+                    
+                    // 생성 완료 상태로 변경
+                    isGeneratingCurriculum = false;
+                    
+                    // 커리큘럼 페이지 새로고침
+                    const curriculumContent = document.getElementById('curriculumContent');
+                    if (curriculumContent) {
+                        showCurriculumContent(curriculumContent);
+                    }
+                    
+                    showNotification('커리큘럼이 성공적으로 생성되었습니다!', 'success');
+                }, 3000); // 3초 후 생성 시뮬레이션
+                
+                console.log('✅ 커리큘럼 생성 요청 완료');
+                
+            } catch (error) {
+                console.error('❌ 커리큘럼 생성 오류:', error);
+                isGeneratingCurriculum = false;
+                showNotification('커리큘럼 생성 중 오류가 발생했습니다. 다시 시도해주세요.', 'error');
+                
+                // 에러 발생 시 커리큘럼 페이지 복원
+                const curriculumContent = document.getElementById('curriculumContent');
+                if (curriculumContent) {
+                    showCurriculumContent(curriculumContent);
+                }
+                
+            } finally {
+                // 버튼 복원
+                generateBtn.disabled = false;
+                generateBtn.innerHTML = '<i class="fas fa-magic"></i> 맞춤형 커리큘럼 생성';
+            }
+        }
+
+        // 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            updateUserDisplay(); // 페이지 로드시 이름 업데이트
+            loadUserProfile();
+            setupNavigation();
+            
+            // 프로필 카드 초기화 (새로운 세션용)
+            updateLearningProfile('', '', '');
+            // localStorage에서 이전 세션 데이터 삭제
+            localStorage.removeItem('currentProfile');
+            localStorage.removeItem('generatedCurriculum');
+            // 생성 상태 초기화
+            isGeneratingCurriculum = false;
+            
+            // 초기 메시지는 이미 HTML로 포맷됨
+        });
+
+        // 네비게이션 설정
+        function setupNavigation() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // 활성 상태 변경
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const page = this.dataset.page;
+                    navigateToPage(page);
+                });
+            });
+        }
+
+        // 탭 전환 함수 (프로그래밍 방식)
+        function switchToTab(tabName) {
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            // 모든 탭의 활성 상태 제거
+            navLinks.forEach(link => link.classList.remove('active'));
+            
+            // 해당 탭 활성화
+            const targetTab = document.querySelector(`[data-page="${tabName}"]`);
+            if (targetTab) {
+                targetTab.classList.add('active');
+                navigateToPage(tabName);
+            }
+        }
+
+        // 페이지 네비게이션
+        function navigateToPage(page) {
+            const welcomeSubtitle = document.getElementById('welcomeSubtitle');
+            const initialMessage = document.getElementById('initialMessage');
+            
+            if (page === 'chat') {
+                // 맞춤형 학습 추천 모드
+                welcomeSubtitle.innerHTML = '오늘 <span class="highlight">무엇을</span> 배우고 싶으신가요?';
+                initialMessage.textContent = '안녕하세요! LearnAI의 학습 멘토입니다. 어떤 주제에 대해 배우고 싶으신지 알려주세요. 맞춤형 학습 계획을 함께 만들어보겠습니다.';
+                
+                // 대화창과 프로필, 예시 영역 다시 보이기
+                const chatWithProfile = document.querySelector('.chat-with-profile');
+                const examplesSection = document.querySelector('.examples-section');
+                const curriculumContent = document.getElementById('curriculumContent');
+                
+                if (chatWithProfile) chatWithProfile.style.display = 'flex';
+                if (examplesSection) examplesSection.style.display = 'block';
+                if (curriculumContent) curriculumContent.style.display = 'none';
+                
+                return;
+            } else if (page === 'profile') {
+                // AI 멘토 모드
+                welcomeSubtitle.innerHTML = '어떤 분야의 <span class="highlight">멘토가</span> 필요하신가요?';
+                initialMessage.textContent = '안녕하세요! 사내 지식이 풍부한 전문분야별 AI 멘토들이 여러분의 질문에 답변해드립니다. 궁금한 분야나 주제를 말씀해주시면, 해당 영역의 멘토들이 각자의 전문성을 살려 도움을 드리겠습니다.';
+                
+                // 대화창과 프로필, 예시 영역 다시 보이기
+                const chatWithProfile = document.querySelector('.chat-with-profile');
+                const examplesSection = document.querySelector('.examples-section');
+                const curriculumContent = document.getElementById('curriculumContent');
+                
+                if (chatWithProfile) chatWithProfile.style.display = 'flex';
+                if (examplesSection) examplesSection.style.display = 'block';
+                if (curriculumContent) curriculumContent.style.display = 'none';
+                
+                return;
+            } else if (page === 'curriculum') {
+                // 나의 커리큘럼 모드  
+                welcomeSubtitle.innerHTML = '<span class="highlight">나의 커리큘럼</span>';
+                
+                // 대화창과 프로필 영역 숨기기
+                const chatWithProfile = document.querySelector('.chat-with-profile');
+                const examplesSection = document.querySelector('.examples-section');
+                
+                if (chatWithProfile) {
+                    chatWithProfile.style.display = 'none';
+                }
+                if (examplesSection) {
+                    examplesSection.style.display = 'none';
+                }
+                
+                // 커리큘럼 전용 컨텐츠 영역 생성 또는 표시
+                let curriculumContent = document.getElementById('curriculumContent');
+                if (!curriculumContent) {
+                    // 커리큘럼 컨텐츠 영역이 없으면 생성
+                    curriculumContent = document.createElement('div');
+                    curriculumContent.id = 'curriculumContent';
+                    curriculumContent.className = 'curriculum-content';
+                    curriculumContent.style.cssText = `
+                        width: 100%;
+                        max-width: 1000px;
+                        background: white;
+                        border-radius: 16px;
+                        box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+                        padding: 40px;
+                        margin: 20px 0;
+                        text-align: center;
+                        color: #6b7280;
+                        line-height: 1.6;
+                    `;
+                    
+                    // welcome-section 다음에 추가
+                    const welcomeSection = document.querySelector('.welcome-section');
+                    welcomeSection.parentNode.insertBefore(curriculumContent, welcomeSection.nextSibling);
+                }
+                
+                // 커리큘럼 컨텐츠를 전체 화면 레이아웃으로 변경
+                curriculumContent.style.cssText = `
+                    width: 900px;
+                    height: 600px;
+                    background: white;
+                    border-radius: 12px;
+                    border: 1px solid #d1d5db;
+                    margin: 20px 0;
+                    position: relative;
+                    display: block;
+                    padding: 20px;
+                `;
+                
+                // 커리큘럼 데이터가 있는지 확인
+                showCurriculumContent(curriculumContent);
+                return;
+            }
+            // 다른 페이지들은 향후 SPA 라우팅 구현 예정
+            showNotification(`${page} 페이지로 이동 (개발 예정)`);
+        }
+
+        // 사용자 프로필 로드
+        function loadUserProfile() {
+            // 로컬스토리지에서 사용자 정보 로드 (향후 서버에서 가져올 예정)
+            const savedUser = localStorage.getItem('learnai_user');
+            if (savedUser) {
+                const parsedUser = JSON.parse(savedUser);
+                currentUser = { ...currentUser, ...parsedUser };
+                updateUserDisplay();
+            }
+        }
+
+        // 사용자 표시 업데이트
+        function updateUserDisplay() {
+            const userName = document.getElementById('userName');
+            userName.textContent = currentUser.name;
+        }
+
+        // 메시지 추가
+        function addMessage(message, isUser) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = `message-avatar ${isUser ? 'user-avatar' : 'ai-avatar-small'}`;
+            avatar.textContent = isUser ? 'U' : 'AI';
+            
+            const content = document.createElement('div');
+            content.className = 'message-content';
+            
+            if (isUser) {
+                // 사용자 메시지는 플레인 텍스트
+                content.textContent = message;
+            } else {
+                // AI 메시지는 간단한 마크다운 처리
+                content.innerHTML = formatSimpleMarkdown(message);
+                // 프로필 정보 추출 및 업데이트
+                extractAndUpdateProfile(message);
+            }
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // 키보드 이벤트 처리
+        function handleKeyDown(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        // 텍스트영역 높이 조정
+        function adjustTextareaHeight(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+        }
+
+        // 예시 사용
+        function useExample(exampleText) {
+            messageInput.value = exampleText;
+            adjustTextareaHeight(messageInput);
+            messageInput.focus();
+        }
+
+        // 스트리밍 응답용 메시지 추가
+        function addStreamingMessage() {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message ai-message';
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar ai-avatar-small';
+            avatar.textContent = 'AI';
+            
+            const content = document.createElement('div');
+            content.className = 'message-content';
+            content.textContent = '';
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            return content;
+        }
+
+        // 세션 ID 가져오기 함수
+        function getSessionId() {
+            // 1. 서버에서 전달받은 세션 ID 우선 사용
+            if (SESSION_ID && SESSION_ID !== '') {
+                return SESSION_ID;
+            }
+            
+            // 2. 쿠키에서 session_id 추출
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                const [name, value] = cookie.trim().split('=');
+                if (name === 'session_id') {
+                    return value;
+                }
+            }
+            return null;
+        }
+
+        // 메시지 전송
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            // 사용자 메시지 표시
+            addMessage(message, true);
+            messageInput.value = '';
+            messageInput.style.height = 'auto';
+            
+            // 버튼 비활성화 및 로딩 표시
+            sendButton.disabled = true;
+            sendButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+            // 스트리밍 응답용 메시지 컨테이너 생성
+            const streamingContent = addStreamingMessage();
+
+            try {
+                // 세션 ID 가져오기
+                const sessionId = getSessionId();
+                
+                // EventSource로 스트리밍 응답 받기
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Session-ID': sessionId || ''  // 헤더로도 전송
+                    },
+                    credentials: 'include', // 쿠키 포함
+                    body: JSON.stringify({ 
+                        message: message,
+                        session_id: sessionId  // 바디에도 포함
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let buffer = '';
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    
+                    buffer += decoder.decode(value, { stream: true });
+                    const lines = buffer.split('\n');
+                    buffer = lines.pop() || ''; // 마지막 불완전한 라인은 버퍼에 유지
+                    
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            try {
+                                const data = JSON.parse(line.slice(6));
+                                if (data.content) {
+                                    // 스트리밍 중에는 텍스트 누적
+                                    const currentText = streamingContent.getAttribute('data-raw-text') || '';
+                                    const newText = currentText + data.content;
+                                    streamingContent.setAttribute('data-raw-text', newText);
+                                    
+                                    // 간단한 마크다운 처리
+                                    streamingContent.innerHTML = formatSimpleMarkdown(newText);
+                                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                                    
+                                    // 프로필 정보가 있는 경우 업데이트
+                                    if (data.profile) {
+                                        console.log('프로필 정보 수신:', data.profile);
+                                        
+                                        // 현재 세션의 프로필만 사용하고, 이전 세션 정보는 무시
+                                        updateLearningProfile(data.profile.topic || '', data.profile.constraints || '', data.profile.goal || '');
+                                    } else {
+                                        console.log('프로필 정보 없음:', data);
+                                    }
+                                } else if (data.error) {
+                                    streamingContent.textContent = `오류: ${data.error}`;
+                                    break;
+                                } else if (data.done) {
+                                    break;
+                                }
+                            } catch (e) {
+                                console.error('JSON 파싱 오류:', e);
+                            }
+                        }
+                    }
+                }
+
+            } catch (error) {
+                streamingContent.textContent = `연결 오류: ${error.message}`;
+            }
+
+            // 버튼 다시 활성화
+            sendButton.disabled = false;
+            sendButton.innerHTML = '<i class="fas fa-arrow-up"></i>';
+        }
+
+        // 사용자 프로필 업데이트
+        function updateUserProfile(profileData) {
+            currentUser = { ...currentUser, ...profileData };
+            localStorage.setItem('learnai_user', JSON.stringify(currentUser));
+            updateUserDisplay();
+            showNotification('프로필이 업데이트되었습니다');
+        }
+
+        // 알림 표시
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // 커리큘럼 콘텐츠 표시 함수
+        function showCurriculumContent(container) {
+            // 생성 중인 경우 로딩 상태 유지
+            if (isGeneratingCurriculum) {
+                displayLoadingState(container);
+                return;
+            }
+            
+            // 임시로 생성된 커리큘럼이 있는지 확인 (실제로는 서버에서 가져올 예정)
+            const hasCurriculum = localStorage.getItem('generatedCurriculum');
+            
+            if (hasCurriculum) {
+                // 생성된 커리큘럼이 있으면 카드 형태로 표시
+                const curriculumData = JSON.parse(hasCurriculum);
+                displayCurriculumCards(container, curriculumData);
+            } else {
+                // 생성된 커리큘럼이 없으면 + 박스 표시
+                displayEmptyState(container);
+            }
+        }
+
+        // 빈 상태 (+ 박스) 표시
+        function displayEmptyState(container) {
+            container.innerHTML = `
+                <div style="
+                    position: absolute;
+                    top: 30px;
+                    left: 30px;
+                    width: 240px;
+                    height: 180px;
+                    border: 2px dashed #d1d5db;
+                    border-radius: 8px;
+                    background: #fafafa;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                    font-size: 36px;
+                    color: #9ca3af;
+                    font-weight: 300;
+                " 
+                onclick="switchToTab('chat')"
+                onmouseover="this.style.borderColor='#a855f7'; this.style.background='#f8fafc'; this.style.color='#a855f7'"
+                onmouseout="this.style.borderColor='#d1d5db'; this.style.background='#fafafa'; this.style.color='#9ca3af'"
+                title="새 커리큘럼 생성하기">
+                    +
+                </div>
+                
+                <!-- + 박스 아래 네비게이션 버튼 -->
+                <div style="
+                    position: absolute;
+                    top: 240px;
+                    left: 30px;
+                ">
+                    <button onclick="switchToTab('chat')" style="
+                        width: 240px;
+                        background: linear-gradient(135deg, #a855f7, #ec4899);
+                        color: white;
+                        border: none;
+                        border-radius: 8px;
+                        padding: 12px 0;
+                        font-size: 14px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.2s ease;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    " onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 16px rgba(168, 85, 247, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                        맞춤형 학습 추천으로 이동 →
+                    </button>
+                </div>
+            `;
+        }
+
+        // 로딩 상태 표시
+        function displayLoadingState(container) {
+            container.innerHTML = `
+                <div style="
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100%;
+                    color: #6b7280;
+                ">
+                    <div style="
+                        width: 60px;
+                        height: 60px;
+                        border: 4px solid #f3f4f6;
+                        border-top: 4px solid #a855f7;
+                        border-radius: 50%;
+                        animation: spin 1s linear infinite;
+                        margin-bottom: 20px;
+                    "></div>
+                    <h3 style="
+                        font-size: 18px;
+                        font-weight: 600;
+                        color: #374151;
+                        margin: 0 0 8px 0;
+                    ">커리큘럼 생성 중...</h3>
+                    <p style="
+                        font-size: 14px;
+                        color: #6b7280;
+                        margin: 0;
+                        text-align: center;
+                    ">AI가 맞춤형 학습 계획을 생성하고 있습니다.<br>잠시만 기다려주세요.</p>
+                </div>
+                
+                <style>
+                    @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+                </style>
+            `;
+        }
+
+        // 커리큘럼 카드들 표시
+        function displayCurriculumCards(container, data) {
+            const modules = data.modules || [];
+            let cardsHtml = '';
+            
+            // 헤더 정보
+            cardsHtml += `
+                <div style="margin-bottom: 24px;">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                        <div style="
+                            background: linear-gradient(135deg, #a855f7, #ec4899);
+                            color: white;
+                            padding: 6px 12px;
+                            border-radius: 6px;
+                            font-size: 12px;
+                            font-weight: 600;
+                            text-transform: uppercase;
+                        ">
+                            ${data.level || 'Beginner'}
+                        </div>
+                        <div style="color: #6b7280; font-size: 14px;">
+                            ${data.duration_weeks || 0}주 과정
+                        </div>
+                    </div>
+                    <h2 style="
+                        font-size: 18px;
+                        font-weight: 700;
+                        color: #1f2937;
+                        margin: 0;
+                    ">
+                        ${data.title || '커리큘럼'}
+                    </h2>
+                </div>
+            `;
+            
+            // 모듈 카드들을 그리드로 배치 (4x3 그리드, 모든 모듈 표시)
+            cardsHtml += '<div id="curriculumGrid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; height: 480px;">';
+            
+            modules.forEach((module, index) => {
+                const weekColor = index < 4 ? '#a855f7' : index < 8 ? '#ec4899' : '#10b981';
+                cardsHtml += `
+                    <div id="card-${index}" class="curriculum-card" style="
+                        background: white;
+                        border: 1px solid #e5e7eb;
+                        border-radius: 8px;
+                        padding: 12px;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        height: fit-content;
+                        min-height: 100px;
+                        position: relative;
+                        overflow: hidden;
+                    " 
+                    onmouseover="this.style.borderColor='${weekColor}'; this.style.boxShadow='0 2px 8px rgba(168, 85, 247, 0.1)'"
+                    onmouseout="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"
+                    onclick="toggleModuleDetail(${index})">
+                        
+                        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+                            <div style="
+                                background: ${weekColor};
+                                color: white;
+                                width: 20px;
+                                height: 20px;
+                                border-radius: 50%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                font-size: 10px;
+                                font-weight: 600;
+                            ">
+                                ${module.week || index + 1}
+                            </div>
+                            <div style="color: #6b7280; font-size: 10px; font-weight: 500;">
+                                ${module.estimated_hours || 8}시간
+                            </div>
+                        </div>
+                        
+                        <h3 style="
+                            font-size: 12px;
+                            font-weight: 600;
+                            color: #1f2937;
+                            margin: 0 0 6px 0;
+                            line-height: 1.3;
+                            display: -webkit-box;
+                            -webkit-line-clamp: 2;
+                            -webkit-box-orient: vertical;
+                            overflow: hidden;
+                        ">
+                            ${module.title || `${index + 1}주차 학습`}
+                        </h3>
+                        
+                        <p id="description-${index}" style="
+                            font-size: 10px;
+                            color: #6b7280;
+                            margin: 0 0 6px 0;
+                            line-height: 1.3;
+                            display: -webkit-box;
+                            -webkit-line-clamp: 2;
+                            -webkit-box-orient: vertical;
+                            overflow: hidden;
+                        ">
+                            ${module.description || '이번 주차의 학습 내용을 다룹니다.'}
+                        </p>
+                        
+                        ${module.key_concepts && module.key_concepts.length > 0 ? `
+                            <div id="concepts-${index}" style="margin-top: 4px; display: flex; gap: 2px; flex-wrap: wrap;">
+                                ${module.key_concepts.slice(0, 2).map(concept => `
+                                    <span style="
+                                        background: #f3f4f6;
+                                        color: #6b7280;
+                                        padding: 2px 4px;
+                                        border-radius: 3px;
+                                        font-size: 8px;
+                                        font-weight: 500;
+                                    ">${concept}</span>
+                                `).join('')}
+                                ${module.key_concepts.length > 2 ? `<span style="color: #9ca3af; font-size: 8px;">+${module.key_concepts.length - 2}</span>` : ''}
+                            </div>
+                        ` : ''}
+                        
+                        <!-- 확장된 내용 (처음에는 숨김) -->
+                        <div id="expanded-${index}" style="
+                            display: none;
+                            margin-top: 12px;
+                            padding-top: 8px;
+                            border-top: 1px solid #f3f4f6;
+                            font-size: 10px;
+                            line-height: 1.4;
+                        ">
+                            ${module.objectives ? `
+                                <div style="margin-bottom: 8px;">
+                                    <h4 style="font-size: 10px; font-weight: 600; color: #374151; margin-bottom: 4px;">🎯 학습 목표:</h4>
+                                    <ul style="margin: 0; padding-left: 12px; color: #6b7280;">
+                                        ${module.objectives.map(obj => `<li style="margin-bottom: 2px;">${obj}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            ` : ''}
+                            
+                            ${module.key_concepts && module.key_concepts.length > 2 ? `
+                                <div style="margin-bottom: 8px;">
+                                    <h4 style="font-size: 10px; font-weight: 600; color: #374151; margin-bottom: 4px;">🔑 핵심 개념:</h4>
+                                    <div style="display: flex; gap: 2px; flex-wrap: wrap;">
+                                        ${module.key_concepts.map(concept => `
+                                            <span style="
+                                                background: #f3f4f6;
+                                                color: #6b7280;
+                                                padding: 2px 4px;
+                                                border-radius: 3px;
+                                                font-size: 8px;
+                                                font-weight: 500;
+                                            ">${concept}</span>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                            
+                            ${module.resources ? `
+                                <div>
+                                    <h4 style="font-size: 10px; font-weight: 600; color: #374151; margin-bottom: 4px;">📚 추천 학습 자료:</h4>
+                                    
+                                    ${module.resources.videos && module.resources.videos.length > 0 ? `
+                                        <div style="margin-bottom: 6px;">
+                                            <h5 style="font-size: 9px; font-weight: 500; color: #4b5563; margin-bottom: 2px;">📹 추천 영상:</h5>
+                                            ${module.resources.videos.map(video => `
+                                                <div style="margin-bottom: 1px;">
+                                                    <a href="${video.url}" target="_blank" style="color: #3b82f6; text-decoration: none; font-size: 8px;">
+                                                        ${video.title}
+                                                    </a>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    ` : ''}
+                                    
+                                    ${module.resources.web_links && module.resources.web_links.length > 0 ? `
+                                        <div style="margin-bottom: 6px;">
+                                            <h5 style="font-size: 9px; font-weight: 500; color: #4b5563; margin-bottom: 2px;">🔗 웹 자료:</h5>
+                                            ${module.resources.web_links.map(link => `
+                                                <div style="margin-bottom: 1px;">
+                                                    <a href="${link.url}" target="_blank" style="color: #059669; text-decoration: none; font-size: 8px;">
+                                                        ${link.title}
+                                                    </a>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    ` : ''}
+                                    
+                                    ${module.resources.documents && module.resources.documents.length > 0 ? `
+                                        <div style="margin-bottom: 6px;">
+                                            <h5 style="font-size: 9px; font-weight: 500; color: #4b5563; margin-bottom: 2px;">📄 문서 자료:</h5>
+                                            ${module.resources.documents.map(doc => `
+                                                <div style="margin-bottom: 1px;">
+                                                    <a href="${doc.url}" target="_blank" style="color: #dc2626; text-decoration: none; font-size: 8px;">
+                                                        ${doc.title}
+                                                    </a>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            ` : ''}
+                        </div>
+                        
+                        <!-- 확장/축소 아이콘 -->
+                        <div id="toggle-icon-${index}" style="
+                            position: absolute;
+                            bottom: 4px;
+                            right: 6px;
+                            font-size: 8px;
+                            color: #9ca3af;
+                        ">▼</div>
+                    </div>
+                `;
+            });
+            
+            cardsHtml += '</div>';
+            container.innerHTML = cardsHtml;
+        }
+
+        // 모듈 상세 정보 토글 (확장/축소)
+        function toggleModuleDetail(moduleIndex) {
+            const expandedDiv = document.getElementById(`expanded-${moduleIndex}`);
+            const toggleIcon = document.getElementById(`toggle-icon-${moduleIndex}`);
+            const card = document.getElementById(`card-${moduleIndex}`);
+            
+            if (expandedDiv && toggleIcon && card) {
+                const isExpanded = expandedDiv.style.display !== 'none';
+                
+                if (isExpanded) {
+                    // 축소
+                    expandedDiv.style.display = 'none';
+                    toggleIcon.textContent = '▼';
+                    card.style.zIndex = '1';
+                } else {
+                    // 확장
+                    expandedDiv.style.display = 'block';
+                    toggleIcon.textContent = '▲';
+                    card.style.zIndex = '10';
+                    card.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.15)';
+                    
+                    // 3초 후 그림자 제거
+                    setTimeout(() => {
+                        if (card.style.zIndex === '10') {
+                            card.style.boxShadow = 'none';
+                        }
+                    }, 3000);
+                }
+            }
+        }
+
+        // 대화 초기화
+        async function clearChat() {
+            try {
+                const response = await fetch('/clear-chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include' // 쿠키 포함
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // 채팅 메시지 화면 초기화
+                    const chatMessages = document.getElementById('chatMessages');
+                    // 현재 모드에 따라 초기 메시지 설정
+                    const activeTab = document.querySelector('.nav-link.active').dataset.page;
+                    const initialMsg = activeTab === 'profile' 
+                        ? '안녕하세요! 사내 지식이 풍부한 전문분야별 AI 멘토들이 여러분의 질문에 답변해드립니다. 궁금한 분야나 주제를 말씀해주시면, 해당 영역의 멘토들이 각자의 전문성을 살려 도움을 드리겠습니다.'
+                        : '안녕하세요! LearnAI의 학습 멘토입니다. 어떤 주제에 대해 배우고 싶으신지 알려주세요. 맞춤형 학습 계획을 함께 만들어보겠습니다.';
+                    
+                    chatMessages.innerHTML = `
+                        <div class="message ai-message">
+                            <div class="message-avatar ai-avatar-small">AI</div>
+                            <div class="message-content" id="initialMessage">
+                                ${initialMsg}
+                            </div>
+                        </div>
+                    `;
+                    
+                    // 프로필과 커리큘럼 데이터 초기화
+                    updateLearningProfile('', '', '');
+                    localStorage.removeItem('currentProfile');
+                    localStorage.removeItem('generatedCurriculum');
+                    // 생성 상태 초기화
+                    isGeneratingCurriculum = false;
+                    
+                    // 커리큘럼 페이지가 활성화되어 있다면 새로고침
+                    const curriculumContent = document.getElementById('curriculumContent');
+                    if (curriculumContent && curriculumContent.style.display === 'block') {
+                        showCurriculumContent(curriculumContent);
+                    }
+                    
+                    showNotification('대화가 초기화되었습니다');
+                } else {
+                    showNotification('대화 초기화에 실패했습니다', 'error');
+                }
+            } catch (error) {
+                showNotification(`오류: ${error.message}`, 'error');
+            }
+        }
+    </script>
+</body>
+</html>
