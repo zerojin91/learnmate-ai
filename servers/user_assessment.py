@@ -106,6 +106,7 @@ llm = ChatOpenAI(
     model=Config.LLM_MODEL,
     temperature=Config.LLM_TEMPERATURE,
     max_tokens=Config.LLM_MAX_TOKENS,
+    model_kwargs={"max_completion_tokens": None}  # Friendli.ai에서 지원하지 않는 파라미터 제거
 )
 
 class AssessmentAgentSystem:

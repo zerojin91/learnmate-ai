@@ -34,6 +34,7 @@ def initialize_llm():
             model=Config.LLM_MODEL,
             temperature=0.7,
             max_tokens=Config.LLM_MAX_TOKENS,
+            model_kwargs={"max_completion_tokens": None}  # Friendli.ai에서 지원하지 않는 파라미터 제거
         )
         # print(f"🤖 LLM initialized: {Config.LLM_MODEL}")  # MCP 통신 방해 방지
         return llm, True

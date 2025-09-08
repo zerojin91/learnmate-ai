@@ -52,6 +52,7 @@ class MultiMCPAgent:
             model=Config.LLM_MODEL,
             temperature=Config.LLM_TEMPERATURE,
             max_tokens=self.max_tokens,
+            model_kwargs={"max_completion_tokens": None}  # Friendli.ai에서 지원하지 않는 파라미터 제거
         )
          
     async def initialize(self):
