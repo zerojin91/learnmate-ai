@@ -200,6 +200,8 @@ async def analyze_and_recommend_personas(request: MentorRecommendationRequest):
     if not agent_instance:
         return {"error": "Agent not initialized"}
     
+    print(f"🎯 페르소나 추천 API 호출 - message: {request.message[:50]}, session_id: {request.session_id}")
+    
     try:
         # MCP 도구 호출 - agent.py의 방식 사용
         tools = await agent_instance.client.get_tools()
@@ -252,9 +254,45 @@ async def analyze_and_recommend_personas(request: MentorRecommendationRequest):
                                 # 모든 대체 필드가 없으면 기본값 설정
                                 persona['reason'] = f"{persona.get('name', '해당 분야')} 전문가로 추천되었습니다."
                 
-            except json.JSONDecodeError:
-                # JSON 파싱 실패시 기본 구조로 래핑
-                result = {"error": "응답 파싱 실패", "raw_result": result}
+            except json.JSONDecodeError as e:
+                print(f"JSON 파싱 실패: {e}")
+                
+                # 키워드 기반으로 적절한 페르소나 추천
+                message = request.message.lower()
+                if any(word in message for word in ["건축", "집", "건물", "설계"]):
+                    fallback_personas = [
+                        {"id": "architecture", "name": "건축", "reason": "건축 관련 키워드 감지"}
+                    ]
+                elif any(word in message for word in ["전기", "전자", "회로"]):
+                    fallback_personas = [
+                        {"id": "electrical", "name": "전기 전자", "reason": "전기전자 관련 키워드 감지"}
+                    ]
+                elif any(word in message for word in ["기계", "제조", "설계"]):
+                    fallback_personas = [
+                        {"id": "mechanical", "name": "기계 금속", "reason": "기계공학 관련 키워드 감지"}
+                    ]
+                elif any(word in message for word in ["토목", "도시", "건설"]):
+                    fallback_personas = [
+                        {"id": "civil_urban", "name": "토목 도시", "reason": "토목/도시 관련 키워드 감지"}
+                    ]
+                elif any(word in message for word in ["컴퓨터", "프로그래밍", "웹", "소프트웨어"]):
+                    fallback_personas = [
+                        {"id": "computer", "name": "컴퓨터 통신", "reason": "컴퓨터 관련 키워드 감지"}
+                    ]
+                else:
+                    fallback_personas = [
+                        {"id": "computer", "name": "컴퓨터 통신", "reason": "기본 추천"}
+                    ]
+                
+                result = {
+                    "recommended_personas": fallback_personas,
+                    "reasoning": "자동 키워드 분석 기반 추천",
+                    "session_id": request.session_id
+                }
+        
+        # 응답에 세션 ID 포함하여 UI가 올바른 세션을 사용하도록 보장
+        if isinstance(result, dict):
+            result['session_id'] = request.session_id
         
         return result
         
@@ -262,7 +300,10 @@ async def analyze_and_recommend_personas(request: MentorRecommendationRequest):
         print(f"❌ 멘토 추천 오류: {e}")
         import traceback
         traceback.print_exc()
-        return {"error": f"멘토 추천 중 오류가 발생했습니다: {str(e)}"}
+        return {
+            "error": f"멘토 추천 중 오류가 발생했습니다: {str(e)}",
+            "session_id": request.session_id
+        }
 
 class PersonaSelectionRequest(BaseModel):
     persona_id: str
@@ -277,6 +318,8 @@ async def api_select_persona(request: PersonaSelectionRequest):
     """페르소나 선택 API"""
     if not agent_instance:
         return {"error": "Agent not initialized"}
+    
+    print(f"🔧 페르소나 선택 API 호출 - persona_id: {request.persona_id}, session_id: {request.session_id}")
     
     try:
         # MCP 도구 호출 - select_persona
@@ -300,13 +343,20 @@ async def api_select_persona(request: PersonaSelectionRequest):
             except json.JSONDecodeError:
                 result = {"message": result}
         
+        # 응답에 세션 ID 포함
+        if isinstance(result, dict):
+            result['session_id'] = request.session_id
+        
         return result
         
     except Exception as e:
         print(f"❌ 페르소나 선택 오류: {e}")
         import traceback
         traceback.print_exc()
-        return {"error": f"페르소나 선택 중 오류가 발생했습니다: {str(e)}"}
+        return {
+            "error": f"페르소나 선택 중 오류가 발생했습니다: {str(e)}",
+            "session_id": request.session_id
+        }
 
 @app.post("/api/mentor_chat/expert_mentoring")
 async def expert_mentoring(request: ExpertMentoringRequest):
@@ -336,13 +386,20 @@ async def expert_mentoring(request: ExpertMentoringRequest):
             except json.JSONDecodeError:
                 result = {"response": result}
         
+        # 응답에 세션 ID 포함
+        if isinstance(result, dict):
+            result['session_id'] = request.session_id
+        
         return result
         
     except Exception as e:
         print(f"❌ 전문가 멘토링 오류: {e}")
         import traceback
         traceback.print_exc()
-        return {"error": f"전문가 멘토링 중 오류가 발생했습니다: {str(e)}"}
+        return {
+            "error": f"전문가 멘토링 중 오류가 발생했습니다: {str(e)}",
+            "session_id": request.session_id
+        }
 
 if __name__ == "__main__":
     import uvicorn

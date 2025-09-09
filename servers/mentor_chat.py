@@ -17,6 +17,8 @@ from datetime import datetime
 import uuid
 import os
 import sys
+import httpx
+import re
 
 # 상위 디렉토리의 config 모듈 import
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -61,6 +63,20 @@ def save_mentor_session(session_id, session_data):
             json.dump(session_data, f, ensure_ascii=False, indent=2)
     except Exception as e:
         logger.error(f"멘토 세션 {session_id} 저장 오류: {e}")
+
+# 페르소나별 검색 키워드 매핑
+PERSONA_KEYWORDS = {
+    "architecture": "건축 설계 구조 BIM CAD 건물 인테리어 도시건축",
+    "civil_urban": "토목 도시계획 인프라 교통 지반공학 구조역학 건설",
+    "transport": "교통 물류 운송 모빌리티 시스템 스마트모빌리티 교통정책",
+    "mechanical": "기계 설계 제조 자동화 열역학 유체역학 생산공학",
+    "electrical": "전기 전자 회로 제어 전력 시스템 신호처리 임베디드",
+    "precision_energy": "에너지 신재생 정밀 측정 효율 에너지시스템",
+    "materials": "신소재 나노 고분자 세라믹 재료 금속재료 재료과학",
+    "computer": "프로그래밍 소프트웨어 AI 네트워크 데이터베이스 컴퓨터공학",
+    "industrial": "산업공학 품질 생산 최적화 공급망 린제조 6시그마",
+    "chemical": "화학공학 공정 반응 분리 플랜트 화학 안전공학"
+}
 
 # 전문 분야 페르소나 정의
 PERSONAS = {
@@ -169,6 +185,8 @@ class SelectionResult(BaseModel):
 class MentoringResponse(BaseModel):
     response: str = Field(description="전문가 멘토링 응답")
     persona_name: str = Field(description="응답한 페르소나 이름")
+    related_courses: List[Dict] = Field(default=[], description="관련 K-MOOC 강좌")
+    related_documents: List[Dict] = Field(default=[], description="관련 문서 자료")
 
 # LLM 설정
 llm = ChatOpenAI(
@@ -182,9 +200,207 @@ llm = ChatOpenAI(
 # MCP 서버 생성
 mcp = FastMCP("MentorChat")
 
+# K-MOOC 요약 정보 파싱 함수 (generate_curriculum.py에서 가져옴)
+def parse_kmooc_summary(summary: str) -> dict:
+    """K-MOOC 요약에서 구조화된 정보 추출"""
+    try:
+        parsed_info = {}
+        
+        # 제목 추출
+        title_match = re.search(r'\*\*제목:\*\*\s*([^\n*]+)', summary)
+        if title_match:
+            parsed_info["title"] = title_match.group(1).strip()
+        
+        # 설명 추출
+        desc_match = re.search(r'\*\*설명:\*\*\s*([^\n*]+)', summary)
+        if desc_match:
+            parsed_info["description"] = desc_match.group(1).strip()
+        
+        # 강좌 목표 추출
+        goal_match = re.search(r'\*\*강좌 목표:\*\*\s*([^\n*]+)', summary)
+        if goal_match:
+            parsed_info["course_goal"] = goal_match.group(1).strip()
+        
+        # 난이도 추출
+        difficulty_match = re.search(r'\*\*난이도:\*\*\s*([^\n*]+)', summary)
+        if difficulty_match:
+            parsed_info["difficulty"] = difficulty_match.group(1).strip()
+        
+        # 수업 시간 추출
+        time_match = re.search(r'\*\*수업 시간:\*\*[^()]*약\s*([^\n*()]+)', summary)
+        if time_match:
+            parsed_info["class_time"] = time_match.group(1).strip()
+        
+        return parsed_info
+        
+    except Exception as e:
+        logger.error(f"K-MOOC 요약 파싱 실패: {e}")
+        return {}
+
+# K-MOOC 검색 함수
+async def search_kmooc_for_mentoring(query: str, persona_id: str) -> List[Dict]:
+    """멘토링을 위한 K-MOOC 강좌 검색"""
+    try:
+        # 페르소나별 검색 키워드 추가
+        persona_keywords = PERSONA_KEYWORDS.get(persona_id, "")
+        enhanced_query = f"{query} {persona_keywords}"
+        
+        search_payload = {
+            "query": enhanced_query,
+            "top_k": 3,  # 멘토링에는 3개 정도만
+            "namespace": "kmooc_engineering",
+            "rerank": True,
+            "include_metadata": True
+        }
+        
+        logger.info(f"K-MOOC 검색 시작 - query: {enhanced_query}")
+        
+        # pinecone_search_kmooc.py 서버 호출
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                "http://localhost:8099/search",
+                json=search_payload,
+                timeout=10.0
+            )
+            
+        if response.status_code == 200:
+            result = response.json()
+            kmooc_courses = []
+            
+            for item in result.get("results", [])[:3]:  # 상위 3개만
+                metadata = item.get("metadata", {})
+                if metadata:
+                    # Summary 파싱하여 강좌 정보 추출
+                    summary = metadata.get("summary", "")
+                    parsed_info = parse_kmooc_summary(summary)
+                    
+                    course_title = parsed_info.get("title") or "K-MOOC 강좌"
+                    description = (
+                        parsed_info.get("description") or 
+                        parsed_info.get("course_goal") or 
+                        "K-MOOC 온라인 강좌"
+                    )
+                    
+                    course_info = {
+                        "title": course_title,
+                        "description": description,
+                        "url": metadata.get("url", ""),
+                        "institution": metadata.get("institution", "").replace(" 운영기관 바로가기새창열림", ""),
+                        "course_goal": parsed_info.get("course_goal", ""),
+                        "duration": parsed_info.get("duration", ""),
+                        "difficulty": parsed_info.get("difficulty", ""),
+                        "class_time": parsed_info.get("class_time", ""),
+                        "score": item.get("score", 0.0),
+                        "source": "K-MOOC"
+                    }
+                    kmooc_courses.append(course_info)
+                    
+            logger.info(f"K-MOOC 검색 완료 - {len(kmooc_courses)}개 강좌 발견")
+            return kmooc_courses
+            
+    except Exception as e:
+        logger.error(f"K-MOOC 검색 실패: {e}")
+    
+    return []
+
+# 문서 검색 함수
+async def search_documents_for_mentoring(query: str, persona_id: str) -> List[Dict]:
+    """멘토링을 위한 문서 자료 검색"""
+    try:
+        # 페르소나별 검색 키워드 추가
+        persona_keywords = PERSONA_KEYWORDS.get(persona_id, "")
+        enhanced_query = f"{query} {persona_keywords}"
+        
+        search_payload = {
+            "query": enhanced_query,
+            "top_k": 2,  # 문서는 2개 정도
+            "namespace": "main",
+            "rerank": True,
+            "include_metadata": True
+        }
+        
+        logger.info(f"문서 검색 시작 - query: {enhanced_query}")
+        
+        # pinecone_search_document.py 서버 호출
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                "http://localhost:8091/search",
+                json=search_payload,
+                timeout=10.0
+            )
+            
+        if response.status_code == 200:
+            result = response.json()
+            documents = []
+            
+            for item in result.get("results", [])[:2]:  # 상위 2개만
+                metadata = item.get("metadata", {})
+                score = item.get("score", 0.0)
+                
+                if metadata and score > 0.5:  # 관련성 임계값
+                    preview = metadata.get("preview", "").strip()
+                    file_path = metadata.get("file_path", "").strip()
+                    folder = metadata.get("folder", "").strip()
+                    
+                    # 파일명에서 제목 추출
+                    doc_title = "PDF 문서"
+                    if file_path:
+                        filename = file_path.split("/")[-1] if "/" in file_path else file_path
+                        if filename.endswith('.pdf'):
+                            filename = filename[:-4]
+                        doc_title = filename
+                    
+                    # 카테고리 정보
+                    category = folder or "기타"
+                    
+                    doc_info = {
+                        "title": doc_title,
+                        "category": category,
+                        "preview": preview[:300] + "..." if preview else "",
+                        "file_path": file_path,
+                        "page": metadata.get("page", ""),
+                        "score": score,
+                        "source": "Document DB"
+                    }
+                    documents.append(doc_info)
+                    
+            logger.info(f"문서 검색 완료 - {len(documents)}개 문서 발견")
+            return documents
+            
+    except Exception as e:
+        logger.error(f"문서 검색 실패: {e}")
+    
+    return []
+
+# 검색 결과 포맷팅 함수
+def format_search_results(kmooc_courses: List[Dict], documents: List[Dict]) -> str:
+    """검색 결과를 멘토링 컨텍스트로 포맷팅"""
+    context = ""
+    
+    # K-MOOC 강좌 정보
+    if kmooc_courses:
+        context += "📚 관련 K-MOOC 강좌:\n"
+        for course in kmooc_courses:
+            context += f"- {course['title']}\n"
+            context += f"  운영기관: {course.get('institution', 'N/A')}\n"
+            context += f"  내용: {course.get('description', '')[:200]}...\n"
+            context += f"  난이도: {course.get('difficulty', 'N/A')}\n\n"
+    
+    # 문서 자료 정보
+    if documents:
+        context += "📄 참고 문서:\n"
+        for doc in documents:
+            context += f"- {doc['title']}\n"
+            context += f"  카테고리: {doc.get('category', 'N/A')}\n"
+            context += f"  내용: {doc.get('preview', '')[:150]}...\n\n"
+    
+    return context
+
 @mcp.tool()
 async def analyze_and_recommend_personas(message: str, session_id: str) -> PersonaRecommendation:
     """사용자 메시지를 분석하여 적절한 페르소나 추천"""
+    
+    logger.info(f"[RECOMMEND] 시작 - session_id: {session_id}, message: {message[:50]}...")
     
     # 세션 데이터 로드 또는 초기화
     session_data = load_mentor_session(session_id)
@@ -240,6 +456,11 @@ async def analyze_and_recommend_personas(message: str, session_id: str) -> Perso
         clean_content = clean_content.replace(', ...', '').replace('... ', '').replace('...', '')
         # 빈 객체 제거
         clean_content = clean_content.replace(', {}', '').replace('{},', '').replace('{}', '')
+        # 배열 끝 불필요한 쉼표 제거 (JSON 파싱 오류 해결)
+        clean_content = clean_content.replace('}, \n     ]', '} \n     ]')
+        clean_content = clean_content.replace('},\n     ]', '}\n     ]')
+        clean_content = clean_content.replace('}, ]', '} ]')
+        clean_content = clean_content.replace('},]', '}]')
         
         result = json.loads(clean_content)
         logger.info(f"파싱된 결과: {result}")  # 디버깅용 로그
@@ -275,6 +496,14 @@ async def analyze_and_recommend_personas(message: str, session_id: str) -> Perso
         })
         
         save_mentor_session(session_id, session_data)
+        
+        # 세션 저장 확인용 로그
+        session_file_path = get_mentor_session_file_path(session_id)
+        logger.info(f"세션 저장 완료 - 파일: {session_file_path}")
+        logger.info(f"저장된 파일 존재 확인: {os.path.exists(session_file_path)}")
+        
+        # 최종 결과 로깅
+        logger.info(f"[RECOMMEND] 완료 - session_id: {session_id}, 추천: {[p['id'] for p in recommended_personas]}")
         
         return PersonaRecommendation(
             recommended_personas=recommended_personas,
@@ -326,10 +555,46 @@ async def analyze_and_recommend_personas(message: str, session_id: str) -> Perso
 async def select_persona(persona_id: str, session_id: str) -> SelectionResult:
     """사용자가 선택한 페르소나로 멘토링 모드 전환"""
     
+    # 디버깅용 로그
+    logger.info(f"select_persona 호출 - persona_id: {persona_id}, session_id: {session_id}")
+    
+    # 세션 파일 경로 확인
+    session_file_path = get_mentor_session_file_path(session_id)
+    logger.info(f"세션 파일 경로: {session_file_path}")
+    logger.info(f"세션 파일 존재 여부: {os.path.exists(session_file_path)}")
+    
     # 세션 데이터 로드
     session_data = load_mentor_session(session_id)
     if not session_data:
-        raise ValueError("세션 데이터를 찾을 수 없습니다.")
+        logger.error(f"세션 데이터 로드 실패 - session_id: {session_id}")
+        
+        # 세션 파일이 있는지 다시 한번 체크
+        if os.path.exists(session_file_path):
+            logger.error("세션 파일은 존재하지만 로드에 실패했습니다.")
+            try:
+                with open(session_file_path, 'r', encoding='utf-8') as f:
+                    raw_content = f.read()
+                    logger.info(f"세션 파일 내용: {raw_content[:200]}...")
+                    # JSON 파싱 재시도
+                    session_data = json.loads(raw_content)
+                    logger.info("세션 데이터 재로드 성공!")
+            except Exception as parse_error:
+                logger.error(f"세션 파일 파싱 오류: {parse_error}")
+        
+        # 여전히 세션 데이터가 없다면 새 세션 생성
+        if not session_data:
+            logger.info("새 멘토 세션을 생성합니다.")
+            session_data = {
+                "session_id": session_id,
+                "phase": "persona_recommendation",
+                "messages": [],
+                "recommended_personas": [],
+                "selected_persona": "",
+                "persona_context": "",
+                "completed": False
+            }
+            save_mentor_session(session_id, session_data)
+            logger.info("새 멘토 세션 저장 완료")
     
     # 페르소나 유효성 검사
     if persona_id not in PERSONAS:
@@ -366,7 +631,7 @@ async def select_persona(persona_id: str, session_id: str) -> SelectionResult:
 
 @mcp.tool()
 async def expert_mentoring(message: str, session_id: str) -> MentoringResponse:
-    """선택된 페르소나로 전문가 멘토링 제공"""
+    """선택된 페르소나로 전문가 멘토링 제공 (K-MOOC DB 연동)"""
     
     # 세션 데이터 로드
     session_data = load_mentor_session(session_id)
@@ -382,35 +647,73 @@ async def expert_mentoring(message: str, session_id: str) -> MentoringResponse:
     # 사용자 메시지 추가
     session_data["messages"].append({"role": "user", "content": message})
     
-    # 대화 기록 생성 (최근 10개 메시지만)
-    recent_messages = session_data["messages"][-10:]
+    # K-MOOC 강좌 및 문서 검색 (병렬 실행)
+    logger.info(f"멘토링 자료 검색 시작 - 질문: {message[:50]}...")
+    
+    import asyncio
+    kmooc_task = search_kmooc_for_mentoring(message, selected_persona_id)
+    docs_task = search_documents_for_mentoring(message, selected_persona_id)
+    
+    try:
+        kmooc_courses, documents = await asyncio.gather(kmooc_task, docs_task, return_exceptions=True)
+        
+        # 예외 처리
+        if isinstance(kmooc_courses, Exception):
+            logger.error(f"K-MOOC 검색 오류: {kmooc_courses}")
+            kmooc_courses = []
+        if isinstance(documents, Exception):
+            logger.error(f"문서 검색 오류: {documents}")
+            documents = []
+            
+    except Exception as e:
+        logger.error(f"검색 실행 오류: {e}")
+        kmooc_courses, documents = [], []
+    
+    # 검색 결과를 컨텍스트로 구성
+    search_context = format_search_results(kmooc_courses, documents)
+    
+    # 대화 기록 생성 (최근 8개 메시지만 - 검색 결과 추가로 토큰 절약)
+    recent_messages = session_data["messages"][-8:]
     conversation_history = ""
     for msg in recent_messages[:-1]:  # 현재 메시지 제외
         role = "사용자" if msg["role"] == "user" else "멘토"
-        conversation_history += f"{role}: {msg['content']}\n"
+        conversation_history += f"{role}: {msg['content'][:200]}...\n"
     
-    # 멘토링 프롬프트 생성
+    # 강화된 멘토링 프롬프트 생성
     mentoring_prompt = f"""
 {persona['system_prompt']}
 
-대화 기록:
+=== 관련 학습 자료 ===
+{search_context if search_context else "관련 자료를 찾지 못했습니다."}
+
+=== 대화 기록 ===
 {conversation_history}
 
-현재 사용자 질문: {message}
+=== 현재 사용자 질문 ===
+{message}
 
-위의 역할에 맞게, 전문가로서 다음 사항을 고려하여 답변해주세요:
-1. 전문 지식을 바탕으로 한 정확한 정보 제공
-2. 실무 경험에서 나온 실용적인 조언
-3. 단계별, 구체적인 가이드 제시
-4. 관련 학습 자료나 다음 단계 제안
-5. 친근하고 격려하는 멘토의 톤 유지
+위의 역할과 검색된 학습 자료를 참고하여 전문가로서 답변해주세요:
 
-답변은 한국어로, 구체적이고 도움이 되도록 작성해주세요.
+1. **전문 지식 기반 설명**: 해당 분야의 전문 지식을 바탕으로 정확한 정보 제공
+2. **관련 강좌 추천**: 검색된 K-MOOC 강좌가 있다면 구체적으로 추천하고 왜 도움이 될지 설명
+3. **추가 학습 자료**: 검색된 문서나 자료가 있다면 어떻게 활용할지 가이드
+4. **실무 중심 조언**: 실제 업무나 프로젝트에서 어떻게 적용할지 조언
+5. **단계별 학습 경로**: 체계적인 학습 방법과 다음 단계 제안
+
+**답변 가이드라인:**
+- 검색된 자료를 자연스럽게 답변에 녹여서 활용하세요
+- 구체적인 강좌명이나 자료명을 언급하며 추천하세요  
+- 친근하고 격려하는 멘토의 톤을 유지하세요
+- 실용적이고 바로 적용 가능한 조언을 제공하세요
+
+답변은 한국어로 작성해주세요.
 """
     
     try:
         response = await llm.ainvoke(mentoring_prompt)
         mentor_response = response.content
+        
+        logger.info(f"멘토링 응답 생성 완료 - K-MOOC: {len(kmooc_courses)}개, 문서: {len(documents)}개 활용")
         
         # 응답을 세션에 저장
         session_data["messages"].append({
@@ -422,7 +725,9 @@ async def expert_mentoring(message: str, session_id: str) -> MentoringResponse:
         
         return MentoringResponse(
             response=mentor_response,
-            persona_name=persona["name"]
+            persona_name=persona["name"],
+            related_courses=kmooc_courses[:2],  # 상위 2개 강좌 정보 포함
+            related_documents=documents[:1]     # 상위 1개 문서 정보 포함
         )
         
     except Exception as e:
@@ -437,7 +742,9 @@ async def expert_mentoring(message: str, session_id: str) -> MentoringResponse:
         
         return MentoringResponse(
             response=error_response,
-            persona_name=persona["name"]
+            persona_name=persona["name"],
+            related_courses=[],
+            related_documents=[]
         )
 
 @mcp.tool()
