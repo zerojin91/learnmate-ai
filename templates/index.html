@@ -1034,344 +1034,8 @@
                 // 일반 sendMessage 함수 호출
                 await sendMessage();
                 
-                // 임시로 테스트용 커리큘럼 데이터 저장 (실제로는 서버 응답에서 가져올 예정)
-                setTimeout(() => {
-                    const testCurriculumData = {
-                        "title": "전지지식 Learning Path",
-                        "level": "beginner", 
-                        "duration_weeks": 12,
-                        "modules": [
-                            {
-                                "week": 1,
-                                "title": "전지지식의 기초 개념 이해하기",
-                                "description": "전지가 무엇인지 알아보고 기본적인 물리학적 원리와 에너지 저장 메커니즘을 통해 전지지식이 우리 생활에 미치는 영향을 학습합니다.",
-                                "objectives": [
-                                    "전기와 자기의 기본 개념을 설명할 수 있다",
-                                    "배터리의 작동 원리를 이해할 수 있다",
-                                    "전지지식의 현대적 활용 사례를 파악할 수 있다"
-                                ],
-                                "key_concepts": ["전자기 유도", "산화환원 반응", "전압과 전류의 관계"],
-                                "estimated_hours": 10,
-                                "resources": {
-                                    "videos": [
-                                        {"title": "전기기초 이론", "url": "https://kmooc.kr/courses/course-123"},
-                                        {"title": "배터리 원리 설명", "url": "https://kmooc.kr/courses/course-124"}
-                                    ],
-                                    "web_links": [
-                                        {"title": "전자기학 기초", "url": "https://physics.stackexchange.com/basics"},
-                                        {"title": "전지 기술 개론", "url": "https://batteryuniversity.com/basics"}
-                                    ],
-                                    "documents": [
-                                        {"title": "전기회로 입문서.pdf", "url": "/docs/electric-circuits-101.pdf"},
-                                        {"title": "배터리 기술 가이드.pdf", "url": "/docs/battery-tech-guide.pdf"}
-                                    ]
-                                }
-                            },
-                            {
-                                "week": 2,
-                                "title": "일상생활 속 전지기기 분석",
-                                "description": "스마트폰, 노트북, 전기차 등 일상생활에서 사용하는 전자기기들에 적용된 전지 기술을 분석하고 각 기기별 에너지 효율성을 비교합니다.",
-                                "objectives": [
-                                    "다양한 전기기기의 배터리 구성을 분석할 수 있다",
-                                    "에너지 효율 측정 방법을 이해할 수 있다",
-                                    "친환경 전지기기 선택 기준을 제시할 수 있다"
-                                ],
-                                "key_concepts": ["리튬이온 배터리", "에너지 밀도", "재생 에너지"],
-                                "estimated_hours": 12,
-                                "resources": {
-                                    "videos": [
-                                        {"title": "리튬이온 배터리 분석", "url": "https://kmooc.kr/courses/course-125"},
-                                        {"title": "전기차 배터리 기술", "url": "https://kmooc.kr/courses/course-126"}
-                                    ],
-                                    "web_links": [
-                                        {"title": "배터리 효율성 가이드", "url": "https://energyefficiency.org/battery"},
-                                        {"title": "친환경 배터리 선택법", "url": "https://greenenergy.org/battery-guide"}
-                                    ],
-                                    "documents": [
-                                        {"title": "에너지 효율 측정법.pdf", "url": "/docs/energy-efficiency-measurement.pdf"},
-                                        {"title": "친환경 배터리 기술.pdf", "url": "/docs/green-battery-tech.pdf"}
-                                    ]
-                                }
-                            },
-                            {
-                                "week": 3,
-                                "title": "전지지식 향상을 위한 개인 학습 계획 수립",
-                                "description": "자신의 현재 전지기식 수준을 진단하고 향후 6개월 동안의 개인 프로젝트와 자기개발 목표를 설정하여 체계적인 학습 로드맵을 작성합니다.",
-                                "objectives": [
-                                    "자기진단 도구를 활용해 자신의 지식수준을 평가할 수 있다",
-                                    "개인 맞춤형 학습 계획을 수립할 수 있다",
-                                    "실현 가능한 단계별 목표를 설정할 수 있다"
-                                ],
-                                "key_concepts": ["SMART 목표설정", "학습 진도 관리", "지식 습득"],
-                                "estimated_hours": 15,
-                                "resources": {
-                                    "videos": [
-                                        {"title": "효과적인 학습계획 수립", "url": "https://kmooc.kr/courses/course-127"},
-                                        {"title": "자기주도 학습법", "url": "https://kmooc.kr/courses/course-128"}
-                                    ],
-                                    "web_links": [
-                                        {"title": "SMART 목표설정 가이드", "url": "https://smartgoals.org/guide"},
-                                        {"title": "학습 진도 관리 도구", "url": "https://studytracker.com/tools"}
-                                    ],
-                                    "documents": [
-                                        {"title": "개인 학습 계획 템플릿.pdf", "url": "/docs/personal-study-plan-template.pdf"},
-                                        {"title": "목표설정 워크시트.pdf", "url": "/docs/goal-setting-worksheet.pdf"}
-                                    ]
-                                }
-                            },
-                            {
-                                "week": 4,
-                                "title": "개인 전지기기 프로젝트 기획",
-                                "description": "일상생활에서 발견한 불편함을 해결할 수 있는 소형 전지 관련 DIY 프로젝트를 구상하고 필요한 기술 요소들을 분석합니다.",
-                                "objectives": [
-                                    "아이디어 발상 기법을 활용할 수 있다",
-                                    "프로젝트 요구사항을 문서화할 수 있다",
-                                    "필요한 부품과 재료를 선정할 수 있다"
-                                ],
-                                "key_concepts": ["디자인 씽킹", "프로토타이핑", "회로 설계"],
-                                "estimated_hours": 12,
-                                "resources": {
-                                    "videos": [
-                                        {"title": "DIY 전자제품 만들기", "url": "https://kmooc.kr/courses/course-129"},
-                                        {"title": "회로 설계 기초", "url": "https://kmooc.kr/courses/course-130"}
-                                    ],
-                                    "web_links": [
-                                        {"title": "Arduino 프로젝트 아이디어", "url": "https://arduino.cc/projects"},
-                                        {"title": "전자부품 구매 가이드", "url": "https://electronics-parts.com/guide"}
-                                    ],
-                                    "documents": [
-                                        {"title": "프로젝트 기획서 양식.pdf", "url": "/docs/project-proposal-template.pdf"},
-                                        {"title": "회로 설계 가이드.pdf", "url": "/docs/circuit-design-guide.pdf"}
-                                    ]
-                                }
-                            },
-                            {
-                                "week": 5,
-                                "title": "기초 회로 제작 실습",
-                                "description": "간단한 전지 관련 회로를 직접 제작해보고 측정된 데이터를 통해 이론과 실제의 차이를 분석하는 기초 실습을 진행합니다.",
-                                "objectives": [
-                                    "브레드보드를 활용한 회로 구성이 가능하다",
-                                    "멀티미터 사용법을 익힐 수 있다",
-                                    "기본 전자 부품의 역할을 이해할 수 있다"
-                                ],
-                                "key_concepts": ["저항, 커패시터", "전압 강하", "안전 수칙"],
-                                "estimated_hours": 15,
-                                "resources": {
-                                    "videos": [
-                                        {"title": "브레드보드 사용법", "url": "https://kmooc.kr/courses/course-131"},
-                                        {"title": "멀티미터 활용 실습", "url": "https://kmooc.kr/courses/course-132"}
-                                    ],
-                                    "web_links": [
-                                        {"title": "전자부품 사용법", "url": "https://electronics.howstuffworks.com/components"},
-                                        {"title": "회로 실습 가이드", "url": "https://circuitlab.com/tutorials"}
-                                    ],
-                                    "documents": [
-                                        {"title": "실습 안전 수칙.pdf", "url": "/docs/lab-safety-rules.pdf"},
-                                        {"title": "회로 실습 매뉴얼.pdf", "url": "/docs/circuit-lab-manual.pdf"}
-                                    ]
-                                }
-                            },
-                            {
-                                "week": 6,
-                                "title": "개인 프로젝트 구현 및 테스트",
-                                "description": "5주차에 기획한 개인 프로젝트를 실제로 구현하고 실험을 통해 성능을 검증하며 개선점을 도출합니다.",
-                                "objectives": [
-                                    "회로 설계 도면을 작성할 수 있다",
-                                    "실제 제작 과정에서 문제 해결이 가능하다",
-                                    "테스트 결과를 분석하고 개선방안을 제시할 수 있다"
-                                ],
-                                "key_concepts": ["회로 시뮬레이션", "오류 진단", "성능 최적화"],
-                                "estimated_hours": 20,
-                                "resources": {
-                                    "videos": [
-                                        {"title": "프로젝트 구현 과정", "url": "https://kmooc.kr/courses/course-133"},
-                                        {"title": "회로 테스트 방법", "url": "https://kmooc.kr/courses/course-134"}
-                                    ],
-                                    "web_links": [
-                                        {"title": "회로 시뮬레이션 도구", "url": "https://circuitsimulator.org"},
-                                        {"title": "디버깅 기법 가이드", "url": "https://debugging-electronics.com/techniques"}
-                                    ],
-                                    "documents": [
-                                        {"title": "프로젝트 보고서 양식.pdf", "url": "/docs/project-report-template.pdf"},
-                                        {"title": "성능 테스트 체크리스트.pdf", "url": "/docs/performance-test-checklist.pdf"}
-                                    ]
-                                }
-                            },
-                            {
-                                "week": 7,
-                                "title": "전지기식 공유 커뮤니티 활용",
-                                "description": "온라인 전지지식 공유 플랫폼을 활용하여 학습 경험을 공유하고 다른 학습자의 프로젝트를 분석하며 네트워킹 방법을 배웁니다.",
-                                "objectives": [
-                                    "지식공유 플랫폼 사용법을 익힐 수 있다",
-                                    "효과적인 피드백 제공과 수용이 가능하다",
-                                    "학습 네트워크 구축 방법을 이해할 수 있다"
-                                ],
-                                "key_concepts": ["온라인 협업", "커뮤니티 가이드라인", "지식 전파"],
-                                "estimated_hours": 10,
-                                "resources": {
-                                    "videos": [
-                                        {"title": "온라인 학습 커뮤니티 활용", "url": "https://kmooc.kr/courses/course-135"},
-                                        {"title": "지식공유 플랫폼 사용법", "url": "https://kmooc.kr/courses/course-136"}
-                                    ],
-                                    "web_links": [
-                                        {"title": "전문가 네트워킹 가이드", "url": "https://networking.org/professionals"},
-                                        {"title": "온라인 협업 도구", "url": "https://collaboration-tools.com/online"}
-                                    ],
-                                    "documents": [
-                                        {"title": "커뮤니티 참여 가이드.pdf", "url": "/docs/community-participation-guide.pdf"},
-                                        {"title": "효과적인 피드백 방법.pdf", "url": "/docs/effective-feedback-methods.pdf"}
-                                    ]
-                                }
-                            },
-                            {
-                                "week": 8,
-                                "title": "전문 자료 활용 능력 개발",
-                                "description": "논문, 기술 문서 등 전문적 전지기식 자료를 읽고 분석하는 능력을 키우며 고급 정보에 접근하는 방법을 학습합니다.",
-                                "objectives": [
-                                    "기술 논문 구조를 이해할 수 있다",
-                                    "전문 용어 해석이 가능하다",
-                                    "정보 검색 및 선별 능력을 기를 수 있다"
-                                ],
-                                "key_concepts": ["학술 데이터베이스", "연구 방법론", "전문적 글쓰기"],
-                                "estimated_hours": 15,
-                                "resources": {
-                                    "videos": [
-                                        {"title": "논문 읽기 전략", "url": "https://kmooc.kr/courses/course-137"},
-                                        {"title": "학술 데이터베이스 활용", "url": "https://kmooc.kr/courses/course-138"}
-                                    ],
-                                    "web_links": [
-                                        {"title": "학술논문 검색 가이드", "url": "https://scholar.google.com/intl/ko/scholar/help.html"},
-                                        {"title": "연구 방법론 자료", "url": "https://research-methods.org/resources"}
-                                    ],
-                                    "documents": [
-                                        {"title": "논문 분석 워크시트.pdf", "url": "/docs/paper-analysis-worksheet.pdf"},
-                                        {"title": "기술 문서 작성 가이드.pdf", "url": "/docs/technical-writing-guide.pdf"}
-                                    ]
-                                }
-                            },
-                            {
-                                "week": 9,
-                                "title": "개인 프로젝트 고도화",
-                                "description": "6주차에 완료한 개인 프로젝트를 개선하고 확장하여 더 복잡한 기능이나 성능 향상을 시도합니다.",
-                                "objectives": [
-                                    "기존 회로를 효율적으로 개선할 수 있다",
-                                    "추가 기능 구현이 가능하다",
-                                    "성능과 안정성 모두 고려한 설계가 가능하다"
-                                ],
-                                "key_concepts": ["전력 관리 시스템", "소음 감소 기술", "열 관리"],
-                                "estimated_hours": 18,
-                                "resources": {
-                                    "videos": [
-                                        {"title": "고급 회로 설계", "url": "https://kmooc.kr/courses/course-139"},
-                                        {"title": "전력 효율 최적화", "url": "https://kmooc.kr/courses/course-140"}
-                                    ],
-                                    "web_links": [
-                                        {"title": "고급 전자회로 기법", "url": "https://advanced-circuits.com/techniques"},
-                                        {"title": "열 관리 솔루션", "url": "https://thermal-management.org/solutions"}
-                                    ],
-                                    "documents": [
-                                        {"title": "고급 설계 기법.pdf", "url": "/docs/advanced-design-techniques.pdf"},
-                                        {"title": "성능 최적화 가이드.pdf", "url": "/docs/performance-optimization-guide.pdf"}
-                                    ]
-                                }
-                            },
-                            {
-                                "week": 10,
-                                "title": "고급 전지 기술 탐구",
-                                "description": "최신 전지 기술 트렌드를 파악하고 미래 기술에 대한 이해도를 높입니다.",
-                                "objectives": [
-                                    "최신 배터리 기술 동향을 파악할 수 있다",
-                                    "미래 에너지 저장 기술을 이해할 수 있다",
-                                    "기술 발전 방향을 예측할 수 있다"
-                                ],
-                                "key_concepts": ["고체 전지", "무선 충전", "에너지 하베스팅"],
-                                "estimated_hours": 14,
-                                "resources": {
-                                    "videos": [
-                                        {"title": "미래 배터리 기술", "url": "https://kmooc.kr/courses/course-141"},
-                                        {"title": "에너지 하베스팅 기술", "url": "https://kmooc.kr/courses/course-142"}
-                                    ],
-                                    "web_links": [
-                                        {"title": "배터리 기술 뉴스", "url": "https://battery-news.com/trends"},
-                                        {"title": "에너지 기술 연구소", "url": "https://energy-research-institute.org"}
-                                    ],
-                                    "documents": [
-                                        {"title": "차세대 배터리 기술.pdf", "url": "/docs/next-gen-battery-tech.pdf"},
-                                        {"title": "에너지 저장 동향.pdf", "url": "/docs/energy-storage-trends.pdf"}
-                                    ]
-                                }
-                            },
-                            {
-                                "week": 11,
-                                "title": "프로젝트 최종 발표 준비",
-                                "description": "지금까지 학습한 내용을 바탕으로 최종 프로젝트를 완성하고 발표 자료를 준비합니다.",
-                                "objectives": [
-                                    "효과적인 프레젠테이션 자료를 제작할 수 있다",
-                                    "기술적 내용을 명확하게 설명할 수 있다",
-                                    "질문에 대한 적절한 답변을 준비할 수 있다"
-                                ],
-                                "key_concepts": ["프레젠테이션 스킬", "기술 문서화", "데모 시연"],
-                                "estimated_hours": 16,
-                                "resources": {
-                                    "videos": [
-                                        {"title": "효과적인 프레젠테이션 기법", "url": "https://kmooc.kr/courses/course-143"},
-                                        {"title": "기술 발표 스킬", "url": "https://kmooc.kr/courses/course-144"}
-                                    ],
-                                    "web_links": [
-                                        {"title": "발표 자료 제작 팁", "url": "https://presentation-tips.com/technical"},
-                                        {"title": "데모 시연 가이드", "url": "https://demo-guide.org/best-practices"}
-                                    ],
-                                    "documents": [
-                                        {"title": "발표자료 템플릿.pdf", "url": "/docs/presentation-template.pdf"},
-                                        {"title": "기술 발표 체크리스트.pdf", "url": "/docs/tech-presentation-checklist.pdf"}
-                                    ]
-                                }
-                            },
-                            {
-                                "week": 12,
-                                "title": "학습 성과 평가 및 향후 계획",
-                                "description": "12주간의 학습 성과를 종합적으로 평가하고 향후 지속적인 학습을 위한 계획을 수립합니다.",
-                                "objectives": [
-                                    "학습 목표 달성도를 객관적으로 평가할 수 있다",
-                                    "개인 포트폴리오를 완성할 수 있다",
-                                    "지속적인 학습 계획을 수립할 수 있다"
-                                ],
-                                "key_concepts": ["자기 평가", "포트폴리오 구성", "지속 학습"],
-                                "estimated_hours": 12,
-                                "resources": {
-                                    "videos": [
-                                        {"title": "학습 성과 평가 방법", "url": "https://kmooc.kr/courses/course-145"},
-                                        {"title": "포트폴리오 제작 가이드", "url": "https://kmooc.kr/courses/course-146"}
-                                    ],
-                                    "web_links": [
-                                        {"title": "자기평가 도구", "url": "https://self-assessment-tools.com"},
-                                        {"title": "평생 학습 가이드", "url": "https://lifelong-learning.org/guide"}
-                                    ],
-                                    "documents": [
-                                        {"title": "자기평가 체크리스트.pdf", "url": "/docs/self-assessment-checklist.pdf"},
-                                        {"title": "포트폴리오 작성 가이드.pdf", "url": "/docs/portfolio-creation-guide.pdf"}
-                                    ]
-                                }
-                            }
-                        ]
-                    };
-                    
-                    localStorage.setItem('generatedCurriculum', JSON.stringify(testCurriculumData));
-                    
-                    // 새 커리큘럼 생성 시 진행도 초기화
-                    resetCurriculumProgress();
-                    
-                    // 생성 완료 상태로 변경
-                    isGeneratingCurriculum = false;
-                    
-                    // 커리큘럼 페이지 새로고침
-                    const curriculumContent = document.getElementById('curriculumContent');
-                    if (curriculumContent) {
-                        showCurriculumContent(curriculumContent);
-                    }
-                    
-                    showNotification('커리큘럼이 성공적으로 생성되었습니다!', 'success');
-                }, 3000); // 3초 후 생성 시뮬레이션
+                // 실시간 데이터 수신 플래그
+                window.curriculumDataReceived = false;
                 
                 console.log('✅ 커리큘럼 생성 요청 완료');
                 
@@ -1390,6 +1054,34 @@
                 // 버튼 복원
                 generateBtn.disabled = false;
                 generateBtn.innerHTML = '<i class="fas fa-magic"></i> 맞춤형 커리큘럼 생성';
+            }
+        }
+
+        // 커리큘럼 데이터를 화면에 표시하는 함수
+        function displayCurriculumData(curriculumData) {
+            try {
+                console.log('🔄 displayCurriculumData 호출됨:', curriculumData.title);
+                
+                // localStorage에서 다시 확인
+                const storedData = localStorage.getItem('generatedCurriculum');
+                if (storedData) {
+                    const parsed = JSON.parse(storedData);
+                    console.log('📦 localStorage 확인:', parsed.title);
+                }
+                
+                // 커리큘럼 페이지에 직접 표시 (localStorage 재읽기 방지)
+                const curriculumContent = document.getElementById('curriculumContent');
+                if (curriculumContent) {
+                    console.log('🖥️ displayCurriculumCards 직접 호출');
+                    displayCurriculumCards(curriculumContent, curriculumData);
+                } else {
+                    console.log('❌ curriculumContent 요소를 찾을 수 없음');
+                }
+                
+                console.log('✅ 커리큘럼 데이터 표시 완료:', curriculumData.title);
+            } catch (error) {
+                console.error('❌ 커리큘럼 표시 오류:', error);
+                showNotification('커리큘럼 표시 중 오류가 발생했습니다.', 'error');
             }
         }
 
@@ -2297,8 +1989,46 @@
                                         
                                         // 현재 세션의 프로필만 사용하고, 이전 세션 정보는 무시
                                         updateLearningProfile(data.profile.topic || '', data.profile.constraints || '', data.profile.goal || '');
-                                    } else {
-                                        console.log('프로필 정보 없음:', data);
+                                    }
+                                    
+                                    // 커리큘럼 데이터가 있는 경우 처리
+                                    if (data.curriculum) {
+                                        console.log('커리큘럼 데이터 수신:', data.curriculum);
+                                        
+                                        // 실시간 데이터 수신 플래그 설정
+                                        window.curriculumDataReceived = true;
+                                        
+                                        // fallback 타이머 취소 (실시간 데이터가 왔으므로)
+                                        if (window.curriculumFallbackTimer) {
+                                            clearTimeout(window.curriculumFallbackTimer);
+                                            window.curriculumFallbackTimer = null;
+                                            console.log('✅ Fallback 타이머 취소됨 - 실시간 데이터 우선');
+                                        } else {
+                                            console.log('⚠️ 타이머가 이미 실행되었거나 설정되지 않음');
+                                        }
+                                        
+                                        // 기존 localStorage 완전 삭제 후 새 데이터 저장
+                                        localStorage.removeItem('generatedCurriculum');
+                                        localStorage.setItem('generatedCurriculum', JSON.stringify(data.curriculum));
+                                        console.log('💾 localStorage 새 커리큘럼으로 완전 교체:', data.curriculum.title);
+                                        
+                                        // 강제로 모든 관련 캐시 제거
+                                        const curriculumContent = document.getElementById('curriculumContent');
+                                        if (curriculumContent) {
+                                            curriculumContent.innerHTML = ''; // 기존 내용 완전 삭제
+                                            console.log('🗑️ 기존 커리큘럼 콘텐츠 완전 삭제');
+                                        }
+                                        
+                                        // 100ms 후 새 데이터로 렌더링 (DOM 업데이트 보장)
+                                        setTimeout(() => {
+                                            displayCurriculumData(data.curriculum);
+                                            console.log('🔄 새 커리큘럼으로 강제 렌더링:', data.curriculum.title);
+                                        }, 100);
+                                        
+                                        // 커리큘럼 탭으로 전환
+                                        switchToTab('curriculum');
+                                        
+                                        showNotification('맞춤형 커리큘럼이 생성되었습니다!', 'success');
                                     }
                                 } else if (data.error) {
                                     streamingContent.textContent = `오류: ${data.error}`;
@@ -2383,7 +2113,7 @@
                     font-size: 36px;
                     color: #9ca3af;
                     font-weight: 300;
-                " 
+                "
                 onclick="switchToTab('chat')"
                 onmouseover="this.style.borderColor='#a855f7'; this.style.background='#f8fafc'; this.style.color='#a855f7'"
                 onmouseout="this.style.borderColor='#d1d5db'; this.style.background='#fafafa'; this.style.color='#9ca3af'"
