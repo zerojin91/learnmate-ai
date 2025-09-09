@@ -919,6 +919,14 @@
             name: USER_NAME,
             profile: {}
         };
+        
+        // 쿠키 읽기 함수
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+        }
 
         // 간단한 마크다운 포맷팅 함수
         function formatSimpleMarkdown(text) {
@@ -1057,6 +1065,73 @@
             }
         }
 
+        // 커리큘럼 완료 상태를 다시 확인하는 함수
+        async function checkCurriculumCompletion() {
+            console.log('🔍 커리큘럼 완료 상태 재확인 시작');
+            
+            try {
+                // localStorage에서 최근 생성된 커리큘럼 확인
+                const storedCurriculum = localStorage.getItem('generatedCurriculum');
+                if (storedCurriculum) {
+                    console.log('✅ localStorage에서 커리큘럼 발견 - 생성 완료 처리');
+                    const curriculumData = JSON.parse(storedCurriculum);
+                    
+                    // 생성 완료 플래그 해제
+                    isGeneratingCurriculum = false;
+                    
+                    // 커리큘럼 표시
+                    const curriculumContent = document.getElementById('curriculumContent');
+                    if (curriculumContent) {
+                        displayCurriculumCards(curriculumContent, curriculumData);
+                        showNotification('커리큘럼이 완성되었습니다!', 'success');
+                    }
+                    
+                    return;
+                }
+                
+                // 추가 시도 (최대 3회)
+                let attempts = 0;
+                const maxAttempts = 3;
+                
+                while (attempts < maxAttempts && isGeneratingCurriculum) {
+                    attempts++;
+                    console.log(`🔄 커리큘럼 완료 확인 시도 ${attempts}/${maxAttempts}`);
+                    
+                    await new Promise(resolve => setTimeout(resolve, 3000)); // 3초 대기
+                    
+                    const recheck = localStorage.getItem('generatedCurriculum');
+                    if (recheck) {
+                        console.log('✅ 재확인에서 커리큘럼 발견');
+                        const data = JSON.parse(recheck);
+                        isGeneratingCurriculum = false;
+                        
+                        const curriculumContent = document.getElementById('curriculumContent');
+                        if (curriculumContent) {
+                            displayCurriculumCards(curriculumContent, data);
+                            showNotification('커리큘럼이 완성되었습니다!', 'success');
+                        }
+                        return;
+                    }
+                }
+                
+                // 모든 시도 실패
+                if (isGeneratingCurriculum) {
+                    console.log('❌ 커리큘럼 완료 확인 실패 - 타임아웃');
+                    isGeneratingCurriculum = false;
+                    showNotification('커리큘럼 생성이 지연되고 있습니다. 새로고침 후 다시 시도해주세요.', 'error');
+                    
+                    const curriculumContent = document.getElementById('curriculumContent');
+                    if (curriculumContent) {
+                        showCurriculumContent(curriculumContent);
+                    }
+                }
+                
+            } catch (error) {
+                console.error('커리큘럼 완료 확인 오류:', error);
+                isGeneratingCurriculum = false;
+            }
+        }
+        
         // 커리큘럼 데이터를 화면에 표시하는 함수
         function displayCurriculumData(curriculumData) {
             try {
@@ -1091,16 +1166,49 @@
             loadUserProfile();
             setupNavigation();
             
-            // 프로필 카드 초기화 (새로운 세션용)
-            updateLearningProfile('', '', '');
-            // localStorage에서 이전 세션 데이터 삭제
-            localStorage.removeItem('currentProfile');
-            localStorage.removeItem('generatedCurriculum');
+            // 새 세션인지 확인 (쿠키의 세션 ID가 방금 생성되었는지)
+            const currentSessionId = getCookie('session_id');
+            const storedSessionId = localStorage.getItem('lastSessionId');
+            const isNewSession = !storedSessionId || storedSessionId !== currentSessionId;
+            
+            if (isNewSession) {
+                console.log('🆕 새 세션 감지 - 프로필 및 데이터 초기화');
+                // 새 세션이면 이전 데이터 완전 초기화
+                localStorage.removeItem('currentProfile');
+                localStorage.removeItem('generatedCurriculum');
+                localStorage.removeItem('curriculumProgress');
+                updateLearningProfile('', '', '');
+                
+                // 현재 세션 ID 저장
+                localStorage.setItem('lastSessionId', currentSessionId);
+            } else {
+                console.log('🔄 기존 세션 복원');
+                // 기존 세션이면 프로필 복원
+                const existingProfile = localStorage.getItem('currentProfile');
+                if (existingProfile) {
+                    try {
+                        const profile = JSON.parse(existingProfile);
+                        updateLearningProfile(profile.topic || '', profile.constraints || '', profile.goal || '');
+                        console.log('🔄 기존 프로필 복원:', profile);
+                    } catch (e) {
+                        console.error('프로필 복원 오류:', e);
+                        updateLearningProfile('', '', '');
+                    }
+                } else {
+                    updateLearningProfile('', '', '');
+                }
+            }
+            
             // 생성 상태 초기화
             isGeneratingCurriculum = false;
             
             // 기본 페이지를 맞춤형 학습 추천으로 설정
             navigateToPage('chat');
+            
+            // 커리큘럼이 있다면 채팅 페이지에서도 표시 가능하도록 설정
+            if (existingCurriculum) {
+                console.log('📚 기존 커리큘럼 데이터 확인됨');
+            }
         });
 
         // 네비게이션 설정
@@ -1449,17 +1557,60 @@
                     initialMessage.textContent = '안녕하세요! LearningMate의 학습 멘토입니다. 어떤 주제에 대해 배우고 싶으신지 알려주세요. 맞춤형 학습 계획을 함께 만들어보겠습니다.';
                 }
                 
-                // 채팅 기록 완전 초기화
+                // 기존 커리큘럼이 있다면 복원
+                const existingCurriculum = localStorage.getItem('generatedCurriculum');
+                if (existingCurriculum) {
+                    try {
+                        const curriculumData = JSON.parse(existingCurriculum);
+                        console.log('🔄 채팅 페이지에서 기존 커리큘럼 복원:', curriculumData.title);
+                        
+                        // 커리큘럼 컨텐츠 영역 확인/생성
+                        let curriculumContent = document.getElementById('curriculumContent');
+                        if (!curriculumContent) {
+                            curriculumContent = document.createElement('div');
+                            curriculumContent.id = 'curriculumContent';
+                            const welcomeSection = document.querySelector('.welcome-section');
+                            welcomeSection.parentNode.insertBefore(curriculumContent, welcomeSection.nextSibling);
+                        }
+                        
+                        // 커리큘럼 컨텐츠를 전체 화면 레이아웃으로 설정
+                        curriculumContent.style.cssText = `
+                            width: 900px;
+                            height: 600px;
+                            background: white;
+                            border-radius: 12px;
+                            border: 1px solid #d1d5db;
+                            margin: 20px 0;
+                            position: relative;
+                            display: block;
+                            padding: 20px;
+                        `;
+                        
+                        // 커리큘럼 표시
+                        showCurriculumContent(curriculumContent);
+                        
+                    } catch (e) {
+                        console.error('커리큘럼 복원 오류:', e);
+                    }
+                }
+                
+                // 채팅 기록이 비어있을 때만 초기 메시지 설정
                 const chatMessages = document.getElementById('chatMessages');
                 if (chatMessages) {
-                    chatMessages.innerHTML = `
-                        <div class="message ai-message">
-                            <div class="message-avatar ai-avatar-small">AI</div>
-                            <div class="message-content" id="initialMessage">
-                                안녕하세요! LearningMate 입니다.<br>어떤 주제에 대해 배우고 싶으신지 알려주시면 맞춤형 학습 계획을 함께 만들어보겠습니다!
+                    const existingMessages = chatMessages.querySelectorAll('.message');
+                    
+                    // 기본 초기 메시지만 있거나 메시지가 아예 없는 경우에만 초기화
+                    if (existingMessages.length <= 1) {
+                        chatMessages.innerHTML = `
+                            <div class="message ai-message">
+                                <div class="message-avatar ai-avatar-small">AI</div>
+                                <div class="message-content" id="initialMessage">
+                                    안녕하세요! LearningMate 입니다.<br>어떤 주제에 대해 배우고 싶으신지 알려주시면 맞춤형 학습 계획을 함께 만들어보겠습니다!
+                                </div>
                             </div>
-                        </div>
-                    `;
+                        `;
+                    }
+                    // 이미 대화가 진행 중이면 채팅 기록을 유지
                 }
                 
                 // 입력창 초기화
@@ -1469,8 +1620,20 @@
                     messageInput.style.height = 'auto';
                 }
                 
-                // 프로필 상태 완전 초기화
-                updateLearningProfile('', '', '');
+                // 기존 프로필이 있으면 복원, 없으면 초기화
+                const existingProfile = localStorage.getItem('currentProfile');
+                if (existingProfile) {
+                    try {
+                        const profile = JSON.parse(existingProfile);
+                        updateLearningProfile(profile.topic || '', profile.constraints || '', profile.goal || '');
+                        console.log('🔄 채팅 페이지에서 프로필 복원:', profile);
+                    } catch (e) {
+                        console.error('프로필 복원 오류:', e);
+                        updateLearningProfile('', '', '');
+                    }
+                } else {
+                    updateLearningProfile('', '', '');
+                }
                 
                 // 대화창과 프로필, 예시 영역 다시 보이기
                 const chatWithProfile = document.querySelector('.chat-with-profile');
@@ -1756,6 +1919,13 @@
                 // 나의 커리큘럼 모드  
                 welcomeSubtitle.innerHTML = '<span class="highlight">나의 커리큘럼</span>';
                 
+                // 커리큘럼 탭 진입 시 생성 상태 재확인
+                if (isGeneratingCurriculum) {
+                    console.log('🔄 커리큘럼 탭 진입 - 생성 상태 재확인');
+                    // 즉시 확인 + 지연 확인
+                    checkCurriculumCompletion();
+                }
+                
                 // 대화창과 프로필 영역 숨기기
                 const chatWithProfile = document.querySelector('.chat-with-profile');
                 const examplesSection = document.querySelector('.examples-section');
@@ -1963,7 +2133,16 @@
 
                 while (true) {
                     const { done, value } = await reader.read();
-                    if (done) break;
+                    if (done) {
+                        // SSE 응답 완료 후 커리큘럼 생성 중이면 추가 확인
+                        if (isGeneratingCurriculum) {
+                            console.log('🔄 SSE 완료 후 커리큘럼 생성 상태 확인');
+                            setTimeout(() => {
+                                checkCurriculumCompletion();
+                            }, 2000); // 2초 후 확인
+                        }
+                        break;
+                    }
                     
                     buffer += decoder.decode(value, { stream: true });
                     const lines = buffer.split('\n');
@@ -1974,26 +2153,47 @@
                             try {
                                 const data = JSON.parse(line.slice(6));
                                 if (data.content) {
-                                    // 스트리밍 중에는 텍스트 누적
-                                    const currentText = streamingContent.getAttribute('data-raw-text') || '';
-                                    const newText = currentText + data.content;
-                                    streamingContent.setAttribute('data-raw-text', newText);
+                                    // 커리큘럼 생성 중이고 JSON 응답인 경우 숨김 처리
+                                    const isJsonResponse = data.content.trim().startsWith('{') && data.content.includes('"title"') && data.content.includes('"modules"');
                                     
-                                    // 간단한 마크다운 처리
-                                    streamingContent.innerHTML = formatSimpleMarkdown(newText);
-                                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                                    if (isGeneratingCurriculum && isJsonResponse) {
+                                        console.log('📚 커리큘럼 JSON 응답 감지 - 채팅창에 표시하지 않음');
+                                        // JSON 응답은 채팅창에 표시하지 않고 넘어감
+                                    } else {
+                                        // 일반 응답은 정상적으로 표시
+                                        const currentText = streamingContent.getAttribute('data-raw-text') || '';
+                                        const newText = currentText + data.content;
+                                        streamingContent.setAttribute('data-raw-text', newText);
+                                        
+                                        // 간단한 마크다운 처리
+                                        streamingContent.innerHTML = formatSimpleMarkdown(newText);
+                                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                                    }
                                     
                                     // 프로필 정보가 있는 경우 업데이트
                                     if (data.profile) {
                                         console.log('프로필 정보 수신:', data.profile);
                                         
-                                        // 현재 세션의 프로필만 사용하고, 이전 세션 정보는 무시
-                                        updateLearningProfile(data.profile.topic || '', data.profile.constraints || '', data.profile.goal || '');
+                                        // localStorage에 프로필 정보 저장
+                                        const profileData = {
+                                            topic: data.profile.topic || '',
+                                            constraints: data.profile.constraints || '', 
+                                            goal: data.profile.goal || ''
+                                        };
+                                        localStorage.setItem('currentProfile', JSON.stringify(profileData));
+                                        console.log('📝 프로필 정보 localStorage 저장:', profileData);
+                                        
+                                        // UI 업데이트
+                                        updateLearningProfile(profileData.topic, profileData.constraints, profileData.goal);
                                     }
                                     
                                     // 커리큘럼 데이터가 있는 경우 처리
                                     if (data.curriculum) {
                                         console.log('커리큘럼 데이터 수신:', data.curriculum);
+                                        
+                                        // 🔥 커리큘럼 생성 완료 - 플래그 해제
+                                        isGeneratingCurriculum = false;
+                                        console.log('✅ 커리큘럼 생성 완료 - isGeneratingCurriculum = false');
                                         
                                         // 실시간 데이터 수신 플래그 설정
                                         window.curriculumDataReceived = true;
