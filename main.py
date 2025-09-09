@@ -23,6 +23,7 @@ async def lifespan(app: FastAPI):
         servers = [
             "servers/user_assessment.py",
             "servers/generate_curriculum.py",  # 임시 비활성화
+            "servers/mentor_chat.py",          # 멘토 채팅 서버 추가
             # "servers/evaluate_user.py"         # 임시 비활성화
         ]
         

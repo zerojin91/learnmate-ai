@@ -19,6 +19,8 @@ class ActionType(str, Enum):
     GENERAL_CHAT = "general_chat"           # 일반 대화
     USER_PROFILING = "user_profiling"       # 학습 프로필 수집 필요
     GENERATE_CURRICULUM = "generate_curriculum"  # 커리큘럼 생성
+    MENTOR_RECOMMENDATION = "mentor_recommendation"  # 전문가 멘토 페르소나 추천
+    MENTOR_CHAT = "mentor_chat"  # 전문가 멘토링 대화
 
 class ActionClassification(BaseModel):
     """액션 분류 결과"""
@@ -139,18 +141,27 @@ class MultiMCPAgent:
     
     async def _classify_user_intent(self, message: str) -> ActionClassification:
         """사용자 메시지를 분류하여 적절한 액션 결정"""
-        classification_prompt = f"""사용자 메시지를 다음 3가지 액션 중 하나로 분류하세요:
+        
+        # 먼저 멘토 세션 상태 확인
+        mentor_session_phase = await self._check_mentor_session_status()
+        
+        classification_prompt = f"""사용자 메시지를 다음 5가지 액션 중 하나로 분류하세요:
 
 1. **general_chat**: 일반적인 인사, 안부, 감사 등 학습과 무관한 대화
 2. **user_profiling**: 학습 관련 요청이지만 사용자 프로필이 필요한 경우
 3. **generate_curriculum**: 이미 학습 프로필이 있고 커리큘럼/계획 생성을 요청하는 경우
+4. **mentor_recommendation**: 전문가 멘토, 상담, 조언을 요청하는 경우
+5. **mentor_chat**: 이미 멘토가 선택된 상태에서의 대화
 
 사용자 메시지: "{message}"
+현재 멘토 세션 상태: {mentor_session_phase}
 
 ## 분류 기준:
 - "안녕", "고마워", "잘가" 등 → general_chat
 - "~배우고 싶어", "~공부하고 싶어", "~가르쳐줘" 등 → user_profiling  
 - "커리큘럼 만들어줘", "학습계획 세워줘", "로드맵 보여줘" 등 → generate_curriculum
+- "전문가와 상담", "멘토링", "조언", "전문가 추천" 등 → mentor_recommendation
+- 멘토 세션이 활성화되어 있고 일반적인 질문/대화 → mentor_chat
 
 정확한 액션만 선택하세요."""
 
@@ -283,6 +294,126 @@ class MultiMCPAgent:
             print(f"❌ 일반 대화 오류: {e}")
             yield {"type": "error", "content": f"응답 생성 중 오류가 발생했습니다: {str(e)}"}
 
+    async def _check_mentor_session_status(self) -> str:
+        """현재 멘토 세션 상태 확인"""
+        try:
+            if not self.current_session_id:
+                return "no_session"
+            
+            # get_mentor_session_status 도구 찾기
+            tools = await self.client.get_tools()
+            status_tool = next((tool for tool in tools if tool.name == "get_mentor_session_status"), None)
+            
+            if not status_tool:
+                return "no_mentor_tool"
+            
+            # 도구 실행
+            result = await status_tool.ainvoke({"session_id": self.current_session_id})
+            
+            if isinstance(result, dict):
+                if result.get("status") == "active":
+                    return result.get("phase", "persona_recommendation")
+            return "inactive"
+            
+        except Exception as e:
+            print(f"❌ 멘토 세션 상태 확인 오류: {e}")
+            return "error"
+
+    async def _handle_mentor_recommendation(self, message: str) -> AsyncGenerator[dict, None]:
+        """전문가 멘토 페르소나 추천 처리"""
+        print(f"🎯 멘토 페르소나 추천 시작")
+        
+        try:
+            # analyze_and_recommend_personas 도구 찾기
+            tools = await self.client.get_tools()
+            recommend_tool = next((tool for tool in tools if tool.name == "analyze_and_recommend_personas"), None)
+            
+            if not recommend_tool:
+                yield {"type": "error", "content": "멘토 추천 도구를 찾을 수 없습니다."}
+                return
+            
+            # 도구 실행
+            tool_args = {"message": message, "session_id": self.current_session_id}
+            print(f"🔧 analyze_and_recommend_personas 호출: {tool_args}")
+            
+            result = await recommend_tool.ainvoke(tool_args)
+            
+            if result:
+                print(result, end="", flush=True)
+                self.conversation_history.append({"role": "assistant", "content": result})
+                yield {"type": "message", "content": result, "node": "mentor_recommendation"}
+                
+        except Exception as e:
+            print(f"❌ 멘토 추천 오류: {e}")
+            yield {"type": "error", "content": f"멘토 추천 중 오류가 발생했습니다: {str(e)}"}
+
+    async def _handle_mentor_chat(self, message: str) -> AsyncGenerator[dict, None]:
+        """전문가 멘토링 대화 처리"""
+        print(f"👨‍🏫 전문가 멘토링 대화 처리")
+        
+        try:
+            # 페르소나 선택인지 일반 멘토링인지 확인
+            if any(keyword in message.lower() for keyword in ["선택", "고르", "결정", "원해"]):
+                # 페르소나 선택 처리
+                select_tool = None
+                tools = await self.client.get_tools()
+                select_tool = next((tool for tool in tools if tool.name == "select_persona"), None)
+                
+                if select_tool:
+                    # 메시지에서 페르소나 ID 추출 (간단한 매핑)
+                    persona_mapping = {
+                        "건축": "architecture",
+                        "토목": "civil_urban", "도시": "civil_urban",
+                        "교통": "transport", "운송": "transport",
+                        "기계": "mechanical", "금속": "mechanical",
+                        "전기": "electrical", "전자": "electrical",
+                        "정밀": "precision_energy", "에너지": "precision_energy",
+                        "소재": "materials", "재료": "materials",
+                        "컴퓨터": "computer", "통신": "computer",
+                        "산업": "industrial",
+                        "화공": "chemical"
+                    }
+                    
+                    selected_persona = None
+                    for key, value in persona_mapping.items():
+                        if key in message:
+                            selected_persona = value
+                            break
+                    
+                    if selected_persona:
+                        tool_args = {"persona_id": selected_persona, "session_id": self.current_session_id}
+                        result = await select_tool.ainvoke(tool_args)
+                        
+                        if result:
+                            print(result, end="", flush=True)
+                            self.conversation_history.append({"role": "assistant", "content": result})
+                            yield {"type": "message", "content": result, "node": "mentor_selection"}
+                            return
+            
+            # 일반 멘토링 대화 처리
+            expert_tool = None
+            tools = await self.client.get_tools()
+            expert_tool = next((tool for tool in tools if tool.name == "expert_mentoring"), None)
+            
+            if not expert_tool:
+                yield {"type": "error", "content": "전문가 멘토링 도구를 찾을 수 없습니다."}
+                return
+            
+            # 도구 실행
+            tool_args = {"message": message, "session_id": self.current_session_id}
+            print(f"🔧 expert_mentoring 호출: {tool_args}")
+            
+            result = await expert_tool.ainvoke(tool_args)
+            
+            if result:
+                print(result, end="", flush=True)
+                self.conversation_history.append({"role": "assistant", "content": result})
+                yield {"type": "message", "content": result, "node": "mentor_chat"}
+                
+        except Exception as e:
+            print(f"❌ 멘토 채팅 오류: {e}")
+            yield {"type": "error", "content": f"멘토링 중 오류가 발생했습니다: {str(e)}"}
+
     async def _handle_unified_conversation(self, message: str) -> AsyncGenerator[dict, None]:
         """분류 기반 대화 처리 - with_structured_output으로 명확한 액션 선택"""
         print(f"🤖 분류 기반 대화 처리 시작")
@@ -298,6 +429,14 @@ class MultiMCPAgent:
                     
             elif classification.action == ActionType.GENERATE_CURRICULUM:
                 async for chunk in self._handle_curriculum_generation(message):
+                    yield chunk
+                    
+            elif classification.action == ActionType.MENTOR_RECOMMENDATION:
+                async for chunk in self._handle_mentor_recommendation(message):
+                    yield chunk
+                    
+            elif classification.action == ActionType.MENTOR_CHAT:
+                async for chunk in self._handle_mentor_chat(message):
                     yield chunk
                     
             else:  # GENERAL_CHAT
