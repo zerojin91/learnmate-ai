@@ -569,29 +569,72 @@ async def search_resources(topic: str, num_results: int = 10) -> List[Dict[str, 
         encoded_query = quote(f"{topic} tutorial")
         url = f"https://lite.duckduckgo.com/lite/?q={encoded_query}"
         
+        print(f"DEBUG: search_resources 호출 - topic: {topic}, url: {url}", file=sys.stderr, flush=True)
+        
         async with httpx.AsyncClient() as client:
-            response = await client.get(url, timeout=10.0)
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            }
+            response = await client.get(url, headers=headers, timeout=10.0)
+            
+            print(f"DEBUG: HTTP 응답 상태: {response.status_code}", file=sys.stderr, flush=True)
+            
+            # HTTP 202는 처리 중을 의미하므로 잠시 대기 후 재시도
+            if response.status_code == 202:
+                print("DEBUG: HTTP 202 응답 (처리 중), 2초 대기 후 재시도", file=sys.stderr, flush=True)
+                import asyncio
+                await asyncio.sleep(2)
+                response = await client.get(url, headers=headers, timeout=15.0)
+                print(f"DEBUG: 재시도 후 응답 상태: {response.status_code}", file=sys.stderr, flush=True)
             
             if response.status_code == 200:
                 content = response.text
+                print(f"DEBUG: 응답 길이: {len(content)} 문자", file=sys.stderr, flush=True)
+                print(f"DEBUG: 응답 첫 500자: {content[:500]}", file=sys.stderr, flush=True)
+                
                 results = []
                 
-                link_pattern = r'<a[^>]*class="result-link"[^>]*href="([^"]*)"[^>]*>(.*?)</a>'
-                matches = re.finditer(link_pattern, content)
+                # DuckDuckGo Lite의 실제 패턴 사용 (테스트로 확인됨)
+                patterns = [
+                    r'<a[^>]*href="(https?://[^"]*)"[^>]*>(.*?)</a>',  # 작동하는 패턴을 첫 번째로
+                    r'<a[^>]*class="result-link"[^>]*href="([^"]*)"[^>]*>(.*?)</a>',  # 원래 패턴
+                    r'<a[^>]*href="([^"]*)"[^>]*class="[^"]*result[^"]*"[^>]*>(.*?)</a>',
+                    r'<h3[^>]*><a[^>]*href="([^"]*)"[^>]*>(.*?)</a></h3>'
+                ]
+                
+                matches = []
+                for i, pattern in enumerate(patterns):
+                    pattern_matches = list(re.finditer(pattern, content))
+                    print(f"DEBUG: 패턴 {i+1}: {len(pattern_matches)}개 매칭", file=sys.stderr, flush=True)
+                    if len(pattern_matches) > 0:
+                        matches = pattern_matches
+                        break
                 
                 for i, match in enumerate(matches):
                     if len(results) >= num_results:
                         break
-                    results.append({
-                        "title": re.sub(r'<[^>]+>', '', match.group(2)).strip(),
-                        "url": match.group(1),
-                        "source": "Web Search"
-                    })
+                    
+                    url_found = match.group(1)
+                    title_found = re.sub(r'<[^>]+>', '', match.group(2)).strip()
+                    
+                    # URL 유효성 검사
+                    if url_found.startswith(('http://', 'https://')) and len(title_found) > 0:
+                        results.append({
+                            "title": title_found,
+                            "url": url_found,
+                            "source": "Web Search"
+                        })
+                        print(f"DEBUG: 결과 {i+1} 추가 - {title_found[:50]}...", file=sys.stderr, flush=True)
                 
+                print(f"DEBUG: 최종 반환 결과: {len(results)}개", file=sys.stderr, flush=True)
                 return results
+            else:
+                print(f"DEBUG: HTTP 요청 실패 - 상태 코드: {response.status_code}", file=sys.stderr, flush=True)
+                
     except Exception as e:
-        # print(f"❌ Search failed: {e}")  # MCP 통신 방해 방지
-        pass
+        print(f"DEBUG: search_resources 예외 발생: {type(e).__name__}: {e}", file=sys.stderr, flush=True)
+        import traceback
+        print(f"DEBUG: 스택 트레이스:\n{traceback.format_exc()}", file=sys.stderr, flush=True)
     
     return []
 
