@@ -710,27 +710,27 @@
         
         <ul class="nav-menu">
             <li class="nav-item">
-                <a class="nav-link active" data-page="datasource">
+                <a class="nav-link" data-page="datasource">
                     <i class="fas fa-database"></i>
                     학습 데이터 원천
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-page="chat">
+                <a class="nav-link active" data-page="chat">
                     <i class="fas fa-bullseye"></i>
                     맞춤형 학습 추천
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-page="profile">
-                    <i class="fas fa-robot"></i>
-                    AI 멘토
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-page="curriculum">
                     <i class="fas fa-graduation-cap"></i>
                     나의 커리큘럼
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-page="profile">
+                    <i class="fas fa-robot"></i>
+                    AI 멘토
                 </a>
             </li>
             <li class="nav-item">
@@ -919,6 +919,195 @@
             name: USER_NAME,
             profile: {}
         };
+        
+        // 로컬스토리지 관리 객체
+        const StorageManager = {
+            keys: {
+                CURRENT_PROFILE: 'currentProfile',
+                GENERATED_CURRICULUM: 'generatedCurriculum',
+                CURRICULUM_PROGRESS: 'curriculumProgress',
+                SELECTED_MENTORS: 'selectedMentors',
+                LAST_SESSION_ID: 'lastSessionId',
+                USER_INFO: 'learnai_user'
+            },
+
+            // 데이터 저장
+            set(key, value) {
+                try {
+                    const serializedValue = typeof value === 'string' ? value : JSON.stringify(value);
+                    localStorage.setItem(key, serializedValue);
+                    console.log(`💾 LocalStorage 저장: ${key}`, value);
+                } catch (error) {
+                    console.error(`❌ LocalStorage 저장 실패: ${key}`, error);
+                }
+            },
+
+            // 데이터 가져오기
+            get(key, defaultValue = null) {
+                try {
+                    const value = localStorage.getItem(key);
+                    if (value === null) return defaultValue;
+                    
+                    // JSON 파싱 시도
+                    try {
+                        return JSON.parse(value);
+                    } catch {
+                        // JSON이 아닌 경우 원본 문자열 반환
+                        return value;
+                    }
+                } catch (error) {
+                    console.error(`❌ LocalStorage 읽기 실패: ${key}`, error);
+                    return defaultValue;
+                }
+            },
+
+            // 데이터 삭제
+            remove(key) {
+                try {
+                    localStorage.removeItem(key);
+                    console.log(`🗑️ LocalStorage 삭제: ${key}`);
+                } catch (error) {
+                    console.error(`❌ LocalStorage 삭제 실패: ${key}`, error);
+                }
+            },
+
+            // 여러 키 일괄 삭제
+            removeMultiple(keys) {
+                keys.forEach(key => this.remove(key));
+            },
+
+            // 전체 초기화
+            clear() {
+                try {
+                    localStorage.clear();
+                    console.log('🧹 LocalStorage 전체 초기화');
+                } catch (error) {
+                    console.error('❌ LocalStorage 초기화 실패', error);
+                }
+            },
+
+            // 프로필 관련 메서드
+            profile: {
+                set(topic, constraints, goal) {
+                    const profileData = { topic, constraints, goal };
+                    StorageManager.set(StorageManager.keys.CURRENT_PROFILE, profileData);
+                    return profileData;
+                },
+                
+                get() {
+                    return StorageManager.get(StorageManager.keys.CURRENT_PROFILE, { topic: '', constraints: '', goal: '' });
+                },
+                
+                clear() {
+                    StorageManager.remove(StorageManager.keys.CURRENT_PROFILE);
+                }
+            },
+
+            // 커리큘럼 관련 메서드
+            curriculum: {
+                set(curriculumData) {
+                    StorageManager.set(StorageManager.keys.GENERATED_CURRICULUM, curriculumData);
+                    return curriculumData;
+                },
+                
+                get() {
+                    return StorageManager.get(StorageManager.keys.GENERATED_CURRICULUM, null);
+                },
+                
+                clear() {
+                    StorageManager.remove(StorageManager.keys.GENERATED_CURRICULUM);
+                },
+
+                // 진행도 관련
+                progress: {
+                    set(completedWeeks) {
+                        StorageManager.set(StorageManager.keys.CURRICULUM_PROGRESS, completedWeeks);
+                        return completedWeeks;
+                    },
+                    
+                    get() {
+                        return StorageManager.get(StorageManager.keys.CURRICULUM_PROGRESS, []);
+                    },
+                    
+                    add(weekIndex) {
+                        const current = this.get();
+                        if (!current.includes(weekIndex)) {
+                            const updated = [...current, weekIndex].sort((a, b) => a - b);
+                            this.set(updated);
+                            return updated;
+                        }
+                        return current;
+                    },
+                    
+                    remove(weekIndex) {
+                        const current = this.get();
+                        const updated = current.filter(week => week !== weekIndex);
+                        this.set(updated);
+                        return updated;
+                    },
+                    
+                    clear() {
+                        StorageManager.remove(StorageManager.keys.CURRICULUM_PROGRESS);
+                    }
+                }
+            },
+
+            // 멘토 관련 메서드
+            mentors: {
+                set(selectedMentors) {
+                    StorageManager.set(StorageManager.keys.SELECTED_MENTORS, selectedMentors);
+                    return selectedMentors;
+                },
+                
+                get() {
+                    return StorageManager.get(StorageManager.keys.SELECTED_MENTORS, []);
+                },
+                
+                clear() {
+                    StorageManager.remove(StorageManager.keys.SELECTED_MENTORS);
+                }
+            },
+
+            // 세션 관리
+            session: {
+                setId(sessionId) {
+                    StorageManager.set(StorageManager.keys.LAST_SESSION_ID, sessionId);
+                },
+                
+                getId() {
+                    return StorageManager.get(StorageManager.keys.LAST_SESSION_ID, null);
+                },
+
+                isNew(currentSessionId) {
+                    const storedSessionId = this.getId();
+                    return !storedSessionId || storedSessionId !== currentSessionId;
+                }
+            },
+
+            // 사용자 정보 관리
+            user: {
+                set(userData) {
+                    StorageManager.set(StorageManager.keys.USER_INFO, userData);
+                    return userData;
+                },
+                
+                get() {
+                    return StorageManager.get(StorageManager.keys.USER_INFO, null);
+                },
+                
+                clear() {
+                    StorageManager.remove(StorageManager.keys.USER_INFO);
+                }
+            }
+        };
+
+        // 쿠키 읽기 함수
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+        }
 
         // 간단한 마크다운 포맷팅 함수
         function formatSimpleMarkdown(text) {
@@ -989,8 +1178,8 @@
         function extractAndUpdateProfile(message) {
             // Assessment 관련 메시지에서 프로필 정보 추출 시도
             if (message.includes('파이썬 학습 조건') || message.includes('파이썬 학습 목표') || message.includes('학습 프로필 분석 완료')) {
-                // 실제로는 서버에서 전달받아야 하지만, 임시로 로컬 스토리지 사용
-                const profile = JSON.parse(localStorage.getItem('currentProfile') || '{}');
+                // 실제로는 서버에서 전달받아야 하지만, 임시로 저장된 프로필 사용
+                const profile = StorageManager.profile.get();
                 if (profile.topic || profile.constraints || profile.goal) {
                     updateLearningProfile(profile.topic, profile.constraints, profile.goal);
                 }
@@ -1034,344 +1223,8 @@
                 // 일반 sendMessage 함수 호출
                 await sendMessage();
                 
-                // 임시로 테스트용 커리큘럼 데이터 저장 (실제로는 서버 응답에서 가져올 예정)
-                setTimeout(() => {
-                    const testCurriculumData = {
-                        "title": "전지지식 Learning Path",
-                        "level": "beginner", 
-                        "duration_weeks": 12,
-                        "modules": [
-                            {
-                                "week": 1,
-                                "title": "전지지식의 기초 개념 이해하기",
-                                "description": "전지가 무엇인지 알아보고 기본적인 물리학적 원리와 에너지 저장 메커니즘을 통해 전지지식이 우리 생활에 미치는 영향을 학습합니다.",
-                                "objectives": [
-                                    "전기와 자기의 기본 개념을 설명할 수 있다",
-                                    "배터리의 작동 원리를 이해할 수 있다",
-                                    "전지지식의 현대적 활용 사례를 파악할 수 있다"
-                                ],
-                                "key_concepts": ["전자기 유도", "산화환원 반응", "전압과 전류의 관계"],
-                                "estimated_hours": 10,
-                                "resources": {
-                                    "videos": [
-                                        {"title": "전기기초 이론", "url": "https://kmooc.kr/courses/course-123"},
-                                        {"title": "배터리 원리 설명", "url": "https://kmooc.kr/courses/course-124"}
-                                    ],
-                                    "web_links": [
-                                        {"title": "전자기학 기초", "url": "https://physics.stackexchange.com/basics"},
-                                        {"title": "전지 기술 개론", "url": "https://batteryuniversity.com/basics"}
-                                    ],
-                                    "documents": [
-                                        {"title": "전기회로 입문서.pdf", "url": "/docs/electric-circuits-101.pdf"},
-                                        {"title": "배터리 기술 가이드.pdf", "url": "/docs/battery-tech-guide.pdf"}
-                                    ]
-                                }
-                            },
-                            {
-                                "week": 2,
-                                "title": "일상생활 속 전지기기 분석",
-                                "description": "스마트폰, 노트북, 전기차 등 일상생활에서 사용하는 전자기기들에 적용된 전지 기술을 분석하고 각 기기별 에너지 효율성을 비교합니다.",
-                                "objectives": [
-                                    "다양한 전기기기의 배터리 구성을 분석할 수 있다",
-                                    "에너지 효율 측정 방법을 이해할 수 있다",
-                                    "친환경 전지기기 선택 기준을 제시할 수 있다"
-                                ],
-                                "key_concepts": ["리튬이온 배터리", "에너지 밀도", "재생 에너지"],
-                                "estimated_hours": 12,
-                                "resources": {
-                                    "videos": [
-                                        {"title": "리튬이온 배터리 분석", "url": "https://kmooc.kr/courses/course-125"},
-                                        {"title": "전기차 배터리 기술", "url": "https://kmooc.kr/courses/course-126"}
-                                    ],
-                                    "web_links": [
-                                        {"title": "배터리 효율성 가이드", "url": "https://energyefficiency.org/battery"},
-                                        {"title": "친환경 배터리 선택법", "url": "https://greenenergy.org/battery-guide"}
-                                    ],
-                                    "documents": [
-                                        {"title": "에너지 효율 측정법.pdf", "url": "/docs/energy-efficiency-measurement.pdf"},
-                                        {"title": "친환경 배터리 기술.pdf", "url": "/docs/green-battery-tech.pdf"}
-                                    ]
-                                }
-                            },
-                            {
-                                "week": 3,
-                                "title": "전지지식 향상을 위한 개인 학습 계획 수립",
-                                "description": "자신의 현재 전지기식 수준을 진단하고 향후 6개월 동안의 개인 프로젝트와 자기개발 목표를 설정하여 체계적인 학습 로드맵을 작성합니다.",
-                                "objectives": [
-                                    "자기진단 도구를 활용해 자신의 지식수준을 평가할 수 있다",
-                                    "개인 맞춤형 학습 계획을 수립할 수 있다",
-                                    "실현 가능한 단계별 목표를 설정할 수 있다"
-                                ],
-                                "key_concepts": ["SMART 목표설정", "학습 진도 관리", "지식 습득"],
-                                "estimated_hours": 15,
-                                "resources": {
-                                    "videos": [
-                                        {"title": "효과적인 학습계획 수립", "url": "https://kmooc.kr/courses/course-127"},
-                                        {"title": "자기주도 학습법", "url": "https://kmooc.kr/courses/course-128"}
-                                    ],
-                                    "web_links": [
-                                        {"title": "SMART 목표설정 가이드", "url": "https://smartgoals.org/guide"},
-                                        {"title": "학습 진도 관리 도구", "url": "https://studytracker.com/tools"}
-                                    ],
-                                    "documents": [
-                                        {"title": "개인 학습 계획 템플릿.pdf", "url": "/docs/personal-study-plan-template.pdf"},
-                                        {"title": "목표설정 워크시트.pdf", "url": "/docs/goal-setting-worksheet.pdf"}
-                                    ]
-                                }
-                            },
-                            {
-                                "week": 4,
-                                "title": "개인 전지기기 프로젝트 기획",
-                                "description": "일상생활에서 발견한 불편함을 해결할 수 있는 소형 전지 관련 DIY 프로젝트를 구상하고 필요한 기술 요소들을 분석합니다.",
-                                "objectives": [
-                                    "아이디어 발상 기법을 활용할 수 있다",
-                                    "프로젝트 요구사항을 문서화할 수 있다",
-                                    "필요한 부품과 재료를 선정할 수 있다"
-                                ],
-                                "key_concepts": ["디자인 씽킹", "프로토타이핑", "회로 설계"],
-                                "estimated_hours": 12,
-                                "resources": {
-                                    "videos": [
-                                        {"title": "DIY 전자제품 만들기", "url": "https://kmooc.kr/courses/course-129"},
-                                        {"title": "회로 설계 기초", "url": "https://kmooc.kr/courses/course-130"}
-                                    ],
-                                    "web_links": [
-                                        {"title": "Arduino 프로젝트 아이디어", "url": "https://arduino.cc/projects"},
-                                        {"title": "전자부품 구매 가이드", "url": "https://electronics-parts.com/guide"}
-                                    ],
-                                    "documents": [
-                                        {"title": "프로젝트 기획서 양식.pdf", "url": "/docs/project-proposal-template.pdf"},
-                                        {"title": "회로 설계 가이드.pdf", "url": "/docs/circuit-design-guide.pdf"}
-                                    ]
-                                }
-                            },
-                            {
-                                "week": 5,
-                                "title": "기초 회로 제작 실습",
-                                "description": "간단한 전지 관련 회로를 직접 제작해보고 측정된 데이터를 통해 이론과 실제의 차이를 분석하는 기초 실습을 진행합니다.",
-                                "objectives": [
-                                    "브레드보드를 활용한 회로 구성이 가능하다",
-                                    "멀티미터 사용법을 익힐 수 있다",
-                                    "기본 전자 부품의 역할을 이해할 수 있다"
-                                ],
-                                "key_concepts": ["저항, 커패시터", "전압 강하", "안전 수칙"],
-                                "estimated_hours": 15,
-                                "resources": {
-                                    "videos": [
-                                        {"title": "브레드보드 사용법", "url": "https://kmooc.kr/courses/course-131"},
-                                        {"title": "멀티미터 활용 실습", "url": "https://kmooc.kr/courses/course-132"}
-                                    ],
-                                    "web_links": [
-                                        {"title": "전자부품 사용법", "url": "https://electronics.howstuffworks.com/components"},
-                                        {"title": "회로 실습 가이드", "url": "https://circuitlab.com/tutorials"}
-                                    ],
-                                    "documents": [
-                                        {"title": "실습 안전 수칙.pdf", "url": "/docs/lab-safety-rules.pdf"},
-                                        {"title": "회로 실습 매뉴얼.pdf", "url": "/docs/circuit-lab-manual.pdf"}
-                                    ]
-                                }
-                            },
-                            {
-                                "week": 6,
-                                "title": "개인 프로젝트 구현 및 테스트",
-                                "description": "5주차에 기획한 개인 프로젝트를 실제로 구현하고 실험을 통해 성능을 검증하며 개선점을 도출합니다.",
-                                "objectives": [
-                                    "회로 설계 도면을 작성할 수 있다",
-                                    "실제 제작 과정에서 문제 해결이 가능하다",
-                                    "테스트 결과를 분석하고 개선방안을 제시할 수 있다"
-                                ],
-                                "key_concepts": ["회로 시뮬레이션", "오류 진단", "성능 최적화"],
-                                "estimated_hours": 20,
-                                "resources": {
-                                    "videos": [
-                                        {"title": "프로젝트 구현 과정", "url": "https://kmooc.kr/courses/course-133"},
-                                        {"title": "회로 테스트 방법", "url": "https://kmooc.kr/courses/course-134"}
-                                    ],
-                                    "web_links": [
-                                        {"title": "회로 시뮬레이션 도구", "url": "https://circuitsimulator.org"},
-                                        {"title": "디버깅 기법 가이드", "url": "https://debugging-electronics.com/techniques"}
-                                    ],
-                                    "documents": [
-                                        {"title": "프로젝트 보고서 양식.pdf", "url": "/docs/project-report-template.pdf"},
-                                        {"title": "성능 테스트 체크리스트.pdf", "url": "/docs/performance-test-checklist.pdf"}
-                                    ]
-                                }
-                            },
-                            {
-                                "week": 7,
-                                "title": "전지기식 공유 커뮤니티 활용",
-                                "description": "온라인 전지지식 공유 플랫폼을 활용하여 학습 경험을 공유하고 다른 학습자의 프로젝트를 분석하며 네트워킹 방법을 배웁니다.",
-                                "objectives": [
-                                    "지식공유 플랫폼 사용법을 익힐 수 있다",
-                                    "효과적인 피드백 제공과 수용이 가능하다",
-                                    "학습 네트워크 구축 방법을 이해할 수 있다"
-                                ],
-                                "key_concepts": ["온라인 협업", "커뮤니티 가이드라인", "지식 전파"],
-                                "estimated_hours": 10,
-                                "resources": {
-                                    "videos": [
-                                        {"title": "온라인 학습 커뮤니티 활용", "url": "https://kmooc.kr/courses/course-135"},
-                                        {"title": "지식공유 플랫폼 사용법", "url": "https://kmooc.kr/courses/course-136"}
-                                    ],
-                                    "web_links": [
-                                        {"title": "전문가 네트워킹 가이드", "url": "https://networking.org/professionals"},
-                                        {"title": "온라인 협업 도구", "url": "https://collaboration-tools.com/online"}
-                                    ],
-                                    "documents": [
-                                        {"title": "커뮤니티 참여 가이드.pdf", "url": "/docs/community-participation-guide.pdf"},
-                                        {"title": "효과적인 피드백 방법.pdf", "url": "/docs/effective-feedback-methods.pdf"}
-                                    ]
-                                }
-                            },
-                            {
-                                "week": 8,
-                                "title": "전문 자료 활용 능력 개발",
-                                "description": "논문, 기술 문서 등 전문적 전지기식 자료를 읽고 분석하는 능력을 키우며 고급 정보에 접근하는 방법을 학습합니다.",
-                                "objectives": [
-                                    "기술 논문 구조를 이해할 수 있다",
-                                    "전문 용어 해석이 가능하다",
-                                    "정보 검색 및 선별 능력을 기를 수 있다"
-                                ],
-                                "key_concepts": ["학술 데이터베이스", "연구 방법론", "전문적 글쓰기"],
-                                "estimated_hours": 15,
-                                "resources": {
-                                    "videos": [
-                                        {"title": "논문 읽기 전략", "url": "https://kmooc.kr/courses/course-137"},
-                                        {"title": "학술 데이터베이스 활용", "url": "https://kmooc.kr/courses/course-138"}
-                                    ],
-                                    "web_links": [
-                                        {"title": "학술논문 검색 가이드", "url": "https://scholar.google.com/intl/ko/scholar/help.html"},
-                                        {"title": "연구 방법론 자료", "url": "https://research-methods.org/resources"}
-                                    ],
-                                    "documents": [
-                                        {"title": "논문 분석 워크시트.pdf", "url": "/docs/paper-analysis-worksheet.pdf"},
-                                        {"title": "기술 문서 작성 가이드.pdf", "url": "/docs/technical-writing-guide.pdf"}
-                                    ]
-                                }
-                            },
-                            {
-                                "week": 9,
-                                "title": "개인 프로젝트 고도화",
-                                "description": "6주차에 완료한 개인 프로젝트를 개선하고 확장하여 더 복잡한 기능이나 성능 향상을 시도합니다.",
-                                "objectives": [
-                                    "기존 회로를 효율적으로 개선할 수 있다",
-                                    "추가 기능 구현이 가능하다",
-                                    "성능과 안정성 모두 고려한 설계가 가능하다"
-                                ],
-                                "key_concepts": ["전력 관리 시스템", "소음 감소 기술", "열 관리"],
-                                "estimated_hours": 18,
-                                "resources": {
-                                    "videos": [
-                                        {"title": "고급 회로 설계", "url": "https://kmooc.kr/courses/course-139"},
-                                        {"title": "전력 효율 최적화", "url": "https://kmooc.kr/courses/course-140"}
-                                    ],
-                                    "web_links": [
-                                        {"title": "고급 전자회로 기법", "url": "https://advanced-circuits.com/techniques"},
-                                        {"title": "열 관리 솔루션", "url": "https://thermal-management.org/solutions"}
-                                    ],
-                                    "documents": [
-                                        {"title": "고급 설계 기법.pdf", "url": "/docs/advanced-design-techniques.pdf"},
-                                        {"title": "성능 최적화 가이드.pdf", "url": "/docs/performance-optimization-guide.pdf"}
-                                    ]
-                                }
-                            },
-                            {
-                                "week": 10,
-                                "title": "고급 전지 기술 탐구",
-                                "description": "최신 전지 기술 트렌드를 파악하고 미래 기술에 대한 이해도를 높입니다.",
-                                "objectives": [
-                                    "최신 배터리 기술 동향을 파악할 수 있다",
-                                    "미래 에너지 저장 기술을 이해할 수 있다",
-                                    "기술 발전 방향을 예측할 수 있다"
-                                ],
-                                "key_concepts": ["고체 전지", "무선 충전", "에너지 하베스팅"],
-                                "estimated_hours": 14,
-                                "resources": {
-                                    "videos": [
-                                        {"title": "미래 배터리 기술", "url": "https://kmooc.kr/courses/course-141"},
-                                        {"title": "에너지 하베스팅 기술", "url": "https://kmooc.kr/courses/course-142"}
-                                    ],
-                                    "web_links": [
-                                        {"title": "배터리 기술 뉴스", "url": "https://battery-news.com/trends"},
-                                        {"title": "에너지 기술 연구소", "url": "https://energy-research-institute.org"}
-                                    ],
-                                    "documents": [
-                                        {"title": "차세대 배터리 기술.pdf", "url": "/docs/next-gen-battery-tech.pdf"},
-                                        {"title": "에너지 저장 동향.pdf", "url": "/docs/energy-storage-trends.pdf"}
-                                    ]
-                                }
-                            },
-                            {
-                                "week": 11,
-                                "title": "프로젝트 최종 발표 준비",
-                                "description": "지금까지 학습한 내용을 바탕으로 최종 프로젝트를 완성하고 발표 자료를 준비합니다.",
-                                "objectives": [
-                                    "효과적인 프레젠테이션 자료를 제작할 수 있다",
-                                    "기술적 내용을 명확하게 설명할 수 있다",
-                                    "질문에 대한 적절한 답변을 준비할 수 있다"
-                                ],
-                                "key_concepts": ["프레젠테이션 스킬", "기술 문서화", "데모 시연"],
-                                "estimated_hours": 16,
-                                "resources": {
-                                    "videos": [
-                                        {"title": "효과적인 프레젠테이션 기법", "url": "https://kmooc.kr/courses/course-143"},
-                                        {"title": "기술 발표 스킬", "url": "https://kmooc.kr/courses/course-144"}
-                                    ],
-                                    "web_links": [
-                                        {"title": "발표 자료 제작 팁", "url": "https://presentation-tips.com/technical"},
-                                        {"title": "데모 시연 가이드", "url": "https://demo-guide.org/best-practices"}
-                                    ],
-                                    "documents": [
-                                        {"title": "발표자료 템플릿.pdf", "url": "/docs/presentation-template.pdf"},
-                                        {"title": "기술 발표 체크리스트.pdf", "url": "/docs/tech-presentation-checklist.pdf"}
-                                    ]
-                                }
-                            },
-                            {
-                                "week": 12,
-                                "title": "학습 성과 평가 및 향후 계획",
-                                "description": "12주간의 학습 성과를 종합적으로 평가하고 향후 지속적인 학습을 위한 계획을 수립합니다.",
-                                "objectives": [
-                                    "학습 목표 달성도를 객관적으로 평가할 수 있다",
-                                    "개인 포트폴리오를 완성할 수 있다",
-                                    "지속적인 학습 계획을 수립할 수 있다"
-                                ],
-                                "key_concepts": ["자기 평가", "포트폴리오 구성", "지속 학습"],
-                                "estimated_hours": 12,
-                                "resources": {
-                                    "videos": [
-                                        {"title": "학습 성과 평가 방법", "url": "https://kmooc.kr/courses/course-145"},
-                                        {"title": "포트폴리오 제작 가이드", "url": "https://kmooc.kr/courses/course-146"}
-                                    ],
-                                    "web_links": [
-                                        {"title": "자기평가 도구", "url": "https://self-assessment-tools.com"},
-                                        {"title": "평생 학습 가이드", "url": "https://lifelong-learning.org/guide"}
-                                    ],
-                                    "documents": [
-                                        {"title": "자기평가 체크리스트.pdf", "url": "/docs/self-assessment-checklist.pdf"},
-                                        {"title": "포트폴리오 작성 가이드.pdf", "url": "/docs/portfolio-creation-guide.pdf"}
-                                    ]
-                                }
-                            }
-                        ]
-                    };
-                    
-                    localStorage.setItem('generatedCurriculum', JSON.stringify(testCurriculumData));
-                    
-                    // 새 커리큘럼 생성 시 진행도 초기화
-                    resetCurriculumProgress();
-                    
-                    // 생성 완료 상태로 변경
-                    isGeneratingCurriculum = false;
-                    
-                    // 커리큘럼 페이지 새로고침
-                    const curriculumContent = document.getElementById('curriculumContent');
-                    if (curriculumContent) {
-                        showCurriculumContent(curriculumContent);
-                    }
-                    
-                    showNotification('커리큘럼이 성공적으로 생성되었습니다!', 'success');
-                }, 3000); // 3초 후 생성 시뮬레이션
+                // 실시간 데이터 수신 플래그
+                window.curriculumDataReceived = false;
                 
                 console.log('✅ 커리큘럼 생성 요청 완료');
                 
@@ -1393,22 +1246,107 @@
             }
         }
 
+        // 커리큘럼 완료 상태를 다시 확인하는 함수
+        async function checkCurriculumCompletion() {
+            console.log('🔍 커리큘럼 완료 상태 재확인 시작');
+            
+            try {
+                // 최근 생성된 커리큘럼 확인
+                const curriculumData = StorageManager.curriculum.get();
+                if (curriculumData) {
+                    console.log('✅ 커리큘럼 발견 - 생성 완료 처리');
+                    
+                    // 생성 완료 플래그 해제
+                    isGeneratingCurriculum = false;
+                    
+                    // 커리큘럼 표시
+                    const curriculumContent = document.getElementById('curriculumContent');
+                    if (curriculumContent) {
+                        displayCurriculumCards(curriculumContent, curriculumData);
+                        showNotification('커리큘럼이 완성되었습니다!', 'success');
+                    }
+                    
+                    return;
+                }
+                
+                // 실시간 확인만 수행 (타임아웃 제거)
+                console.log('⏳ 커리큘럼 생성을 계속 기다립니다 (타임아웃 없음)');
+                
+            } catch (error) {
+                console.error('커리큘럼 완료 확인 오류:', error);
+                isGeneratingCurriculum = false;
+            }
+        }
+        
+        // 커리큘럼 데이터를 화면에 표시하는 함수
+        function displayCurriculumData(curriculumData) {
+            try {
+                console.log('🔄 displayCurriculumData 호출됨:', curriculumData.title);
+                
+                // 저장된 데이터 다시 확인
+                const storedData = StorageManager.curriculum.get();
+                if (storedData) {
+                    console.log('📦 저장된 커리큘럼 확인:', storedData.title);
+                }
+                
+                // 커리큘럼 페이지에 직접 표시 (localStorage 재읽기 방지)
+                const curriculumContent = document.getElementById('curriculumContent');
+                if (curriculumContent) {
+                    console.log('🖥️ displayCurriculumCards 직접 호출');
+                    displayCurriculumCards(curriculumContent, curriculumData);
+                } else {
+                    console.log('❌ curriculumContent 요소를 찾을 수 없음');
+                }
+                
+                console.log('✅ 커리큘럼 데이터 표시 완료:', curriculumData.title);
+            } catch (error) {
+                console.error('❌ 커리큘럼 표시 오류:', error);
+                showNotification('커리큘럼 표시 중 오류가 발생했습니다.', 'error');
+            }
+        }
+
         // 초기화
         document.addEventListener('DOMContentLoaded', function() {
             updateUserDisplay(); // 페이지 로드시 이름 업데이트
             loadUserProfile();
             setupNavigation();
             
-            // 프로필 카드 초기화 (새로운 세션용)
-            updateLearningProfile('', '', '');
-            // localStorage에서 이전 세션 데이터 삭제
-            localStorage.removeItem('currentProfile');
-            localStorage.removeItem('generatedCurriculum');
+            // 새 세션인지 확인 (쿠키의 세션 ID가 방금 생성되었는지)
+            const currentSessionId = getCookie('session_id');
+            const isNewSession = StorageManager.session.isNew(currentSessionId);
+            
+            if (isNewSession) {
+                console.log('🆕 새 세션 감지 - 프로필 및 데이터 초기화');
+                // 새 세션이면 이전 데이터 완전 초기화
+                StorageManager.profile.clear();
+                StorageManager.curriculum.clear();
+                StorageManager.curriculum.progress.clear();
+                updateLearningProfile('', '', '');
+                
+                // 현재 세션 ID 저장
+                StorageManager.session.setId(currentSessionId);
+            } else {
+                console.log('🔄 기존 세션 복원');
+                // 기존 세션이면 프로필 복원
+                const existingProfile = StorageManager.profile.get();
+                if (existingProfile.topic || existingProfile.constraints || existingProfile.goal) {
+                    updateLearningProfile(existingProfile.topic, existingProfile.constraints, existingProfile.goal);
+                    console.log('🔄 기존 프로필 복원:', existingProfile);
+                } else {
+                    updateLearningProfile('', '', '');
+                }
+            }
+            
             // 생성 상태 초기화
             isGeneratingCurriculum = false;
             
-            // 기본 페이지를 데이터 원천으로 설정
-            navigateToPage('datasource');
+            // 기본 페이지를 맞춤형 학습 추천으로 설정
+            navigateToPage('chat');
+            
+            // 커리큘럼이 있다면 채팅 페이지에서도 표시 가능하도록 설정
+            if (existingCurriculum) {
+                console.log('📚 기존 커리큘럼 데이터 확인됨');
+            }
         });
 
         // 네비게이션 설정
@@ -1417,6 +1355,9 @@
             navLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
+                    
+                    // 즉시 페이지 최상단으로 스크롤
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                     
                     // 활성 상태 변경
                     navLinks.forEach(l => l.classList.remove('active'));
@@ -1448,8 +1389,40 @@
 
         // 페이지 네비게이션
         function navigateToPage(page) {
+            // 페이지 전환 시 항상 최상단으로 스크롤
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
             const welcomeSubtitle = document.getElementById('welcomeSubtitle');
             const initialMessage = document.getElementById('initialMessage');
+            
+            // 모든 동적으로 생성된 섹션들 제거 (멘토 프로필 섹션 등)
+            const mentorProfileSection = document.getElementById('mentorProfileSection');
+            if (mentorProfileSection) {
+                mentorProfileSection.remove();
+            }
+            
+            // AI 멘토 페이지가 아닌 다른 페이지로 이동할 때 멘토 선택 상태 초기화
+            if (page !== 'profile') {
+                // 선택된 멘토 목록 초기화
+                selectedMentors = [];
+                finalSelectedMentors = [];
+                
+                // 멘토 선택 정보 제거
+                StorageManager.mentors.clear();
+                
+                // 멘토 선택 표시 영역 초기화
+                const selectedMentorsDisplay = document.getElementById('selectedMentors');
+                if (selectedMentorsDisplay) {
+                    selectedMentorsDisplay.innerHTML = '<div style="color: #6b7280; font-size: 14px;">선택된 멘토들이 여기에 표시됩니다</div>';
+                }
+                
+                // 모든 멘토 카드의 선택 상태 제거
+                const mentorCards = document.querySelectorAll('.mentor-card');
+                mentorCards.forEach(card => {
+                    card.style.borderColor = '#e5e7eb';
+                    card.style.background = 'white';
+                });
+            }
             
             if (page === 'datasource') {
                 // 학습 데이터 원천 모드
@@ -1715,7 +1688,83 @@
             } else if (page === 'chat') {
                 // 맞춤형 학습 추천 모드
                 welcomeSubtitle.innerHTML = '오늘 <span class="highlight">무엇을</span> 배우고 싶으신가요?';
-                initialMessage.textContent = '안녕하세요! LearningMate의 학습 멘토입니다. 어떤 주제에 대해 배우고 싶으신지 알려주세요. 맞춤형 학습 계획을 함께 만들어보겠습니다.';
+                
+                // 초기 메시지 업데이트
+                const initialMessage = document.getElementById('initialMessage');
+                if (initialMessage) {
+                    initialMessage.textContent = '안녕하세요! LearningMate의 학습 멘토입니다. 어떤 주제에 대해 배우고 싶으신지 알려주세요. 맞춤형 학습 계획을 함께 만들어보겠습니다.';
+                }
+                
+                // 기존 커리큘럼이 있다면 복원
+                const existingCurriculum = StorageManager.curriculum.get();
+                if (existingCurriculum) {
+                    try {
+                        console.log('🔄 채팅 페이지에서 기존 커리큘럼 복원:', existingCurriculum.title);
+                        
+                        // 커리큘럼 컨텐츠 영역 확인/생성
+                        let curriculumContent = document.getElementById('curriculumContent');
+                        if (!curriculumContent) {
+                            curriculumContent = document.createElement('div');
+                            curriculumContent.id = 'curriculumContent';
+                            const welcomeSection = document.querySelector('.welcome-section');
+                            welcomeSection.parentNode.insertBefore(curriculumContent, welcomeSection.nextSibling);
+                        }
+                        
+                        // 커리큘럼 컨텐츠를 전체 화면 레이아웃으로 설정
+                        curriculumContent.style.cssText = `
+                            width: 900px;
+                            height: 600px;
+                            background: white;
+                            border-radius: 12px;
+                            border: 1px solid #d1d5db;
+                            margin: 20px 0;
+                            position: relative;
+                            display: block;
+                            padding: 20px;
+                        `;
+                        
+                        // 커리큘럼 표시
+                        showCurriculumContent(curriculumContent);
+                        
+                    } catch (e) {
+                        console.error('커리큘럼 복원 오류:', e);
+                    }
+                }
+                
+                // 채팅 기록이 비어있을 때만 초기 메시지 설정
+                const chatMessages = document.getElementById('chatMessages');
+                if (chatMessages) {
+                    const existingMessages = chatMessages.querySelectorAll('.message');
+                    
+                    // 기본 초기 메시지만 있거나 메시지가 아예 없는 경우에만 초기화
+                    if (existingMessages.length <= 1) {
+                        chatMessages.innerHTML = `
+                            <div class="message ai-message">
+                                <div class="message-avatar ai-avatar-small">AI</div>
+                                <div class="message-content" id="initialMessage">
+                                    안녕하세요! LearningMate 입니다.<br>어떤 주제에 대해 배우고 싶으신지 알려주시면 맞춤형 학습 계획을 함께 만들어보겠습니다!
+                                </div>
+                            </div>
+                        `;
+                    }
+                    // 이미 대화가 진행 중이면 채팅 기록을 유지
+                }
+                
+                // 입력창 초기화
+                const messageInput = document.getElementById('messageInput');
+                if (messageInput) {
+                    messageInput.value = '';
+                    messageInput.style.height = 'auto';
+                }
+                
+                // 기존 프로필이 있으면 복원, 없으면 초기화
+                const existingProfile = StorageManager.profile.get();
+                if (existingProfile.topic || existingProfile.constraints || existingProfile.goal) {
+                    updateLearningProfile(existingProfile.topic, existingProfile.constraints, existingProfile.goal);
+                    console.log('🔄 채팅 페이지에서 프로필 복원:', existingProfile);
+                } else {
+                    updateLearningProfile('', '', '');
+                }
                 
                 // 대화창과 프로필, 예시 영역 다시 보이기
                 const chatWithProfile = document.querySelector('.chat-with-profile');
@@ -1828,7 +1877,35 @@
                             직접 필요한 분야의 멘토를 선택해주세요
                         </h3>
                         
-                        <!-- 멘토 리스트 -->
+                        <!-- 추천된 페르소나 표시 영역 -->
+                        <div id="recommendedPersonas" style="display: none; margin-bottom: 30px;">
+                            <h3 style="font-size: 18px; font-weight: 600; color: #374151; margin-bottom: 20px; text-align: center;">
+                                <i class="fas fa-lightbulb" style="color: #f59e0b; margin-right: 8px;"></i>
+                                추천된 전문 멘토
+                            </h3>
+                            <div id="recommendedPersonasList" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 20px;">
+                                <!-- 추천된 페르소나들이 동적으로 여기에 표시됩니다 -->
+                            </div>
+                            <div style="text-align: center; margin: 20px 0;">
+                                <p style="color: #6b7280; font-size: 14px; margin-bottom: 12px;">
+                                    추천된 멘토 중 하나를 선택하거나, 아래에서 직접 다른 분야를 선택해주세요
+                                </p>
+                                <button onclick="hideRecommendedPersonas()" style="
+                                    background: #f3f4f6;
+                                    color: #6b7280;
+                                    border: 1px solid #d1d5db;
+                                    padding: 8px 16px;
+                                    border-radius: 6px;
+                                    font-size: 12px;
+                                    cursor: pointer;
+                                    transition: all 0.2s;
+                                " onmouseover="this.style.background='#e5e7eb'" onmouseout="this.style.background='#f3f4f6'">
+                                    추천 결과 숨기기
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 멘토 리스트 (기존 6개 멘토) -->
                         <div id="mentorList" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px;">
                             <!-- 업무 과외 선생님 -->
                             <div class="mentor-card" data-mentor="engineer" draggable="true" style="
@@ -1842,13 +1919,8 @@
                             " onmouseover="this.style.borderColor='#667eea'; this.style.transform='translateY(-2px)'" 
                                onmouseout="this.style.borderColor='#e5e7eb'; this.style.transform='translateY(0)'"
                                onclick="selectMentor('engineer')">
-                                <div style="margin-bottom: 12px;">
-                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1L9 7V9C9 11.8 11.2 14 14 14V22H16V14C18.8 14 21 11.8 21 9ZM11 9V7.5L12 6.5L13 7.5V9C13 10.7 11.7 12 10 12S7 10.7 7 9Z" fill="#3B82F6"/>
-                                        <circle cx="12" cy="16" r="1" fill="#3B82F6"/>
-                                        <circle cx="8" cy="18" r="1" fill="#3B82F6"/>
-                                        <circle cx="16" cy="18" r="1" fill="#3B82F6"/>
-                                    </svg>
+                                <div style="margin-bottom: 12px; width: 48px; height: 48px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                                    <i class="fas fa-briefcase" style="color: white; font-size: 20px;"></i>
                                 </div>
                                 <h4 style="font-size: 16px; font-weight: 600; color: #374151; margin-bottom: 8px;">업무 과외 선생님</h4>
                                 <p style="font-size: 12px; color: #6b7280; line-height: 1.4;">
@@ -1868,15 +1940,8 @@
                             " onmouseover="this.style.borderColor='#667eea'; this.style.transform='translateY(-2px)'" 
                                onmouseout="this.style.borderColor='#e5e7eb'; this.style.transform='translateY(0)'"
                                onclick="selectMentor('executive')">
-                                <div style="margin-bottom: 12px;">
-                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2Z" fill="#8B5A2B"/>
-                                        <path d="M8 7L16 7C17.1 7 18 7.9 18 9L18 11C18 11.6 17.6 12 17 12L7 12C6.4 12 6 11.6 6 11L6 9C6 7.9 6.9 7 8 7Z" fill="#1F2937"/>
-                                        <path d="M9 12L15 12L15 20C15 21.1 14.1 22 13 22L11 22C9.9 22 9 21.1 9 20L9 12Z" fill="#1F2937"/>
-                                        <path d="M10 9L14 9C14.6 9 15 9.4 15 10C15 10.6 14.6 11 14 11L10 11C9.4 11 9 10.6 9 10C9 9.4 9.4 9 10 9Z" fill="#3B82F6"/>
-                                        <circle cx="6" cy="4" r="2" fill="#F59E0B"/>
-                                        <circle cx="18" cy="4" r="2" fill="#10B981"/>
-                                    </svg>
+                                <div style="margin-bottom: 12px; width: 48px; height: 48px; background: linear-gradient(135deg, #a855f7, #ec4899); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                                    <i class="fas fa-star" style="color: white; font-size: 20px;"></i>
                                 </div>
                                 <h4 style="font-size: 16px; font-weight: 600; color: #374151; margin-bottom: 8px;">일타 강사</h4>
                                 <p style="font-size: 12px; color: #6b7280; line-height: 1.4;">
@@ -1896,13 +1961,8 @@
                             " onmouseover="this.style.borderColor='#667eea'; this.style.transform='translateY(-2px)'" 
                                onmouseout="this.style.borderColor='#e5e7eb'; this.style.transform='translateY(0)'"
                                onclick="selectMentor('professor')">
-                                <div style="margin-bottom: 12px;">
-                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 3L1 9L12 15L21 10.09V17H23V9L12 3Z" fill="#059669"/>
-                                        <path d="M5 13.18V17.18C5 19.19 8.03 21 12 21S19 19.19 19 17.18V13.18L12 17L5 13.18Z" fill="#34D399"/>
-                                        <circle cx="12" cy="7" r="2" fill="#1F2937"/>
-                                        <path d="M9 11C9 9.9 9.9 9 11 9H13C14.1 9 15 9.9 15 11V12H9V11Z" fill="#8B5A2B"/>
-                                    </svg>
+                                <div style="margin-bottom: 12px; width: 48px; height: 48px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                                    <i class="fas fa-graduation-cap" style="color: white; font-size: 20px;"></i>
                                 </div>
                                 <h4 style="font-size: 16px; font-weight: 600; color: #374151; margin-bottom: 8px;">교수</h4>
                                 <p style="font-size: 12px; color: #6b7280; line-height: 1.4;">
@@ -1922,14 +1982,8 @@
                             " onmouseover="this.style.borderColor='#667eea'; this.style.transform='translateY(-2px)'" 
                                onmouseout="this.style.borderColor='#e5e7eb'; this.style.transform='translateY(0)'"
                                onclick="selectMentor('designer')">
-                                <div style="margin-bottom: 12px;">
-                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M9.4 16.6L4.8 12L9.4 7.4L10.8 8.8L7.6 12L10.8 15.2L9.4 16.6Z" fill="#EC4899"/>
-                                        <path d="M14.6 16.6L13.2 15.2L16.4 12L13.2 8.8L14.6 7.4L19.2 12L14.6 16.6Z" fill="#EC4899"/>
-                                        <circle cx="12" cy="12" r="3" fill="#A855F7"/>
-                                        <path d="M12 2C16.4 2 20 5.6 20 10C20 14.4 16.4 18 12 18C7.6 18 4 14.4 4 10C4 5.6 7.6 2 12 2ZM12 4C8.7 4 6 6.7 6 10C6 13.3 8.7 16 12 16C15.3 16 18 13.3 18 10C18 6.7 15.3 4 12 4Z" fill="#8B5CF6" opacity="0.3"/>
-                                        <path d="M8 20H16L15 22H9L8 20Z" fill="#6366F1"/>
-                                    </svg>
+                                <div style="margin-bottom: 12px; width: 48px; height: 48px; background: linear-gradient(135deg, #6366f1, #8b5cf6); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                                    <i class="fas fa-code" style="color: white; font-size: 20px;"></i>
                                 </div>
                                 <h4 style="font-size: 16px; font-weight: 600; color: #374151; margin-bottom: 8px;">개발자</h4>
                                 <p style="font-size: 12px; color: #6b7280; line-height: 1.4;">
@@ -1949,20 +2003,8 @@
                             " onmouseover="this.style.borderColor='#667eea'; this.style.transform='translateY(-2px)'" 
                                onmouseout="this.style.borderColor='#e5e7eb'; this.style.transform='translateY(0)'"
                                onclick="selectMentor('datascientist')">
-                                <div style="margin-bottom: 12px;">
-                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <rect x="3" y="3" width="18" height="18" rx="2" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2"/>
-                                        <path d="M7 16L10 13L13 16L17 12L17 16H7Z" fill="#10B981"/>
-                                        <path d="M7 12L10 9L13 12L17 8" stroke="#059669" stroke-width="2" fill="none"/>
-                                        <circle cx="7" cy="12" r="2" fill="#34D399"/>
-                                        <circle cx="10" cy="9" r="2" fill="#10B981"/>
-                                        <circle cx="13" cy="12" r="2" fill="#059669"/>
-                                        <circle cx="17" cy="8" r="2" fill="#047857"/>
-                                        <rect x="2" y="2" width="4" height="1" fill="#6366F1"/>
-                                        <rect x="18" y="2" width="4" height="1" fill="#6366F1"/>
-                                        <rect x="2" y="21" width="4" height="1" fill="#6366F1"/>
-                                        <rect x="18" y="21" width="4" height="1" fill="#6366F1"/>
-                                    </svg>
+                                <div style="margin-bottom: 12px; width: 48px; height: 48px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                                    <i class="fas fa-language" style="color: white; font-size: 20px;"></i>
                                 </div>
                                 <h4 style="font-size: 16px; font-weight: 600; color: #374151; margin-bottom: 8px;">영어 선생님</h4>
                                 <p style="font-size: 12px; color: #6b7280; line-height: 1.4;">
@@ -1982,14 +2024,8 @@
                             " onmouseover="this.style.borderColor='#667eea'; this.style.transform='translateY(-2px)'" 
                                onmouseout="this.style.borderColor='#e5e7eb'; this.style.transform='translateY(0)'"
                                onclick="selectMentor('marketing')">
-                                <div style="margin-bottom: 12px;">
-                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M3 7V17C3 18.1 3.9 19 5 19H19C20.1 19 21 18.1 21 17V7L12 13L3 7Z" fill="#F59E0B"/>
-                                        <path d="M21 5H3C1.9 5 1 5.9 1 7V17C1 18.1 1.9 19 3 19H21C22.1 19 23 18.1 23 17V7C23 5.9 22.1 5 21 5ZM21 7L12 13L3 7V7C3 6.4 3.4 6 4 6H20C20.6 6 21 6.4 21 7V7Z" fill="#EF4444"/>
-                                        <path d="M7 9H17V11H7V9ZM7 13H15V15H7V13Z" fill="#FEF3C7"/>
-                                        <circle cx="18" cy="6" r="3" fill="#DC2626"/>
-                                        <path d="M16.5 5.5L17.5 6.5L19.5 4.5" stroke="white" stroke-width="1" fill="none"/>
-                                    </svg>
+                                <div style="margin-bottom: 12px; width: 48px; height: 48px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                                    <i class="fas fa-magic" style="color: white; font-size: 20px;"></i>
                                 </div>
                                 <h4 style="font-size: 16px; font-weight: 600; color: #374151; margin-bottom: 8px;">명리학자</h4>
                                 <p style="font-size: 12px; color: #6b7280; line-height: 1.4;">
@@ -2030,7 +2066,7 @@
                             " onmouseover="if(!this.disabled) this.style.transform='scale(1.05)'" 
                                onmouseout="this.style.transform='scale(1)'">
                                 <i class="fas fa-play" style="margin-right: 8px;"></i>
-                                멘토링 시작하기
+                                멘토 선택
                             </button>
                         </div>
                     </div>
@@ -2041,6 +2077,13 @@
             } else if (page === 'curriculum') {
                 // 나의 커리큘럼 모드  
                 welcomeSubtitle.innerHTML = '<span class="highlight">나의 커리큘럼</span>';
+                
+                // 커리큘럼 탭 진입 시 완성된 커리큘럼이 있는지만 확인
+                const existingCurriculum = StorageManager.curriculum.get();
+                if (existingCurriculum && isGeneratingCurriculum) {
+                    console.log('🔄 커리큘럼 탭 진입 - 완성된 커리큘럼 발견');
+                    isGeneratingCurriculum = false; // 플래그 해제
+                }
                 
                 // 대화창과 프로필 영역 숨기기
                 const chatWithProfile = document.querySelector('.chat-with-profile');
@@ -2101,11 +2144,10 @@
 
         // 사용자 프로필 로드
         function loadUserProfile() {
-            // 로컬스토리지에서 사용자 정보 로드 (향후 서버에서 가져올 예정)
-            const savedUser = localStorage.getItem('learnai_user');
+            // 저장된 사용자 정보 로드 (향후 서버에서 가져올 예정)
+            const savedUser = StorageManager.user.get();
             if (savedUser) {
-                const parsedUser = JSON.parse(savedUser);
-                currentUser = { ...currentUser, ...parsedUser };
+                currentUser = { ...currentUser, ...savedUser };
                 updateUserDisplay();
             }
         }
@@ -2259,29 +2301,150 @@
                         if (line.startsWith('data: ')) {
                             try {
                                 const data = JSON.parse(line.slice(6));
+                                console.log('🔍 스트리밍 데이터:', data); // 디버깅용
+                                console.log('📊 현재 상태:', { 
+                                    isGeneratingCurriculum, 
+                                    hasContent: !!data.content, 
+                                    hasCurriculum: !!data.curriculum,
+                                    hasProfile: !!data.profile,
+                                    isDone: !!data.done 
+                                });
+                                // 커리큘럼 데이터가 있는 경우 우선 처리 (백엔드에서 curriculum 객체로 전송)
+                                if (data.curriculum) {
+                                    console.log('📚 커리큘럼 데이터 수신 (curriculum 객체):', data.curriculum);
+                                    
+                                    // 🔥 커리큘럼 생성 완료 - 플래그 해제
+                                    isGeneratingCurriculum = false;
+                                    console.log('✅ 커리큘럼 생성 완료 - isGeneratingCurriculum = false');
+                                    
+                                    // 즉시 생성 버튼 복원
+                                    const generateBtn = document.getElementById('generateCurriculumBtn');
+                                    if (generateBtn) {
+                                        generateBtn.disabled = false;
+                                        generateBtn.innerHTML = '<i class="fas fa-magic"></i> 맞춤형 커리큘럼 생성';
+                                    }
+                                    
+                                    // 새 커리큘럼 데이터 저장
+                                    StorageManager.curriculum.clear();
+                                    StorageManager.curriculum.set(data.curriculum);
+                                    console.log('💾 새 커리큘럼 데이터 저장:', data.curriculum.title);
+                                    
+                                    // 커리큘럼 탭으로 전환
+                                    switchToTab('curriculum');
+                                    
+                                    // DOM 업데이트 후 렌더링
+                                    setTimeout(() => {
+                                        const curriculumContent = document.getElementById('curriculumContent');
+                                        if (curriculumContent) {
+                                            curriculumContent.innerHTML = '';
+                                            displayCurriculumCards(curriculumContent, data.curriculum);
+                                            console.log('🔄 새 커리큘럼으로 강제 렌더링:', data.curriculum.title);
+                                        }
+                                    }, 100);
+                                    
+                                    showNotification('맞춤형 커리큘럼이 생성되었습니다!', 'success');
+                                }
+                                
+                                // 프로필 정보가 있는 경우 업데이트
+                                if (data.profile) {
+                                    console.log('📝 프로필 정보 수신:', data.profile);
+                                    
+                                    // 프로필 정보 저장
+                                    const profileData = StorageManager.profile.set(
+                                        data.profile.topic || '',
+                                        data.profile.constraints || '', 
+                                        data.profile.goal || ''
+                                    );
+                                    console.log('📝 프로필 정보 저장:', profileData);
+                                    
+                                    // UI 업데이트
+                                    updateLearningProfile(profileData.topic, profileData.constraints, profileData.goal);
+                                }
+                                
+                                // 일반 텍스트 콘텐츠 처리
                                 if (data.content) {
-                                    // 스트리밍 중에는 텍스트 누적
-                                    const currentText = streamingContent.getAttribute('data-raw-text') || '';
-                                    const newText = currentText + data.content;
-                                    streamingContent.setAttribute('data-raw-text', newText);
+                                    // 커리큘럼 생성 중이고 JSON 응답인 경우 처리 (백업용)
+                                    const isJsonResponse = data.content.trim().startsWith('{') && data.content.includes('"title"') && data.content.includes('"modules"');
                                     
-                                    // 간단한 마크다운 처리
-                                    streamingContent.innerHTML = formatSimpleMarkdown(newText);
-                                    chatMessages.scrollTop = chatMessages.scrollHeight;
-                                    
-                                    // 프로필 정보가 있는 경우 업데이트
-                                    if (data.profile) {
-                                        console.log('프로필 정보 수신:', data.profile);
+                                    if (isGeneratingCurriculum && isJsonResponse) {
+                                        console.log('📚 커리큘럼 JSON 응답 감지 (백업 처리) - 파싱 시도');
+                                        try {
+                                            const curriculumData = JSON.parse(data.content.trim());
+                                            console.log('✅ 커리큘럼 JSON 파싱 성공 (백업):', curriculumData);
+                                            
+                                            // 커리큘럼 생성 완료 처리
+                                            isGeneratingCurriculum = false;
+                                            console.log('✅ 커리큘럼 생성 완료 (백업) - isGeneratingCurriculum = false');
+                                            
+                                            // 생성 버튼 복원
+                                            const generateBtn = document.getElementById('generateCurriculumBtn');
+                                            if (generateBtn) {
+                                                generateBtn.disabled = false;
+                                                generateBtn.innerHTML = '<i class="fas fa-magic"></i> 맞춤형 커리큘럼 생성';
+                                            }
+                                            
+                                            // 새 커리큘럼 데이터 저장
+                                            StorageManager.curriculum.clear();
+                                            StorageManager.curriculum.set(curriculumData);
+                                            console.log('💾 새 커리큘럼 데이터 저장 (백업):', curriculumData.title);
+                                            
+                                            // 커리큘럼 탭으로 전환
+                                            switchToTab('curriculum');
+                                            
+                                            // DOM 업데이트 후 렌더링
+                                            setTimeout(() => {
+                                                const curriculumContent = document.getElementById('curriculumContent');
+                                                if (curriculumContent) {
+                                                    curriculumContent.innerHTML = '';
+                                                    displayCurriculumCards(curriculumContent, curriculumData);
+                                                    console.log('🔄 새 커리큘럼으로 강제 렌더링 (백업):', curriculumData.title);
+                                                }
+                                            }, 100);
+                                            
+                                            showNotification('맞춤형 커리큘럼이 생성되었습니다!', 'success');
+                                            
+                                        } catch (e) {
+                                            console.error('❌ 커리큘럼 JSON 파싱 실패 (백업):', e);
+                                            console.log('원본 데이터:', data.content);
+                                        }
+                                    } else if (!data.curriculum) {
+                                        // 커리큘럼 데이터가 없을 때만 일반 응답 표시
+                                        const currentText = streamingContent.getAttribute('data-raw-text') || '';
+                                        const newText = currentText + data.content;
+                                        streamingContent.setAttribute('data-raw-text', newText);
                                         
-                                        // 현재 세션의 프로필만 사용하고, 이전 세션 정보는 무시
-                                        updateLearningProfile(data.profile.topic || '', data.profile.constraints || '', data.profile.goal || '');
-                                    } else {
-                                        console.log('프로필 정보 없음:', data);
+                                        // 간단한 마크다운 처리
+                                        streamingContent.innerHTML = formatSimpleMarkdown(newText);
+                                        chatMessages.scrollTop = chatMessages.scrollHeight;
                                     }
                                 } else if (data.error) {
                                     streamingContent.textContent = `오류: ${data.error}`;
                                     break;
                                 } else if (data.done) {
+                                    console.log('🏁 스트리밍 완료 신호 수신');
+                                    // 스트리밍이 끝났는데 아직 생성 중이면 상태 해제
+                                    if (isGeneratingCurriculum) {
+                                        console.log('⚠️ 스트리밍 완료했지만 커리큘럼 생성 중 상태 - 강제 해제');
+                                        isGeneratingCurriculum = false;
+                                        const generateBtn = document.getElementById('generateCurriculumBtn');
+                                        if (generateBtn) {
+                                            generateBtn.disabled = false;
+                                            generateBtn.innerHTML = '<i class="fas fa-magic"></i> 맞춤형 커리큘럼 생성';
+                                        }
+                                        
+                                        // 커리큘럼 데이터가 있는지 마지막으로 확인
+                                        const existingCurriculum = StorageManager.curriculum.get();
+                                        if (existingCurriculum) {
+                                            console.log('📚 스트리밍 완료 시 기존 커리큘럼 발견 - 표시');
+                                            switchToTab('curriculum');
+                                            setTimeout(() => {
+                                                const curriculumContent = document.getElementById('curriculumContent');
+                                                if (curriculumContent) {
+                                                    displayCurriculumCards(curriculumContent, existingCurriculum);
+                                                }
+                                            }, 100);
+                                        }
+                                    }
                                     break;
                                 }
                             } catch (e) {
@@ -2293,17 +2456,63 @@
 
             } catch (error) {
                 streamingContent.textContent = `연결 오류: ${error.message}`;
+                
+                // 에러 발생 시에도 커리큘럼 생성 상태 해제
+                if (isGeneratingCurriculum) {
+                    console.log('❌ 에러 발생으로 커리큘럼 생성 상태 해제');
+                    isGeneratingCurriculum = false;
+                    const generateBtn = document.getElementById('generateCurriculumBtn');
+                    if (generateBtn) {
+                        generateBtn.disabled = false;
+                        generateBtn.innerHTML = '<i class="fas fa-magic"></i> 맞춤형 커리큘럼 생성';
+                    }
+                }
             }
 
             // 버튼 다시 활성화
             sendButton.disabled = false;
             sendButton.innerHTML = '<i class="fas fa-arrow-up"></i>';
+            
+            // 커리큘럼 생성 중이었다면 생성 버튼도 복원
+            if (isGeneratingCurriculum) {
+                console.log('⚠️ 스트리밍 완료 시 커리큘럼 생성 상태였음 - 최종 처리');
+                isGeneratingCurriculum = false;
+                const generateBtn = document.getElementById('generateCurriculumBtn');
+                if (generateBtn) {
+                    generateBtn.disabled = false;
+                    generateBtn.innerHTML = '<i class="fas fa-magic"></i> 맞춤형 커리큘럼 생성';
+                    console.log('🔄 커리큘럼 생성 버튼 강제 복원');
+                }
+                
+                // 마지막으로 커리큘럼 데이터 확인 및 표시
+                setTimeout(() => {
+                    const finalCurriculum = StorageManager.curriculum.get();
+                    if (finalCurriculum) {
+                        console.log('📚 스트리밍 완료 후 최종 커리큘럼 발견:', finalCurriculum.title);
+                        switchToTab('curriculum');
+                        setTimeout(() => {
+                            const curriculumContent = document.getElementById('curriculumContent');
+                            if (curriculumContent) {
+                                curriculumContent.innerHTML = '';
+                                displayCurriculumCards(curriculumContent, finalCurriculum);
+                                showNotification('커리큘럼이 완성되었습니다!', 'success');
+                            }
+                        }, 200);
+                    } else {
+                        console.log('❌ 스트리밍 완료 후에도 커리큘럼 데이터 없음');
+                        const curriculumContent = document.getElementById('curriculumContent');
+                        if (curriculumContent) {
+                            showCurriculumContent(curriculumContent);
+                        }
+                    }
+                }, 500);
+            }
         }
 
         // 사용자 프로필 업데이트
         function updateUserProfile(profileData) {
             currentUser = { ...currentUser, ...profileData };
-            localStorage.setItem('learnai_user', JSON.stringify(currentUser));
+            StorageManager.user.set(currentUser);
             updateUserDisplay();
             showNotification('프로필이 업데이트되었습니다');
         }
@@ -2328,12 +2537,11 @@
                 return;
             }
             
-            // 임시로 생성된 커리큘럼이 있는지 확인 (실제로는 서버에서 가져올 예정)
-            const hasCurriculum = localStorage.getItem('generatedCurriculum');
+            // 생성된 커리큘럼이 있는지 확인
+            const curriculumData = StorageManager.curriculum.get();
             
-            if (hasCurriculum) {
+            if (curriculumData) {
                 // 생성된 커리큘럼이 있으면 카드 형태로 표시
-                const curriculumData = JSON.parse(hasCurriculum);
                 displayCurriculumCards(container, curriculumData);
             } else {
                 // 생성된 커리큘럼이 없으면 + 박스 표시
@@ -2361,7 +2569,7 @@
                     font-size: 36px;
                     color: #9ca3af;
                     font-weight: 300;
-                " 
+                "
                 onclick="switchToTab('chat')"
                 onmouseover="this.style.borderColor='#a855f7'; this.style.background='#f8fafc'; this.style.color='#a855f7'"
                 onmouseout="this.style.borderColor='#d1d5db'; this.style.background='#fafafa'; this.style.color='#9ca3af'"
@@ -2445,7 +2653,7 @@
             let cardsHtml = '';
             
             // 진행도 상태 가져오기
-            const completedWeeks = JSON.parse(localStorage.getItem('curriculumProgress') || '[]');
+            const completedWeeks = StorageManager.curriculum.progress.get();
             const totalWeeks = modules.length;
             const completedCount = completedWeeks.length;
             const progressPercentage = totalWeeks > 0 ? (completedCount / totalWeeks) * 100 : 0;
@@ -2597,9 +2805,9 @@
                 </div>
             `;
             
-            // 모듈 카드들을 그리드로 배치 (동적 높이, 모든 모듈 표시)
+            // 모듈 카드들을 그리드로 배치 (고정 높이 카드)
             const rows = Math.ceil(modules.length / 4);
-            const gridHeight = rows * 120 + (rows - 1) * 12; // 카드 높이 120px + 간격 12px
+            const gridHeight = rows * 160 + (rows - 1) * 12; // 카드 높이 160px + 간격 12px
             cardsHtml += `<div id="curriculumGrid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; min-height: ${gridHeight}px; height: auto;">`;
             
             modules.forEach((module, index) => {
@@ -2612,10 +2820,11 @@
                         padding: 12px;
                         cursor: pointer;
                         transition: all 0.3s ease;
-                        height: fit-content;
-                        min-height: 100px;
+                        height: 160px;
                         position: relative;
                         overflow: hidden;
+                        display: flex;
+                        flex-direction: column;
                     " 
                     onmouseover="this.style.borderColor='${weekColor}'; this.style.boxShadow='0 2px 8px rgba(168, 85, 247, 0.1)'"
                     onmouseout="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"
@@ -2658,12 +2867,14 @@
                         <p id="description-${index}" style="
                             font-size: 10px;
                             color: #6b7280;
-                            margin: 0 0 6px 0;
+                            margin: 0 0 8px 0;
                             line-height: 1.3;
                             display: -webkit-box;
-                            -webkit-line-clamp: 2;
+                            -webkit-line-clamp: 3;
                             -webkit-box-orient: vertical;
                             overflow: hidden;
+                            flex: 1;
+                            min-height: 0;
                         ">
                             ${module.description || '이번 주차의 학습 내용을 다룹니다.'}
                         </p>
@@ -2678,6 +2889,11 @@
                                         border-radius: 3px;
                                         font-size: 8px;
                                         font-weight: 500;
+                                        max-width: 80px;
+                                        overflow: hidden;
+                                        text-overflow: ellipsis;
+                                        white-space: nowrap;
+                                        display: inline-block;
                                     ">${concept}</span>
                                 `).join('')}
                                 ${module.key_concepts.length > 2 ? `<span style="color: #9ca3af; font-size: 8px;">+${module.key_concepts.length - 2}</span>` : ''}
@@ -2693,7 +2909,7 @@
 
         // 모듈 상세 정보 모달 표시
         function toggleModuleDetail(moduleIndex) {
-            const curriculumData = JSON.parse(localStorage.getItem('generatedCurriculum') || '{}');
+            const curriculumData = StorageManager.curriculum.get() || {};
             const module = curriculumData.modules?.[moduleIndex];
             
             if (!module) return;
@@ -2945,6 +3161,137 @@
                                                 ${concept}
                                             </div>
                                         `).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                            
+                            ${module.learning_outcomes && module.learning_outcomes.length > 0 ? `
+                                <div style="
+                                    background: white;
+                                    border-radius: 16px;
+                                    padding: 24px;
+                                    margin-bottom: 24px;
+                                    border: 1px solid #e2e8f0;
+                                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+                                ">
+                                    <h3 style="
+                                        font-size: 20px;
+                                        font-weight: 700;
+                                        color: #1e293b;
+                                        margin-bottom: 20px;
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 12px;
+                                    ">
+                                        <span style="
+                                            background: linear-gradient(135deg, ${weekColor}20, ${weekColor}10);
+                                            color: ${weekColor};
+                                            width: 36px;
+                                            height: 36px;
+                                            border-radius: 12px;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            font-size: 16px;
+                                        ">🏆</span>
+                                        학습 성과
+                                    </h3>
+                                    <div style="
+                                        display: grid;
+                                        gap: 12px;
+                                    ">
+                                        ${module.learning_outcomes.map((outcome, idx) => `
+                                            <div style="
+                                                background: #f8fafc;
+                                                border: 1px solid #f1f5f9;
+                                                border-left: 4px solid ${weekColor};
+                                                padding: 16px;
+                                                border-radius: 0 12px 12px 0;
+                                                color: #475569;
+                                                line-height: 1.6;
+                                                font-weight: 500;
+                                                position: relative;
+                                            ">
+                                                <div style="
+                                                    position: absolute;
+                                                    top: -8px;
+                                                    left: 12px;
+                                                    background: ${weekColor};
+                                                    color: white;
+                                                    width: 24px;
+                                                    height: 24px;
+                                                    border-radius: 50%;
+                                                    display: flex;
+                                                    align-items: center;
+                                                    justify-content: center;
+                                                    font-size: 12px;
+                                                    font-weight: 700;
+                                                ">${idx + 1}</div>
+                                                <div style="margin-top: 8px;">
+                                                    ${outcome}
+                                                </div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            ` : ''}
+                            
+                            ${module.estimated_hours ? `
+                                <div style="
+                                    background: white;
+                                    border-radius: 16px;
+                                    padding: 24px;
+                                    margin-bottom: 24px;
+                                    border: 1px solid #e2e8f0;
+                                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+                                ">
+                                    <h3 style="
+                                        font-size: 20px;
+                                        font-weight: 700;
+                                        color: #1e293b;
+                                        margin-bottom: 20px;
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 12px;
+                                    ">
+                                        <span style="
+                                            background: linear-gradient(135deg, ${weekColor}20, ${weekColor}10);
+                                            color: ${weekColor};
+                                            width: 36px;
+                                            height: 36px;
+                                            border-radius: 12px;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            font-size: 16px;
+                                        ">⏰</span>
+                                        학습 시간
+                                    </h3>
+                                    <div style="
+                                        background: linear-gradient(135deg, ${weekColor}08, ${weekColor}03);
+                                        border: 2px solid ${weekColor}15;
+                                        color: #475569;
+                                        padding: 20px;
+                                        border-radius: 12px;
+                                        text-align: center;
+                                        font-size: 24px;
+                                        font-weight: 700;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        gap: 8px;
+                                    ">
+                                        <span style="font-size: 20px;">📚</span>
+                                        ${module.estimated_hours}시간
+                                    </div>
+                                    <div style="
+                                        text-align: center;
+                                        color: #64748b;
+                                        font-size: 14px;
+                                        margin-top: 12px;
+                                        font-weight: 500;
+                                    ">
+                                        예상 학습 소요 시간
                                     </div>
                                 </div>
                             ` : ''}
@@ -3233,7 +3580,7 @@
                                 text-align: center;
                             ">
                                 ${(() => {
-                                    const completedWeeks = JSON.parse(localStorage.getItem('curriculumProgress') || '[]');
+                                    const completedWeeks = StorageManager.curriculum.progress.get();
                                     const isCompleted = completedWeeks.includes(moduleIndex);
                                     return `
                                         <div style="
@@ -3351,18 +3698,16 @@
         
         // 주차 완료 상태 토글
         function toggleWeekCompletion(moduleIndex) {
-            const completedWeeks = JSON.parse(localStorage.getItem('curriculumProgress') || '[]');
+            const completedWeeks = StorageManager.curriculum.progress.get();
             const isCurrentlyCompleted = completedWeeks.includes(moduleIndex);
             
             if (isCurrentlyCompleted) {
                 // 완료 해제
-                const updatedWeeks = completedWeeks.filter(week => week !== moduleIndex);
-                localStorage.setItem('curriculumProgress', JSON.stringify(updatedWeeks));
+                StorageManager.curriculum.progress.remove(moduleIndex);
                 showNotification(`${moduleIndex + 1}주차 완료 상태가 해제되었습니다.`, 'info');
             } else {
                 // 완료 추가
-                const updatedWeeks = [...completedWeeks, moduleIndex].sort((a, b) => a - b);
-                localStorage.setItem('curriculumProgress', JSON.stringify(updatedWeeks));
+                StorageManager.curriculum.progress.add(moduleIndex);
                 showNotification(`🎉 ${moduleIndex + 1}주차를 완료하셨습니다!`, 'success');
                 
                 // 완료 효과 애니메이션
@@ -3377,13 +3722,20 @@
                 }, 100);
             }
             
-            // 모달 내용 업데이트
+            // 완료 처리 후 모달 닫기 및 전체 커리큘럼으로 복귀
             setTimeout(() => {
                 closeModuleModal();
-                const curriculumData = JSON.parse(localStorage.getItem('generatedCurriculum') || '{}');
-                const module = curriculumData.modules?.[moduleIndex];
-                if (module) {
-                    showModuleModal(module, moduleIndex);
+                
+                // 커리큘럼 페이지로 이동하여 업데이트된 진행률 표시
+                switchToTab('curriculum');
+                
+                // 커리큘럼 콘텐츠 새로고침
+                const curriculumContent = document.getElementById('curriculumContent');
+                if (curriculumContent) {
+                    const curriculumData = StorageManager.curriculum.get();
+                    if (curriculumData) {
+                        displayCurriculumCards(curriculumContent, curriculumData);
+                    }
                 }
             }, 300);
             
@@ -3395,8 +3747,8 @@
         function updateCurriculumProgress() {
             const curriculumContent = document.getElementById('curriculumContent');
             if (curriculumContent && curriculumContent.style.display === 'block') {
-                const curriculumData = JSON.parse(localStorage.getItem('generatedCurriculum') || '{}');
-                if (curriculumData.modules) {
+                const curriculumData = StorageManager.curriculum.get();
+                if (curriculumData && curriculumData.modules) {
                     displayCurriculumCards(curriculumContent, curriculumData);
                 }
             }
@@ -3404,7 +3756,7 @@
         
         // 진행도 초기화 (새 세션이나 커리큘럼 재생성 시)
         function resetCurriculumProgress() {
-            localStorage.removeItem('curriculumProgress');
+            StorageManager.curriculum.progress.clear();
             updateCurriculumProgress();
         }
 
@@ -3412,46 +3764,321 @@
         let selectedMentors = [];
 
         // 자연어 질문으로 멘토 찾기
-        function findMentorByQuestion() {
+        // 10개 페르소나 정보 정의
+        const PERSONAS = {
+            architecture: { name: "건축", expertise: "건축 설계, 건축 구조, 건축 환경, BIM, 인테리어 디자인, 도시건축", icon: "fas fa-building", color: "linear-gradient(135deg, #667eea, #764ba2)" },
+            civil_urban: { name: "토목 도시", expertise: "토목공학, 도시계획, 도시설계, 지반공학, 구조역학, 교통공학", icon: "fas fa-city", color: "linear-gradient(135deg, #a855f7, #ec4899)" },
+            transport: { name: "교통 운송", expertise: "교통시스템, 물류관리, 교통정책, 스마트 모빌리티, 운송경제학", icon: "fas fa-truck", color: "linear-gradient(135deg, #10b981, #059669)" },
+            mechanical: { name: "기계 금속", expertise: "기계설계, 재료공학, 생산공학, 자동화, 열역학, 유체역학", icon: "fas fa-cog", color: "linear-gradient(135deg, #6366f1, #8b5cf6)" },
+            electrical: { name: "전기 전자", expertise: "전기공학, 전자회로, 제어시스템, 전력시스템, 신호처리, 임베디드", icon: "fas fa-bolt", color: "linear-gradient(135deg, #f59e0b, #d97706)" },
+            precision_energy: { name: "정밀 에너지", expertise: "정밀기기, 측정공학, 에너지시스템, 신재생에너지, 에너지효율", icon: "fas fa-atom", color: "linear-gradient(135deg, #059669, #047857)" },
+            materials: { name: "소재 재료", expertise: "신소재, 나노기술, 재료과학, 고분자, 세라믹, 금속재료", icon: "fas fa-flask", color: "linear-gradient(135deg, #dc2626, #b91c1c)" },
+            computer: { name: "컴퓨터 통신", expertise: "소프트웨어공학, 네트워크, 데이터베이스, AI/ML, 사이버보안, 클라우드", icon: "fas fa-laptop-code", color: "linear-gradient(135deg, #3b82f6, #2563eb)" },
+            industrial: { name: "산업", expertise: "산업공학, 품질관리, 생산관리, 공급망관리, 린제조, 6시그마", icon: "fas fa-industry", color: "linear-gradient(135deg, #7c3aed, #6d28d9)" },
+            chemical: { name: "화공", expertise: "화학공학, 공정설계, 반응공학, 분리공정, 화학플랜트, 안전공학", icon: "fas fa-vial", color: "linear-gradient(135deg, #16a34a, #15803d)" }
+        };
+
+        async function findMentorByQuestion() {
             const question = document.getElementById('naturalQuestionInput').value.trim();
             if (!question) {
                 showNotification('질문을 입력해주세요', 'error');
                 return;
             }
-            
-            // 간단한 키워드 매칭 로직 (실제로는 AI가 처리)
-            let suggestedMentors = [];
-            
-            if (question.includes('개발') || question.includes('프로그래밍') || question.includes('코딩')) {
-                suggestedMentors.push('designer');
+
+            // 로딩 상태 표시
+            const button = event.target;
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 8px;"></i>분석 중...';
+            button.disabled = true;
+
+            try {
+                // mentor_chat.py API 호출 시도, 실패하면 임시 키워드 매칭 사용
+                let result;
+                try {
+                    const response = await fetch('/api/mentor_chat/analyze_and_recommend_personas', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            message: question,
+                            session_id: SESSION_ID
+                        })
+                    });
+
+                    if (response.ok) {
+                        result = await response.json();
+                    } else {
+                        throw new Error('API 응답 오류');
+                    }
+                } catch (apiError) {
+                    console.log('API 호출 실패, 키워드 매칭 사용:', apiError);
+                    
+                    // 임시 키워드 매칭 로직
+                    result = performKeywordMatching(question);
+                }
+                
+                // 추천된 페르소나들을 표시
+                displayRecommendedPersonas(result.recommended_personas, result.reasoning);
+                
+                showNotification(`${result.recommended_personas.length}개의 전문 분야 멘토를 추천했습니다!`, 'success');
+                
+            } catch (error) {
+                console.error('멘토 추천 오류:', error);
+                showNotification('멘토 추천 중 오류가 발생했습니다. 다시 시도해주세요.', 'error');
+            } finally {
+                // 버튼 원상복구
+                button.innerHTML = originalText;
+                button.disabled = false;
             }
-            if (question.includes('경영') || question.includes('전략') || question.includes('비즈니스')) {
-                suggestedMentors.push('executive');
-            }
-            if (question.includes('업무') || question.includes('실무') || question.includes('스킬')) {
-                suggestedMentors.push('engineer');
-            }
-            if (question.includes('영어') || question.includes('회화') || question.includes('비즈니스') || question.includes('이메일') || question.includes('면접')) {
-                suggestedMentors.push('datascientist');
-            }
-            if (question.includes('운세') || question.includes('사주') || question.includes('관상') || question.includes('직장') || question.includes('상사') || question.includes('동료') || question.includes('승진') || question.includes('이직')) {
-                suggestedMentors.push('marketing');
-            }
-            if (question.includes('학습') || question.includes('공부') || question.includes('교육') || question.includes('가르쳐')) {
-                suggestedMentors.push('professor');
-            }
-            
-            // 기본값
-            if (suggestedMentors.length === 0) {
-                suggestedMentors = ['designer', 'professor'];
-            }
-            
-            // 추천된 멘토들 자동 선택
-            suggestedMentors.forEach(mentor => {
-                selectMentor(mentor);
+        }
+
+        // 추천된 페르소나들을 선택된 멘토 영역에 바로 표시
+        function displayRecommendedPersonas(recommendedPersonas, reasoning) {
+            // 추천된 페르소나들을 선택된 멘토 영역에 추가
+            recommendedPersonas.forEach(persona => {
+                addPersonaToSelectedMentors(persona);
             });
             
-            showNotification(`질문에 적합한 ${suggestedMentors.length}명의 멘토를 추천했습니다!`, 'success');
+            // 선택된 멘토 영역으로 스크롤
+            const selectedMentorsSection = document.getElementById('selectedMentors');
+            setTimeout(() => {
+                selectedMentorsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
+        }
+
+        // 페르소나를 선택된 멘토 영역에 추가
+        function addPersonaToSelectedMentors(persona) {
+            // 공백 문제 및 다양한 키 이름 처리
+            const cleanPersona = {
+                id: getValueFromObject(persona, ['id', ' id']),
+                name: getValueFromObject(persona, ['name', ' name']),
+                reason: getValueFromObject(persona, [
+                    'reason', ' reason', 
+                    'reasoning', ' reasoning',
+                    'explanation', ' explanation',
+                    'rationale', ' rationale',
+                    'justification', ' justification',
+                    'description', ' description'
+                ])
+            };
+            
+            // 기본값 설정
+            if (!cleanPersona.reason) {
+                cleanPersona.reason = `${cleanPersona.name || '해당 분야'} 전문가로 추천되었습니다.`;
+            }
+            
+            console.log('원본 persona:', persona);
+            console.log('정리된 persona:', cleanPersona);
+            
+            const personaInfo = PERSONAS[cleanPersona.id];
+            if (!personaInfo) {
+                console.error(`페르소나 정보를 찾을 수 없습니다: ${cleanPersona.id}`);
+                console.log('사용 가능한 페르소나들:', Object.keys(PERSONAS));
+                return;
+            }
+            
+            // 이미 선택된 페르소나인지 확인
+            const existingPersona = document.querySelector(`[data-selected-persona="${cleanPersona.id}"]`);
+            if (existingPersona) return;
+            
+            const selectedMentorsContainer = document.getElementById('selectedMentors');
+            
+            // 첫 번째 페르소나 추가시 기본 메시지 제거
+            if (selectedMentorsContainer.innerHTML.includes('선택된 멘토들이 여기에 표시됩니다')) {
+                selectedMentorsContainer.innerHTML = '';
+            }
+            
+            // 페르소나 카드 생성
+            const personaCard = document.createElement('div');
+            personaCard.setAttribute('data-selected-persona', cleanPersona.id);
+            personaCard.style.cssText = `
+                background: linear-gradient(135deg, #f8faff, #f1f5ff);
+                border: 2px solid #667eea;
+                border-radius: 12px;
+                padding: 16px;
+                margin-bottom: 12px;
+                position: relative;
+                transition: all 0.3s;
+            `;
+            
+            personaCard.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 48px; height: 48px; background: ${personaInfo.color}; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i class="${personaInfo.icon}" style="color: white; font-size: 20px;"></i>
+                    </div>
+                    <div style="flex: 1; min-width: 0;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                            <h4 style="font-size: 16px; font-weight: 700; color: #4c1d95; margin: 0;">${personaInfo.name}</h4>
+                            <span style="background: #667eea; color: white; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 8px;">AI 추천</span>
+                        </div>
+                        <p style="font-size: 12px; color: #6366f1; line-height: 1.3; margin: 0 0 6px 0;">
+                            ${personaInfo.expertise}
+                        </p>
+                        <div style="background: rgba(102, 126, 234, 0.1); border-radius: 6px; padding: 8px;">
+                            <p style="font-size: 10px; color: #4c1d95; font-weight: 600; margin: 0 0 2px 0;">추천 이유:</p>
+                            <p style="font-size: 10px; color: #6366f1; line-height: 1.2; margin: 0;">${cleanPersona.reason}</p>
+                        </div>
+                    </div>
+                    <button onclick="removeSelectedPersona('${cleanPersona.id}')" style="
+                        position: absolute;
+                        top: 8px;
+                        right: 8px;
+                        background: #ef4444;
+                        color: white;
+                        border: none;
+                        border-radius: 50%;
+                        width: 24px;
+                        height: 24px;
+                        cursor: pointer;
+                        font-size: 12px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        transition: background 0.2s;
+                    " onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'">
+                        ×
+                    </button>
+                </div>
+            `;
+            
+            selectedMentorsContainer.appendChild(personaCard);
+            
+            // 시작 버튼 활성화
+            updateStartButton();
+        }
+
+        // 선택된 페르소나 제거
+        function removeSelectedPersona(personaId) {
+            const personaCard = document.querySelector(`[data-selected-persona="${personaId}"]`);
+            if (personaCard) {
+                personaCard.remove();
+            }
+            
+            // 선택된 멘토가 없으면 기본 메시지 표시
+            const selectedMentorsContainer = document.getElementById('selectedMentors');
+            if (selectedMentorsContainer.children.length === 0) {
+                selectedMentorsContainer.innerHTML = '<div style="color: #6b7280; font-size: 14px;">선택된 멘토들이 여기에 표시됩니다</div>';
+            }
+            
+            updateStartButton();
+        }
+
+        // 추천 결과 숨기기
+        function hideRecommendedPersonas() {
+            const recommendedSection = document.getElementById('recommendedPersonas');
+            recommendedSection.style.display = 'none';
+        }
+
+        // 헬퍼 함수: 객체에서 여러 키 중 하나의 값을 찾아 반환
+        function getValueFromObject(obj, keys) {
+            for (const key of keys) {
+                if (obj && typeof obj === 'object' && key in obj && obj[key]) {
+                    return obj[key].toString().trim();
+                }
+            }
+            return '';
+        }
+
+        // 임시 키워드 매칭 로직
+        function performKeywordMatching(question) {
+            const questionLower = question.toLowerCase();
+            const recommendedPersonas = [];
+            
+            // 키워드별 페르소나 매칭
+            if (questionLower.includes('건축') || questionLower.includes('건물') || questionLower.includes('설계') || questionLower.includes('인테리어')) {
+                recommendedPersonas.push({
+                    id: 'architecture',
+                    name: '건축',
+                    reason: '건축 관련 키워드가 포함되어 있습니다.'
+                });
+            }
+            
+            if (questionLower.includes('토목') || questionLower.includes('도시') || questionLower.includes('건설') || questionLower.includes('지반')) {
+                recommendedPersonas.push({
+                    id: 'civil_urban',
+                    name: '토목 도시',
+                    reason: '토목 및 도시계획 관련 키워드가 포함되어 있습니다.'
+                });
+            }
+            
+            if (questionLower.includes('교통') || questionLower.includes('물류') || questionLower.includes('운송') || questionLower.includes('모빌리티')) {
+                recommendedPersonas.push({
+                    id: 'transport',
+                    name: '교통 운송',
+                    reason: '교통 및 운송 관련 키워드가 포함되어 있습니다.'
+                });
+            }
+            
+            if (questionLower.includes('기계') || questionLower.includes('금속') || questionLower.includes('자동화') || questionLower.includes('제조')) {
+                recommendedPersonas.push({
+                    id: 'mechanical',
+                    name: '기계 금속',
+                    reason: '기계공학 관련 키워드가 포함되어 있습니다.'
+                });
+            }
+            
+            if (questionLower.includes('전기') || questionLower.includes('전자') || questionLower.includes('회로') || questionLower.includes('제어')) {
+                recommendedPersonas.push({
+                    id: 'electrical',
+                    name: '전기 전자',
+                    reason: '전기전자공학 관련 키워드가 포함되어 있습니다.'
+                });
+            }
+            
+            if (questionLower.includes('에너지') || questionLower.includes('정밀') || questionLower.includes('신재생')) {
+                recommendedPersonas.push({
+                    id: 'precision_energy',
+                    name: '정밀 에너지',
+                    reason: '에너지 및 정밀기기 관련 키워드가 포함되어 있습니다.'
+                });
+            }
+            
+            if (questionLower.includes('소재') || questionLower.includes('재료') || questionLower.includes('나노') || questionLower.includes('고분자')) {
+                recommendedPersonas.push({
+                    id: 'materials',
+                    name: '소재 재료',
+                    reason: '소재 및 재료과학 관련 키워드가 포함되어 있습니다.'
+                });
+            }
+            
+            if (questionLower.includes('컴퓨터') || questionLower.includes('프로그래밍') || questionLower.includes('개발') || questionLower.includes('코딩') || questionLower.includes('소프트웨어') || questionLower.includes('ai') || questionLower.includes('머신러닝') || questionLower.includes('웹')) {
+                recommendedPersonas.push({
+                    id: 'computer',
+                    name: '컴퓨터 통신',
+                    reason: '컴퓨터 및 소프트웨어 관련 키워드가 포함되어 있습니다.'
+                });
+            }
+            
+            if (questionLower.includes('산업') || questionLower.includes('품질') || questionLower.includes('생산') || questionLower.includes('공급망') || questionLower.includes('린') || questionLower.includes('6시그마')) {
+                recommendedPersonas.push({
+                    id: 'industrial',
+                    name: '산업',
+                    reason: '산업공학 관련 키워드가 포함되어 있습니다.'
+                });
+            }
+            
+            if (questionLower.includes('화학') || questionLower.includes('화공') || questionLower.includes('공정') || questionLower.includes('반응') || questionLower.includes('플랜트')) {
+                recommendedPersonas.push({
+                    id: 'chemical',
+                    name: '화공',
+                    reason: '화학공학 관련 키워드가 포함되어 있습니다.'
+                });
+            }
+            
+            // 기본 추천 (키워드가 매칭되지 않은 경우)
+            if (recommendedPersonas.length === 0) {
+                recommendedPersonas.push({
+                    id: 'computer',
+                    name: '컴퓨터 통신',
+                    reason: '일반적인 학습 문의로 판단되어 컴퓨터 분야를 추천합니다.'
+                });
+            }
+            
+            return {
+                recommended_personas: recommendedPersonas,
+                reasoning: `키워드 분석을 통해 ${recommendedPersonas.length}개의 전문 분야를 추천했습니다.`
+            };
         }
 
         // 멘토 선택
@@ -3495,12 +4122,12 @@
             }
             
             const mentorNames = {
-                engineer: { name: '업무 과외 선생님', icon: '🔧', desc: '실무 스킬' },
-                executive: { name: '일타 강사', icon: '💼', desc: '핵심 설명' },
-                professor: { name: '교수', icon: '🎓', desc: '학습 지원' },
-                designer: { name: '개발자', icon: '💻', desc: '프로그래밍' },
-                datascientist: { name: '영어 선생님', icon: '🗣️', desc: '비즈니스 영어' },
-                marketing: { name: '명리학자', icon: '🔮', desc: '직장 운세' }
+                engineer: { name: '업무 과외 선생님', icon: '<i class="fas fa-briefcase"></i>', desc: '실무 스킬' },
+                executive: { name: '일타 강사', icon: '<i class="fas fa-star"></i>', desc: '핵심 설명' },
+                professor: { name: '교수', icon: '<i class="fas fa-graduation-cap"></i>', desc: '학습 지원' },
+                designer: { name: '개발자', icon: '<i class="fas fa-code"></i>', desc: '프로그래밍' },
+                datascientist: { name: '영어 선생님', icon: '<i class="fas fa-language"></i>', desc: '비즈니스 영어' },
+                marketing: { name: '명리학자', icon: '<i class="fas fa-magic"></i>', desc: '직장 운세' }
             };
             
             const mentorCards = selectedMentors.map(mentorType => {
@@ -3539,20 +4166,35 @@
             const btn = document.getElementById('startMentoringBtn');
             if (!btn) return;
             
-            if (selectedMentors.length > 0) {
+            // 기존 선택된 멘토 수 + 추천된 페르소나 수 확인
+            const selectedPersonas = document.querySelectorAll('[data-selected-persona]');
+            const totalSelected = selectedMentors.length + selectedPersonas.length;
+            
+            if (totalSelected > 0) {
                 btn.style.opacity = '1';
                 btn.style.pointerEvents = 'auto';
                 btn.disabled = false;
+                btn.innerHTML = `<i class="fas fa-play" style="margin-right: 8px;"></i>멘토 선택 (${totalSelected}개)`;
             } else {
                 btn.style.opacity = '0.5';
                 btn.style.pointerEvents = 'none';
                 btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-play" style="margin-right: 8px;"></i>멘토 선택';
             }
         }
 
         // 멘토링 시작
         function startMentoring() {
-            if (selectedMentors.length === 0) return;
+            // 기존 선택된 멘토 수 + 추천된 페르소나 수 확인
+            const selectedPersonas = document.querySelectorAll('[data-selected-persona]');
+            const totalSelected = selectedMentors.length + selectedPersonas.length;
+            
+            if (totalSelected === 0) {
+                showNotification('먼저 멘토를 선택해주세요.', 'error');
+                return;
+            }
+            
+            console.log(`멘토링 시작: 기존 멘토 ${selectedMentors.length}개 + 추천 페르소나 ${selectedPersonas.length}개`);
             
             // 상세 프로필 섹션 생성
             createMentorProfileSection();
@@ -3576,6 +4218,7 @@
             
             // 멘토 상세 정보 정의
             const mentorProfiles = {
+                // 기존 6개 멘토 프로필
                 engineer: {
                     name: '업무 과외 선생님',
                     title: '실무 전문 멘토',
@@ -3617,6 +4260,78 @@
                     affiliation: '현대철학관',
                     expertise: '직장 내 인간관계 운세, 상사와 동료 관상 분석, 승진 시기 예측, 이직 운 타이밍, 회사 생활 맞춤 사주풀이 및 오늘의 업무 운세를 제공합니다.',
                     description: '회사생활이 힘드시나요? 오늘 상사 기분이 어떨지, 동료들과의 관계는 어떻게 풀어갈지 명리학으로 재미있게 알아보세요. 직장 생활의 고민을 운세로 풀어드려요!'
+                },
+                
+                // 새로 추가된 10개 페르소나 프로필
+                architecture: {
+                    name: '건축 전문가',
+                    title: '건축 설계 및 시공 멘토',
+                    affiliation: '건축사사무소',
+                    expertise: '건축 설계, 건축 구조, 건축 환경, BIM 모델링, 인테리어 디자인, 도시건축 계획 및 건축법규에 대한 전문적인 지식을 보유하고 있습니다.',
+                    description: '20년 경력의 건축 전문가로서 실무 경험을 바탕으로 건축 설계부터 시공까지 체계적으로 가르쳐드립니다. 복잡한 건축 개념을 실제 프로젝트 사례로 쉽게 설명해드려요.'
+                },
+                civil_urban: {
+                    name: '토목도시 전문가',
+                    title: '토목공학 및 도시계획 멘토',
+                    affiliation: '도시계획연구소',
+                    expertise: '토목공학, 도시계획, 도시설계, 지반공학, 구조역학, 교통공학 및 지속가능한 도시 발전에 대한 전문적인 지식을 보유하고 있습니다.',
+                    description: '도시 인프라 구축의 실무 경험이 풍부한 전문가입니다. 이론과 실무를 연결하여 현실적인 문제 해결 방안을 제시하며, 미래 도시에 대한 통찰력을 제공합니다.'
+                },
+                transport: {
+                    name: '교통운송 전문가',
+                    title: '교통시스템 및 물류 멘토',
+                    affiliation: '교통연구원',
+                    expertise: '교통시스템 설계, 물류관리, 교통정책, 스마트 모빌리티, 운송경제학 및 미래 교통 기술에 대한 전문적인 지식을 보유하고 있습니다.',
+                    description: '교통 및 운송 시스템의 최신 트렌드와 정책 동향에 밝은 전문가입니다. 데이터 기반 분석과 정책적 관점에서 효율적이고 지속가능한 교통 솔루션을 제안합니다.'
+                },
+                mechanical: {
+                    name: '기계금속 전문가',
+                    title: '기계공학 및 생산 멘토',
+                    affiliation: '제조업체 R&D센터',
+                    expertise: '기계설계, 재료공학, 생산공학, 자동화 시스템, 열역학, 유체역학 및 혁신적인 기계 기술에 대한 전문적인 지식을 보유하고 있습니다.',
+                    description: '제조업 현장에서의 풍부한 실무 경험을 바탕으로 이론과 실제를 연결해서 가르쳐드립니다. 미래 제조업 트렌드와 Industry 4.0에 대한 깊은 통찰력을 제공합니다.'
+                },
+                electrical: {
+                    name: '전기전자 전문가',
+                    title: '전기전자공학 멘토',
+                    affiliation: '전자기업 기술연구소',
+                    expertise: '전기공학, 전자회로, 제어시스템, 전력시스템, 신호처리, 임베디드 시스템 및 최신 전자 기술에 대한 전문적인 지식을 보유하고 있습니다.',
+                    description: '최신 전자 기술 동향과 실무 적용 경험을 바탕으로 복잡한 전기전자 개념을 체계적으로 설명합니다. 이론적 기반과 실용적 접근 방법을 균형있게 제시합니다.'
+                },
+                precision_energy: {
+                    name: '정밀에너지 전문가',
+                    title: '정밀기기 및 에너지 멘토',
+                    affiliation: '에너지기술연구원',
+                    expertise: '정밀기기 설계, 측정공학, 에너지시스템, 신재생에너지, 에너지효율 최적화 및 지속가능한 에너지 솔루션에 대한 전문적인 지식을 보유하고 있습니다.',
+                    description: '정밀 기술과 에너지 시스템의 융합 분야 전문가입니다. 기술적 정확성과 환경적 고려사항을 모두 반영한 실용적인 조언을 제공하며, 미래 에너지 기술을 안내합니다.'
+                },
+                materials: {
+                    name: '소재재료 전문가',
+                    title: '신소재 및 재료과학 멘토',
+                    affiliation: '재료연구소',
+                    expertise: '신소재 개발, 나노기술, 재료과학, 고분자 소재, 세라믹, 금속재료 및 미래 소재 기술에 대한 전문적인 지식을 보유하고 있습니다.',
+                    description: '기초 과학과 산업 응용을 연결하는 소재 분야 전문가입니다. 미래 소재 기술과 산업 트렌드에 대한 깊은 통찰력을 바탕으로 실용적이면서도 혁신적인 접근 방법을 제시합니다.'
+                },
+                computer: {
+                    name: '컴퓨터통신 전문가',
+                    title: 'IT 및 소프트웨어 멘토',
+                    affiliation: 'IT기업 개발팀',
+                    expertise: '소프트웨어공학, 네트워크 시스템, 데이터베이스, 인공지능/머신러닝, 사이버보안, 클라우드 컴퓨팅 및 최신 IT 기술에 대한 전문적인 지식을 보유하고 있습니다.',
+                    description: '최신 기술 트렌드와 산업 동향을 잘 파악하고 있는 IT 전문가입니다. 이론적 배경과 실제 구현 경험을 바탕으로 체계적이고 실용적인 개발 가이드를 제시합니다.'
+                },
+                industrial: {
+                    name: '산업공학 전문가',
+                    title: '생산관리 및 품질경영 멘토',
+                    affiliation: '산업경영컨설팅',
+                    expertise: '산업공학, 품질관리, 생산관리, 공급망관리, 린제조, 6시그마 및 기업 운영 효율성 향상에 대한 전문적인 지식을 보유하고 있습니다.',
+                    description: '기업의 운영 효율성 향상과 경쟁력 강화에 대한 실무 경험이 풍부한 전문가입니다. 데이터 분석과 시스템적 사고를 바탕으로 실질적인 개선 방안을 제안합니다.'
+                },
+                chemical: {
+                    name: '화공 전문가',
+                    title: '화학공학 및 공정 멘토',
+                    affiliation: '화학플랜트',
+                    expertise: '화학공학, 공정설계, 반응공학, 분리공정, 화학플랜트 운영, 안전공학 및 환경 친화적인 공정에 대한 전문적인 지식을 보유하고 있습니다.',
+                    description: '산업 현장에서의 안전과 효율성을 중시하는 화학공학 전문가입니다. 이론과 실무를 균형있게 접근하여 안전하고 효율적인 화학 공정 솔루션을 제시합니다.'
                 }
             };
             
@@ -3633,11 +4348,51 @@
                 max-width: 95%;
             `;
             
+            // 기존 선택된 멘토들과 추천된 페르소나들을 모두 수집
+            const allSelectedMentors = [];
+            
+            // 기존 6개 멘토
+            selectedMentors.forEach(mentorType => {
+                if (mentorProfiles[mentorType]) {
+                    allSelectedMentors.push({
+                        type: 'traditional',
+                        id: mentorType,
+                        profile: mentorProfiles[mentorType]
+                    });
+                }
+            });
+            
+            // 추천된 페르소나
+            const selectedPersonas = document.querySelectorAll('[data-selected-persona]');
+            selectedPersonas.forEach(personaElement => {
+                const personaId = personaElement.getAttribute('data-selected-persona');
+                if (mentorProfiles[personaId]) {
+                    allSelectedMentors.push({
+                        type: 'persona',
+                        id: personaId,
+                        profile: mentorProfiles[personaId]
+                    });
+                }
+            });
+            
+            console.log('생성할 프로필:', allSelectedMentors);
+            
+            // finalSelectedMentors 초기화 (모든 선택된 멘토 포함)
+            finalSelectedMentors = allSelectedMentors.map(mentor => mentor.id);
+            
             // 선택된 멘토들의 프로필 카드 생성
-            const profileCards = selectedMentors.map(mentorType => {
-                const profile = mentorProfiles[mentorType];
+            const profileCards = allSelectedMentors.map(mentor => {
+                const profile = mentor.profile;
+                
+                // 텍스트 길이 제한 및 더보기 처리
+                const maxExpertiseLength = 80;
+                const maxDescriptionLength = 120;
+                const shortExpertise = profile.expertise.length > maxExpertiseLength ? 
+                    profile.expertise.substring(0, maxExpertiseLength) + '...' : profile.expertise;
+                const shortDescription = profile.description.length > maxDescriptionLength ? 
+                    profile.description.substring(0, maxDescriptionLength) + '...' : profile.description;
                 return `
-                    <div class="mentor-profile-card" data-mentor="${mentorType}" style="
+                    <div class="mentor-profile-card" data-mentor="${mentor.id}" style="
                         background: white;
                         border: 1px solid #e2e8f0;
                         border-radius: 12px;
@@ -3645,12 +4400,15 @@
                         transition: all 0.3s ease;
                         position: relative;
                         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-                        height: fit-content;
+                        height: 520px;
+                        overflow: hidden;
+                        display: flex;
+                        flex-direction: column;
                     " onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)'" 
                        onmouseout="this.style.boxShadow='0 1px 3px rgba(0, 0, 0, 0.1)'">
                         
-                        <!-- 프로필 헤더 -->
-                        <div style="display: flex; align-items: flex-start; margin-bottom: 20px;">
+                        <!-- 프로필 헤더 (고정 높이: 100px) -->
+                        <div style="display: flex; align-items: flex-start; margin-bottom: 16px; height: 100px; flex-shrink: 0;">
                             <div style="
                                 width: 56px;
                                 height: 56px;
@@ -3665,18 +4423,28 @@
                                 font-weight: 600;
                             ">${profile.name.charAt(0)}</div>
                             
-                            <div style="flex: 1;">
+                            <div style="flex: 1; overflow: hidden;">
                                 <h3 style="
                                     font-size: 18px;
                                     font-weight: 600;
                                     color: #1f2937;
                                     margin: 0 0 4px 0;
+                                    line-height: 1.2;
+                                    display: -webkit-box;
+                                    -webkit-line-clamp: 1;
+                                    -webkit-box-orient: vertical;
+                                    overflow: hidden;
                                 ">${profile.name}</h3>
                                 <p style="
                                     font-size: 14px;
                                     font-weight: 500;
                                     color: #6b7280;
                                     margin: 0 0 8px 0;
+                                    line-height: 1.2;
+                                    display: -webkit-box;
+                                    -webkit-line-clamp: 1;
+                                    -webkit-box-orient: vertical;
+                                    overflow: hidden;
                                 ">${profile.title}</p>
                                 <div style="
                                     display: inline-block;
@@ -3686,13 +4454,17 @@
                                     font-weight: 500;
                                     padding: 4px 8px;
                                     border-radius: 6px;
+                                    max-width: 100%;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    white-space: nowrap;
                                 ">${profile.affiliation}</div>
                             </div>
                             
                             <!-- 선택 체크박스 -->
-                            <div style="margin-left: 16px;">
-                                <input type="checkbox" id="final-select-${mentorType}" 
-                                       onchange="toggleFinalMentorSelection('${mentorType}')"
+                            <div style="margin-left: 16px; flex-shrink: 0;">
+                                <input type="checkbox" id="final-select-${mentor.id}" 
+                                       onchange="toggleFinalMentorSelection('${mentor.id}')"
                                        style="
                                            width: 18px;
                                            height: 18px;
@@ -3702,36 +4474,72 @@
                             </div>
                         </div>
                         
-                        <!-- 전문 분야 -->
-                        <div style="margin-bottom: 20px;">
+                        <!-- 전문 분야 (고정 높이: 120px) -->
+                        <div style="margin-bottom: 16px; height: 120px; flex-shrink: 0; overflow: hidden;">
                             <h4 style="
                                 font-size: 13px;
                                 font-weight: 600;
                                 color: #374151;
                                 margin: 0 0 8px 0;
                             ">My expertise</h4>
-                            <p style="
-                                font-size: 14px;
-                                color: #6b7280;
-                                line-height: 1.5;
-                                margin: 0;
-                            ">${profile.expertise}</p>
+                            <div style="position: relative; height: 100px; overflow: hidden;">
+                                <p id="expertise-${mentor.id}" style="
+                                    font-size: 14px;
+                                    color: #6b7280;
+                                    line-height: 1.4;
+                                    margin: 0;
+                                    ${profile.expertise.length > 80 ? 'display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;' : ''}
+                                ">${profile.expertise.length > 80 ? shortExpertise : profile.expertise}</p>
+                                ${profile.expertise.length > 80 ? `
+                                <button onclick="toggleText('expertise-${mentor.id}', '${profile.expertise.replace(/'/g, "\\'").replace(/"/g, '\\"')}', '${shortExpertise.replace(/'/g, "\\'").replace(/"/g, '\\"')}')" style="
+                                    position: absolute;
+                                    bottom: 0;
+                                    right: 0;
+                                    background: #f3f4f6;
+                                    color: #3b82f6;
+                                    border: none;
+                                    padding: 2px 6px;
+                                    border-radius: 4px;
+                                    font-size: 12px;
+                                    cursor: pointer;
+                                    font-weight: 500;
+                                ">더보기</button>
+                                ` : ''}
+                            </div>
                         </div>
                         
-                        <!-- 설명 -->
-                        <div style="margin-bottom: 20px;">
+                        <!-- 설명 (고정 높이: 140px) -->
+                        <div style="margin-bottom: 16px; height: 140px; flex-shrink: 0; overflow: hidden;">
                             <h4 style="
                                 font-size: 13px;
                                 font-weight: 600;
                                 color: #374151;
                                 margin: 0 0 8px 0;
                             ">About</h4>
-                            <p style="
-                                font-size: 14px;
-                                color: #6b7280;
-                                line-height: 1.5;
-                                margin: 0;
-                            ">${profile.description}</p>
+                            <div style="position: relative; height: 120px; overflow: hidden;">
+                                <p id="description-${mentor.id}" style="
+                                    font-size: 14px;
+                                    color: #6b7280;
+                                    line-height: 1.4;
+                                    margin: 0;
+                                    ${profile.description.length > 120 ? 'display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden;' : ''}
+                                ">${profile.description.length > 120 ? shortDescription : profile.description}</p>
+                                ${profile.description.length > 120 ? `
+                                <button onclick="toggleText('description-${mentor.id}', '${profile.description.replace(/'/g, "\\'").replace(/"/g, '\\"')}', '${shortDescription.replace(/'/g, "\\'").replace(/"/g, '\\"')}')" style="
+                                    position: absolute;
+                                    bottom: 0;
+                                    right: 0;
+                                    background: #f3f4f6;
+                                    color: #3b82f6;
+                                    border: none;
+                                    padding: 2px 6px;
+                                    border-radius: 4px;
+                                    font-size: 12px;
+                                    cursor: pointer;
+                                    font-weight: 500;
+                                ">더보기</button>
+                                ` : ''}
+                            </div>
                         </div>
                         
                         <!-- 주요 기능 -->
@@ -3797,7 +4605,7 @@
                 
                 <div style="text-align: center; margin-top: 32px;">
                     <button id="finalStartBtn" onclick="startFinalMentoring()" style="
-                        background: linear-gradient(135deg, #10b981, #059669);
+                        background: linear-gradient(135deg, #667eea, #764ba2);
                         color: white;
                         border: none;
                         padding: 16px 32px;
@@ -3806,11 +4614,11 @@
                         font-weight: 600;
                         cursor: pointer;
                         transition: transform 0.2s;
-                        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+                        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
                     " onmouseover="this.style.transform='scale(1.05)'" 
                        onmouseout="this.style.transform='scale(1)'">
-                        <i class="fas fa-rocket" style="margin-right: 8px;"></i>
-                        멘토링 시작하기
+                        <i class="fas fa-comments" style="margin-right: 8px;"></i>
+                        멘토들과 대화 시작
                     </button>
                 </div>
             `;
@@ -3823,7 +4631,7 @@
         }
 
         // 최종 멘토 선택 토글
-        let finalSelectedMentors = [...selectedMentors]; // 초기값은 선택된 모든 멘토
+        let finalSelectedMentors = []; // 초기값은 빈 배열, createMentorProfileSection에서 설정됨
         
         function toggleFinalMentorSelection(mentorType) {
             const checkbox = document.getElementById(`final-select-${mentorType}`);
@@ -3836,6 +4644,27 @@
             }
             
             updateFinalStartButton();
+        }
+        
+        function toggleText(elementId, fullText, shortText) {
+            const element = document.getElementById(elementId);
+            const button = element.parentElement.querySelector('button');
+            
+            if (element.textContent.includes('...')) {
+                // 현재 축약된 상태 → 전체 텍스트 표시
+                element.textContent = fullText;
+                element.style.display = 'block';
+                element.style.webkitLineClamp = 'unset';
+                element.style.webkitBoxOrient = 'unset';
+                button.textContent = '접기';
+            } else {
+                // 현재 전체 텍스트 → 축약 텍스트 표시
+                element.textContent = shortText;
+                element.style.display = '-webkit-box';
+                element.style.webkitLineClamp = elementId.includes('expertise') ? '4' : '5';
+                element.style.webkitBoxOrient = 'vertical';
+                button.textContent = '더보기';
+            }
         }
         
         function updateFinalStartButton() {
@@ -3855,8 +4684,8 @@
                 btn.style.pointerEvents = 'none';
                 btn.disabled = true;
                 btn.innerHTML = `
-                    <i class="fas fa-rocket" style="margin-right: 8px;"></i>
-                    멘토를 선택해주세요
+                    <i class="fas fa-comments" style="margin-right: 8px;"></i>
+                    대화할 멘토를 선택해주세요
                 `;
             }
         }
@@ -3865,20 +4694,675 @@
         function startFinalMentoring() {
             if (finalSelectedMentors.length === 0) return;
             
-            showNotification(`선택된 ${finalSelectedMentors.length}명의 멘토와 함께 멘토링을 시작합니다!`, 'success');
+            showNotification(`선택된 ${finalSelectedMentors.length}명의 멘토와 함께 대화를 시작합니다!`, 'success');
             
             // 선택된 멘토 정보를 저장
-            localStorage.setItem('selectedMentors', JSON.stringify(finalSelectedMentors));
+            StorageManager.mentors.set(finalSelectedMentors);
             
-            // 채팅 페이지로 이동
+            // 상세 프로필 섹션 제거
+            const profileSection = document.getElementById('mentorProfileSection');
+            if (profileSection) {
+                profileSection.remove();
+            }
+            
+            // 기존 대화창이 있으면 제거
+            const existingChat = document.getElementById('mentorChatSection');
+            if (existingChat) {
+                existingChat.remove();
+            }
+            
+            // 대화창 생성
+            createMentorChatSection();
+            
+            // 부드러운 스크롤로 대화창으로 이동
             setTimeout(() => {
-                switchToTab('chat');
-                // 상세 프로필 섹션 제거
-                const profileSection = document.getElementById('mentorProfileSection');
-                if (profileSection) {
-                    profileSection.remove();
+                const chatSection = document.getElementById('mentorChatSection');
+                if (chatSection) {
+                    chatSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
-            }, 1000);
+            }, 300);
+        }
+        
+        // 멘토 대화창 생성
+        function createMentorChatSection() {
+            // 멘토 내용 영역 찾기
+            const mentorContent = document.getElementById('mentorContent');
+            if (!mentorContent) return;
+            
+            // 대화창 컨테이너 생성
+            const chatSection = document.createElement('div');
+            chatSection.id = 'mentorChatSection';
+            chatSection.style.cssText = `
+                margin-top: 40px;
+                background: white;
+                border-radius: 16px;
+                box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+                overflow: hidden;
+                border: 1px solid #e5e7eb;
+            `;
+            
+            // 선택된 멘토 정보 가져오기
+            const selectedMentorsList = StorageManager.mentors.get() || [];
+            const mentorNames = selectedMentorsList.map(mentorId => {
+                // 기존 6개 멘토 매핑
+                const mentorNameMap = {
+                    'engineer': '업무 과외 선생님',
+                    'executive': '일타 강사', 
+                    'professor': '교수',
+                    'designer': '개발자',
+                    'datascientist': '영어 선생님',
+                    'marketing': '명리학자',
+                    // 10개 페르소나 매핑
+                    'architecture': '건축 전문가',
+                    'civil_urban': '토목도시 전문가',
+                    'transport': '교통운송 전문가',
+                    'mechanical': '기계금속 전문가',
+                    'electrical': '전기전자 전문가',
+                    'precision_energy': '정밀에너지 전문가',
+                    'materials': '소재재료 전문가',
+                    'computer': '컴퓨터통신 전문가',
+                    'industrial': '산업공학 전문가',
+                    'chemical': '화공 전문가'
+                };
+                return mentorNameMap[mentorId] || mentorId;
+            });
+            
+            chatSection.innerHTML = `
+                <!-- 대화창 헤더 -->
+                <div style="
+                    background: linear-gradient(135deg, #a855f7, #ec4899);
+                    color: white;
+                    padding: 20px 30px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                ">
+                    <div>
+                        <h3 style="
+                            font-size: 18px;
+                            font-weight: 600;
+                            margin: 0 0 4px 0;
+                        ">멘토와 대화하기</h3>
+                        <p style="
+                            font-size: 14px;
+                            opacity: 0.9;
+                            margin: 0;
+                        ">선택된 멘토: ${mentorNames.join(', ')}</p>
+                    </div>
+                    <button onclick="closeMentorChat()" style="
+                        background: rgba(255,255,255,0.2);
+                        border: none;
+                        color: white;
+                        width: 32px;
+                        height: 32px;
+                        border-radius: 50%;
+                        cursor: pointer;
+                        font-size: 18px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        transition: background 0.2s;
+                    " onmouseover="this.style.background='rgba(255,255,255,0.3)'" 
+                       onmouseout="this.style.background='rgba(255,255,255,0.2)'">×</button>
+                </div>
+                
+                <!-- 대화 메시지 영역 -->
+                <div id="mentorChatMessages" style="
+                    height: 400px;
+                    overflow-y: auto;
+                    padding: 20px 30px;
+                    background: #fafafa;
+                ">
+                    <div style="
+                        background: white;
+                        border-radius: 12px;
+                        padding: 16px;
+                        margin-bottom: 16px;
+                        border-left: 4px solid #a855f7;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+                    ">
+                        <div style="
+                            display: flex;
+                            align-items: center;
+                            margin-bottom: 8px;
+                        ">
+                            <div style="
+                                width: 32px;
+                                height: 32px;
+                                background: linear-gradient(135deg, #a855f7, #ec4899);
+                                border-radius: 50%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                color: white;
+                                font-weight: 600;
+                                font-size: 14px;
+                                margin-right: 10px;
+                            ">AI</div>
+                            <span style="
+                                font-weight: 600;
+                                color: #374151;
+                                font-size: 14px;
+                            ">멘토팀</span>
+                        </div>
+                        <p style="
+                            color: #6b7280;
+                            line-height: 1.5;
+                            margin: 0;
+                            font-size: 14px;
+                        ">안녕하세요! 선택해주신 ${selectedMentorsList.length}명의 멘토가 함께 도움을 드리겠습니다.<br>
+                        무엇이든 궁금한 점이나 학습하고 싶은 내용을 자유롭게 질문해주세요!</p>
+                    </div>
+                </div>
+                
+                <!-- 입력 영역 -->
+                <div style="
+                    padding: 20px 30px;
+                    background: white;
+                    border-top: 1px solid #e5e7eb;
+                ">
+                    <div style="
+                        display: flex;
+                        align-items: flex-end;
+                        gap: 12px;
+                        background: #f9fafb;
+                        border: 2px solid #e5e7eb;
+                        border-radius: 12px;
+                        padding: 12px;
+                        transition: all 0.2s ease;
+                    " id="mentorChatInputWrapper">
+                        <textarea 
+                            id="mentorChatInput"
+                            placeholder="멘토에게 질문하거나 학습하고 싶은 내용을 입력하세요..."
+                            style="
+                                flex: 1;
+                                border: none;
+                                background: transparent;
+                                resize: none;
+                                font-size: 14px;
+                                line-height: 1.4;
+                                outline: none;
+                                min-height: 20px;
+                                max-height: 100px;
+                                font-family: inherit;
+                            "
+                            onkeydown="handleMentorChatKeyDown(event)"
+                            oninput="autoResizeMentorChatInput(this)"></textarea>
+                        <button 
+                            id="mentorSendButton"
+                            onclick="sendMentorMessage()"
+                            style="
+                                width: 36px;
+                                height: 36px;
+                                background: linear-gradient(135deg, #a855f7, #ec4899);
+                                color: white;
+                                border: none;
+                                border-radius: 8px;
+                                cursor: pointer;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                transition: all 0.2s ease;
+                                flex-shrink: 0;
+                            "
+                            onmouseover="this.style.transform='scale(1.05)'"
+                            onmouseout="this.style.transform='scale(1)'">
+                            <i class="fas fa-paper-plane" style="font-size: 14px;"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // 멘토 내용 영역에 추가
+            mentorContent.appendChild(chatSection);
+            
+            // 입력창 포커스
+            setTimeout(() => {
+                const input = document.getElementById('mentorChatInput');
+                if (input) input.focus();
+            }, 100);
+        }
+        
+        // 멘토 대화창 닫기
+        function closeMentorChat() {
+            const chatSection = document.getElementById('mentorChatSection');
+            if (chatSection) {
+                chatSection.remove();
+                
+                // 멘토 선택 상태 초기화
+                selectedMentors = [];
+                finalSelectedMentors = [];
+                StorageManager.mentors.clear();
+                
+                // 선택된 멘토 영역 초기화
+                const selectedMentorsContainer = document.getElementById('selectedMentors');
+                if (selectedMentorsContainer) {
+                    selectedMentorsContainer.innerHTML = '<div style="color: #6b7280; font-size: 14px;">선택된 멘토들이 여기에 표시됩니다</div>';
+                }
+                
+                // 멘토 카드들 선택 상태 제거
+                const mentorCards = document.querySelectorAll('.mentor-card');
+                mentorCards.forEach(card => {
+                    card.style.borderColor = '#e5e7eb';
+                    card.style.background = 'white';
+                });
+                
+                // 추천된 페르소나들도 제거
+                const selectedPersonas = document.querySelectorAll('[data-selected-persona]');
+                selectedPersonas.forEach(persona => persona.remove());
+                
+                // 시작 버튼 비활성화
+                updateStartButton();
+            }
+        }
+        
+        // 멘토 채팅 키보드 이벤트 처리
+        function handleMentorChatKeyDown(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMentorMessage();
+            }
+        }
+        
+        // 멘토 채팅 입력창 자동 크기 조절
+        function autoResizeMentorChatInput(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 100) + 'px';
+            
+            // 입력 영역 포커스 스타일
+            const wrapper = document.getElementById('mentorChatInputWrapper');
+            if (wrapper) {
+                if (textarea.value.trim()) {
+                    wrapper.style.borderColor = '#a855f7';
+                    wrapper.style.boxShadow = '0 0 0 3px rgba(168, 85, 247, 0.1)';
+                } else {
+                    wrapper.style.borderColor = '#e5e7eb';
+                    wrapper.style.boxShadow = 'none';
+                }
+            }
+        }
+        
+        // 멘토에게 메시지 전송 - 각 멘토별로 개별 응답
+        async function sendMentorMessage() {
+            const input = document.getElementById('mentorChatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // 입력창 비우기 및 크기 초기화
+            input.value = '';
+            autoResizeMentorChatInput(input);
+            
+            // 전송 버튼 비활성화
+            const sendButton = document.getElementById('mentorSendButton');
+            sendButton.disabled = true;
+            sendButton.style.opacity = '0.5';
+            
+            // 사용자 메시지 추가
+            addMentorChatMessage('user', message);
+            
+            try {
+                // 선택된 멘토들 정보 가져오기
+                const selectedMentorsList = StorageManager.mentors.get() || [];
+                const sessionId = getCookieValue('session_id') || 'default';
+                
+                if (selectedMentorsList.length === 0) {
+                    throw new Error('선택된 멘토가 없습니다.');
+                }
+                
+                // 각 멘토별로 개별 응답 처리
+                const mentorPromises = selectedMentorsList.map(async (mentorId) => {
+                    try {
+                        // 멘토별 세션 ID 생성 (각 멘토마다 별도 세션 관리)
+                        const mentorSessionId = `${sessionId}_${mentorId}`;
+                        
+                        // 먼저 해당 멘토로 페르소나를 선택해야 함
+                        console.log(`🔄 멘토 ${mentorId} 페르소나 선택 중...`);
+                        const selectionResult = await selectPersonaForMentor(mentorId, mentorSessionId);
+                        console.log(`✅ 멘토 ${mentorId} 페르소나 선택 완료:`, selectionResult);
+                        
+                        // expert_mentoring 툴 호출
+                        console.log(`🔄 멘토 ${mentorId} 멘토링 응답 생성 중...`);
+                        const response = await callExpertMentoring(message, mentorSessionId);
+                        console.log(`✅ 멘토 ${mentorId} 응답 완료`);
+                        
+                        return {
+                            mentorId: mentorId,
+                            mentorName: getMentorName(mentorId),
+                            response: response,
+                            success: true
+                        };
+                    } catch (error) {
+                        console.error(`❌ 멘토 ${mentorId} 응답 오류:`, error);
+                        
+                        // 더 상세한 에러 정보 제공
+                        let errorMessage = `죄송합니다. ${getMentorName(mentorId)}의 응답을 생성하는 중 오류가 발생했습니다.`;
+                        
+                        if (error.message && error.message.includes('멘토링 모드가 활성화되지 않았습니다')) {
+                            errorMessage += '\\n페르소나 설정에 문제가 있었습니다. 잠시 후 다시 시도해주세요.';
+                        } else if (error.message) {
+                            errorMessage += `\\n오류 내용: ${error.message}`;
+                        }
+                        
+                        return {
+                            mentorId: mentorId,
+                            mentorName: getMentorName(mentorId),
+                            response: errorMessage,
+                            success: false
+                        };
+                    }
+                });
+                
+                // 모든 멘토 응답을 병렬 처리
+                const mentorResponses = await Promise.all(mentorPromises);
+                
+                // 각 멘토별로 개별 메시지로 표시
+                mentorResponses.forEach(mentorResponse => {
+                    addMentorChatMessage('mentor', mentorResponse.response, mentorResponse.mentorName, mentorResponse.mentorId);
+                });
+                
+            } catch (error) {
+                console.error('멘토 메시지 전송 오류:', error);
+                addMentorChatMessage('ai', '죄송합니다. 멘토 응답을 가져오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+            }
+            
+            // 전송 버튼 다시 활성화
+            sendButton.disabled = false;
+            sendButton.style.opacity = '1';
+            
+            // 입력창에 포커스
+            input.focus();
+        }
+        
+        // 멘토 채팅에 메시지 추가 - 개별 멘토 지원
+        function addMentorChatMessage(type, content, mentorName = null, mentorId = null) {
+            const messagesContainer = document.getElementById('mentorChatMessages');
+            if (!messagesContainer) return null;
+            
+            const messageId = 'mentor-msg-' + Date.now() + Math.random();
+            const messageDiv = document.createElement('div');
+            
+            if (type === 'user') {
+                messageDiv.innerHTML = `
+                    <div style="
+                        background: white;
+                        border-radius: 12px;
+                        padding: 16px;
+                        margin-bottom: 16px;
+                        border-left: 4px solid #3b82f6;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+                        margin-left: 40px;
+                    ">
+                        <div style="
+                            display: flex;
+                            align-items: center;
+                            margin-bottom: 8px;
+                        ">
+                            <div style="
+                                width: 32px;
+                                height: 32px;
+                                background: #e5e7eb;
+                                border-radius: 50%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                color: #6b7280;
+                                font-weight: 600;
+                                font-size: 14px;
+                                margin-right: 10px;
+                            ">U</div>
+                            <span style="
+                                font-weight: 600;
+                                color: #374151;
+                                font-size: 14px;
+                            ">나</span>
+                        </div>
+                        <p style="
+                            color: #374151;
+                            line-height: 1.5;
+                            margin: 0;
+                            font-size: 14px;
+                        ">${content}</p>
+                    </div>
+                `;
+            } else if (type === 'mentor') {
+                // 개별 멘토 응답
+                const mentorColor = getMentorColor(mentorId);
+                const mentorInitial = mentorName ? mentorName.charAt(0) : 'M';
+                
+                messageDiv.innerHTML = `
+                    <div style="
+                        background: white;
+                        border-radius: 12px;
+                        padding: 16px;
+                        margin-bottom: 16px;
+                        border-left: 4px solid ${mentorColor};
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+                    ">
+                        <div style="
+                            display: flex;
+                            align-items: center;
+                            margin-bottom: 8px;
+                        ">
+                            <div style="
+                                width: 32px;
+                                height: 32px;
+                                background: ${mentorColor};
+                                border-radius: 50%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                color: white;
+                                font-weight: 600;
+                                font-size: 14px;
+                                margin-right: 10px;
+                            ">${mentorInitial}</div>
+                            <span style="
+                                font-weight: 600;
+                                color: #374151;
+                                font-size: 14px;
+                            ">${mentorName || '멘토'}</span>
+                        </div>
+                        <div style="
+                            color: #6b7280;
+                            line-height: 1.5;
+                            margin: 0;
+                            font-size: 14px;
+                        ">${content}</div>
+                    </div>
+                `;
+            } else {
+                // 일반 AI 응답 (에러 메시지 등)
+                messageDiv.innerHTML = `
+                    <div style="
+                        background: white;
+                        border-radius: 12px;
+                        padding: 16px;
+                        margin-bottom: 16px;
+                        border-left: 4px solid #a855f7;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+                    ">
+                        <div style="
+                            display: flex;
+                            align-items: center;
+                            margin-bottom: 8px;
+                        ">
+                            <div style="
+                                width: 32px;
+                                height: 32px;
+                                background: linear-gradient(135deg, #a855f7, #ec4899);
+                                border-radius: 50%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                color: white;
+                                font-weight: 600;
+                                font-size: 14px;
+                                margin-right: 10px;
+                            ">AI</div>
+                            <span style="
+                                font-weight: 600;
+                                color: #374151;
+                                font-size: 14px;
+                            ">시스템</span>
+                        </div>
+                        <div id="${messageId}" style="
+                            color: #6b7280;
+                            line-height: 1.5;
+                            margin: 0;
+                            font-size: 14px;
+                        ">${content || '<span style="opacity: 0.6;">응답을 생성하고 있습니다...</span>'}</div>
+                    </div>
+                `;
+            }
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            return messageId;
+        }
+        
+        // 멘토 채팅 메시지 업데이트
+        function updateMentorChatMessage(messageId, content) {
+            const messageElement = document.getElementById(messageId);
+            if (messageElement) {
+                messageElement.innerHTML = content;
+                const messagesContainer = document.getElementById('mentorChatMessages');
+                if (messagesContainer) {
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                }
+            }
+        }
+        
+        // 쿠키 값 가져오기 유틸리티
+        function getCookieValue(name) {
+            const value = "; " + document.cookie;
+            const parts = value.split("; " + name + "=");
+            if (parts.length === 2) return parts.pop().split(";").shift();
+            return null;
+        }
+        
+        // 멘토 이름 가져오기
+        function getMentorName(mentorId) {
+            const mentorNameMap = {
+                'engineer': '업무 과외 선생님',
+                'executive': '일타 강사', 
+                'professor': '교수',
+                'designer': '개발자',
+                'datascientist': '영어 선생님',
+                'marketing': '명리학자',
+                // 10개 페르소나 매핑
+                'architecture': '건축 전문가',
+                'civil_urban': '토목도시 전문가',
+                'transport': '교통운송 전문가',
+                'mechanical': '기계금속 전문가',
+                'electrical': '전기전자 전문가',
+                'precision_energy': '정밀에너지 전문가',
+                'materials': '소재재료 전문가',
+                'computer': '컴퓨터통신 전문가',
+                'industrial': '산업공학 전문가',
+                'chemical': '화공 전문가'
+            };
+            return mentorNameMap[mentorId] || mentorId;
+        }
+        
+        // 멘토별 색상 가져오기
+        function getMentorColor(mentorId) {
+            const mentorColorMap = {
+                'engineer': '#10b981', // green
+                'executive': '#f59e0b', // amber
+                'professor': '#3b82f6', // blue
+                'designer': '#8b5cf6', // purple
+                'datascientist': '#06b6d4', // cyan
+                'marketing': '#f97316', // orange
+                // 10개 페르소나 색상
+                'architecture': '#ef4444', // red
+                'civil_urban': '#84cc16', // lime
+                'transport': '#0ea5e9', // sky
+                'mechanical': '#6366f1', // indigo
+                'electrical': '#8b5cf6', // violet
+                'precision_energy': '#d946ef', // fuchsia
+                'materials': '#ec4899', // pink
+                'computer': '#14b8a6', // teal
+                'industrial': '#f97316', // orange
+                'chemical': '#a855f7'  // purple
+            };
+            return mentorColorMap[mentorId] || '#a855f7';
+        }
+        
+        // 페르소나 선택 API 호출
+        async function selectPersonaForMentor(mentorId, sessionId) {
+            try {
+                console.log(`📋 페르소나 선택 요청: ${mentorId} for session ${sessionId}`);
+                
+                const response = await fetch('/api/mentor_chat/select_persona', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        persona_id: mentorId,
+                        session_id: sessionId
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error(`페르소나 선택 HTTP 오류: ${response.status}`, errorText);
+                    throw new Error(`페르소나 선택 실패: ${response.status} - ${errorText}`);
+                }
+                
+                const result = await response.json();
+                console.log(`✅ 페르소나 선택 응답:`, result);
+                
+                if (result.error) {
+                    throw new Error(result.error);
+                }
+                
+                // 세션이 설정될 시간을 줌
+                await new Promise(resolve => setTimeout(resolve, 100));
+                
+                return result;
+            } catch (error) {
+                console.error('페르소나 선택 오류:', error);
+                throw error;
+            }
+        }
+        
+        // expert_mentoring 툴 호출
+        async function callExpertMentoring(message, sessionId) {
+            try {
+                console.log(`🧠 멘토링 요청: session ${sessionId}, message: ${message.substring(0, 50)}...`);
+                
+                const response = await fetch('/api/mentor_chat/expert_mentoring', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        session_id: sessionId
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error(`멘토링 HTTP 오류: ${response.status}`, errorText);
+                    throw new Error(`멘토링 호출 실패: ${response.status} - ${errorText}`);
+                }
+                
+                const result = await response.json();
+                console.log(`✅ 멘토링 응답:`, result);
+                
+                if (result.error) {
+                    throw new Error(result.error);
+                }
+                
+                return result.response || result.message || '응답을 가져올 수 없습니다.';
+            } catch (error) {
+                console.error('멘토링 호출 오류:', error);
+                throw error;
+            }
         }
 
         // 대화 초기화
@@ -3914,9 +5398,9 @@
                     
                     // 프로필과 커리큘럼 데이터 초기화
                     updateLearningProfile('', '', '');
-                    localStorage.removeItem('currentProfile');
-                    localStorage.removeItem('generatedCurriculum');
-                    localStorage.removeItem('curriculumProgress'); // 진행도도 초기화
+                    StorageManager.profile.clear();
+                    StorageManager.curriculum.clear();
+                    StorageManager.curriculum.progress.clear();
                     // 생성 상태 초기화
                     isGeneratingCurriculum = false;
                     
