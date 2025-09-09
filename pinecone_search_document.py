@@ -173,4 +173,4 @@ def search(req: SearchRequest = Body(...)):
 
 if __name__ == "__main__":
     # uvicorn 실행 (개발용)
-    uvicorn.run("pinecone_use:app", host="0.0.0.0", port=8090, reload=False)
+    uvicorn.run("pinecone_search_document:app", host="0.0.0.0", port=8091, reload=False)

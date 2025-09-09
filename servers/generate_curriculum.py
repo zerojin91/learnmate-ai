@@ -25,7 +25,9 @@ class CurriculumProgress:
     
     def __init__(self, session_id: str):
         self.session_id = session_id
-        self.progress_file = f"{os.getcwd()}/data/progress/{session_id}.json"
+        progress_dir = f"{os.getcwd()}/data/progress"
+        os.makedirs(progress_dir, exist_ok=True)
+        self.progress_file = f"{progress_dir}/{session_id}.json"
         self.current_phase = None
         self.phase_start_time = None
         
@@ -511,10 +513,10 @@ async def search_kmooc_resources(topic: str, week_title: str = None, top_k: int 
             "include_metadata": True
         }
         
-        # pinecone_use.py 서버가 localhost:8000에서 실행 중이라고 가정
+        # pinecone_search_kmooc.py 서버가 localhost:8099에서 실행 중이라고 가정
         async with httpx.AsyncClient() as client:
             response = await client.post(
-                "http://localhost:8090/search",
+                "http://localhost:8099/search",
                 json=search_payload,
                 timeout=10.0
             )
@@ -560,6 +562,86 @@ async def search_kmooc_resources(topic: str, week_title: str = None, top_k: int 
     except Exception as e:
         print(f"DEBUG: K-MOOC search failed: {e}", file=sys.stderr, flush=True)
         pass
+    
+    return []
+
+# 문서 자료 검색 (Pinecone)
+async def search_document_resources(topic: str, week_title: str = None, top_k: int = 3) -> List[Dict[str, Any]]:
+    """Pinecone DB에서 관련 PDF/문서 자료를 검색합니다"""
+    try:
+        # 검색 쿼리 구성
+        search_query = f"{topic}"
+        if week_title:
+            search_query += f" {week_title}"
+            
+        search_payload = {
+            "query": search_query,
+            "top_k": top_k,
+            "namespace": "main",  # DEFAULT_NAMESPACE 사용
+            "rerank": True,
+            "include_metadata": True
+        }
+        
+        print(f"DEBUG: 문서 검색 시작 - query: {search_query}", file=sys.stderr, flush=True)
+        
+        # pinecone_search_document.py 서버 호출
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                "http://localhost:8091/search",
+                json=search_payload,
+                timeout=10.0
+            )
+            
+        if response.status_code == 200:
+            result = response.json()
+            documents = []
+            
+            print(f"DEBUG: 문서 검색 응답 - 결과 수: {len(result.get('results', []))}", file=sys.stderr, flush=True)
+            
+            for item in result.get("results", []):
+                metadata = item.get("metadata", {})
+                score = item.get("score", 0.0)
+                
+                if metadata and score > 0.5:  # 관련성 임계값
+                    # 문서 정보 추출
+                    doc_title = metadata.get("title", "").strip()
+                    doc_content = metadata.get("content", "").strip()
+                    doc_source = metadata.get("source", "").strip()
+                    page_num = metadata.get("page", "")
+                    
+                    # 제목이 없으면 소스나 내용 첫 부분으로 대체
+                    if not doc_title:
+                        if doc_source:
+                            doc_title = f"문서: {doc_source}"
+                        else:
+                            doc_title = doc_content[:50] + "..." if doc_content else "PDF 문서"
+                    
+                    # 설명 생성
+                    description = doc_content[:200] + "..." if doc_content else "문서 내용"
+                    
+                    documents.append({
+                        "title": doc_title,
+                        "description": description,
+                        "content": doc_content[:1000],  # 콘텐츠 일부 포함
+                        "source": doc_source or "PDF Document",
+                        "page": page_num,
+                        "score": score,
+                        "type": "document",
+                        "has_content": True if doc_content else False
+                    })
+                    
+                    print(f"DEBUG: 문서 추가 - {doc_title[:30]}... (점수: {score:.3f})", file=sys.stderr, flush=True)
+            
+            print(f"DEBUG: 최종 문서 수: {len(documents)}", file=sys.stderr, flush=True)
+            return documents
+            
+        else:
+            print(f"DEBUG: 문서 검색 실패 - 상태코드: {response.status_code}", file=sys.stderr, flush=True)
+            
+    except Exception as e:
+        print(f"DEBUG: 문서 검색 오류: {type(e).__name__}: {e}", file=sys.stderr, flush=True)
+        import traceback
+        print(f"DEBUG: 스택 트레이스:\n{traceback.format_exc()}", file=sys.stderr, flush=True)
     
     return []
 
@@ -1046,12 +1128,13 @@ async def collect_module_resources(topic: str, module_info: Dict[str, Any]) -> D
         
         print(f"DEBUG: Enhanced search keywords: {search_keywords} (from topic: {topic}, week: {week_title})", file=sys.stderr, flush=True)
         
-        # 병렬 검색 실행
+        # 병렬 검색 실행 (K-MOOC + Web + Documents)
         kmooc_task = search_kmooc_resources(topic, week_title, top_k=3)
         web_task = search_resources(search_keywords, num_results=5)  # 더 많은 웹 결과 수집
+        documents_task = search_document_resources(topic, week_title, top_k=3)  # 문서 검색 추가
         
-        kmooc_results, web_results = await asyncio.gather(
-            kmooc_task, web_task, return_exceptions=True
+        kmooc_results, web_results, doc_results = await asyncio.gather(
+            kmooc_task, web_task, documents_task, return_exceptions=True
         )
         
         # 예외 처리
@@ -1061,6 +1144,9 @@ async def collect_module_resources(topic: str, module_info: Dict[str, Any]) -> D
         if isinstance(web_results, Exception):
             print(f"DEBUG: Web search exception: {web_results}", file=sys.stderr, flush=True)
             web_results = []
+        if isinstance(doc_results, Exception):
+            print(f"DEBUG: Documents search exception: {doc_results}", file=sys.stderr, flush=True)
+            doc_results = []
         
         # 웹 리소스의 실제 콘텐츠 가져오기
         enhanced_web_links = []
@@ -1117,15 +1203,25 @@ async def collect_module_resources(topic: str, module_info: Dict[str, Any]) -> D
             }
             enhanced_kmooc_videos.append(enhanced_video)
         
-        total_resources = len(enhanced_web_links) + len(enhanced_kmooc_videos)
-        resources_with_content = len([r for r in enhanced_web_links if r.get('has_content', False)]) + len(enhanced_kmooc_videos)
+        # 문서 검색 결과 처리
+        enhanced_documents = []
+        if doc_results:
+            enhanced_documents = doc_results  # 이미 필요한 형태로 반환됨
+            print(f"DEBUG: Document results: {len(enhanced_documents)} documents found", file=sys.stderr, flush=True)
         
-        print(f"DEBUG: Collected {total_resources} resources, {resources_with_content} with content", file=sys.stderr, flush=True)
+        total_resources = len(enhanced_web_links) + len(enhanced_kmooc_videos) + len(enhanced_documents)
+        resources_with_content = (
+            len([r for r in enhanced_web_links if r.get('has_content', False)]) + 
+            len(enhanced_kmooc_videos) + 
+            len([d for d in enhanced_documents if d.get('has_content', False)])
+        )
+        
+        print(f"DEBUG: Collected {total_resources} resources ({len(enhanced_kmooc_videos)} videos, {len(enhanced_web_links)} web, {len(enhanced_documents)} docs), {resources_with_content} with content", file=sys.stderr, flush=True)
         
         return {
             "videos": enhanced_kmooc_videos,
             "web_links": enhanced_web_links,
-            "documents": [],  # 향후 구현 예정
+            "documents": enhanced_documents,
             "total_resources": total_resources,
             "resources_with_content": resources_with_content,
             "content_coverage": resources_with_content / max(total_resources, 1)
@@ -1229,6 +1325,37 @@ async def generate_lecture_content(module: Dict[str, Any], resources: Dict[str, 
                     "type": "kmooc"
                 })
         
+        # PDF/문서 콘텐츠 수집
+        documents = resources.get("documents", [])
+        for doc in documents:
+            if doc.get("has_content", False):
+                doc_title = doc.get("title", "PDF 문서")
+                doc_content = doc.get("content", "")
+                doc_source = doc.get("source", "")
+                
+                # 중복 체크
+                if doc_title in seen_titles:
+                    print(f"DEBUG: 중복 문서 제외: {doc_title}", file=sys.stderr, flush=True)
+                    continue
+                    
+                seen_titles.add(doc_title)
+                
+                all_content.append({
+                    "source": "document",
+                    "title": doc_title,
+                    "summary": doc.get("description", "")[:200],
+                    "raw_content": doc_content[:3000],
+                    "key_points": [],  # 문서에서는 key_points 추출하지 않음
+                    "page": doc.get("page", ""),
+                    "doc_source": doc_source
+                })
+                source_references.append({
+                    "title": doc_title,
+                    "source": doc_source,
+                    "page": doc.get("page", ""),
+                    "type": "document"
+                })
+        
         content_coverage = resources.get("content_coverage", 0.0)
         
         # 콘텐츠가 충분하지 않은 경우
@@ -1249,10 +1376,16 @@ async def generate_lecture_content(module: Dict[str, Any], resources: Dict[str, 
             combined_content += f"\n=== {content['title']} ({content['source']}) ===\n"
             combined_content += f"요약: {content['summary']}\n"
             combined_content += f"내용: {content['raw_content']}\n"
+            
+            # 소스별 추가 정보
             if content.get('key_points'):
                 combined_content += f"핵심 포인트: {', '.join(content['key_points'][:3])}\n"
             if content.get('code_examples'):
                 combined_content += f"코드 예제: {content['code_examples'][0][:200]}...\n"
+            if content['source'] == 'document' and content.get('page'):
+                combined_content += f"페이지: {content['page']}\n"
+            if content.get('doc_source'):
+                combined_content += f"문서 출처: {content['doc_source']}\n"
         
         lecture_prompt = f"""다음 내부 DB에서 수집한 자료들을 기반으로 충실한 강의 내용을 작성해주세요:
 
