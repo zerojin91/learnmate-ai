@@ -1080,6 +1080,52 @@ JSON 형식 (키는 영어, 값은 한국어):
     
     return create_basic_curriculum(topic, level, duration_weeks)
 
+# LLM 기반 검색 키워드 추출 함수
+async def extract_search_keywords(topic: str, week_title: str, key_concepts: List[str]) -> str:
+    """LLM을 사용하여 주제, 주차 제목, 핵심 개념에서 검색에 최적화된 키워드를 추출합니다"""
+    if not llm_available:
+        # LLM이 없는 경우 기본적인 키워드 조합 반환
+        basic_keywords = [topic.split()[0] if topic else "", week_title.split()[0] if week_title else ""]
+        if key_concepts:
+            basic_keywords.append(key_concepts[0].split()[0] if key_concepts[0] else "")
+        return " ".join(filter(None, basic_keywords))
+    
+    try:
+        # 키워드 추출을 위한 프롬프트
+        keyword_prompt = f"""다음 학습 내용에 대해 검색에 최적화된 핵심 키워드 3-5개를 추출해주세요.
+
+주제: {topic}
+주차 제목: {week_title}
+핵심 개념: {', '.join(key_concepts[:3])}
+
+**요구사항:**
+1. 검색 엔진에서 관련 학습 자료를 찾기에 최적화된 키워드
+2. 한국어와 영어 키워드 모두 고려
+3. 너무 일반적이거나 너무 구체적이지 않은 적절한 수준
+4. 최대 5개, 공백으로 구분하여 제시
+5. 답변은 키워드만 제시 (설명 없이)
+
+예시: 회로이론 전류 저항 옴의법칙 키르히호프"""
+
+        # LLM 호출
+        response = await llm.ainvoke([{"role": "user", "content": keyword_prompt}])
+        extracted_keywords = response.content.strip()
+        
+        # 키워드 정리 (줄바꿈 제거, 여러 공백을 하나로)
+        import re
+        cleaned_keywords = re.sub(r'\s+', ' ', extracted_keywords.replace('\n', ' ')).strip()
+        
+        print(f"DEBUG: LLM extracted keywords: {cleaned_keywords} (from topic: {topic}, week: {week_title})", file=sys.stderr, flush=True)
+        return cleaned_keywords
+        
+    except Exception as e:
+        print(f"DEBUG: LLM keyword extraction failed: {e}, falling back to basic extraction", file=sys.stderr, flush=True)
+        # LLM 실패시 기본적인 키워드 조합 사용
+        basic_keywords = [topic.split()[0] if topic else "", week_title.split()[0] if week_title else ""]
+        if key_concepts:
+            basic_keywords.append(key_concepts[0].split()[0] if key_concepts[0] else "")
+        return " ".join(filter(None, basic_keywords))
+
 # 모듈별 리소스 수집 함수 (콘텐츠 포함)
 async def collect_module_resources(topic: str, module_info: Dict[str, Any]) -> Dict[str, List[Dict[str, Any]]]:
     """주차별 모듈에 대한 K-MOOC 영상과 웹 리소스를 수집하고 실제 콘텐츠도 가져옵니다"""
@@ -1087,46 +1133,12 @@ async def collect_module_resources(topic: str, module_info: Dict[str, Any]) -> D
         # K-MOOC 검색과 웹 검색을 병렬로 실행
         import asyncio
         
-        # 검색 쿼리 생성 - 더 구체적이고 관련성 높은 키워드
+        # 검색 쿼리 생성 - LLM 기반 키워드 추출
         week_title = module_info.get('title', '')
         key_concepts = module_info.get('key_concepts', [])
         
-        # 기본 주제에서 핵심 용어 추출
-        core_topic = topic.split()[0] if topic else ""  # 첫 번째 단어만 사용
-        
-        # 주차 제목에서 핵심 키워드 추출
-        week_keywords = []
-        if "기초" in week_title:
-            week_keywords.append("기초")
-        if "회로" in week_title:
-            week_keywords.append("회로")
-        if "분석" in week_title:
-            week_keywords.append("분석")
-        if "설계" in week_title:
-            week_keywords.append("설계")
-        
-        # 핵심 개념에서 구체적 키워드 선택 (최대 2개)
-        concept_keywords = []
-        for concept in key_concepts[:2]:
-            if "옴의 법칙" in concept:
-                concept_keywords.append("옴의법칙")
-            elif "키르히호프" in concept:
-                concept_keywords.append("키르히호프")
-            elif "저항" in concept:
-                concept_keywords.append("저항")
-            elif "전류" in concept:
-                concept_keywords.append("전류")
-            elif "전압" in concept:
-                concept_keywords.append("전압")
-        
-        # 검색 키워드 조합
-        search_parts = [core_topic]
-        search_parts.extend(week_keywords[:1])  # 주차 키워드 1개
-        search_parts.extend(concept_keywords[:1])  # 개념 키워드 1개
-        
-        search_keywords = " ".join(filter(None, search_parts))
-        
-        print(f"DEBUG: Enhanced search keywords: {search_keywords} (from topic: {topic}, week: {week_title})", file=sys.stderr, flush=True)
+        # LLM을 사용하여 검색에 최적화된 키워드 추출
+        search_keywords = await extract_search_keywords(topic, week_title, key_concepts)
         
         # 병렬 검색 실행 (K-MOOC + Web + Documents)
         kmooc_task = search_kmooc_resources(topic, week_title, top_k=3)
