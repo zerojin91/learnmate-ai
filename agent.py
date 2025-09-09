@@ -199,7 +199,8 @@ class MultiMCPAgent:
                                 'constraints': session_data.get('constraints', ''),
                                 'goal': session_data.get('goal', '')
                             }
-                            profile_data = {k: v for k, v in profile_info.items() if v}
+                            # 빈 값도 포함하여 전체 프로필 정보 전달 (UI에서 상태 표시를 위해)
+                            profile_data = profile_info
                             print(f"📊 최신 프로필 로드: {profile_data}")
                 except Exception as e:
                     print(f"프로필 로드 오류: {e}")
@@ -239,7 +240,25 @@ class MultiMCPAgent:
             if result:
                 print(result, end="", flush=True)
                 self.conversation_history.append({"role": "assistant", "content": result})
-                yield {"type": "message", "content": result, "node": "generate_curriculum"}
+                
+                # 커리큘럼 JSON 데이터 파싱 시도
+                try:
+                    # result가 JSON 형태인지 확인하고 파싱
+                    if result.strip().startswith('{') and '"title"' in result and '"modules"' in result:
+                        import json
+                        curriculum_data = json.loads(result)
+                        print(f"📚 커리큘럼 데이터 파싱 성공: {curriculum_data.get('title', 'Unknown')}")
+                        
+                        # curriculum 속성으로 전달
+                        yield {"type": "message", "content": result, "curriculum": curriculum_data, "node": "generate_curriculum"}
+                    else:
+                        # 일반 텍스트 응답
+                        yield {"type": "message", "content": result, "node": "generate_curriculum"}
+                        
+                except json.JSONDecodeError as e:
+                    print(f"⚠️ 커리큘럼 JSON 파싱 실패: {e}")
+                    # JSON 파싱 실패해도 일반 응답으로 처리
+                    yield {"type": "message", "content": result, "node": "generate_curriculum"}
                 
         except Exception as e:
             print(f"❌ 커리큘럼 생성 오류: {e}")
