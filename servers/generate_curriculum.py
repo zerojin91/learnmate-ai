@@ -106,6 +106,7 @@ class SessionParameters(BaseModel):
     """세션 파라미터 추출을 위한 구조화된 출력"""
     level: LevelEnum = Field(description="학습자의 레벨 (beginner/intermediate/advanced)")
     duration_weeks: int = Field(description="학습 기간 (주 단위, 1-52 사이)", ge=1, le=52)  # 1년까지 확장
+    weekly_hours: int = Field(default=10, description="주당 학습 가능 시간 (시간 단위, 1-40 사이)", ge=1, le=40)
     focus_areas: List[str] = Field(description="학습 포커스 영역들")
     
 class ExtractionRequest(BaseModel):
@@ -222,7 +223,16 @@ class SessionLoader:
    - "1년", "12개월", "1year", "52주" → 52
    - 명시되지 않으면 → 4
 
-3. 포커스 영역 (focus_areas):
+3. 주당 학습 가능 시간 (weekly_hours):
+   - "주 N시간", "주당 N시간", "주N시간" → N (공백 있거나 없거나 모두)
+   - "weekly N hours", "week N hours" → N
+   - "하루 N시간", "일 N시간", "매일 N시간" → N × 7 (주 7일 기준)
+   - "주말만", "토일만" → 10 (주말 학습 기준)
+   - "평일만", "월금" → 10 (평일 학습 기준)
+   - 예시: "주7시간" → 7, "주 4시간" → 4, "주당5시간" → 5
+   - 명시되지 않으면 → 10
+
+4. 포커스 영역 (focus_areas):
    - "웹", "web" → ["web development"]
    - "데이터", "data" → ["data analysis"]
    - "머신러닝", "AI", "인공지능" → ["machine learning"]
@@ -244,12 +254,22 @@ JSON 형식으로만 응답해주세요."""
                 # print(f"🤖 LLM parameter extraction attempt {attempt + 1}/{max_retries}...")  # MCP 통신 방해 방지
                 result = await structured_llm.ainvoke(messages)
                 
-                # 성공하면 결과 반환
+                # LLM 결과 검증 및 보정
                 extracted_params = {
                     "level": result.level.value,
                     "duration_weeks": result.duration_weeks,
+                    "weekly_hours": result.weekly_hours,
                     "focus_areas": result.focus_areas
                 }
+                
+                # weekly_hours가 기본값(10)이고 constraints에 시간 정보가 있으면 fallback으로 재파싱
+                if (extracted_params["weekly_hours"] == 10 and 
+                    any(keyword in constraints.lower() for keyword in ["시간", "hour", "주", "주당", "하루", "매일"])):
+                    print(f"DEBUG: LLM이 기본값 반환, fallback으로 재파싱: constraints='{constraints}'", file=sys.stderr, flush=True)
+                    fallback_result = self.parse_constraints_fallback(constraints, goal)
+                    extracted_params["weekly_hours"] = fallback_result["weekly_hours"]
+                    print(f"DEBUG: Fallback 파싱 결과: weekly_hours={extracted_params['weekly_hours']}", file=sys.stderr, flush=True)
+                
                 # print(f"✅ LLM extraction successful on attempt {attempt + 1}")  # MCP 통신 방해 방지
                 return extracted_params
             
@@ -301,6 +321,43 @@ JSON 형식으로만 응답해주세요."""
             duration_weeks = 36
         elif any(word in constraints_lower for word in ["1년", "12개월", "1year", "52주"]):
             duration_weeks = 52
+
+        # 주당 학습 가능 시간 파싱
+        import re
+        weekly_hours = 10  # 기본값
+        
+        # 정규표현식으로 "주 N시간", "주당 N시간" 패턴 매칭
+        week_hour_patterns = [
+            r'주\s*(\d+)\s*시간',    # "주 4시간", "주4시간"
+            r'주당\s*(\d+)\s*시간',   # "주당 4시간"
+            r'weekly\s*(\d+)\s*hours?'  # "weekly 4 hours"
+        ]
+        
+        for pattern in week_hour_patterns:
+            match = re.search(pattern, constraints_lower)
+            if match:
+                weekly_hours = int(match.group(1))
+                break
+        
+        # "하루 N시간" → 주 7일 기준으로 계산
+        daily_patterns = [
+            r'하루\s*(\d+)\s*시간',   # "하루 2시간"
+            r'일\s*(\d+)\s*시간',     # "일 2시간"
+            r'매일\s*(\d+)\s*시간'    # "매일 2시간"
+        ]
+        
+        for pattern in daily_patterns:
+            match = re.search(pattern, constraints_lower)
+            if match:
+                daily_hours = int(match.group(1))
+                weekly_hours = daily_hours * 7
+                break
+        
+        # 특별한 경우들
+        if any(word in constraints_lower for word in ["주말만", "토일만"]):
+            weekly_hours = 10  # 주말 학습 기준
+        elif any(word in constraints_lower for word in ["평일만", "월금"]):
+            weekly_hours = 10  # 평일 학습 기준
         
         # 포커스 영역 추출
         focus_areas = []
@@ -320,6 +377,7 @@ JSON 형식으로만 응답해주세요."""
         return {
             "level": level, 
             "duration_weeks": duration_weeks,
+            "weekly_hours": weekly_hours,
             "focus_areas": list(set(focus_areas))
         }
     
@@ -389,7 +447,13 @@ JSON 형식으로만 응답해주세요."""
                     module.get("estimated_hours", module.get("estimated_ hours", 0)) 
                     for module in cleaned_modules
                 ),
-                "average_hours_per_week": 0  # 임시로 0으로 설정
+                "average_hours_per_week": 0,  # 임시로 0으로 설정
+                
+                # 시간 제약 검증 정보
+                "hours_constraint_met": curriculum.get("hours_constraint_met", True),
+                "weekly_hours_constraint": curriculum.get("weekly_hours_constraint", 10),
+                "actual_weekly_hours": curriculum.get("actual_weekly_hours", 0),
+                "time_adjustment_applied": curriculum.get("hours_constraint_met") is False
             }
             
             # 평균 시간 재계산
@@ -820,10 +884,10 @@ async def fetch_resource_content(resource: Dict[str, str]) -> Dict[str, Any]:
         }
 
 # LLM을 사용한 단계별 커리큘럼 생성 (스트리밍 버전)
-async def generate_with_llm_streaming(topic: str, level: str, duration_weeks: int, focus_areas: List[str], resources: List[Dict[str, str]] = None, session_id: str = None) -> Dict[str, Any]:
+async def generate_with_llm_streaming(topic: str, level: str, duration_weeks: int, focus_areas: List[str], weekly_hours: int = 10, resources: List[Dict[str, str]] = None, session_id: str = None) -> Dict[str, Any]:
     """LLM을 사용하여 단계별로 커리큘럼을 생성하며 진행 상태를 공유"""
     if not llm_available:
-        return create_basic_curriculum(topic, level, duration_weeks)
+        return create_basic_curriculum(topic, level, duration_weeks, weekly_hours)
     
     # 진행 상태 추적기 초기화
     progress = CurriculumProgress(session_id) if session_id else None
@@ -905,8 +969,8 @@ JSON 형식:
         json_match = re.search(r'\{[\s\S]*\}', structure_text)
         if not json_match:
             if progress:
-                await progress.update("structure_design", "❌ 구조 설계 실패", details={"error": "JSON 파싱 실패"})
-            return create_basic_curriculum(topic, level, duration_weeks)
+                await progress.update("structure_design", "❌ 구조 설계 실패, fallback 사용", details={"error": "JSON 파싱 실패"})
+            return create_basic_curriculum(topic, level, duration_weeks, weekly_hours)
         
         structure_data = json.loads(json_match.group())
         modules = structure_data.get("modules", [])
@@ -977,21 +1041,88 @@ JSON 형식:
         if progress:
             await progress.update("completion", "✅ 커리큘럼 생성 완료!")
         
-        return {
+        # 생성된 커리큘럼에 시간 검증 및 조정 적용
+        streaming_curriculum = {
             "modules": detailed_modules,
             "overall_goal": structure_data.get("overall_goal", f"Master {topic}")
         }
+        
+        if progress:
+            await progress.update("validation", "⚠️ 시간 제약 검증 중...")
+        
+        validated_curriculum = validate_and_adjust_hours(streaming_curriculum, weekly_hours, duration_weeks)
+        
+        if progress:
+            final_total = sum(m.get("estimated_hours", 0) for m in validated_curriculum.get("modules", []))
+            await progress.update("completion", f"✅ 최종 완료! (총 {final_total}시간)")
+        
+        return validated_curriculum
         
     except Exception as e:
         print(f"DEBUG: Streaming curriculum generation failed: {e}", file=sys.stderr, flush=True)
         if progress:
             await progress.update("error", f"❌ 생성 실패: {str(e)}")
-        return create_basic_curriculum(topic, level, duration_weeks)
+        return create_basic_curriculum(topic, level, duration_weeks, weekly_hours)
+
+# 시간 제약 검증 및 조정 함수
+def validate_and_adjust_hours(curriculum: Dict[str, Any], weekly_hours: int, duration_weeks: int) -> Dict[str, Any]:
+    """생성된 커리큘럼의 시간을 검증하고 사용자 제약에 맞게 조정합니다"""
+    max_total_hours = weekly_hours * duration_weeks
+    modules = curriculum.get("modules", [])
+    
+    if not modules:
+        return curriculum
+    
+    # 1. 현재 총 시간 계산
+    current_total = sum(module.get("estimated_hours", 0) for module in modules)
+    
+    print(f"DEBUG: 시간 검증 - 현재 총 시간: {current_total}시간, 허용 시간: {max_total_hours}시간", file=sys.stderr, flush=True)
+    
+    # 2. 초과시 비율적으로 조정
+    if current_total > max_total_hours:
+        ratio = max_total_hours / current_total
+        print(f"DEBUG: 시간 초과 감지 - 조정 비율: {ratio:.2f}", file=sys.stderr, flush=True)
+        
+        adjusted_hours = []
+        for i, module in enumerate(modules):
+            original_hours = module.get("estimated_hours", weekly_hours)
+            adjusted_hour = max(1, round(original_hours * ratio))  # 최소 1시간 보장
+            module["estimated_hours"] = adjusted_hour
+            adjusted_hours.append(adjusted_hour)
+            print(f"DEBUG: 모듈 {i+1} 시간 조정: {original_hours}시간 → {adjusted_hour}시간", file=sys.stderr, flush=True)
+        
+        # 반올림으로 인한 오차 보정
+        actual_total = sum(adjusted_hours)
+        if actual_total != max_total_hours:
+            diff = max_total_hours - actual_total
+            # 가장 큰 모듈에 차이만큼 추가/제거
+            if diff > 0:
+                max_idx = adjusted_hours.index(max(adjusted_hours))
+                modules[max_idx]["estimated_hours"] += diff
+                print(f"DEBUG: 오차 보정 - 모듈 {max_idx+1}에 {diff}시간 추가", file=sys.stderr, flush=True)
+            elif diff < 0:
+                max_idx = adjusted_hours.index(max(adjusted_hours))
+                modules[max_idx]["estimated_hours"] = max(1, modules[max_idx]["estimated_hours"] + diff)
+                print(f"DEBUG: 오차 보정 - 모듈 {max_idx+1}에서 {abs(diff)}시간 제거", file=sys.stderr, flush=True)
+    
+    # 3. 통계 정보 재계산
+    final_total = sum(module.get("estimated_hours", 0) for module in modules)
+    curriculum["total_estimated_hours"] = final_total
+    curriculum["average_hours_per_week"] = final_total / duration_weeks if duration_weeks > 0 else 0
+    
+    # 4. 제약 준수 정보 추가
+    curriculum["hours_constraint_met"] = final_total <= max_total_hours
+    curriculum["weekly_hours_constraint"] = weekly_hours
+    curriculum["actual_weekly_hours"] = curriculum["average_hours_per_week"]
+    
+    print(f"DEBUG: 최종 시간 - 총 {final_total}시간, 주당 평균 {curriculum['average_hours_per_week']:.1f}시간", file=sys.stderr, flush=True)
+    
+    return curriculum
 
 # LLM을 사용한 커리큘럼 생성 (기존 버전)
-async def generate_with_llm(topic: str, level: str, duration_weeks: int, focus_areas: List[str], resources: List[Dict[str, str]] = None) -> Dict[str, Any]:
+async def generate_with_llm(topic: str, level: str, duration_weeks: int, focus_areas: List[str], weekly_hours: int = 10, resources: List[Dict[str, str]] = None) -> Dict[str, Any]:
     if not llm_available:
-        return create_basic_curriculum(topic, level, duration_weeks)
+        return create_basic_curriculum(topic, level, duration_weeks, weekly_hours)
     
     try:
         print(f"DEBUG: generate_with_llm called - topic:{topic}, level:{level}, duration:{duration_weeks}", file=sys.stderr, flush=True)
@@ -1011,18 +1142,29 @@ async def generate_with_llm(topic: str, level: str, duration_weeks: int, focus_a
             print(f"DEBUG: No resources found, using fallback text", file=sys.stderr, flush=True)
             resources_text = "\n\nNote: No specific learning resources were found, but design a comprehensive curriculum anyway.\n"
         
+        # 총 학습 시간 계산
+        total_hours = weekly_hours * duration_weeks
+        hours_per_module = total_hours // duration_weeks
+        
         prompt = f"""다음 조건에 맞는 {duration_weeks}주 커리큘럼을 생성해주세요:
 
 학습 주제: {topic}
 학습 레벨: {level}
+주당 학습 가능 시간: {weekly_hours}시간
+총 학습 시간: {total_hours}시간 (주당 {weekly_hours}시간 × {duration_weeks}주)
 포커스 영역: {focus_text}{resources_text}
 중요: JSON 키는 영어로, 모든 내용은 한국어로 작성해주세요!
 
+⚠️ **시간 제약 필수 준수**: 
+- 각 모듈은 정확히 {hours_per_module}시간으로 설계
+- 총 {total_hours}시간 절대 초과 금지
+- 주당 {weekly_hours}시간 제약 내에서 학습 가능한 현실적 분량
+
 각 모듈은 다음을 포함해야 합니다:
 - 명확한 제목과 설명 (한국어)
-- 3-4개의 학습 목표 (한국어)
+- 3-4개의 학습 목표 (한국어) 
 - 학습 성과 ("내가 배울 수 있는 것") (한국어)
-- 예상 학습 시간
+- 예상 학습 시간 (반드시 {hours_per_module}시간)
 - 핵심 개념들 (한국어)
 
 JSON 형식 (키는 영어, 값은 한국어):
@@ -1035,7 +1177,7 @@ JSON 형식 (키는 영어, 값은 한국어):
             "objectives": ["학습목표1 (한국어)", "학습목표2 (한국어)", "학습목표3 (한국어)"],
             "learning_outcomes": ["내가 배울 수 있는 것1 (한국어)", "내가 배울 수 있는 것2 (한국어)"],
             "key_concepts": ["핵심개념 1 (한국어)", "핵심개념 2 (한국어)"],
-            "estimated_hours": 10
+            "estimated_hours": {hours_per_module}
         }}
     ],
     "overall_goal": "전체 학습 목표 (한국어)"
@@ -1044,7 +1186,15 @@ JSON 형식 (키는 영어, 값은 한국어):
         print(f"DEBUG: Prompt constructed. Length: {len(prompt)} chars", file=sys.stderr, flush=True)
         
         messages = [
-            SystemMessage(content="당신은 전문 커리큘럼 설계자입니다. 반드시 JSON 키는 영어로, 모든 값(내용)은 한국어로 작성해주세요. 예시: 'key_concepts', 'estimated_hours' 같은 키는 영어를 유지하고, 그 값들만 한국어로 작성합니다."),
+            SystemMessage(content=f"""당신은 전문 커리큘럼 설계자입니다. 
+
+**중요 규칙:**
+1. JSON 키는 영어로, 모든 값(내용)은 한국어로 작성
+2. ⚠️ 시간 제약 엄격 준수: 각 모듈의 estimated_hours는 반드시 {hours_per_module}시간 이하
+3. 총 학습 시간이 {total_hours}시간을 절대 초과하면 안됨
+4. 사용자가 주당 {weekly_hours}시간만 투자할 수 있다는 점을 고려하여 현실적인 분량으로 설계
+
+예시: 'key_concepts', 'estimated_hours' 같은 키는 영어를 유지하고, 그 값들만 한국어로 작성합니다."""),
             HumanMessage(content=prompt)
         ]
         
@@ -1067,7 +1217,10 @@ JSON 형식 (키는 영어, 값은 한국어):
                 print(f"DEBUG: JSON found in response. Parsing...", file=sys.stderr, flush=True)
                 parsed_json = json.loads(json_match.group())
                 print(f"DEBUG: JSON parsed successfully. Modules count: {len(parsed_json.get('modules', []))}", file=sys.stderr, flush=True)
-                return parsed_json
+                
+                # 시간 제약 검증 및 조정 적용
+                validated_curriculum = validate_and_adjust_hours(parsed_json, weekly_hours, duration_weeks)
+                return validated_curriculum
             else:
                 print(f"DEBUG: No valid JSON found in LLM response", file=sys.stderr, flush=True)
         else:
@@ -1078,7 +1231,7 @@ JSON 형식 (키는 영어, 값은 한국어):
         # print(f"❌ LLM generation failed: {e}")  # MCP 통신 방해 방지
         pass
     
-    return create_basic_curriculum(topic, level, duration_weeks)
+    return create_basic_curriculum(topic, level, duration_weeks, weekly_hours)
 
 # LLM 기반 검색 키워드 추출 함수
 async def extract_search_keywords(topic: str, week_title: str, key_concepts: List[str]) -> str:
@@ -1555,7 +1708,7 @@ async def generate_lecture_content(module: Dict[str, Any], resources: Dict[str, 
         }
 
 # 기본 커리큘럼 생성 (LLM 실패시 fallback)
-def create_basic_curriculum(topic: str, level: str, duration_weeks: int) -> Dict[str, Any]:
+def create_basic_curriculum(topic: str, level: str, duration_weeks: int, weekly_hours: int = 10) -> Dict[str, Any]:
     modules = []
     
     for i in range(1, duration_weeks + 1):
@@ -1566,13 +1719,16 @@ def create_basic_curriculum(topic: str, level: str, duration_weeks: int) -> Dict
             "objectives": [f"{i}주차 핵심 개념 학습", "실습 과제 완료", "이론 이해 및 적용"],
             "learning_outcomes": [f"{topic} 기본 개념 이해", f"{i}주차 실무 지식 습득"],
             "key_concepts": [f"{i}주차 기초 개념", "실습 예제"],
-            "estimated_hours": 8 + i * 2
+            "estimated_hours": weekly_hours
         })
     
-    return {
+    basic_curriculum = {
         "modules": modules,
         "overall_goal": f"{duration_weeks}주 동안 {topic} 기초를 마스터하기"
     }
+    
+    # 기본 커리큘럼에도 시간 검증 적용
+    return validate_and_adjust_hours(basic_curriculum, weekly_hours, duration_weeks)
 
 # === MCP Tools ===
 
@@ -1652,6 +1808,7 @@ async def generate_curriculum_from_session(session_id: str, user_message: str = 
             level=params["level"],
             duration_weeks=params["duration_weeks"],
             focus_areas=params["focus_areas"],
+            weekly_hours=params["weekly_hours"],
             resources=basic_resources,
             session_id=session_id
         )
