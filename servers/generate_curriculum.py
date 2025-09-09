@@ -667,34 +667,52 @@ async def search_document_resources(topic: str, week_title: str = None, top_k: i
                 score = item.get("score", 0.0)
                 
                 if metadata and score > 0.5:  # 관련성 임계값
-                    # 문서 정보 추출
-                    doc_title = metadata.get("title", "").strip()
-                    doc_content = metadata.get("content", "").strip()
-                    doc_source = metadata.get("source", "").strip()
+                    # 메타데이터에서 정보 추출
+                    preview = metadata.get("preview", "").strip()
+                    file_path = metadata.get("file_path", "").strip()
+                    folder = metadata.get("folder", "").strip()
+                    subdir = metadata.get("subdir", "").strip()
                     page_num = metadata.get("page", "")
+                    file_sha1 = metadata.get("file_sha1", "")
                     
-                    # 제목이 없으면 소스나 내용 첫 부분으로 대체
-                    if not doc_title:
-                        if doc_source:
-                            doc_title = f"문서: {doc_source}"
-                        else:
-                            doc_title = doc_content[:50] + "..." if doc_content else "PDF 문서"
+                    # 파일명에서 제목 추출
+                    doc_title = "PDF 문서"
+                    if file_path:
+                        # 파일 경로에서 파일명만 추출
+                        filename = file_path.split("/")[-1] if "/" in file_path else file_path
+                        # 확장자 제거
+                        if filename.endswith('.pdf'):
+                            filename = filename[:-4]
+                        doc_title = filename
                     
-                    # 설명 생성
-                    description = doc_content[:200] + "..." if doc_content else "문서 내용"
+                    # 카테고리 정보 (folder 또는 subdir 사용)
+                    category = folder or subdir or "기타"
+                    
+                    # preview가 있으면 이를 주 콘텐츠로 사용
+                    doc_content = preview if preview else ""
+                    
+                    # 설명 생성 (preview 우선, 없으면 기본값)
+                    description = preview[:300] + "..." if preview else "문서 미리보기 없음"
+                    
+                    # 소스 정보 구성
+                    source_info = f"{category}/{filename}" if category != "기타" else filename
                     
                     documents.append({
                         "title": doc_title,
                         "description": description,
-                        "content": doc_content[:1000],  # 콘텐츠 일부 포함
-                        "source": doc_source or "PDF Document",
+                        "content": doc_content[:2000],  # preview 내용 확장
+                        "preview": preview,  # 원본 preview 저장
+                        "source": source_info,
+                        "category": category,
+                        "file_path": file_path,
+                        "file_sha1": file_sha1,
                         "page": page_num,
                         "score": score,
                         "type": "document",
-                        "has_content": True if doc_content else False
+                        "has_content": True if preview else False
                     })
                     
-                    print(f"DEBUG: 문서 추가 - {doc_title[:30]}... (점수: {score:.3f})", file=sys.stderr, flush=True)
+                    print(f"DEBUG: 문서 추가 - {doc_title[:30]}... (점수: {score:.3f}, 카테고리: {category}, 콘텐츠: {'있음' if preview else '없음'})", file=sys.stderr, flush=True)
             
             print(f"DEBUG: 최종 문서 수: {len(documents)}", file=sys.stderr, flush=True)
             return documents
@@ -1496,27 +1514,40 @@ async def generate_lecture_content(module: Dict[str, Any], resources: Dict[str, 
             if doc.get("has_content", False):
                 doc_title = doc.get("title", "PDF 문서")
                 doc_content = doc.get("content", "")
+                doc_preview = doc.get("preview", "")
                 doc_source = doc.get("source", "")
+                doc_category = doc.get("category", "")
+                doc_file_path = doc.get("file_path", "")
+                file_sha1 = doc.get("file_sha1", "")
                 
-                # 중복 체크
-                if doc_title in seen_titles:
+                # 중복 체크 (파일 해시 또는 제목 기준)
+                unique_key = file_sha1 if file_sha1 else doc_title
+                if unique_key in seen_titles:
                     print(f"DEBUG: 중복 문서 제외: {doc_title}", file=sys.stderr, flush=True)
                     continue
                     
-                seen_titles.add(doc_title)
+                seen_titles.add(unique_key)
+                
+                # preview를 우선하여 콘텐츠 구성
+                main_content = doc_preview or doc_content
+                summary = doc.get("description", "")[:300]
                 
                 all_content.append({
                     "source": "document",
                     "title": doc_title,
-                    "summary": doc.get("description", "")[:200],
-                    "raw_content": doc_content[:3000],
+                    "summary": summary,
+                    "raw_content": main_content[:3000],  # preview 우선 사용
+                    "preview": doc_preview,
                     "key_points": [],  # 문서에서는 key_points 추출하지 않음
                     "page": doc.get("page", ""),
-                    "doc_source": doc_source
+                    "category": doc_category,
+                    "doc_source": doc_source,
+                    "file_path": doc_file_path
                 })
                 source_references.append({
                     "title": doc_title,
                     "source": doc_source,
+                    "category": doc_category,
                     "page": doc.get("page", ""),
                     "type": "document"
                 })
@@ -1547,10 +1578,17 @@ async def generate_lecture_content(module: Dict[str, Any], resources: Dict[str, 
                 combined_content += f"핵심 포인트: {', '.join(content['key_points'][:3])}\n"
             if content.get('code_examples'):
                 combined_content += f"코드 예제: {content['code_examples'][0][:200]}...\n"
-            if content['source'] == 'document' and content.get('page'):
-                combined_content += f"페이지: {content['page']}\n"
-            if content.get('doc_source'):
-                combined_content += f"문서 출처: {content['doc_source']}\n"
+            
+            # 문서 관련 추가 정보
+            if content['source'] == 'document':
+                if content.get('page'):
+                    combined_content += f"페이지: {content['page']}\n"
+                if content.get('category'):
+                    combined_content += f"카테고리: {content['category']}\n"
+                if content.get('doc_source'):
+                    combined_content += f"문서 출처: {content['doc_source']}\n"
+                if content.get('preview') and content['preview'] != content['raw_content']:
+                    combined_content += f"추가 정보: {content['preview'][:200]}...\n"
         
         lecture_prompt = f"""다음 내부 DB에서 수집한 자료들을 기반으로 충실한 강의 내용을 작성해주세요:
 
