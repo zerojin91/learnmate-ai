@@ -190,6 +190,160 @@ async def session_debug(request: Request):
         "has_session_cookie": "session_id" in request.cookies
     }
 
+class MentorRecommendationRequest(BaseModel):
+    message: str
+    session_id: str
+
+@app.post("/api/mentor_chat/analyze_and_recommend_personas")
+async def analyze_and_recommend_personas(request: MentorRecommendationRequest):
+    """멘토 페르소나 분석 및 추천 API"""
+    if not agent_instance:
+        return {"error": "Agent not initialized"}
+    
+    try:
+        # MCP 도구 호출 - agent.py의 방식 사용
+        tools = await agent_instance.client.get_tools()
+        recommend_tool = next((tool for tool in tools if tool.name == "analyze_and_recommend_personas"), None)
+        
+        if not recommend_tool:
+            raise Exception("analyze_and_recommend_personas 도구를 찾을 수 없습니다")
+        
+        tool_args = {
+            "message": request.message,
+            "session_id": request.session_id
+        }
+        
+        result = await recommend_tool.ainvoke(tool_args)
+        
+        # 결과가 문자열이면 JSON으로 파싱 시도
+        if isinstance(result, str):
+            try:
+                # JSON 내용 정리 (공백 및 오타 문제 해결)
+                clean_result = result.strip()
+                
+                # 공백이 포함된 키들 정리
+                clean_result = clean_result.replace('"recommended_ personas"', '"recommended_personas"')
+                clean_result = clean_result.replace('" recommended_personas"', '"recommended_personas"')
+                clean_result = clean_result.replace('" id"', '"id"')
+                clean_result = clean_result.replace('" name"', '"name"')
+                clean_result = clean_result.replace('" reason"', '"reason"')
+                clean_result = clean_result.replace('" reasoning"', '"reasoning"')
+                clean_result = clean_result.replace('" description"', '"description"')
+                clean_result = clean_result.replace('" explanation"', '"explanation"')
+                
+                # 다양한 키 이름 통합 (reason 계열)
+                clean_result = clean_result.replace('"reasoning":', '"reason":')
+                clean_result = clean_result.replace('"explanation":', '"reason":')
+                clean_result = clean_result.replace('"rationale":', '"reason":')
+                clean_result = clean_result.replace('"justification":', '"reason":')
+                
+                result = json.loads(clean_result)
+                
+                # 결과 후처리: 각 페르소나의 reason 필드 정규화
+                if isinstance(result, dict) and 'recommended_personas' in result:
+                    for persona in result['recommended_personas']:
+                        # reason 필드가 없으면 대체 필드에서 찾기
+                        if 'reason' not in persona:
+                            for alt_key in ['reasoning', 'explanation', 'rationale', 'justification', 'description']:
+                                if alt_key in persona:
+                                    persona['reason'] = persona[alt_key]
+                                    break
+                            else:
+                                # 모든 대체 필드가 없으면 기본값 설정
+                                persona['reason'] = f"{persona.get('name', '해당 분야')} 전문가로 추천되었습니다."
+                
+            except json.JSONDecodeError:
+                # JSON 파싱 실패시 기본 구조로 래핑
+                result = {"error": "응답 파싱 실패", "raw_result": result}
+        
+        return result
+        
+    except Exception as e:
+        print(f"❌ 멘토 추천 오류: {e}")
+        import traceback
+        traceback.print_exc()
+        return {"error": f"멘토 추천 중 오류가 발생했습니다: {str(e)}"}
+
+class PersonaSelectionRequest(BaseModel):
+    persona_id: str
+    session_id: str
+
+class ExpertMentoringRequest(BaseModel):
+    message: str
+    session_id: str
+
+@app.post("/api/mentor_chat/select_persona")
+async def api_select_persona(request: PersonaSelectionRequest):
+    """페르소나 선택 API"""
+    if not agent_instance:
+        return {"error": "Agent not initialized"}
+    
+    try:
+        # MCP 도구 호출 - select_persona
+        tools = await agent_instance.client.get_tools()
+        select_tool = next((tool for tool in tools if tool.name == "select_persona"), None)
+        
+        if not select_tool:
+            raise Exception("select_persona 도구를 찾을 수 없습니다")
+        
+        tool_args = {
+            "persona_id": request.persona_id,
+            "session_id": request.session_id
+        }
+        
+        result = await select_tool.ainvoke(tool_args)
+        
+        # 결과가 문자열이면 JSON으로 파싱 시도
+        if isinstance(result, str):
+            try:
+                result = json.loads(result)
+            except json.JSONDecodeError:
+                result = {"message": result}
+        
+        return result
+        
+    except Exception as e:
+        print(f"❌ 페르소나 선택 오류: {e}")
+        import traceback
+        traceback.print_exc()
+        return {"error": f"페르소나 선택 중 오류가 발생했습니다: {str(e)}"}
+
+@app.post("/api/mentor_chat/expert_mentoring")
+async def expert_mentoring(request: ExpertMentoringRequest):
+    """전문가 멘토링 API"""
+    if not agent_instance:
+        return {"error": "Agent not initialized"}
+    
+    try:
+        # MCP 도구 호출 - expert_mentoring
+        tools = await agent_instance.client.get_tools()
+        mentoring_tool = next((tool for tool in tools if tool.name == "expert_mentoring"), None)
+        
+        if not mentoring_tool:
+            raise Exception("expert_mentoring 도구를 찾을 수 없습니다")
+        
+        tool_args = {
+            "message": request.message,
+            "session_id": request.session_id
+        }
+        
+        result = await mentoring_tool.ainvoke(tool_args)
+        
+        # 결과가 문자열이면 JSON으로 파싱 시도
+        if isinstance(result, str):
+            try:
+                result = json.loads(result)
+            except json.JSONDecodeError:
+                result = {"response": result}
+        
+        return result
+        
+    except Exception as e:
+        print(f"❌ 전문가 멘토링 오류: {e}")
+        import traceback
+        traceback.print_exc()
+        return {"error": f"전문가 멘토링 중 오류가 발생했습니다: {str(e)}"}
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host=Config.HOST, port=Config.PORT, access_log=False)
