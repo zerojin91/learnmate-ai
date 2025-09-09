@@ -14,6 +14,8 @@ from pydantic import BaseModel, Field
 from enum import Enum
 import sys
 import os
+from bs4 import BeautifulSoup
+import time
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import Config
 
@@ -512,7 +514,7 @@ async def search_kmooc_resources(topic: str, week_title: str = None, top_k: int 
         # pinecone_use.py 서버가 localhost:8000에서 실행 중이라고 가정
         async with httpx.AsyncClient() as client:
             response = await client.post(
-                "http://localhost:8001/search",
+                "http://localhost:8090/search",
                 json=search_payload,
                 timeout=10.0
             )
@@ -592,6 +594,105 @@ async def search_resources(topic: str, num_results: int = 10) -> List[Dict[str, 
         pass
     
     return []
+
+# 리소스 콘텐츠 추출 함수
+async def fetch_resource_content(resource: Dict[str, str]) -> Dict[str, Any]:
+    """웹 리소스의 실제 콘텐츠를 가져와서 파싱합니다"""
+    try:
+        url = resource.get('url', '')
+        if not url or not url.startswith(('http://', 'https://')):
+            return {
+                "success": False,
+                "error": "Invalid URL",
+                "raw_content": "",
+                "summary": "",
+                "key_points": [],
+                "code_examples": []
+            }
+        
+        # 웹 페이지 내용 가져오기
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            }
+            response = await client.get(url, headers=headers)
+            
+            if response.status_code != 200:
+                return {
+                    "success": False,
+                    "error": f"HTTP {response.status_code}",
+                    "raw_content": "",
+                    "summary": "",
+                    "key_points": [],
+                    "code_examples": []
+                }
+            
+            # HTML 파싱
+            soup = BeautifulSoup(response.text, 'lxml')
+            
+            # 메타 태그 제거
+            for script in soup(["script", "style", "nav", "header", "footer", "aside"]):
+                script.decompose()
+            
+            # 본문 텍스트 추출
+            main_content = soup.find('main') or soup.find('article') or soup.find('div', class_='content') or soup.body
+            if main_content:
+                text_content = main_content.get_text(separator=' ', strip=True)
+            else:
+                text_content = soup.get_text(separator=' ', strip=True)
+            
+            # 텍스트 정리 (과도한 공백 제거)
+            cleaned_text = ' '.join(text_content.split())
+            
+            # 코드 예제 추출
+            code_examples = []
+            code_blocks = soup.find_all(['code', 'pre'])
+            for block in code_blocks:
+                code_text = block.get_text(strip=True)
+                if len(code_text) > 10:  # 너무 짧은 코드는 제외
+                    code_examples.append(code_text)
+            
+            # 핵심 포인트 추출 (제목 태그 기반)
+            key_points = []
+            headers = soup.find_all(['h1', 'h2', 'h3', 'h4'])
+            for header in headers:
+                header_text = header.get_text(strip=True)
+                if len(header_text) > 5 and len(header_text) < 100:
+                    key_points.append(header_text)
+            
+            # 요약 생성 (첫 500자)
+            summary = cleaned_text[:500] + "..." if len(cleaned_text) > 500 else cleaned_text
+            
+            return {
+                "success": True,
+                "raw_content": cleaned_text[:2000],  # 최대 2000자로 제한
+                "summary": summary,
+                "key_points": key_points[:10],  # 최대 10개
+                "code_examples": code_examples[:5],  # 최대 5개
+                "content_length": len(cleaned_text),
+                "url": url,
+                "title": resource.get('title', soup.title.string if soup.title else 'No title')
+            }
+            
+    except httpx.TimeoutException:
+        return {
+            "success": False,
+            "error": "Request timeout",
+            "raw_content": "",
+            "summary": "",
+            "key_points": [],
+            "code_examples": []
+        }
+    except Exception as e:
+        print(f"DEBUG: fetch_resource_content failed for {resource.get('url', 'unknown')}: {e}", file=sys.stderr, flush=True)
+        return {
+            "success": False,
+            "error": str(e),
+            "raw_content": "",
+            "summary": "",
+            "key_points": [],
+            "code_examples": []
+        }
 
 # LLM을 사용한 단계별 커리큘럼 생성 (스트리밍 버전)
 async def generate_with_llm_streaming(topic: str, level: str, duration_weeks: int, focus_areas: List[str], resources: List[Dict[str, str]] = None, session_id: str = None) -> Dict[str, Any]:
@@ -854,23 +955,57 @@ JSON 형식 (키는 영어, 값은 한국어):
     
     return create_basic_curriculum(topic, level, duration_weeks)
 
-# 모듈별 리소스 수집 함수
+# 모듈별 리소스 수집 함수 (콘텐츠 포함)
 async def collect_module_resources(topic: str, module_info: Dict[str, Any]) -> Dict[str, List[Dict[str, Any]]]:
-    """주차별 모듈에 대한 K-MOOC 영상과 웹 리소스를 수집합니다"""
+    """주차별 모듈에 대한 K-MOOC 영상과 웹 리소스를 수집하고 실제 콘텐츠도 가져옵니다"""
     try:
         # K-MOOC 검색과 웹 검색을 병렬로 실행
         import asyncio
         
-        # 검색 쿼리 생성
+        # 검색 쿼리 생성 - 더 구체적이고 관련성 높은 키워드
         week_title = module_info.get('title', '')
         key_concepts = module_info.get('key_concepts', [])
-        search_keywords = f"{topic} {week_title}"
-        if key_concepts:
-            search_keywords += f" {key_concepts[0]}"
+        
+        # 기본 주제에서 핵심 용어 추출
+        core_topic = topic.split()[0] if topic else ""  # 첫 번째 단어만 사용
+        
+        # 주차 제목에서 핵심 키워드 추출
+        week_keywords = []
+        if "기초" in week_title:
+            week_keywords.append("기초")
+        if "회로" in week_title:
+            week_keywords.append("회로")
+        if "분석" in week_title:
+            week_keywords.append("분석")
+        if "설계" in week_title:
+            week_keywords.append("설계")
+        
+        # 핵심 개념에서 구체적 키워드 선택 (최대 2개)
+        concept_keywords = []
+        for concept in key_concepts[:2]:
+            if "옴의 법칙" in concept:
+                concept_keywords.append("옴의법칙")
+            elif "키르히호프" in concept:
+                concept_keywords.append("키르히호프")
+            elif "저항" in concept:
+                concept_keywords.append("저항")
+            elif "전류" in concept:
+                concept_keywords.append("전류")
+            elif "전압" in concept:
+                concept_keywords.append("전압")
+        
+        # 검색 키워드 조합
+        search_parts = [core_topic]
+        search_parts.extend(week_keywords[:1])  # 주차 키워드 1개
+        search_parts.extend(concept_keywords[:1])  # 개념 키워드 1개
+        
+        search_keywords = " ".join(filter(None, search_parts))
+        
+        print(f"DEBUG: Enhanced search keywords: {search_keywords} (from topic: {topic}, week: {week_title})", file=sys.stderr, flush=True)
         
         # 병렬 검색 실행
         kmooc_task = search_kmooc_resources(topic, week_title, top_k=3)
-        web_task = search_resources(search_keywords, num_results=3)
+        web_task = search_resources(search_keywords, num_results=5)  # 더 많은 웹 결과 수집
         
         kmooc_results, web_results = await asyncio.gather(
             kmooc_task, web_task, return_exceptions=True
@@ -884,10 +1019,73 @@ async def collect_module_resources(topic: str, module_info: Dict[str, Any]) -> D
             print(f"DEBUG: Web search exception: {web_results}", file=sys.stderr, flush=True)
             web_results = []
         
+        # 웹 리소스의 실제 콘텐츠 가져오기
+        enhanced_web_links = []
+        if web_results and len(web_results) > 0:
+            print(f"DEBUG: Fetching content for {len(web_results)} web resources", file=sys.stderr, flush=True)
+            
+            # 각 웹 리소스에 대해 콘텐츠 수집 (최대 3개)
+            content_tasks = []
+            for resource in web_results[:3]:  # Rate limit 고려하여 최대 3개로 제한
+                content_tasks.append(fetch_resource_content(resource))
+            
+            if content_tasks:
+                # 콘텐츠 수집을 병렬로 실행
+                content_results = await asyncio.gather(*content_tasks, return_exceptions=True)
+                
+                # 성공한 콘텐츠만 추가
+                for i, content in enumerate(content_results):
+                    if not isinstance(content, Exception) and content.get('success', False):
+                        enhanced_resource = {
+                            **web_results[i],  # 기존 정보 유지
+                            "content": content,  # 새로운 콘텐츠 정보 추가
+                            "has_content": True
+                        }
+                        enhanced_web_links.append(enhanced_resource)
+                        print(f"DEBUG: Successfully fetched content for: {content.get('title', 'Unknown')[:50]}...", file=sys.stderr, flush=True)
+                    else:
+                        # 콘텐츠 수집 실패시 기본 정보만 유지
+                        enhanced_resource = {
+                            **web_results[i],
+                            "has_content": False,
+                            "content_error": str(content) if isinstance(content, Exception) else content.get('error', 'Unknown error')
+                        }
+                        enhanced_web_links.append(enhanced_resource)
+                        print(f"DEBUG: Failed to fetch content for: {web_results[i].get('title', 'Unknown')}", file=sys.stderr, flush=True)
+                
+                # Rate limiting을 위한 짧은 대기
+                await asyncio.sleep(0.5)
+        
+        # K-MOOC 리소스도 콘텐츠 정보 확장 (summary 기반)
+        enhanced_kmooc_videos = []
+        for video in kmooc_results:
+            enhanced_video = {
+                **video,
+                "has_content": True,  # K-MOOC는 summary가 있으므로 True
+                "content": {
+                    "success": True,
+                    "summary": video.get('description', ''),
+                    "key_points": [video.get('course_goal', '')] if video.get('course_goal') else [],
+                    "raw_content": video.get('description', '') + ' ' + video.get('course_goal', ''),
+                    "code_examples": [],
+                    "title": video.get('title', ''),
+                    "url": video.get('url', '')
+                }
+            }
+            enhanced_kmooc_videos.append(enhanced_video)
+        
+        total_resources = len(enhanced_web_links) + len(enhanced_kmooc_videos)
+        resources_with_content = len([r for r in enhanced_web_links if r.get('has_content', False)]) + len(enhanced_kmooc_videos)
+        
+        print(f"DEBUG: Collected {total_resources} resources, {resources_with_content} with content", file=sys.stderr, flush=True)
+        
         return {
-            "videos": kmooc_results or [],
-            "web_links": web_results or [],
-            "documents": []  # 향후 구현 예정
+            "videos": enhanced_kmooc_videos,
+            "web_links": enhanced_web_links,
+            "documents": [],  # 향후 구현 예정
+            "total_resources": total_resources,
+            "resources_with_content": resources_with_content,
+            "content_coverage": resources_with_content / max(total_resources, 1)
         }
         
     except Exception as e:
@@ -895,7 +1093,277 @@ async def collect_module_resources(topic: str, module_info: Dict[str, Any]) -> D
         return {
             "videos": [],
             "web_links": [],
-            "documents": []
+            "documents": [],
+            "total_resources": 0,
+            "resources_with_content": 0,
+            "content_coverage": 0.0
+        }
+
+# 리소스 기반 강의 콘텐츠 생성 함수
+async def generate_lecture_content(module: Dict[str, Any], resources: Dict[str, Any]) -> Dict[str, str]:
+    """수집된 리소스 콘텐츠를 기반으로 강의 내용을 생성합니다"""
+    if not llm_available:
+        return {
+            "introduction": f"{module.get('title', 'Module')} 학습을 시작합니다.",
+            "main_content": "내부 자료 부족으로 기본 학습 안내를 제공합니다.",
+            "examples": [],
+            "exercises": [],
+            "summary": f"{module.get('title', 'Module')} 학습을 완료했습니다.",
+            "content_sources": [],
+            "coverage_note": "추가 학습 자료가 필요합니다."
+        }
+    
+    try:
+        # 리소스에서 콘텐츠 추출
+        all_content = []
+        source_references = []
+        
+        # 중복 제거를 위한 세트
+        seen_urls = set()
+        seen_titles = set()
+        
+        # 웹 리소스 콘텐츠 수집
+        web_links = resources.get("web_links", [])
+        for link in web_links:
+            if link.get("has_content", False) and link.get("content", {}).get("success", False):
+                content_info = link["content"]
+                url = link.get("url", "")
+                title = content_info.get("title", link.get("title", "Unknown"))
+                
+                # 중복 체크 (URL 또는 제목)
+                if url in seen_urls or title in seen_titles:
+                    print(f"DEBUG: 중복 웹 링크 제외: {title}", file=sys.stderr, flush=True)
+                    continue
+                    
+                seen_urls.add(url)
+                seen_titles.add(title)
+                
+                all_content.append({
+                    "source": "web",
+                    "title": title,
+                    "summary": content_info.get("summary", ""),
+                    "raw_content": content_info.get("raw_content", "")[:3000],
+                    "key_points": content_info.get("key_points", []),
+                    "code_examples": content_info.get("code_examples", []),
+                    "url": url
+                })
+                source_references.append({
+                    "title": title,
+                    "url": url,
+                    "type": "web"
+                })
+        
+        # K-MOOC 비디오 콘텐츠 수집
+        videos = resources.get("videos", [])
+        for video in videos:
+            if video.get("has_content", False) and video.get("content", {}).get("success", False):
+                content_info = video["content"]
+                url = video.get("url", "")
+                title = content_info.get("title", video.get("title", "Unknown"))
+                
+                # 중복 체크 (URL 또는 제목)
+                if url in seen_urls or title in seen_titles:
+                    print(f"DEBUG: 중복 비디오 제외: {title}", file=sys.stderr, flush=True)
+                    continue
+                    
+                seen_urls.add(url)
+                seen_titles.add(title)
+                
+                all_content.append({
+                    "source": "kmooc",
+                    "title": title,
+                    "summary": content_info.get("summary", ""),
+                    "raw_content": content_info.get("raw_content", "")[:3000],
+                    "key_points": content_info.get("key_points", []),
+                    "course_goal": video.get("course_goal", ""),
+                    "institution": video.get("institution", ""),
+                    "url": url
+                })
+                source_references.append({
+                    "title": title,
+                    "url": url,
+                    "institution": video.get("institution", ""),
+                    "type": "kmooc"
+                })
+        
+        content_coverage = resources.get("content_coverage", 0.0)
+        
+        # 콘텐츠가 충분하지 않은 경우
+        if len(all_content) == 0:
+            return {
+                "introduction": f"{module.get('title', 'Module')} 학습을 시작합니다.",
+                "main_content": "현재 내부 DB에서 관련 학습 자료를 찾을 수 없습니다. 추가 자료 수집이 필요합니다.",
+                "examples": [],
+                "exercises": [],
+                "summary": "학습 자료 부족으로 기본 안내만 제공됩니다.",
+                "content_sources": [],
+                "coverage_note": "관련 학습 자료를 추가로 수집해주세요."
+            }
+        
+        # LLM에게 강의 내용 생성 요청
+        combined_content = ""
+        for content in all_content:
+            combined_content += f"\n=== {content['title']} ({content['source']}) ===\n"
+            combined_content += f"요약: {content['summary']}\n"
+            combined_content += f"내용: {content['raw_content']}\n"
+            if content.get('key_points'):
+                combined_content += f"핵심 포인트: {', '.join(content['key_points'][:3])}\n"
+            if content.get('code_examples'):
+                combined_content += f"코드 예제: {content['code_examples'][0][:200]}...\n"
+        
+        lecture_prompt = f"""다음 내부 DB에서 수집한 자료들을 기반으로 충실한 강의 내용을 작성해주세요:
+
+주차: {module.get('title', 'Module')}
+학습 목표: {', '.join(module.get('objectives', []))}
+핵심 개념: {', '.join(module.get('key_concepts', []))}
+
+=== 수집된 내부 자료 ===
+{combined_content}
+
+**강의 작성 지침:**
+- 최소 1000자 이상의 충실한 강의 내용을 작성해주세요
+- 제공된 내부 자료의 내용만을 활용하여 체계적으로 구성
+- 각 섹션마다 구체적이고 실질적인 내용 포함
+
+**중요: 반드시 다음과 같은 정확한 JSON 형식으로만 응답하세요:**
+
+{{
+  "introduction": "텍스트 내용 (따옴표 안에 텍스트만, JSON 객체 절대 금지)",
+  "main_content": "텍스트 내용 (따옴표 안에 텍스트만, JSON 객체 절대 금지)",
+  "examples": ["텍스트1", "텍스트2", "텍스트3"],
+  "exercises": ["텍스트1", "텍스트2", "텍스트3"], 
+  "summary": "텍스트 내용 (따옴표 안에 텍스트만, JSON 객체 절대 금지)"
+}}
+
+**절대 금지사항:**
+- JSON 안에 또 다른 JSON 객체를 넣지 마세요
+- 중괄호 {{}} 나 따옴표를 텍스트에 포함하지 마세요
+- 각 필드는 순수한 텍스트나 텍스트 배열만 포함하세요
+
+**내용 요구사항:**
+- introduction: 최소 100자 이상의 인사말과 목표 소개
+- main_content: 최소 600자 이상의 학습 내용 (출처 표기 포함)
+- examples: 3개의 구체적 실습 예제
+- exercises: 3개의 연습 문제
+- summary: 최소 150자 이상의 핵심 내용 정리
+
+오직 위 JSON 형식만 응답하세요. 다른 텍스트나 설명은 일절 포함하지 마세요."""
+
+        messages = [
+            SystemMessage(content="당신은 사내 교육 강사입니다. 제공된 내부 DB 자료만을 활용하여 정확하고 체계적인 강의를 작성해주세요."),
+            HumanMessage(content=lecture_prompt)
+        ]
+        
+        print(f"DEBUG: Generating lecture content with {len(all_content)} resources", file=sys.stderr, flush=True)
+        response = await llm.agenerate([messages])
+        
+        if response.generations and response.generations[0]:
+            response_text = response.generations[0][0].text
+            print(f"DEBUG: LLM 응답 길이: {len(response_text)} 문자", file=sys.stderr, flush=True)
+            print(f"DEBUG: LLM 응답 첫 500문자: {response_text[:500]}", file=sys.stderr, flush=True)
+            
+            # JSON 파싱 시도 - 더 정확한 패턴 매칭
+            # 전체 응답이 JSON인지 먼저 확인
+            response_text = response_text.strip()
+            if response_text.startswith('{') and response_text.endswith('}'):
+                json_text = response_text
+            else:
+                # JSON 패턴 찾기
+                json_match = re.search(r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}', response_text)
+                if json_match:
+                    json_text = json_match.group()
+                else:
+                    json_text = None
+            
+            if json_text:
+                try:
+                    lecture_data = json.loads(json_text)
+                    print(f"DEBUG: JSON 파싱 성공! 키들: {list(lecture_data.keys())}", file=sys.stderr, flush=True)
+                    
+                    # 기본 구조 확인 및 보완
+                    lecture_content = {
+                        "introduction": lecture_data.get("introduction", f"{module.get('title', 'Module')} 학습을 시작합니다."),
+                        "main_content": lecture_data.get("main_content", "강의 내용을 준비 중입니다."),
+                        "examples": lecture_data.get("examples", []),
+                        "exercises": lecture_data.get("exercises", []),
+                        "summary": lecture_data.get("summary", "학습을 완료했습니다."),
+                        "content_sources": source_references,
+                        "coverage_note": f"DB 커버리지: {content_coverage:.0%}, {len(all_content)}개 자료 활용"
+                    }
+                    
+                    print(f"DEBUG: 최종 강의 내용 - introduction: {len(lecture_content['introduction'])}자, main_content: {len(lecture_content['main_content'])}자", file=sys.stderr, flush=True)
+                    return lecture_content
+                    
+                except json.JSONDecodeError as e:
+                    print(f"DEBUG: JSON 파싱 실패: {str(e)}", file=sys.stderr, flush=True)
+                    print(f"DEBUG: JSON 매치된 텍스트: {json_match.group()[:300]}", file=sys.stderr, flush=True)
+            else:
+                print("DEBUG: JSON 패턴을 찾을 수 없음", file=sys.stderr, flush=True)
+        
+        # 파싱 실패시 response_text에서 안전하게 내용 추출
+        fallback_content = f"수집된 {len(all_content)}개 자료를 기반으로 학습 내용을 구성했습니다."
+        
+        # 응답에서 JSON이 아닌 유용한 텍스트만 추출 시도
+        if response_text and len(response_text) > 100:
+            # JSON 구조 문자열이 포함된 경우 제거
+            if '{' in response_text and '}' in response_text:
+                print("DEBUG: JSON 파싱 실패, JSON 구조 제거 후 텍스트 추출", file=sys.stderr, flush=True)
+                # JSON 부분을 제거하고 순수 텍스트만 추출
+                lines = response_text.split('\n')
+                clean_lines = []
+                skip_json = False
+                
+                for line in lines:
+                    line = line.strip()
+                    if line.startswith('{') or '"' in line[:10]:  # JSON 시작으로 보이는 라인
+                        skip_json = True
+                        continue
+                    elif skip_json and line.endswith('}'):  # JSON 끝
+                        skip_json = False
+                        continue
+                    elif not skip_json and len(line) > 20 and not line.startswith('"'):
+                        clean_lines.append(line)
+                
+                if clean_lines:
+                    fallback_content = ' '.join(clean_lines[:3])[:800]  # 처음 3줄, 최대 800자
+                    print(f"DEBUG: 텍스트 추출 성공, 길이: {len(fallback_content)}", file=sys.stderr, flush=True)
+            else:
+                print("DEBUG: 순수 텍스트 응답으로 보임, 일부 사용", file=sys.stderr, flush=True)
+                fallback_content = response_text[:800] + "..."
+        
+        # 수집된 자료 정보를 포함한 더 풍부한 기본 콘텐츠 생성
+        resource_summary = ""
+        if all_content:
+            resource_summary = f"\n\n📚 수집된 학습 자료:\n"
+            for i, content in enumerate(all_content[:3], 1):  # 상위 3개만 표시
+                resource_summary += f"{i}. {content['title']} ({content['source']})\n"
+                if content.get('summary'):
+                    resource_summary += f"   요약: {content['summary'][:100]}...\n"
+        
+        return {
+            "introduction": f"안녕하세요! {module.get('title', 'Module')} 학습을 시작합니다. 이번 주차에서는 {', '.join(module.get('key_concepts', ['핵심 개념들'])[:2])} 등을 다룰 예정입니다.",
+            "main_content": fallback_content + resource_summary,
+            "examples": ["수집된 자료의 실습 예제를 참고해주세요.", "각 자료의 예시 코드를 직접 실행해보세요."],
+            "exercises": [
+                f"{module.get('title', 'Module')}의 핵심 개념을 설명해보세요.",
+                "학습한 내용을 실제 상황에 어떻게 적용할 수 있는지 생각해보세요.", 
+                "참고 자료의 예제를 응용한 새로운 문제를 만들어보세요."
+            ],
+            "summary": f"{module.get('title', 'Module')} 학습을 통해 {', '.join(module.get('objectives', ['학습 목표'])[:2])} 등을 달성할 수 있습니다. 제공된 {len(all_content)}개 자료를 통해 심화 학습을 진행하세요.",
+            "content_sources": source_references,
+            "coverage_note": f"DB 커버리지: {content_coverage:.0%}, {len(all_content)}개 자료 활용 (JSON 파싱 실패로 fallback 사용)"
+        }
+        
+    except Exception as e:
+        print(f"DEBUG: generate_lecture_content failed: {e}", file=sys.stderr, flush=True)
+        return {
+            "introduction": f"{module.get('title', 'Module')} 학습을 시작합니다.",
+            "main_content": "강의 내용 생성 중 오류가 발생했습니다.",
+            "examples": [],
+            "exercises": [],
+            "summary": "오류로 인해 기본 안내만 제공됩니다.",
+            "content_sources": [],
+            "coverage_note": "강의 생성 실패"
         }
 
 # 기본 커리큘럼 생성 (LLM 실패시 fallback)
@@ -1018,14 +1486,24 @@ async def generate_curriculum_from_session(session_id: str, user_message: str = 
         # 병렬로 리소스 수집 (K-MOOC + 웹 검색)
         module_resources = await collect_module_resources(module_topic, module)
         
-        # 모듈에 리소스 추가
-        module["resources"] = {
-            "videos": module_resources.get("videos", []),
-            "web_links": module_resources.get("web_links", []),
-            "documents": []  # 추후 문서 검색 API 연동 시 사용
-        }
+        # 모듈에 리소스 추가 (모든 콘텐츠 정보 포함)
+        module["resources"] = module_resources  # 전체 정보를 그대로 포함
+        
+        # 수집된 리소스가 있으면 강의 콘텐츠 생성
+        if module_resources.get('resources_with_content', 0) > 0:
+            print(f"DEBUG: Generating lecture content for module: {week_title}", file=sys.stderr, flush=True)
+            try:
+                lecture_content = await generate_lecture_content(module, module_resources)
+                module["lecture_content"] = lecture_content
+                print(f"DEBUG: Successfully generated lecture content with {len(lecture_content.get('sections', []))} sections", file=sys.stderr, flush=True)
+            except Exception as e:
+                print(f"DEBUG: Failed to generate lecture content: {e}", file=sys.stderr, flush=True)
+                # 강의 생성 실패시에도 커리큘럼은 계속 진행
+        else:
+            print(f"DEBUG: No content available for lecture generation in module: {week_title}", file=sys.stderr, flush=True)
         
         print(f"DEBUG: Added {len(module_resources.get('videos', []))} videos and {len(module_resources.get('web_links', []))} web links", file=sys.stderr, flush=True)
+        print(f"DEBUG: Content coverage: {module_resources.get('content_coverage', 0.0):.2f}", file=sys.stderr, flush=True)
     
     # 최종 커리큘럼 구성
     curriculum = {
