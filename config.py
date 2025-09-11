@@ -7,14 +7,11 @@ load_dotenv()
 
 class Config:
     # LLM 설정
-    # LLM_BASE_URL = "https://api.friendli.ai/serverless/v1"
-    # LLM_API_KEY = os.getenv("LLM_API_KEY")
-    # LLM_MODEL = "K-intelligence/Midm-2.0-Base-Instruct"
+    LLM_BASE_URL = "https://api.friendli.ai/serverless/v1"
+    LLM_API_KEY = os.getenv("LLM_API_KEY")
+    LLM_MODEL = "K-intelligence/Midm-2.0-Base-Instruct"
     # LLM_MODEL = "midm-2.0-base-bf16"
     
-    LLM_BASE_URL = "https://0f1713042f44.ngrok-free.app/v1"
-    LLM_API_KEY = "ollama"
-    LLM_MODEL = "midm-2.0-fp16:base"
     
     LLM_TEMPERATURE = 0.0
     LLM_MAX_TOKENS = 2048  # 응답 생성용 최대 토큰 수
