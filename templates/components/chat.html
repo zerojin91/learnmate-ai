@@ -1,0 +1,34 @@
+<!-- 채팅 컨테이너 -->
+<div class="chat-container">
+    <div class="chat-messages" id="chatMessages">
+        <div class="message ai-message">
+            <div class="message-avatar ai-avatar-small">AI</div>
+            <div class="message-content" id="initialMessage">
+                안녕하세요! LearningMate 입니다.<br>어떤 주제에 대해 배우고 싶으신지 알려주시면 맞춤형 학습 계획을 함께 만들어보겠습니다!
+            </div>
+        </div>
+    </div>
+    
+    <div class="input-container">
+        <div class="input-wrapper">
+            <textarea 
+                id="messageInput" 
+                class="message-input"
+                placeholder="AI에게 질문하거나 요청을 입력하세요..."
+                rows="1"
+            ></textarea>
+            <div class="input-actions">
+                <input type="file" id="fileInput" class="file-input" accept=".txt,.pdf,.doc,.docx">
+                <button id="attachButton" class="btn-icon" title="파일 첨부">
+                    <i class="fas fa-paperclip"></i>
+                </button>
+                <button id="clearButton" class="btn-icon" title="대화 초기화">
+                    <i class="fas fa-trash"></i>
+                </button>
+                <button id="sendButton" class="send-button" title="전송">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request, Response
 from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import json
 from contextlib import asynccontextmanager
@@ -49,6 +50,9 @@ app = FastAPI(title="MCP Chat Agent", lifespan=lifespan)
 
 # 템플릿 설정
 templates = Jinja2Templates(directory="templates")
+
+# 정적 파일 설정
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 class ChatRequest(BaseModel):
     message: str

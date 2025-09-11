@@ -1,0 +1,67 @@
+<!-- 학습 프로필 카드 -->
+<div class="profile-sidebar">
+    <div class="profile-card">
+        <h3>학습 프로필</h3>
+        <div class="profile-progress">
+            <div class="profile-step" id="stepTopic">
+                <div class="step-indicator">
+                    <div class="step-circle">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="step-line"></div>
+                </div>
+                <div class="step-content">
+                    <div class="step-label">주제</div>
+                    <div id="profileTopic" class="step-value">설정 필요</div>
+                </div>
+            </div>
+            
+            <div class="profile-step" id="stepConstraints">
+                <div class="step-indicator">
+                    <div class="step-circle">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="step-line"></div>
+                </div>
+                <div class="step-content">
+                    <div class="step-label">조건</div>
+                    <div id="profileConstraints" class="step-value">설정 필요</div>
+                </div>
+            </div>
+            
+            <div class="profile-step" id="stepGoal">
+                <div class="step-indicator">
+                    <div class="step-circle">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+                <div class="step-content">
+                    <div class="step-label">목표</div>
+                    <div id="profileGoal" class="step-value">설정 필요</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 학습 기간 선택 및 커리큘럼 생성 -->
+        <div id="curriculumSection" class="curriculum-section" style="display: none;">
+            <div class="curriculum-divider"></div>
+            
+            <div class="duration-selector">
+                <label for="learningDuration" class="duration-label">학습 기간 설정</label>
+                <select id="learningDuration" class="duration-select">
+                    <option value="1">1개월</option>
+                    <option value="2">2개월</option>
+                    <option value="3" selected>3개월</option>
+                    <option value="4">4개월</option>
+                    <option value="5">5개월</option>
+                    <option value="6">6개월</option>
+                </select>
+            </div>
+            
+            <button id="generateCurriculumBtn" class="generate-curriculum-btn">
+                <i class="fas fa-magic"></i>
+                맞춤형 커리큘럼 생성
+            </button>
+        </div>
+    </div>
+</div>
