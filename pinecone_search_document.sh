@@ -5,4 +5,4 @@ export DEFAULT_NAMESPACE=mainv3
 # export USE_RERANKER=1
 # export RERANK_CANDIDATES=50
 
-python pinecone_search_document.py
+uv run pinecone_search_document.py

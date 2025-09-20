@@ -349,48 +349,55 @@ class MultiMCPAgent:
                     yield chunk
                 return
 
-            # 2단계: 간단한 General Chat 응답 생성
-            general_chat_prompt = f"""사용자가 일반적인 대화를 했습니다: "{message}"
+            # 2단계: 프로파일링 상태 확인
+            profiling_status = await self._get_profiling_status()
+            missing_info = []
+            if not profiling_status.get("topic"):
+                missing_info.append("학습 주제")
+            if not profiling_status.get("constraints"):
+                missing_info.append("현재 수준과 시간")
+            if not profiling_status.get("goal"):
+                missing_info.append("학습 목표")
 
-친근하고 짧은 응답을 1-2문장으로 해주세요. 학습과 관련없는 자연스러운 대화입니다.
+            # 3단계: 자연스러운 통합 응답 생성
+            integrated_prompt = f"""사용자가 일반적인 대화를 했습니다: "{message}"
+
+이에 대해 친근하게 응답한 후, 자연스럽게 학습 프로파일링으로 연결해주세요.
+
+현재 아직 파악하지 못한 정보: {', '.join(missing_info) if missing_info else '없음'}
+
+요구사항:
+1. 먼저 사용자의 말에 공감하고 친근하게 반응
+2. 자연스러운 연결어나 문장으로 학습 관련 질문으로 이어가기
+3. "그런데"와 같은 어색한 연결어 피하기
+4. 전체 응답이 하나의 자연스러운 대화처럼 느껴지도록
 
 예시:
-- "라면먹고 싶어" → "라면 맛있겠네요! 😊"
-- "피곤해" → "수고 많으셨어요! 좀 쉬세요."
-- "날씨 좋다" → "정말 좋은 날씨네요!"
+사용자: "피곤해"
+응답: "수고 많으셨어요! 😊 오늘 하루 정말 고생하셨네요. 휴식도 중요하지만, 혹시 어떤 분야를 배우고 싶으신지 궁금해요!"
 
-간단하고 공감적으로 응답해주세요."""
+자연스럽고 친근한 하나의 완전한 응답을 만들어주세요."""
 
             from langchain_core.messages import HumanMessage, SystemMessage
 
             messages = [
-                SystemMessage(content="당신은 친근한 AI 친구입니다. 간단하고 따뜻하게 응답하세요."),
-                HumanMessage(content=general_chat_prompt)
+                SystemMessage(content="당신은 친근하고 자연스러운 학습 멘토입니다. 일반 대화와 학습 질문을 자연스럽게 연결하세요."),
+                HumanMessage(content=integrated_prompt)
             ]
 
-            # General Chat 응답 스트리밍
-            general_response = ""
+            # 통합 응답 스트리밍
+            integrated_response = ""
             async for chunk in self.llm.astream(messages):
                 if hasattr(chunk, 'content') and chunk.content:
-                    general_response += chunk.content
+                    integrated_response += chunk.content
                     print(chunk.content, end="", flush=True)
-                    yield {"type": "message", "content": chunk.content, "node": "general_chat"}
+                    yield {"type": "message", "content": chunk.content, "node": "integrated_chat"}
 
-            # 3단계: 자연스러운 연결어 추가
-            transition_text = " 그런데 "
-            print(transition_text, end="", flush=True)
-            yield {"type": "message", "content": transition_text, "node": "transition"}
-
-            # 4단계: 기존 프로파일링 로직 호출
-            print(f"📊 프로파일링 계속 진행")
-            async for chunk in self._handle_user_profiling(""):  # 빈 메시지로 프로파일링 진행
-                yield chunk
-
-            # 대화 기록에 추가 (general chat 부분만)
-            if general_response:
+            # 대화 기록에 추가
+            if integrated_response:
                 self.conversation_history.append({
                     "role": "assistant",
-                    "content": general_response.strip() + transition_text
+                    "content": integrated_response.strip()
                 })
 
         except Exception as e:
