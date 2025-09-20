@@ -227,6 +227,7 @@ async def generate_curriculum_from_session(session_id: str, user_message: str = 
         return {"error": f"Session {session_id} not found"}
 
     print(f"DEBUG: Starting LangGraph curriculum generation for {session_id}", file=sys.stderr)
+    print(f"DEBUG: Session data - topic: {session_data.get('topic')}, constraints: {session_data.get('constraints')}, goal: {session_data.get('goal')}", file=sys.stderr)
 
     try:
         # LangGraph 워크플로우로 커리큘럼 생성
@@ -238,7 +239,14 @@ async def generate_curriculum_from_session(session_id: str, user_message: str = 
             user_message=user_message
         )
 
-        print(f"DEBUG: LangGraph workflow completed successfully", file=sys.stderr)
+        print(f"DEBUG: LangGraph workflow completed", file=sys.stderr)
+        print(f"DEBUG: Generated curriculum type: {type(curriculum)}", file=sys.stderr)
+
+        # fallback 커리큘럼인지 확인
+        if curriculum.get("fallback"):
+            print(f"WARNING: Fallback curriculum was generated", file=sys.stderr)
+        else:
+            print(f"SUCCESS: Complete curriculum generated with graph_curriculum: {'graph_curriculum' in curriculum}", file=sys.stderr)
 
         # 데이터베이스 저장
         curriculum_id = db.save_curriculum(session_id, curriculum)
@@ -251,6 +259,8 @@ async def generate_curriculum_from_session(session_id: str, user_message: str = 
 
     except Exception as e:
         print(f"ERROR: LangGraph curriculum generation failed: {e}", file=sys.stderr)
+        import traceback
+        print(f"ERROR: Stacktrace: {traceback.format_exc()}", file=sys.stderr)
         return {"error": f"Curriculum generation failed: {str(e)}"}
 
 

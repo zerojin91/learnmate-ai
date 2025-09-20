@@ -6,11 +6,14 @@ from pydantic import BaseModel
 import json
 import os
 import time
+from datetime import datetime
 from contextlib import asynccontextmanager
 
 from agent import MultiMCPAgent
 from config import Config
 from utils import random_uuid
+from servers.user_assessment import save_session
+from langchain_neo4j import Neo4jGraph
 
 # 전역 에이전트 (여러 서버 동시 사용)
 agent_instance: MultiMCPAgent = None
@@ -59,6 +62,21 @@ class ChatRequest(BaseModel):
     message: str
     session_id: str = None
 
+def create_initial_session(session_id: str) -> dict:
+    """새로운 세션 초기 데이터 생성 및 저장"""
+    initial_session_data = {
+        "messages": [],
+        "topic": "",
+        "constraints": "",
+        "goal": "",
+        "current_agent": "response",
+        "session_id": session_id,
+        "completed": False
+    }
+    save_session(session_id, initial_session_data)
+    print(f"💾 세션 파일 저장 완료: {session_id}")
+    return initial_session_data
+
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request, response: Response):
     """메인 페이지 - 채팅 UI (세션 생성 및 저장)"""
@@ -76,20 +94,9 @@ async def home(request: Request, response: Response):
             path="/"           # 모든 경로에서 접근 가능
         )
         print(f"🆕 새 사용자 세션 생성: {session_id}")
-        
+
         # 세션 파일 즉시 생성
-        from servers.user_assessment import save_session
-        initial_session_data = {
-            "messages": [],
-            "topic": "",
-            "constraints": "",
-            "goal": "",
-            "current_agent": "response",
-            "session_id": session_id,
-            "completed": False
-        }
-        save_session(session_id, initial_session_data)
-        print(f"💾 세션 파일 저장 완료: {session_id}")
+        create_initial_session(session_id)
     else:
         print(f"🔄 기존 세션 복원: {session_id}")
     
@@ -189,15 +196,10 @@ async def clear_chat(request: Request, response: Response):
     # 새로운 세션 ID 생성
     new_session_id = random_uuid()[:8]
 
-    # 기존 세션 파일 삭제 (있다면)
+    # 기존 세션 파일은 기록 보존을 위해 삭제하지 않음
     if old_session_id:
-        old_session_file = f"sessions/{old_session_id}.json"
-        try:
-            if os.path.exists(old_session_file):
-                os.remove(old_session_file)
-                print(f"🗑️ 기존 세션 파일 삭제: {old_session_file}")
-        except Exception as e:
-            print(f"⚠️ 세션 파일 삭제 실패: {e}")
+        print(f"📂 기존 세션 파일 보존: sessions/{old_session_id}.json")
+        print(f"🆕 새로운 세션 시작: {new_session_id}")
 
     # 에이전트 대화 기록 초기화
     agent_instance.clear_conversation()
@@ -205,20 +207,27 @@ async def clear_chat(request: Request, response: Response):
     # 새로운 세션 ID를 에이전트에 설정
     agent_instance.current_session_id = new_session_id
 
+    # 새로운 세션 파일 생성
+    create_initial_session(new_session_id)
+
     # 새로운 세션 쿠키 설정
     response.set_cookie(
         key="session_id",
         value=new_session_id,
         max_age=86400,  # 24시간
-        httponly=True,
-        samesite="lax"
+        httponly=False,  # JavaScript에서 접근 가능하도록 설정
+        samesite="lax",
+        path="/"  # 모든 경로에서 접근 가능
     )
 
-    print(f"🔄 세션 초기화: {old_session_id} → {new_session_id}")
+    print(f"🔄 세션 초기화 완료: {old_session_id} → {new_session_id}")
+    print(f"🍪 새로운 세션 쿠키 설정: {new_session_id}")
 
     return {
         "message": "대화 기록이 초기화되었습니다.",
-        "new_session_id": new_session_id
+        "old_session_id": old_session_id,
+        "new_session_id": new_session_id,
+        "success": True
     }
 
 @app.get("/session-debug")
@@ -276,6 +285,368 @@ async def get_session(session_id: str):
     except Exception as e:
         print(f"❌ 세션 조회 오류: {e}")
         return {"error": f"세션 조회 중 오류가 발생했습니다: {str(e)}"}
+
+@app.get("/api/progress/{session_id}")
+async def get_curriculum_progress(session_id: str):
+    """커리큘럼 생성 진행 상황 조회"""
+    try:
+        progress_file = f"data/progress/{session_id}.json"
+
+        if os.path.exists(progress_file):
+            with open(progress_file, 'r', encoding='utf-8') as f:
+                progress_data = json.load(f)
+            return progress_data
+        else:
+            # 파일이 없으면 초기 상태 반환
+            return {
+                "session_id": session_id,
+                "current_phase": "waiting",
+                "step_name": "준비 중",
+                "message": "커리큘럼 생성을 준비하고 있습니다",
+                "progress_percent": 0,
+                "updated_at": datetime.now().isoformat(),
+                "phase_info": {
+                    "step": 1,
+                    "total": 5,
+                    "name": "대기 중",
+                    "description": "커리큘럼 생성을 준비하고 있습니다"
+                }
+            }
+    except Exception as e:
+        print(f"❌ 진행 상황 조회 오류: {e}")
+        return {
+            "error": f"진행 상황 조회 중 오류가 발생했습니다: {str(e)}",
+            "session_id": session_id
+        }
+
+@app.post("/api/progress/{session_id}/initialize")
+async def initialize_curriculum_progress(session_id: str):
+    """커리큘럼 생성 진행 상황 초기화"""
+    try:
+        progress_dir = "data/progress"
+        os.makedirs(progress_dir, exist_ok=True)
+
+        progress_file = f"{progress_dir}/{session_id}.json"
+
+        # 초기 진행 상황 데이터
+        initial_progress = {
+            "session_id": session_id,
+            "current_phase": "parameter_analysis",
+            "step_name": "커리큘럼 생성 준비",
+            "message": "커리큘럼 생성을 준비하고 있습니다",
+            "progress_percent": 0,
+            "updated_at": datetime.now().isoformat(),
+            "phase_info": {
+                "step": 1,
+                "total": 5,
+                "name": "학습 요구사항 분석",
+                "description": "커리큘럼 생성을 준비하고 있습니다"
+            }
+        }
+
+        # 초기 진행 상황 저장
+        with open(progress_file, 'w', encoding='utf-8') as f:
+            json.dump(initial_progress, f, ensure_ascii=False, indent=2)
+
+        print(f"📊 진행 상황 초기화 완료: {session_id}")
+        return {"status": "initialized", "session_id": session_id}
+
+    except Exception as e:
+        print(f"❌ 진행 상황 초기화 오류: {e}")
+        return {"error": f"진행 상황 초기화 중 오류가 발생했습니다: {str(e)}", "session_id": session_id}
+
+
+# Neo4j 데이터셋 지도 API 엔드포인트들
+
+def get_neo4j_connection():
+    """Neo4j 연결 헬퍼 함수"""
+    try:
+        graph = Neo4jGraph(
+            url=Config.NEO4J_BASE_URL,
+            username=Config.NEO4J_USERNAME,
+            password=os.getenv("NEO4J_PASSWORD")
+        )
+        return graph
+    except Exception as e:
+        print(f"❌ Neo4j 연결 실패: {e}")
+        return None
+
+
+@app.get("/api/neo4j/graph-data")
+async def get_neo4j_graph_data():
+    """Neo4j 그래프의 모든 노드와 관계 데이터 조회"""
+    try:
+        graph = get_neo4j_connection()
+        if not graph:
+            return {"error": "Neo4j 연결 실패"}
+
+        # 모든 노드와 관계 조회 (Procedure 노드 제외) - 명시적 속성 추출
+        query = """
+        MATCH (n)-[r]->(m)
+        WHERE NOT 'Procedure' IN labels(n) AND NOT 'Procedure' IN labels(m)
+        RETURN
+            id(n) as source_id, labels(n) as source_labels, properties(n) as source_props,
+            id(m) as target_id, labels(m) as target_labels, properties(m) as target_props,
+            type(r) as rel_type, properties(r) as rel_props
+        LIMIT 500
+        """
+
+        result = graph.query(query)
+
+        nodes = []
+        edges = []
+        node_ids = set()
+
+        for record in result:
+            # 새로운 쿼리 구조에서 직접 데이터 추출
+            source_id = str(record['source_id'])
+            source_labels = record['source_labels'] or []
+            source_props = record['source_props'] or {}
+
+            target_id = str(record['target_id'])
+            target_labels = record['target_labels'] or []
+            target_props = record['target_props'] or {}
+
+            rel_type = record['rel_type'] or 'RELATED'
+            rel_props = record['rel_props'] or {}
+
+            # 소스 노드 처리
+            if source_id not in node_ids:
+                nodes.append({
+                    "id": source_id,
+                    "label": source_props.get('name', source_props.get('title', f"Node {source_id}")),
+                    "group": source_labels[0] if source_labels else 'Unknown',
+                    "properties": source_props
+                })
+                node_ids.add(source_id)
+
+            # 타겟 노드 처리
+            if target_id not in node_ids:
+                nodes.append({
+                    "id": target_id,
+                    "label": target_props.get('name', target_props.get('title', f"Node {target_id}")),
+                    "group": target_labels[0] if target_labels else 'Unknown',
+                    "properties": target_props
+                })
+                node_ids.add(target_id)
+
+            # 관계 처리
+            edges.append({
+                "from": source_id,
+                "to": target_id,
+                "label": rel_type,
+                "properties": rel_props
+            })
+
+        # 고립된 노드들도 조회 (Procedure 제외) - 명시적 속성 추출
+        isolated_query = """
+        MATCH (n)
+        WHERE NOT (n)--() AND NOT 'Procedure' IN labels(n)
+        RETURN id(n) as node_id, labels(n) as node_labels, properties(n) as node_props
+        LIMIT 100
+        """
+
+        isolated_result = graph.query(isolated_query)
+        for record in isolated_result:
+            node_id = str(record['node_id'])
+            node_labels = record['node_labels'] or []
+            node_props = record['node_props'] or {}
+
+            if node_id not in node_ids:
+                nodes.append({
+                    "id": node_id,
+                    "label": node_props.get('name', node_props.get('title', f"Node {node_id}")),
+                    "group": node_labels[0] if node_labels else 'Unknown',
+                    "properties": node_props
+                })
+
+        return {
+            "nodes": nodes,
+            "edges": edges,
+            "total_nodes": len(nodes),
+            "total_edges": len(edges)
+        }
+
+    except Exception as e:
+        print(f"❌ Neo4j 그래프 데이터 조회 오류: {e}")
+        import traceback
+        traceback.print_exc()
+        return {"error": f"그래프 데이터 조회 중 오류가 발생했습니다: {str(e)}"}
+
+
+@app.get("/api/neo4j/search/{query}")
+async def search_neo4j_data(query: str):
+    """Neo4j 데이터 검색"""
+    try:
+        graph = get_neo4j_connection()
+        if not graph:
+            return {"error": "Neo4j 연결 실패"}
+
+        # 노드 검색 쿼리 (Procedure 제외) - 명시적 속성 추출
+        search_query = """
+        MATCH (n)
+        WHERE (toLower(toString(n.name)) CONTAINS toLower($query)
+           OR toLower(toString(n.title)) CONTAINS toLower($query)
+           OR toLower(toString(n.description)) CONTAINS toLower($query))
+           AND NOT 'Procedure' IN labels(n)
+        RETURN id(n) as node_id, labels(n) as node_labels, properties(n) as node_props
+        LIMIT 50
+        """
+
+        result = graph.query(search_query, {"query": query})
+
+        search_results = []
+        for record in result:
+            node_id = str(record['node_id'])
+            node_labels = record['node_labels'] or []
+            node_props = record['node_props'] or {}
+
+            search_results.append({
+                "id": node_id,
+                "label": node_props.get('name', node_props.get('title', f"Node {node_id}")),
+                "group": node_labels[0] if node_labels else 'Unknown',
+                "properties": node_props
+            })
+
+        return {
+            "query": query,
+            "results": search_results,
+            "count": len(search_results)
+        }
+
+    except Exception as e:
+        print(f"❌ Neo4j 검색 오류: {e}")
+        return {"error": f"검색 중 오류가 발생했습니다: {str(e)}"}
+
+
+@app.get("/api/neo4j/node/{node_id}")
+async def get_neo4j_node_details(node_id: str):
+    """특정 노드의 상세 정보 및 연결된 노드들 조회"""
+    try:
+        graph = get_neo4j_connection()
+        if not graph:
+            return {"error": "Neo4j 연결 실패"}
+
+        # 노드 상세 정보 및 연결된 노드들 조회 - 명시적 속성 추출
+        detail_query = """
+        MATCH (n)-[r]-(connected)
+        WHERE id(n) = $node_id
+        RETURN
+            id(n) as center_id, labels(n) as center_labels, properties(n) as center_props,
+            type(r) as rel_type,
+            id(connected) as conn_id, labels(connected) as conn_labels, properties(connected) as conn_props
+        """
+
+        result = graph.query(detail_query, {"node_id": int(node_id)})
+
+        node_info = None
+        connections = []
+
+        for record in result:
+            if node_info is None:
+                center_id = str(record['center_id'])
+                center_labels = record['center_labels'] or []
+                center_props = record['center_props'] or {}
+
+                node_info = {
+                    "id": center_id,
+                    "label": center_props.get('name', center_props.get('title', f"Node {center_id}")),
+                    "group": center_labels[0] if center_labels else 'Unknown',
+                    "properties": center_props
+                }
+
+            rel_type = record['rel_type'] or 'RELATED'
+            conn_id = str(record['conn_id'])
+            conn_labels = record['conn_labels'] or []
+            conn_props = record['conn_props'] or {}
+
+            connections.append({
+                "relationship": rel_type,
+                "node": {
+                    "id": conn_id,
+                    "label": conn_props.get('name', conn_props.get('title', f"Node {conn_id}")),
+                    "group": conn_labels[0] if conn_labels else 'Unknown'
+                }
+            })
+
+        if node_info is None:
+            return {"error": "노드를 찾을 수 없습니다"}
+
+        return {
+            "node": node_info,
+            "connections": connections,
+            "connection_count": len(connections)
+        }
+
+    except Exception as e:
+        print(f"❌ Neo4j 노드 상세 조회 오류: {e}")
+        return {"error": f"노드 조회 중 오류가 발생했습니다: {str(e)}"}
+
+
+@app.get("/api/neo4j/stats")
+async def get_neo4j_stats():
+    """Neo4j 데이터베이스 통계 정보"""
+    try:
+        graph = get_neo4j_connection()
+        if not graph:
+            return {"error": "Neo4j 연결 실패"}
+
+        # 노드 통계 (Procedure 제외)
+        node_stats_query = """
+        MATCH (n)
+        WHERE NOT 'Procedure' IN labels(n)
+        RETURN labels(n) as label, count(n) as count
+        ORDER BY count DESC
+        """
+
+        # 관계 통계 (Procedure 관련 관계 제외)
+        rel_stats_query = """
+        MATCH (n)-[r]->(m)
+        WHERE NOT 'Procedure' IN labels(n) AND NOT 'Procedure' IN labels(m)
+        RETURN type(r) as relationship_type, count(r) as count
+        ORDER BY count DESC
+        """
+
+        node_result = graph.query(node_stats_query)
+        rel_result = graph.query(rel_stats_query)
+
+        node_stats = []
+        for record in node_result:
+            label_data = record.get('label', [])
+            if isinstance(label_data, list) and label_data:
+                label = label_data[0]
+            elif isinstance(label_data, str):
+                label = label_data
+            else:
+                label = 'Unknown'
+
+            node_stats.append({
+                "label": label,
+                "count": record.get('count', 0)
+            })
+
+        rel_stats = []
+        for record in rel_result:
+            rel_stats.append({
+                "type": record.get('relationship_type', 'Unknown'),
+                "count": record.get('count', 0)
+            })
+
+        # 전체 통계
+        total_nodes = sum(stat['count'] for stat in node_stats)
+        total_relationships = sum(stat['count'] for stat in rel_stats)
+
+        return {
+            "total_nodes": total_nodes,
+            "total_relationships": total_relationships,
+            "node_types": node_stats,
+            "relationship_types": rel_stats
+        }
+
+    except Exception as e:
+        print(f"❌ Neo4j 통계 조회 오류: {e}")
+        return {"error": f"통계 조회 중 오류가 발생했습니다: {str(e)}"}
+
 
 if __name__ == "__main__":
     import uvicorn
