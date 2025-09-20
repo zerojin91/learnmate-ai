@@ -2,6 +2,36 @@
    Curriculum Specific Styles
    ============================================================================= */
 
+/* Empty Curriculum State */
+.empty-curriculum {
+    text-align: center;
+    padding: var(--spacing-4xl) var(--spacing-xl);
+    background: var(--surface-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.empty-icon {
+    font-size: 64px;
+    margin-bottom: var(--spacing-xl);
+    opacity: 0.6;
+}
+
+.empty-curriculum h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-md);
+}
+
+.empty-curriculum p {
+    font-size: 16px;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
 /* Curriculum Loading */
 .curriculum-loading {
     text-align: center;
