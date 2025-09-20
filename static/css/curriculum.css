@@ -634,7 +634,7 @@
 }
 
 .learning-map-container {
-    height: 600px;
+    height: 800px; /* Optimized height for compact layout */
     width: 100%;
     position: relative;
     background: #fafbfc;

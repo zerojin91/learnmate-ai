@@ -428,10 +428,10 @@ function displayCurriculumCards(container, data) {
                 <div class="learning-map-header">
                     <div class="learning-map-title">
                         <i class="fas fa-project-diagram"></i>
-                        <h3>학습 지도</h3>
+                        <h3>나의 학습 지도</h3>
                     </div>
                     <button class="learning-map-toggle" onclick="toggleLearningMap()">
-                        <i class="fas fa-eye"></i> 학습 지도 보기
+                        <i class="fas fa-eye"></i> 나의 학습 지도 보기
                     </button>
                 </div>
                 <div class="learning-map-container" style="display: none;">
@@ -2044,6 +2044,7 @@ function transformGraphData(graphCurriculum) {
     const nodes = [];
     const edges = [];
     let nodeId = 0;
+    const procedureNodes = []; // Track procedure nodes for sequential connection
 
     // Process each procedure (절차1, 절차2, etc.)
     Object.keys(graphCurriculum).forEach((procedureKey, procedureIndex) => {
@@ -2052,7 +2053,7 @@ function transformGraphData(graphCurriculum) {
 
         // Create procedure node
         const procedureNodeId = nodeId++;
-        nodes.push({
+        const procedureNode = {
             id: procedureNodeId,
             label: procedure.title,
             title: `절차: ${procedure.title}`,
@@ -2063,14 +2064,19 @@ function transformGraphData(graphCurriculum) {
                 border: '#3730a3',
                 highlight: { background: '#c7d2fe', border: '#312e81' }
             },
-            font: { color: '#3730a3', size: 16, face: 'Arial', bold: true },
+            font: { color: '#3730a3', size: 42, face: 'Arial', bold: true },
             shape: 'box',
-            margin: 10
-        });
+            margin: 30,
+            widthConstraint: { minimum: 240, maximum: 400 },
+            heightConstraint: { minimum: 100 },
+            procedureData: procedure // Store procedure data for modal
+        };
+        nodes.push(procedureNode);
+        procedureNodes.push({ id: procedureNodeId, index: procedureIndex }); // Track for sequential connection
 
         // Process skills within this procedure
         if (procedure.skills) {
-            const skillKeys = Object.keys(procedure.skills).slice(0, 2); // 최대 2개
+            const skillKeys = Object.keys(procedure.skills); // 모든 스킬 표시
             skillKeys.forEach((skillKey, skillIndex) => {
                 const skill = procedure.skills[skillKey];
                 if (!skill) return;
@@ -2089,8 +2095,10 @@ function transformGraphData(graphCurriculum) {
                         border: '#92400e',
                         highlight: { background: '#fde68a', border: '#78350f' }
                     },
-                    font: { color: '#92400e', size: 14, face: 'Arial' },
-                    shape: 'ellipse'
+                    font: { color: '#92400e', size: 32, face: 'Arial' },
+                    shape: 'ellipse',
+                    margin: 20,
+                    widthConstraint: { minimum: 160, maximum: 320 }
                 });
 
                 // Connect procedure to skill
@@ -2102,78 +2110,34 @@ function transformGraphData(graphCurriculum) {
                     width: 2
                 });
 
-                // Process documents within this skill
-                if (skill.documents) {
-                    const documentKeys = Object.keys(skill.documents).slice(0, 2); // 최대 2개
-                    documentKeys.forEach((documentKey, docIndex) => {
-                        const document = skill.documents[documentKey];
-                        if (!document || !document.title) return;
-
-                        // Create document node
-                        const docNodeId = nodeId++;
-                        nodes.push({
-                            id: docNodeId,
-                            label: document.title.length > 20 ? document.title.substring(0, 20) + '...' : document.title,
-                            title: `문서: ${document.title}\n부서: ${document.department || 'N/A'}\n난이도: ${document.difficulty_level || 'N/A'}`,
-                            group: 'document',
-                            level: 2,
-                            color: {
-                                background: '#d1fae5',
-                                border: '#065f46',
-                                highlight: { background: '#a7f3d0', border: '#047857' }
-                            },
-                            font: { color: '#065f46', size: 12, face: 'Arial' },
-                            shape: 'triangle'
-                        });
-
-                        // Connect skill to document
-                        edges.push({
-                            from: skillNodeId,
-                            to: docNodeId,
-                            arrows: 'to',
-                            color: { color: '#9ca3af', highlight: '#6b7280' },
-                            width: 1.5
-                        });
-
-                        // Process experts within this document
-                        if (document.experts) {
-                            const expertKeys = Object.keys(document.experts).slice(0, 2); // 최대 2개
-                            expertKeys.forEach((expertKey, expertIndex) => {
-                                const expert = document.experts[expertKey];
-                                if (!expert || !expert.name) return;
-
-                                // Create expert node
-                                const expertNodeId = nodeId++;
-                                nodes.push({
-                                    id: expertNodeId,
-                                    label: expert.name,
-                                    title: `전문가: ${expert.name}\n부서: ${expert.department || 'N/A'}\n역할: ${expert.role || 'N/A'}\n전문분야: ${expert.expertise || 'N/A'}`,
-                                    group: 'expert',
-                                    level: 3,
-                                    color: {
-                                        background: '#fce7f3',
-                                        border: '#be185d',
-                                        highlight: { background: '#f9a8d4', border: '#9d174d' }
-                                    },
-                                    font: { color: '#be185d', size: 12, face: 'Arial' },
-                                    shape: 'diamond'
-                                });
-
-                                // Connect document to expert
-                                edges.push({
-                                    from: docNodeId,
-                                    to: expertNodeId,
-                                    arrows: 'to',
-                                    color: { color: '#d1d5db', highlight: '#9ca3af' },
-                                    width: 1
-                                });
-                            });
-                        }
-                    });
-                }
+                // Note: Documents and experts are now only shown in procedure detail modal
+                // All data is preserved in procedureData for detailed view
             });
         }
     });
+
+    // Connect procedure nodes sequentially (절차1 → 절차2 → 절차3 ...)
+    procedureNodes.sort((a, b) => a.index - b.index); // Sort by procedure index
+    for (let i = 0; i < procedureNodes.length - 1; i++) {
+        edges.push({
+            from: procedureNodes[i].id,
+            to: procedureNodes[i + 1].id,
+            arrows: 'to',
+            color: {
+                color: '#3730a3',
+                highlight: '#312e81',
+                opacity: 0.8
+            },
+            width: 3,
+            smooth: {
+                enabled: true,
+                type: 'curvedCW',
+                roundness: 0.2
+            },
+            physics: false, // Keep procedure connections stable
+            dashes: false
+        });
+    }
 
     return { nodes, edges };
 }
@@ -2191,7 +2155,7 @@ function createLearningMap(container, graphData) {
         container.innerHTML = `
             <div class="learning-map-empty">
                 <i class="fas fa-project-diagram"></i>
-                <div>학습 지도 데이터가 없습니다</div>
+                <div>나의 학습 지도 데이터가 없습니다</div>
             </div>
         `;
         return null;
@@ -2204,35 +2168,46 @@ function createLearningMap(container, graphData) {
                 enabled: true,
                 direction: 'UD', // Up-Down
                 sortMethod: 'directed',
-                levelSeparation: 150,
-                nodeSpacing: 200,
-                treeSpacing: 200
+                levelSeparation: 280, // Vertical spacing between levels
+                nodeSpacing: 180, // Compact horizontal spacing between nodes
+                treeSpacing: 120, // Very compact spacing between separate trees
+                blockShifting: false, // Disable to reduce spreading
+                edgeMinimization: true,
+                parentCentralization: true,
+                shakeTowards: 'roots' // Compact layout towards root nodes
             }
         },
         physics: {
             enabled: true,
             hierarchicalRepulsion: {
-                nodeDistance: 120,
-                centralGravity: 0.0,
-                springLength: 100,
+                nodeDistance: 120, // Reduced to bring nodes closer
+                centralGravity: 0.3, // Add central gravity to compact layout
+                springLength: 80, // Reduced spring length
                 springConstant: 0.01,
-                damping: 0.09
+                damping: 0.09,
+                avoidOverlap: 1
+            },
+            stabilization: {
+                enabled: true,
+                iterations: 300, // More iterations for better layout
+                updateInterval: 25,
+                fit: true // Fit to view after stabilization
             }
         },
         nodes: {
-            borderWidth: 2,
+            borderWidth: 3, // Increased from 2
             shadow: {
                 enabled: true,
-                color: 'rgba(0,0,0,0.1)',
-                size: 10,
-                x: 2,
-                y: 2
+                color: 'rgba(0,0,0,0.15)', // Slightly darker
+                size: 12, // Increased from 10
+                x: 3, // Increased from 2
+                y: 3 // Increased from 2
             },
             margin: {
-                top: 10,
-                bottom: 10,
-                left: 15,
-                right: 15
+                top: 15, // Increased from 10
+                bottom: 15, // Increased from 10
+                left: 20, // Increased from 15
+                right: 20 // Increased from 15
             }
         },
         edges: {
@@ -2271,6 +2246,29 @@ function createLearningMap(container, graphData) {
     // Add event listeners
     addNetworkEventListeners(network, nodes);
 
+    // Auto fit to view when map is shown - with compact layout
+    setTimeout(() => {
+        if (network) {
+            network.fit({
+                animation: {
+                    duration: 800,
+                    easingFunction: 'easeInOutQuad'
+                },
+                minZoomLevel: 0.8, // Ensure good visibility
+                maxZoomLevel: 1.5
+            });
+
+            // Apply additional compacting after initial layout
+            setTimeout(() => {
+                network.setOptions({
+                    physics: {
+                        enabled: false // Disable physics after layout is set
+                    }
+                });
+            }, 1000);
+        }
+    }, 100);
+
     return network;
 }
 
@@ -2295,7 +2293,10 @@ function addNetworkEventListeners(network, nodes) {
             const node = nodes.find(n => n.id === nodeId);
             if (node) {
                 console.log('Clicked node:', node);
-                // 추후 상세 정보 모달 표시 가능
+                // Show modal for procedure nodes
+                if (node.group === 'procedure') {
+                    showProcedureDetail(node);
+                }
             }
         }
     });
@@ -2385,10 +2386,10 @@ function toggleLearningMap() {
 
     if (isVisible) {
         container.style.display = 'none';
-        toggle.innerHTML = '<i class="fas fa-eye"></i> 학습 지도 보기';
+        toggle.innerHTML = '<i class="fas fa-eye"></i> 나의 학습 지도 보기';
     } else {
         container.style.display = 'block';
-        toggle.innerHTML = '<i class="fas fa-eye-slash"></i> 학습 지도 숨기기';
+        toggle.innerHTML = '<i class="fas fa-eye-slash"></i> 나의 학습 지도 숨기기';
 
         // Re-render graph if needed
         const graphContainer = container.querySelector('.learning-map-graph');
@@ -2420,9 +2421,682 @@ window.createCurriculumContent = createCurriculumContent;
 window.startProgressPolling = startProgressPolling;
 window.stopProgressPolling = stopProgressPolling;
 
+// Create circular layout for procedure detail
+function createCircularDetailGraph(procedure, container) {
+    if (!window.vis || !window.vis.Network) {
+        console.error('Vis.js not loaded');
+        return null;
+    }
+
+    const nodes = [];
+    const edges = [];
+    let nodeId = 0;
+
+    // Center coordinates
+    const centerX = 0;
+    const centerY = 0;
+
+    // Radius settings for each level (reduced for better spacing)
+    const skillRadius = 180;
+    const documentRadius = 280;
+    const expertRadius = 380;
+
+    // Create central procedure node
+    const procedureNodeId = nodeId++;
+    nodes.push({
+        id: procedureNodeId,
+        label: procedure.title,
+        title: `절차: ${procedure.title}`,
+        group: 'procedure',
+        x: centerX,
+        y: centerY,
+        fixed: true,
+        color: {
+            background: '#6366f1',
+            border: '#4338ca',
+            highlight: { background: '#5b5fd6', border: '#3730a3' }
+        },
+        font: { color: '#1f2937', size: 16, face: 'Arial', bold: true, strokeWidth: 1, strokeColor: '#ffffff' },
+        shape: 'circle',
+        size: 25,
+        borderWidth: 3
+    });
+
+    if (procedure.skills) {
+        const skillKeys = Object.keys(procedure.skills);
+        const skillCount = skillKeys.length;
+
+        skillKeys.forEach((skillKey, skillIndex) => {
+            const skill = procedure.skills[skillKey];
+            if (!skill) return;
+
+            // Calculate skill position in circle around procedure
+            const skillAngle = (skillIndex / skillCount) * 2 * Math.PI;
+            const skillX = centerX + skillRadius * Math.cos(skillAngle);
+            const skillY = centerY + skillRadius * Math.sin(skillAngle);
+
+            const skillNodeId = nodeId++;
+            const skillName = skill.skill_info?.name || skillKey;
+
+            nodes.push({
+                id: skillNodeId,
+                label: skillName,
+                title: `스킬: ${skillName}\n카테고리: ${skill.skill_info?.category || 'N/A'}\n설명: ${skill.skill_info?.description || 'N/A'}`,
+                group: 'skill',
+                x: skillX,
+                y: skillY,
+                fixed: true,
+                color: {
+                    background: '#f59e0b',
+                    border: '#d97706',
+                    highlight: { background: '#f3a533', border: '#b45309' }
+                },
+                font: { color: '#1f2937', size: 16, face: 'Arial', bold: true, strokeWidth: 1, strokeColor: '#ffffff' },
+                shape: 'circle',
+                size: 25,
+                borderWidth: 3
+            });
+
+            // Connect procedure to skill
+            edges.push({
+                from: procedureNodeId,
+                to: skillNodeId,
+                color: { color: '#374151', opacity: 0.9 },
+                width: 4,
+                smooth: { enabled: false }
+            });
+
+            // Process documents for this skill
+            if (skill.documents) {
+                const documentKeys = Object.keys(skill.documents);
+                const documentCount = documentKeys.length;
+
+                documentKeys.forEach((documentKey, docIndex) => {
+                    const document = skill.documents[documentKey];
+                    if (!document || !document.title) return;
+
+                    // Calculate document position around its skill
+                    const docAngle = skillAngle + ((docIndex - (documentCount - 1) / 2) * 0.3); // Reduced spread for better spacing
+                    const docX = centerX + documentRadius * Math.cos(docAngle);
+                    const docY = centerY + documentRadius * Math.sin(docAngle);
+
+                    const docNodeId = nodeId++;
+                    const docTitle = document.title.length > 15 ? document.title.substring(0, 15) + '...' : document.title;
+
+                    nodes.push({
+                        id: docNodeId,
+                        label: docTitle,
+                        title: `문서: ${document.title}\n부서: ${document.department || 'N/A'}\n난이도: ${document.difficulty_level || 'N/A'}`,
+                        group: 'document',
+                        x: docX,
+                        y: docY,
+                        fixed: true,
+                        color: {
+                            background: '#34d399',
+                            border: '#059669',
+                            highlight: { background: '#6ee7b7', border: '#047857' }
+                        },
+                        font: { color: '#1f2937', size: 14, face: 'Arial', bold: true, strokeWidth: 1, strokeColor: '#ffffff' },
+                        shape: 'square',
+                        size: 20,
+                        borderWidth: 3
+                    });
+
+                    // Connect skill to document
+                    edges.push({
+                        from: skillNodeId,
+                        to: docNodeId,
+                        color: { color: '#6b7280', opacity: 0.8 },
+                        width: 3,
+                        smooth: { enabled: false }
+                    });
+
+                    // Process experts for this document
+                    if (document.experts) {
+                        const expertKeys = Object.keys(document.experts);
+                        const expertCount = expertKeys.length;
+
+                        expertKeys.forEach((expertKey, expertIndex) => {
+                            const expert = document.experts[expertKey];
+                            if (!expert || !expert.name) return;
+
+                            // Calculate expert position around its document
+                            const expertAngle = docAngle + ((expertIndex - (expertCount - 1) / 2) * 0.2); // Reduced spread for better spacing
+                            const expertX = centerX + expertRadius * Math.cos(expertAngle);
+                            const expertY = centerY + expertRadius * Math.sin(expertAngle);
+
+                            const expertNodeId = nodeId++;
+
+                            nodes.push({
+                                id: expertNodeId,
+                                label: expert.name,
+                                title: `전문가: ${expert.name}\n부서: ${expert.department || 'N/A'}\n역할: ${expert.role || 'N/A'}\n전문분야: ${expert.expertise || 'N/A'}`,
+                                group: 'expert',
+                                x: expertX,
+                                y: expertY,
+                                fixed: true,
+                                color: {
+                                    background: '#f472b6',
+                                    border: '#db2777',
+                                    highlight: { background: '#f9a8d4', border: '#be185d' }
+                                },
+                                font: { color: '#1f2937', size: 12, face: 'Arial', bold: true, strokeWidth: 1, strokeColor: '#ffffff' },
+                                shape: 'diamond',
+                                size: 15,
+                                borderWidth: 3
+                            });
+
+                            // Connect document to expert
+                            edges.push({
+                                from: docNodeId,
+                                to: expertNodeId,
+                                color: { color: '#9ca3af', opacity: 0.7 },
+                                width: 2,
+                                smooth: { enabled: false }
+                            });
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    // Create network
+    const data = {
+        nodes: new vis.DataSet(nodes),
+        edges: new vis.DataSet(edges)
+    };
+
+    const options = {
+        physics: { enabled: false }, // Disable physics for fixed positioning
+        interaction: {
+            dragNodes: false,
+            dragView: true,
+            zoomView: true,
+            hover: true,
+            tooltipDelay: 200,
+            hideEdgesOnDrag: false,
+            hideNodesOnDrag: false
+        },
+        nodes: {
+            borderWidth: 3,
+            shadow: {
+                enabled: true,
+                color: 'rgba(0,0,0,0.4)',
+                size: 12,
+                x: 3,
+                y: 3
+            },
+            scaling: {
+                min: 10,
+                max: 50,
+                label: {
+                    enabled: true,
+                    min: 10,
+                    max: 30,
+                    maxVisible: 30,
+                    drawThreshold: 5
+                }
+            }
+        },
+        edges: {
+            smooth: false,
+            shadow: {
+                enabled: true,
+                color: 'rgba(0,0,0,0.1)',
+                size: 3
+            },
+            hoverWidth: 1.5,
+            selectionWidth: 2
+        }
+    };
+
+    const network = new vis.Network(container, data, options);
+
+    // Add interaction event listeners
+    network.on('hoverNode', function(params) {
+        const node = nodes.find(n => n.id === params.node);
+        if (node) {
+            // Enhance visual feedback on hover
+            const updateNode = { ...node };
+            updateNode.borderWidth = 6;
+            updateNode.shadow = {
+                enabled: true,
+                color: 'rgba(0,0,0,0.6)',
+                size: 16,
+                x: 4,
+                y: 4
+            };
+            data.nodes.update(updateNode);
+        }
+    });
+
+    network.on('blurNode', function(params) {
+        const node = nodes.find(n => n.id === params.node);
+        if (node) {
+            // Reset visual state
+            const updateNode = { ...node };
+            updateNode.borderWidth = node.borderWidth || 3;
+            updateNode.shadow = {
+                enabled: true,
+                color: 'rgba(0,0,0,0.4)',
+                size: 12,
+                x: 3,
+                y: 3
+            };
+            data.nodes.update(updateNode);
+        }
+    });
+
+    network.on('click', function(params) {
+        if (params.nodes.length > 0) {
+            const nodeId = params.nodes[0];
+            const node = nodes.find(n => n.id === nodeId);
+            if (node) {
+                // Show node details in a small tooltip-like display
+                showCircularNodeInfo(node, params.pointer.DOM);
+            }
+        }
+    });
+
+    // Fit to view with enhanced animation
+    setTimeout(() => {
+        network.fit({
+            animation: {
+                duration: 800,
+                easingFunction: 'easeInOutCubic'
+            }
+        });
+    }, 100);
+
+    return network;
+}
+
+// Show circular node info tooltip
+function showCircularNodeInfo(node, position) {
+    // Remove existing tooltip
+    const existingTooltip = document.getElementById('circularNodeTooltip');
+    if (existingTooltip) {
+        existingTooltip.remove();
+    }
+
+    // Create tooltip content based on node type
+    let content = '';
+    switch (node.group) {
+        case 'procedure':
+            content = `
+                <div style="font-weight: bold; color: #6366f1; margin-bottom: 8px;">
+                    <i class="fas fa-cog"></i> 절차
+                </div>
+                <div style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">${node.label}</div>
+                <div style="font-size: 12px; color: #64748b;">중심 학습 절차</div>
+            `;
+            break;
+        case 'skill':
+            content = `
+                <div style="font-weight: bold; color: #f59e0b; margin-bottom: 8px;">
+                    <i class="fas fa-star"></i> 스킬
+                </div>
+                <div style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">${node.label}</div>
+                <div style="font-size: 11px; color: #64748b;">학습해야 할 핵심 기술</div>
+            `;
+            break;
+        case 'document':
+            content = `
+                <div style="font-weight: bold; color: #059669; margin-bottom: 8px;">
+                    <i class="fas fa-file-alt"></i> 문서
+                </div>
+                <div style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">${node.label}</div>
+                <div style="font-size: 11px; color: #64748b;">참고 학습 자료</div>
+            `;
+            break;
+        case 'expert':
+            content = `
+                <div style="font-weight: bold; color: #db2777; margin-bottom: 8px;">
+                    <i class="fas fa-user-graduate"></i> 전문가
+                </div>
+                <div style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">${node.label}</div>
+                <div style="font-size: 11px; color: #64748b;">분야 전문가</div>
+            `;
+            break;
+        default:
+            content = `<div>${node.label}</div>`;
+    }
+
+    const tooltip = document.createElement('div');
+    tooltip.id = 'circularNodeTooltip';
+    tooltip.innerHTML = content;
+    tooltip.style.cssText = `
+        position: fixed;
+        left: ${position.x + 10}px;
+        top: ${position.y - 10}px;
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        z-index: 10000;
+        max-width: 200px;
+        font-size: 12px;
+        line-height: 1.4;
+        backdrop-filter: blur(10px);
+        animation: fadeIn 0.2s ease-out;
+    `;
+
+    document.body.appendChild(tooltip);
+
+    // Auto-remove after 3 seconds
+    setTimeout(() => {
+        if (tooltip && tooltip.parentNode) {
+            tooltip.style.animation = 'fadeOut 0.2s ease-out';
+            setTimeout(() => {
+                if (tooltip && tooltip.parentNode) {
+                    tooltip.remove();
+                }
+            }, 200);
+        }
+    }, 3000);
+
+    // Remove on click outside
+    const removeTooltip = (e) => {
+        if (!tooltip.contains(e.target)) {
+            tooltip.remove();
+            document.removeEventListener('click', removeTooltip);
+        }
+    };
+    setTimeout(() => {
+        document.addEventListener('click', removeTooltip);
+    }, 100);
+}
+
+// Show procedure detail modal
+function showProcedureDetail(node) {
+    if (!node || !node.procedureData) return;
+
+    // Check if modal already exists
+    let modal = document.getElementById('procedureModal');
+    if (modal) {
+        modal.remove();
+    }
+
+    const procedure = node.procedureData;
+
+    // Create modern, refined modal HTML (similar to moduleModal style)
+    const modalHtml = `
+        <div id="procedureModal" style="
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        " onclick="closeProcedureModal(event)">
+            <div style="
+                background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+                border-radius: 24px;
+                box-shadow:
+                    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+                    0 0 0 1px rgba(255, 255, 255, 0.05),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+                max-width: 900px;
+                width: 95%;
+                max-height: 90vh;
+                overflow: hidden;
+                position: relative;
+                animation: slideUp 0.3s ease-out;
+            " onclick="event.stopPropagation()">
+
+                <!-- Header -->
+                <div style="
+                    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+                    padding: 32px;
+                    border-radius: 24px 24px 0 0;
+                    position: relative;
+                    overflow: hidden;
+                ">
+                    <div style="
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1.5" fill="white" opacity="0.05"/><circle cx="90" cy="10" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+                        opacity: 0.3;
+                    "></div>
+
+                    <div style="position: relative; z-index: 1;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                            <div style="
+                                background: rgba(255, 255, 255, 0.2);
+                                padding: 8px 16px;
+                                border-radius: 20px;
+                                font-size: 14px;
+                                font-weight: 600;
+                                color: rgba(255, 255, 255, 0.9);
+                                backdrop-filter: blur(10px);
+                                border: 1px solid rgba(255, 255, 255, 0.2);
+                            ">
+                                <i class="fas fa-map-marked-alt"></i> 학습 절차
+                            </div>
+
+                            <button onclick="closeProcedureModal()" style="
+                                background: rgba(255, 255, 255, 0.1);
+                                border: 1px solid rgba(255, 255, 255, 0.2);
+                                color: white;
+                                width: 40px;
+                                height: 40px;
+                                border-radius: 50%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                cursor: pointer;
+                                transition: all 0.2s ease;
+                                backdrop-filter: blur(10px);
+                            ">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
+                        <h2 style="
+                            font-size: 28px;
+                            font-weight: 700;
+                            color: white;
+                            margin: 0;
+                            line-height: 1.2;
+                            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                        ">${procedure.title || '학습 절차'}</h2>
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div style="
+                    padding: 20px;
+                    overflow: hidden;
+                    max-height: calc(90vh - 120px);
+                ">
+                    <div style="
+                        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+                        padding: 16px;
+                        border-radius: 12px;
+                        margin-bottom: 20px;
+                        border: 1px solid #e2e8f0;
+                        text-align: center;
+                    ">
+                        <div style="
+                            font-size: 16px;
+                            font-weight: 600;
+                            color: #334155;
+                            margin-bottom: 8px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 8px;
+                        ">
+                            <i class="fas fa-project-diagram" style="color: #6366f1;"></i>
+                            ${procedure.title} 상세 학습 지도
+                        </div>
+                        <p style="
+                            color: #64748b;
+                            line-height: 1.5;
+                            margin: 0;
+                            font-size: 14px;
+                        ">
+                            중앙의 절차를 중심으로 관련 스킬, 문서, 전문가들이 원형으로 배치됩니다
+                        </p>
+                    </div>
+
+                    <!-- Circular Graph Container -->
+                    <div id="circularGraphContainer" style="
+                        height: 600px;
+                        width: 100%;
+                        background: #ffffff;
+                        border-radius: 12px;
+                        border: 1px solid #e5e7eb;
+                        position: relative;
+                        overflow: hidden;
+                        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                    "></div>
+
+                    <!-- Graph Controls -->
+                    <div style="
+                        margin-top: 16px;
+                        text-align: center;
+                        display: flex;
+                        justify-content: center;
+                        gap: 12px;
+                    ">
+                        <button onclick="fitCircularGraph()" style="
+                            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                            color: white;
+                            border: none;
+                            padding: 8px 16px;
+                            border-radius: 6px;
+                            font-size: 12px;
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            gap: 6px;
+                        ">
+                            <i class="fas fa-expand-arrows-alt"></i> 전체 보기
+                        </button>
+                        <button onclick="resetCircularGraph()" style="
+                            background: linear-gradient(135deg, #64748b, #475569);
+                            color: white;
+                            border: none;
+                            padding: 8px 16px;
+                            border-radius: 6px;
+                            font-size: 12px;
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            gap: 6px;
+                        ">
+                            <i class="fas fa-redo"></i> 초기화
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+
+            @keyframes fadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; }
+            }
+
+            @keyframes slideUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(40px) scale(0.95);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+            }
+
+            /* Enhanced hover effects for graph controls */
+            button:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                transition: all 0.2s ease;
+            }
+        </style>
+    `;
+
+    // Add modal to document
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+    // Create circular graph after modal is added
+    setTimeout(() => {
+        const graphContainer = document.getElementById('circularGraphContainer');
+        if (graphContainer) {
+            window.currentCircularNetwork = createCircularDetailGraph(procedure, graphContainer);
+        }
+    }, 100);
+}
+
+// Circular graph control functions
+function fitCircularGraph() {
+    if (window.currentCircularNetwork) {
+        window.currentCircularNetwork.fit({
+            animation: {
+                duration: 600,
+                easingFunction: 'easeInOutQuad'
+            }
+        });
+    }
+}
+
+function resetCircularGraph() {
+    if (window.currentCircularNetwork) {
+        window.currentCircularNetwork.moveTo({
+            position: { x: 0, y: 0 },
+            scale: 1.0,
+            animation: {
+                duration: 600,
+                easingFunction: 'easeInOutQuad'
+            }
+        });
+    }
+}
+
+// Close procedure modal
+function closeProcedureModal(event) {
+    if (event && event.target !== event.currentTarget) return;
+
+    const modal = document.getElementById('procedureModal');
+    if (modal) {
+        // Clean up circular network reference
+        window.currentCircularNetwork = null;
+
+        modal.style.animation = 'fadeOut 0.2s ease-out';
+        setTimeout(() => {
+            modal.remove();
+        }, 200);
+    }
+}
+
 // Export new graph functions
 window.transformGraphData = transformGraphData;
 window.createLearningMap = createLearningMap;
 window.toggleLearningMap = toggleLearningMap;
 window.fitGraphView = fitGraphView;
 window.resetGraphView = resetGraphView;
+window.showProcedureDetail = showProcedureDetail;
+window.closeProcedureModal = closeProcedureModal;
+window.createCircularDetailGraph = createCircularDetailGraph;
+window.fitCircularGraph = fitCircularGraph;
+window.resetCircularGraph = resetCircularGraph;
+window.showCircularNodeInfo = showCircularNodeInfo;
