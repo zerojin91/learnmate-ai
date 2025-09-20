@@ -11,6 +11,7 @@ from contextlib import asynccontextmanager
 from agent import MultiMCPAgent
 from config import Config
 from utils import random_uuid
+from servers.user_assessment import save_session
 
 # 전역 에이전트 (여러 서버 동시 사용)
 agent_instance: MultiMCPAgent = None
@@ -59,6 +60,21 @@ class ChatRequest(BaseModel):
     message: str
     session_id: str = None
 
+def create_initial_session(session_id: str) -> dict:
+    """새로운 세션 초기 데이터 생성 및 저장"""
+    initial_session_data = {
+        "messages": [],
+        "topic": "",
+        "constraints": "",
+        "goal": "",
+        "current_agent": "response",
+        "session_id": session_id,
+        "completed": False
+    }
+    save_session(session_id, initial_session_data)
+    print(f"💾 세션 파일 저장 완료: {session_id}")
+    return initial_session_data
+
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request, response: Response):
     """메인 페이지 - 채팅 UI (세션 생성 및 저장)"""
@@ -76,20 +92,9 @@ async def home(request: Request, response: Response):
             path="/"           # 모든 경로에서 접근 가능
         )
         print(f"🆕 새 사용자 세션 생성: {session_id}")
-        
+
         # 세션 파일 즉시 생성
-        from servers.user_assessment import save_session
-        initial_session_data = {
-            "messages": [],
-            "topic": "",
-            "constraints": "",
-            "goal": "",
-            "current_agent": "response",
-            "session_id": session_id,
-            "completed": False
-        }
-        save_session(session_id, initial_session_data)
-        print(f"💾 세션 파일 저장 완료: {session_id}")
+        create_initial_session(session_id)
     else:
         print(f"🔄 기존 세션 복원: {session_id}")
     
@@ -205,13 +210,17 @@ async def clear_chat(request: Request, response: Response):
     # 새로운 세션 ID를 에이전트에 설정
     agent_instance.current_session_id = new_session_id
 
+    # 새로운 세션 파일 생성
+    create_initial_session(new_session_id)
+
     # 새로운 세션 쿠키 설정
     response.set_cookie(
         key="session_id",
         value=new_session_id,
         max_age=86400,  # 24시간
-        httponly=True,
-        samesite="lax"
+        httponly=False,  # JavaScript에서 접근 가능하도록 설정
+        samesite="lax",
+        path="/"  # 모든 경로에서 접근 가능
     )
 
     print(f"🔄 세션 초기화: {old_session_id} → {new_session_id}")
