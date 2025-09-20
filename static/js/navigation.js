@@ -31,8 +31,8 @@ function switchToTab(page) {
     // Hide all content sections first
     const contentSections = [
         'curriculumContent',
- 
-        'datasourceContent'
+        'datasourceContent',
+        'datasetMapContent'
     ];
     
     contentSections.forEach(sectionId => {
@@ -52,6 +52,9 @@ function switchToTab(page) {
         case 'datasource':
             handleDatasourcePage(welcomeSubtitle);
             break;
+        case 'dataset-map':
+            handleDatasetMapPage(welcomeSubtitle);
+            break;
         case 'curriculum':
             handleCurriculumPage(welcomeSubtitle);
             break;
@@ -65,13 +68,40 @@ function switchToTab(page) {
 // Handle datasource page
 function handleDatasourcePage(welcomeSubtitle) {
     welcomeSubtitle.innerHTML = '<span class="highlight">학습 데이터 원천</span> 관리';
-    
+
     let datasourceContent = document.getElementById('datasourceContent');
     if (!datasourceContent) {
         datasourceContent = createDatasourceContent();
     }
-    
+
     datasourceContent.style.display = 'block';
+}
+
+
+// Handle dataset map page
+function handleDatasetMapPage(welcomeSubtitle) {
+    welcomeSubtitle.innerHTML = '<span class="highlight">데이터셋 지도</span> 탐색';
+
+    let datasetMapContent = document.getElementById('datasetMapContent');
+    if (!datasetMapContent) {
+        datasetMapContent = createDatasetMapContent();
+        // DOM에 추가
+        const mainContent = document.querySelector('.main-content');
+        if (mainContent) {
+            mainContent.appendChild(datasetMapContent);
+        }
+    }
+
+    datasetMapContent.style.display = 'block';
+
+    // Initialize dataset map after content is displayed
+    if (typeof initializeDatasetMap === 'function') {
+        setTimeout(() => {
+            initializeDatasetMap();
+        }, 100);
+    } else {
+        console.error('❌ initializeDatasetMap 함수를 찾을 수 없습니다');
+    }
 }
 
 
@@ -379,6 +409,88 @@ function createDatasourceContent() {
     welcomeSection.parentNode.insertBefore(datasourceContent, welcomeSection.nextSibling);
 
     return datasourceContent;
+}
+
+// Create dataset map content - Neo4j Browser style
+function createDatasetMapContent() {
+    const datasetMapContent = document.createElement('div');
+    datasetMapContent.id = 'datasetMapContent';
+    datasetMapContent.className = 'content-section';
+    datasetMapContent.style.display = 'none';
+
+    datasetMapContent.innerHTML = `
+        <div class="dataset-map-header">
+            <h2 class="section-title">
+                <i class="fas fa-project-diagram"></i>
+                데이터셋 지도
+            </h2>
+            <p class="section-description">Neo4j 그래프 데이터베이스의 노드와 관계를 시각화합니다</p>
+        </div>
+
+        <div class="dataset-controls">
+            <div class="control-group">
+                <label for="datasetSearchInput">검색</label>
+                <input type="text" id="datasetSearchInput" placeholder="노드 또는 관계 검색..." class="form-input">
+            </div>
+
+            <div class="control-group">
+                <label>필터</label>
+                <div class="filter-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="filterDocument" checked>
+                        <span>Document</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="filterPerson" checked>
+                        <span>Person</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="filterSkill" checked>
+                        <span>Skill</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <button onclick="fitDatasetGraph()" class="btn-secondary">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                    전체 보기
+                </button>
+                <button onclick="resetDatasetGraph()" class="btn-secondary">
+                    <i class="fas fa-refresh"></i>
+                    리셋
+                </button>
+                <button onclick="refreshDatasetGraph()" class="btn-secondary">
+                    <i class="fas fa-sync"></i>
+                    새로고침
+                </button>
+            </div>
+        </div>
+
+        <div class="dataset-graph-wrapper">
+            <div id="datasetGraphContainer" style="height: 500px; border: 1px solid #ddd; border-radius: 8px;">
+                <div id="datasetGraphLoading" style="display: none; text-align: center; padding: 200px 0; color: #666;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 24px; margin-bottom: 10px;"></i>
+                    <div>Neo4j 데이터를 불러오는 중...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 노드 정보 패널 -->
+        <div id="nodeInfoPanel" class="node-info-panel" style="display: none;">
+            <div class="panel-header">
+                <h3>노드 정보</h3>
+                <button onclick="hideNodeDetails()" class="close-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="nodeInfoContent" class="panel-content">
+                <!-- 노드 정보가 여기에 표시됩니다 -->
+            </div>
+        </div>
+    `;
+
+    return datasetMapContent;
 }
 
 // Initialize navigation
