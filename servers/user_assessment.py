@@ -101,7 +101,7 @@ class UserInfoSchema(BaseModel):
 
 class CompletionSchema(BaseModel):
     topic_complete: bool = Field(description="학습 주제가 명확히 파악되었는가")
-    constraints_complete: bool = Field(description="수준과 시간 투자 정도가 모두 파악되었는가")
+    constraints_complete: bool = Field(description="현재 수준이 파악되었는가 (시간 정보는 선택사항)")
     goal_complete: bool = Field(description="구체적인 학습 목표나 목적이 파악되었는가")
     missing_info: str = Field(description="부족한 정보가 있다면 무엇인지 설명")
 
@@ -175,11 +175,15 @@ class AssessmentAgentSystem:
             updated_messages = state.get("messages", []).copy()
             updated_messages.append({"role": "assistant", "content": response_result["response"]})
 
-            # 완료 여부 확인
+            # 완료 여부 확인 (시간 정보는 선택사항)
+            # 수준만 있어도 constraints 완료로 간주
+            constraints_ok = (
+                updated_constraints and
+                any(kw in updated_constraints for kw in ["초보", "중급", "고급", "수준", "경험", "처음", "입문", "기초"])
+            )
             completed = (
                 bool(updated_topic) and
-                bool(updated_constraints) and
-                "," in updated_constraints and  # 수준과 시간 둘 다 있는지 확인
+                constraints_ok and
                 bool(updated_goal)
             )
 
@@ -286,10 +290,16 @@ class AssessmentAgentSystem:
         missing = []
         if not topic:
             missing.append("학습 주제")
-        if not constraints or "," not in constraints:
-            if "수준" not in constraints.lower() and "초보" not in constraints.lower():
+        level_keywords = ["초보", "중급", "고급", "수준", "경험", "처음"]
+        time_keywords = ["시간", "주", "일", "매일"]
+        
+        has_level = any(kw in constraints for kw in level_keywords)
+        has_time = any(kw in constraints for kw in time_keywords)
+
+        if not has_level or not has_time:
+            if not has_level:
                 missing.append("현재 수준")
-            if "시간" not in constraints.lower() and "주" not in constraints.lower():
+            if not has_time:
                 missing.append("학습 시간")
         if not goal:
             missing.append("학습 목표")
@@ -491,9 +501,9 @@ class AssessmentAgentSystem:
 
 판단 기준:
 1. **주제 완성**: 구체적인 학습 분야가 명확한가? (예: "파이썬", "영어", "데이터분석")
-2. **제약조건 완성**: 현재 수준 AND 시간 투자 정도가 모두 파악되었는가?
-   - 수준: "초보자", "중급자" 등
-   - 시간: "주 3시간", "매일 1시간" 등
+2. **제약조건 완성**: 현재 수준이 파악되었는가? (시간 정보는 선택사항)
+   - 수준: "초보자", "중급자", "입문", "기초" 등
+   - 시간: 있으면 좋지만 없어도 됨
 3. **목표 완성**: 구체적인 학습 목적이 명확한가? (예: "취업", "업무활용", "자격증")
 
 각 항목별로 완성 여부를 정확히 판단하고, 부족한 정보가 있다면 구체적으로 명시해주세요.
@@ -598,14 +608,16 @@ class AssessmentAgentSystem:
 정확한 수준을 알아야 맞춤형 계획을 세울 수 있어요!
                 """.strip()
             else:
-                # 일반적인 제약조건 질문
+                # 일반적인 제약조건 질문 (수준만 필수)
                 return f"""
-📚 **{topic} 학습 조건을 알려주세요!**
+📚 **{topic} 학습 수준을 알려주세요!**
 
 **현재 수준**: 완전 초보자이신가요, 아니면 어느 정도 아시나요?
-**시간 투자**: 일주일에 몇 시간 정도 공부할 수 있으신가요?
+- 완전 처음 시작
+- 기초는 알고 있음
+- 어느 정도 경험 있음
 
-이런 정보가 있어야 현실적인 학습 계획을 세울 수 있어요!
+현재 수준을 알아야 맞춤형 계획을 세울 수 있어요!
                 """.strip()
 
         # 목표가 완성되지 않은 경우

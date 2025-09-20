@@ -156,14 +156,14 @@ class MultiMCPAgent:
 메시지: "{message}"
 
 **학습 관련으로 보는 경우:**
-- 시간 언급 : "주 3시간", "주 1시간", "하루 1시간"
-- 수준 언급: "완전 초보자", "어려워", "중급자", "고급자", "초보", "처음"
+- 수준 언급: "완전 초보자", "어려워", "중급자", "고급자", "초보", "처음", "입문", "기초"
 - 목표 언급: "취업", "이직", "프로젝트", "취업 준비", "이직 준비", "프로젝트 준비"
 - 학습 의지: "배우고 싶어", "공부하고 싶어", "학습하고 싶어"
+- 시간 언급: "주 3시간", "주 1시간", "하루 1시간" (선택사항이지만 있으면 학습 관련)
 - 기타 학습 관련 모든 내용
 
 **판단 기준**: 학습과 100% 무관하고 명백한 일상 대화만 general_chat으로 분류
-애매하면 무조건 학습 관련으로 판단하세요. 특히 '시간', '수준', '목표', '학습 의지' 와 관련된 메시지는 무조건 학습 관련으로 판단하세요."""
+애매하면 무조건 학습 관련으로 판단하세요. 특히 '수준', '목표', '학습 의지' 와 관련된 메시지는 무조건 학습 관련으로 판단하세요."""
 
             try:
                 # General Chat 판단을 위한 별도 분류
@@ -420,23 +420,28 @@ class MultiMCPAgent:
             constraints = session_data.get("constraints", "").strip()
             goal = session_data.get("goal", "").strip()
 
+            topic_complete = bool(topic)
+            # 제약조건은 수준만 있어도 완료로 간주 (시간 정보는 선택사항)
+            constraints_complete = bool(constraints and any(kw in constraints for kw in ["초보", "중급", "고급", "수준", "경험", "처음", "입문", "기초"]))
+            goal_complete = bool(goal)
+
             completed_steps = []
-            if topic: completed_steps.append("topic")
-            if constraints: completed_steps.append("constraints")
-            if goal: completed_steps.append("goal")
+            if topic_complete: completed_steps.append("topic")
+            if constraints_complete: completed_steps.append("constraints")
+            if goal_complete: completed_steps.append("goal")
 
             completion_rate = len(completed_steps) / 3.0
 
             # 다음 필요한 단계 결정
             missing_step = None
-            if not topic:
+            if not topic_complete:
                 missing_step = "topic"
-            elif not constraints:
+            elif not constraints_complete:
                 missing_step = "constraints"
-            elif not goal:
+            elif not goal_complete:
                 missing_step = "goal"
 
-            is_in_progress = completion_rate < 1.0
+            is_in_progress = not (topic_complete and constraints_complete and goal_complete)
 
             return {
                 "in_progress": is_in_progress,

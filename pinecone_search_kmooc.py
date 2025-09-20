@@ -140,14 +140,25 @@ def search(req: SearchRequest = Body(...)):
 
     # Pinecone query
     try:
+        pinecone_top_k = max(req.top_k, RERANK_CANDIDATES if (req.rerank and _reranker) else req.top_k)
+        print("\n[DEBUG] ----------------------------------------")
+        print(f"[DEBUG] Pinecone Index: {PINECONE_INDEX}")
+        print(f"[DEBUG]   - Namespace: {ns}")
+        print(f"[DEBUG]   - Top K: {pinecone_top_k}")
+        print(f"[DEBUG]   - Filter: {req.filter}")
+        print(f"[DEBUG]   - Query: {req.query[:80]}...")
+
         q = index.query(
             vector=vec.tolist(),
-            top_k=max(req.top_k, RERANK_CANDIDATES if (req.rerank and _reranker) else req.top_k),
+            top_k=pinecone_top_k,
             namespace=ns,
             include_metadata=req.include_metadata,
             include_values=req.include_values,
-            filter=req.filter,  # 예: {"subject_area": {"$eq": "Architecture"}}
+            filter=req.filter,  # 예: {"subject_area": {"$eq": 'Architecture'}}
         )
+        print(f"[DEBUG] Pinecone Response: {q}")
+        print("[DEBUG] ----------------------------------------\n")
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Pinecone query 실패: {type(e).__name__}: {e}")
 
