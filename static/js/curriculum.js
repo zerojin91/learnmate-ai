@@ -6,55 +6,64 @@
 async function generateCurriculum() {
     const generateBtn = document.getElementById('generateCurriculumBtn');
     const durationSelect = document.getElementById('learningDuration');
-    
+
     if (!generateBtn || !durationSelect) {
         console.error('커리큘럼 생성 요소를 찾을 수 없습니다.');
         return;
     }
-    
+
     const selectedDuration = durationSelect.value;
     console.log(`🚀 커리큘럼 생성 시작 - 기간: ${selectedDuration}개월`);
-    
+
     // 1. Set generation state
     isGeneratingCurriculum = true;
-    
+
     // 2. Switch to curriculum tab first
     switchToTab('curriculum');
-    
+
     // 3. Show loading state
     const curriculumContent = document.getElementById('curriculumContent');
     if (curriculumContent) {
         displayLoadingState(curriculumContent);
     }
-    
+
     // 4. Disable button and show loading state
     generateBtn.disabled = true;
     generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 커리큘럼 생성 중...';
-    
+
+    // 5. Start progress polling
+    const sessionId = getSessionId();
+    if (sessionId) {
+        startProgressPolling(sessionId);
+    }
+
     try {
         // Send curriculum generation request message
         const curriculumMessage = `${selectedDuration}개월 학습 기간으로 맞춤형 커리큘럼을 생성해주세요.`;
         messageInput.value = curriculumMessage;
-        
+
         // Call general sendMessage function
         await sendMessage();
-        
+
         // Real-time data reception flag
         window.curriculumDataReceived = false;
-        
+
         console.log('✅ 커리큘럼 생성 요청 완료');
-        
+
     } catch (error) {
         console.error('❌ 커리큘럼 생성 오류:', error);
         isGeneratingCurriculum = false;
         showNotification('커리큘럼 생성 중 오류가 발생했습니다. 다시 시도해주세요.', 'error');
-        
+
+        // Stop progress polling
+        stopProgressPolling();
+
         // Restore curriculum page on error
         const curriculumContent = document.getElementById('curriculumContent');
         if (curriculumContent) {
             showCurriculumContent(curriculumContent);
         }
-        
+
     } finally {
         // Restore button
         generateBtn.disabled = false;
@@ -65,12 +74,15 @@ async function generateCurriculum() {
 // Check curriculum completion status
 async function checkCurriculumCompletion() {
     console.log('🔍 커리큘럼 완료 상태 재확인 시작');
-    
+
     try {
         // Check recently generated curriculum
         const curriculumData = StorageManager.curriculum.get();
         if (curriculumData) {
             console.log('✅ 커리큘럼 발견 - 생성 완료 처리');
+
+            // Stop any ongoing progress polling
+            stopProgressPolling();
 
             // Clear generation completion flag
             isGeneratingCurriculum = false;
@@ -93,13 +105,14 @@ async function checkCurriculumCompletion() {
 
             return;
         }
-        
+
         // Only perform real-time checking (remove timeout)
         console.log('⏳ 커리큘럼 생성을 계속 기다립니다 (타임아웃 없음)');
-        
+
     } catch (error) {
         console.error('커리큘럼 완료 확인 오류:', error);
         isGeneratingCurriculum = false;
+        stopProgressPolling();
     }
 }
 
@@ -163,27 +176,35 @@ async function showCurriculumContent(curriculumContent) {
     curriculumContent.style.display = 'block';
 }
 
-// Display loading state
+// Display loading state (5-step dynamic loading)
 function displayLoadingState(container) {
     container.innerHTML = `
         <div class="curriculum-loading">
             <div class="loading-spinner">
                 <i class="fas fa-spinner fa-spin"></i>
             </div>
-            <h3>맞춤형 커리큘럼 생성 중...</h3>
+            <h3>커리큘럼 생성을 시작합니다</h3>
             <p>사용자의 학습 프로필을 바탕으로 최적의 학습 계획을 만들고 있습니다.</p>
             <div class="loading-steps">
-                <div class="loading-step active">
-                    <i class="fas fa-user-check"></i>
-                    <span>학습 프로필 분석</span>
-                </div>
-                <div class="loading-step active">
-                    <i class="fas fa-book-open"></i>
-                    <span>학습 자료 매칭</span>
+                <div class="loading-step">
+                    <i class="fas fa-search"></i>
+                    <span>학습 요구사항 분석</span>
                 </div>
                 <div class="loading-step">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>주차별 계획 수립</span>
+                    <i class="fas fa-route"></i>
+                    <span>학습 경로 설계</span>
+                </div>
+                <div class="loading-step">
+                    <i class="fas fa-building"></i>
+                    <span>커리큘럼 구조 생성</span>
+                </div>
+                <div class="loading-step">
+                    <i class="fas fa-book-open"></i>
+                    <span>학습 자료 수집</span>
+                </div>
+                <div class="loading-step">
+                    <i class="fas fa-check-circle"></i>
+                    <span>최종 검토 및 완성</span>
                 </div>
             </div>
         </div>
@@ -1692,6 +1713,104 @@ function toggleWeekCompletion(moduleIndex) {
     }, 1000);
 }
 
+// Progress polling variables
+let progressPollingInterval = null;
+let lastProgressStep = 0;
+
+// Start progress polling
+function startProgressPolling(sessionId) {
+    console.log('📊 진행 상황 폴링 시작:', sessionId);
+
+    // Stop any existing polling
+    stopProgressPolling();
+
+    // Start new polling every 2 seconds
+    progressPollingInterval = setInterval(async () => {
+        try {
+            const response = await fetch(`/api/progress/${sessionId}`);
+            const progressData = await response.json();
+
+            if (response.ok && progressData.phase_info) {
+                updateLoadingProgress(progressData);
+
+                // Stop polling if completed or error
+                if (progressData.current_phase === 'completed' || progressData.current_phase === 'error') {
+                    console.log('📊 진행 상황 폴링 완료:', progressData.current_phase);
+                    stopProgressPolling();
+
+                    if (progressData.current_phase === 'completed') {
+                        // Wait a bit then check for completed curriculum
+                        setTimeout(() => {
+                            checkCurriculumCompletion();
+                        }, 1000);
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('❌ 진행 상황 조회 오류:', error);
+        }
+    }, 2000);
+}
+
+// Stop progress polling
+function stopProgressPolling() {
+    if (progressPollingInterval) {
+        clearInterval(progressPollingInterval);
+        progressPollingInterval = null;
+        console.log('📊 진행 상황 폴링 중지');
+    }
+}
+
+// Update loading progress UI
+function updateLoadingProgress(progressData) {
+    try {
+        const phaseInfo = progressData.phase_info;
+        const currentStep = phaseInfo.step;
+
+        console.log(`📊 진행 상황 업데이트: ${currentStep}/5 - ${phaseInfo.name}`);
+
+        // Update loading steps
+        const loadingSteps = document.querySelectorAll('.loading-step');
+        if (loadingSteps.length > 0) {
+            loadingSteps.forEach((step, index) => {
+                const stepNumber = index + 1;
+                if (stepNumber <= currentStep) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+
+            // Update main title and description
+            const loadingTitle = document.querySelector('.curriculum-loading h3');
+            const loadingDescription = document.querySelector('.curriculum-loading p');
+
+            if (loadingTitle) {
+                loadingTitle.textContent = phaseInfo.name;
+            }
+            if (loadingDescription) {
+                loadingDescription.textContent = phaseInfo.description;
+            }
+
+            // Animate step transition
+            if (currentStep > lastProgressStep) {
+                const newActiveStep = loadingSteps[currentStep - 1];
+                if (newActiveStep) {
+                    // Add animation effect
+                    newActiveStep.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        newActiveStep.style.transform = 'scale(1)';
+                    }, 300);
+                }
+            }
+
+            lastProgressStep = currentStep;
+        }
+    } catch (error) {
+        console.error('❌ 진행 상황 UI 업데이트 오류:', error);
+    }
+}
+
 // Export functions for global use
 window.generateCurriculum = generateCurriculum;
 window.checkCurriculumCompletion = checkCurriculumCompletion;
@@ -1708,3 +1827,5 @@ window.updateModuleCardState = updateModuleCardState;
 window.downloadCurriculum = downloadCurriculum;
 window.shareCurriculum = shareCurriculum;
 window.createCurriculumContent = createCurriculumContent;
+window.startProgressPolling = startProgressPolling;
+window.stopProgressPolling = stopProgressPolling;

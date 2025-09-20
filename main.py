@@ -286,6 +286,34 @@ async def get_session(session_id: str):
         print(f"❌ 세션 조회 오류: {e}")
         return {"error": f"세션 조회 중 오류가 발생했습니다: {str(e)}"}
 
+@app.get("/api/progress/{session_id}")
+async def get_curriculum_progress(session_id: str):
+    """커리큘럼 생성 진행 상황 조회"""
+    try:
+        progress_file = f"data/progress/{session_id}.json"
+
+        if os.path.exists(progress_file):
+            with open(progress_file, 'r', encoding='utf-8') as f:
+                progress_data = json.load(f)
+            return progress_data
+        else:
+            return {
+                "error": "진행 상황 데이터를 찾을 수 없습니다",
+                "session_id": session_id,
+                "phase_info": {
+                    "step": 0,
+                    "total": 5,
+                    "name": "대기 중",
+                    "description": "커리큘럼 생성을 시작하지 않았습니다"
+                }
+            }
+    except Exception as e:
+        print(f"❌ 진행 상황 조회 오류: {e}")
+        return {
+            "error": f"진행 상황 조회 중 오류가 발생했습니다: {str(e)}",
+            "session_id": session_id
+        }
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host=Config.HOST, port=Config.PORT, access_log=False)

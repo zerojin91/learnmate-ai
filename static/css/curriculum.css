@@ -65,8 +65,9 @@
 .loading-steps {
     display: flex;
     justify-content: center;
-    gap: var(--spacing-2xl);
+    gap: var(--spacing-lg);
     margin-top: var(--spacing-2xl);
+    flex-wrap: wrap;
 }
 
 .loading-step {
@@ -75,22 +76,42 @@
     align-items: center;
     gap: var(--spacing-sm);
     opacity: 0.3;
-    transition: opacity 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: scale(0.95);
+    min-width: 100px;
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-md);
 }
 
 .loading-step.active {
     opacity: 1;
+    transform: scale(1);
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.1));
+    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.2);
 }
 
 .loading-step i {
     font-size: 24px;
     color: var(--border-hover);
+    transition: all 0.3s ease;
+}
+
+.loading-step.active i {
+    color: #a855f7;
+    transform: scale(1.1);
 }
 
 .loading-step span {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-muted);
     text-align: center;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.loading-step.active span {
+    color: var(--text-secondary);
+    font-weight: 600;
 }
 
 /* Curriculum Empty State */
