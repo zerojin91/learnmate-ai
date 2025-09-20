@@ -141,7 +141,7 @@ class ResourceCollectorAgent(BaseAgent):
                 response = await client.post(
                     "http://localhost:8099/search",
                     json=search_payload,
-                    timeout=10.0
+                    timeout=60.0
                 )
 
             if response.status_code == 200:
@@ -313,7 +313,7 @@ class ResourceCollectorAgent(BaseAgent):
                 response = await client.post(
                     "http://localhost:8091/search",
                     json=search_payload,
-                    timeout=10.0
+                    timeout=60.0
                 )
 
             if response.status_code == 200:
@@ -401,7 +401,7 @@ class ResourceCollectorAgent(BaseAgent):
             encoded_query = quote(query)
             search_url = f"https://search.naver.com/search.naver?query={encoded_query}"
 
-            async with httpx.AsyncClient(timeout=10.0) as client:
+            async with httpx.AsyncClient(timeout=60.0) as client:
                 response = await client.get(search_url)
                 if response.status_code != 200:
                     return []

@@ -286,34 +286,59 @@ class AssessmentAgentSystem:
         message_count = len(messages_text.split('\n')) if messages_text else 0
         is_first_message = message_count <= 1
 
-        # 필요한 정보 파악
+        # 필요한 정보 파악 및 진행률 계산
         missing = []
+        progress_items = []
+
+        # 1. 학습 주제
         if not topic:
             missing.append("학습 주제")
-        level_keywords = ["초보", "중급", "고급", "수준", "경험", "처음"]
+            progress_items.append("❌ 학습 주제")
+        else:
+            progress_items.append(f"✅ 학습 주제: {topic}")
+
+        # 2. 현재 수준 (필수) + 학습 시간 (선택)
+        level_keywords = ["초보", "중급", "고급", "수준", "경험", "처음", "입문", "기초"]
         time_keywords = ["시간", "주", "일", "매일"]
-        
+
         has_level = any(kw in constraints for kw in level_keywords)
         has_time = any(kw in constraints for kw in time_keywords)
 
-        if not has_level or not has_time:
-            if not has_level:
-                missing.append("현재 수준")
-            if not has_time:
-                missing.append("학습 시간")
+        if not has_level:
+            missing.append("현재 수준")
+            progress_items.append("❌ 현재 수준")
+        else:
+            level_part = next((part for part in constraints.split(',') if any(kw in part for kw in level_keywords)), constraints)
+            progress_items.append(f"✅ 현재 수준: {level_part.strip()}")
+
+        if not has_time and has_level:  # 수준이 있으면 시간도 체크
+            progress_items.append("⚪ 학습 시간 (선택사항)")
+        elif has_time:
+            time_part = next((part for part in constraints.split(',') if any(kw in part for kw in time_keywords)), "")
+            if time_part:
+                progress_items.append(f"✅ 학습 시간: {time_part.strip()}")
+
+        # 3. 학습 목표
         if not goal:
             missing.append("학습 목표")
+            progress_items.append("❌ 학습 목표")
+        else:
+            progress_items.append(f"✅ 학습 목표: {goal}")
 
-        # 현재 수집된 정보 상태 표시
+        # 진행률 표시 (3단계 중 몇 개 완료)
+        completed_count = 3 - len(missing)
+        progress_bar = "🟩" * completed_count + "⬜" * len(missing)
+
+        # 간단한 상태 표시 (필요한 경우만)
         collected_info = ""
         if topic or constraints or goal:
-            collected_info = "\n📝 **현재 파악된 정보:**\n"
+            collected_info = f"\n📝 **현재까지 파악된 정보:**\n"
             if topic:
                 collected_info += f"• 학습 주제: {topic}\n"
             if constraints:
-                collected_info += f"• 제약 조건: {constraints}\n"
+                collected_info += f"• 조건: {constraints}\n"
             if goal:
-                collected_info += f"• 학습 목표: {goal}\n"
+                collected_info += f"• 목표: {goal}\n"
 
         response_prompt = f"""
 당신은 친근하고 도움이 되는 학습 상담사입니다.
@@ -322,18 +347,19 @@ class AssessmentAgentSystem:
 현재 대화: {messages_text}
 
 수집된 정보:
-- 학습 주제: {topic if topic else "미정"}
-- 제약조건: {constraints if constraints else "미정"}
-- 학습 목표: {goal if goal else "미정"}
+- 학습 주제: {topic if topic else "아직 파악 안됨"}
+- 현재 수준: {"파악됨 (" + level_part.strip() + ")" if has_level else "아직 파악 안됨"}
+- 학습 목표: {goal if goal else "아직 파악 안됨"}
 
-{"아직 필요한 정보: " + ", ".join(missing) if missing else "모든 정보가 수집되었습니다"}
+다음에 알아야 할 정보: {missing[0] if missing else "모든 정보 완료"}
 
 지침:
 1. {"첫 번째 메시지가 아니므로 인사말(안녕하세요, 반갑습니다 등) 사용하지 마세요" if not is_first_message else "첫 번째 메시지이므로 간단한 인사 가능"}
 2. 사용자가 제공한 정보에 대해 구체적으로 공감하고 인정하기
-3. 한 번에 하나의 질문만
+3. 다음 필요한 정보를 자연스럽게 물어보되, 진행률이나 단계에 대한 언급은 하지 말 것
 4. 이미 수집된 정보는 다시 묻지 않기
-5. 자연스럽고 친근한 톤 유지
+5. 자연스럽고 친근한 톤으로 대화하듯이 질문
+6. **중요**: "현재 상태", "진행률", "n/3 완료" 같은 표현 사용 금지
 
 응답을 생성하세요:
 """
@@ -344,19 +370,18 @@ class AssessmentAgentSystem:
             # 완료 메시지 처리
             if not missing:
                 response_text = f"""
-{topic}에 대한 학습 프로필 분석이 완료되었습니다!
+🎉 {topic}에 대한 학습 프로필 분석이 완료되었습니다!
 
-📚 **학습 주제**: {topic}
-⚙️ **제약 조건**: {constraints}
-🎯 **학습 목표**: {goal}
+{collected_info}
 
-이제 맞춤형 학습 계획을 수립할 준비가 되었어요!
+✨ **완벽해요!** 이제 맞춤형 학습 계획을 수립할 준비가 되었습니다!
+커리큘럼 생성을 시작하시겠어요?
 """
             else:
-                # 기본 응답에 수집된 정보 상태 추가
+                # 기본 응답에 필요한 경우만 상태 추가
                 response_text = response.content
-                if collected_info and topic:  # 정보가 수집되었으면 표시
-                    response_text = response_text + "\n" + collected_info
+                if collected_info and len([x for x in [topic, constraints, goal] if x]) >= 1:
+                    response_text += collected_info
 
             return {"response": response_text}
 

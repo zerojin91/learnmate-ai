@@ -349,28 +349,60 @@ class MultiMCPAgent:
                     yield chunk
                 return
 
-            # 2단계: 프로파일링 상태 확인
-            profiling_status = await self._get_profiling_status()
+            # 2단계: 프로파일링 상태 확인 및 진행률 표시
+            topic = profiling_status.get("topic", "")
+            constraints = profiling_status.get("constraints", "")
+            goal = profiling_status.get("goal", "")
+
+            # 진행률 계산
             missing_info = []
-            if not profiling_status.get("topic"):
+            progress_items = []
+
+            if not topic:
                 missing_info.append("학습 주제")
-            if not profiling_status.get("constraints"):
-                missing_info.append("현재 수준과 시간")
-            if not profiling_status.get("goal"):
+                progress_items.append("❌ 학습 주제")
+            else:
+                progress_items.append(f"✅ 학습 주제: {topic}")
+
+            level_keywords = ["초보", "중급", "고급", "수준", "경험", "처음", "입문", "기초"]
+            has_level = any(kw in constraints for kw in level_keywords)
+
+            if not has_level:
+                missing_info.append("현재 수준")
+                progress_items.append("❌ 현재 수준")
+            else:
+                level_part = next((part for part in constraints.split(',') if any(kw in part for kw in level_keywords)), constraints)
+                progress_items.append(f"✅ 현재 수준: {level_part.strip()}")
+
+            if not goal:
                 missing_info.append("학습 목표")
+                progress_items.append("❌ 학습 목표")
+            else:
+                progress_items.append(f"✅ 학습 목표: {goal}")
+
+            completed_count = 3 - len(missing_info)
+            progress_bar = "🟩" * completed_count + "⬜" * len(missing_info)
 
             # 3단계: 자연스러운 통합 응답 생성
+            next_needed = missing_info[0] if missing_info else None
+
             integrated_prompt = f"""사용자가 일반적인 대화를 했습니다: "{message}"
 
-이에 대해 친근하게 응답한 후, 자연스럽게 학습 프로파일링으로 연결해주세요.
+이에 대해 친근하게 응답한 후, 자연스럽게 학습 관련 질문으로 연결해주세요.
 
-현재 아직 파악하지 못한 정보: {', '.join(missing_info) if missing_info else '없음'}
+현재 상황:
+- 학습 주제: {"파악됨 (" + topic + ")" if topic else "아직 필요"}
+- 현재 수준: {"파악됨" if has_level else "아직 필요"}
+- 학습 목표: {"파악됨 (" + goal + ")" if goal else "아직 필요"}
+
+{f"다음에 알아봐야 할 것: {next_needed}" if next_needed else ""}
 
 요구사항:
 1. 먼저 사용자의 말에 공감하고 친근하게 반응
 2. 자연스러운 연결어나 문장으로 학습 관련 질문으로 이어가기
-3. "그런데"와 같은 어색한 연결어 피하기
+3. "그런데", "진행률", "상태" 같은 어색한 표현 피하기
 4. 전체 응답이 하나의 자연스러운 대화처럼 느껴지도록
+5. 다음 필요한 정보를 자연스럽게 물어보기
 
 예시:
 사용자: "피곤해"
@@ -393,11 +425,26 @@ class MultiMCPAgent:
                     print(chunk.content, end="", flush=True)
                     yield {"type": "message", "content": chunk.content, "node": "integrated_chat"}
 
-            # 대화 기록에 추가
+            # 간단한 정보 추가 (필요한 경우만)
             if integrated_response:
+                final_response = integrated_response.strip()
+
+                # 이미 수집된 정보가 있으면 간단히 표시
+                if topic or constraints or goal:
+                    simple_info = "\n\n📝 **현재까지:**"
+                    if topic:
+                        simple_info += f" 주제({topic})"
+                    if constraints:
+                        simple_info += f" 수준 파악됨"
+                    if goal:
+                        simple_info += f" 목표({goal})"
+
+                    final_response += simple_info
+
+                # 대화 기록에 추가
                 self.conversation_history.append({
                     "role": "assistant",
-                    "content": integrated_response.strip()
+                    "content": final_response
                 })
 
         except Exception as e:

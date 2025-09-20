@@ -90,18 +90,31 @@ async function generateCurriculum() {
 // Validate if curriculum is newly generated
 function validateNewCurriculum(curriculumData) {
     try {
+        // If we're currently generating curriculum, any curriculum data is considered new
+        if (isGeneratingCurriculum) {
+            console.log('✅ 커리큘럼 생성 중이므로 데이터를 신규로 판단');
+            return true;
+        }
+
+        // Check basic curriculum data structure
+        if (!curriculumData || !curriculumData.modules || curriculumData.modules.length === 0) {
+            console.log('⚠️ 커리큘럼 데이터 구조가 올바르지 않음');
+            return false;
+        }
+
         // Check if curriculum generation start time exists
         const generationStartTime = window.curriculumGenerationStartTime;
         if (!generationStartTime) {
-            console.log('⚠️ 커리큘럼 생성 시작 시간이 없음');
-            return false;
+            console.log('⚠️ 커리큘럼 생성 시작 시간이 없음, 데이터 존재 여부로 판단');
+            // If no start time but curriculum exists, assume it's new
+            return true;
         }
 
         // Check curriculum generated_at timestamp
         const curriculumGeneratedAt = curriculumData.generated_at;
         if (!curriculumGeneratedAt) {
-            console.log('⚠️ 커리큘럼 생성 시간 정보가 없음');
-            return false;
+            console.log('⚠️ 커리큘럼 생성 시간 정보가 없음, 관대하게 허용');
+            return true;
         }
 
         // Parse generated_at timestamp
@@ -111,19 +124,20 @@ function validateNewCurriculum(curriculumData) {
         } else if (typeof curriculumGeneratedAt === 'number') {
             generatedTimestamp = curriculumGeneratedAt;
         } else {
-            console.log('⚠️ 커리큘럼 생성 시간 형식이 올바르지 않음:', curriculumGeneratedAt);
-            return false;
+            console.log('⚠️ 커리큘럼 생성 시간 형식이 올바르지 않음, 관대하게 허용:', curriculumGeneratedAt);
+            return true;
         }
 
-        // Check if curriculum was generated after generation start time
-        const isAfterStartTime = generatedTimestamp > generationStartTime;
-        console.log(`🕐 시간 비교: 시작시간=${new Date(generationStartTime).toISOString()}, 생성시간=${new Date(generatedTimestamp).toISOString()}, 신규여부=${isAfterStartTime}`);
+        // More lenient time comparison (allow 5 minutes before start time for clock skew)
+        const timeDifference = generatedTimestamp - generationStartTime;
+        const isAfterStartTime = timeDifference > -300000; // Allow 5 minutes before start time
+        console.log(`🕐 관대한 시간 비교: 시작시간=${new Date(generationStartTime).toISOString()}, 생성시간=${new Date(generatedTimestamp).toISOString()}, 차이=${timeDifference}ms, 신규여부=${isAfterStartTime}`);
 
-        // Validate session ID match
+        // Validate session ID match (optional for backward compatibility)
         const currentSessionId = getSessionId();
         const curriculumSessionId = curriculumData.session_id;
-        const sessionMatches = currentSessionId === curriculumSessionId;
-        console.log(`🔑 세션 비교: 현재=${currentSessionId}, 커리큘럼=${curriculumSessionId}, 일치여부=${sessionMatches}`);
+        const sessionMatches = !curriculumSessionId || currentSessionId === curriculumSessionId;
+        console.log(`🔑 세션 비교: 현재=${currentSessionId}, 커리큘럼=${curriculumSessionId || '없음'}, 일치여부=${sessionMatches}`);
 
         return isAfterStartTime && sessionMatches;
 
@@ -1936,8 +1950,8 @@ function stopProgressPolling() {
 
 // Validate completion with multiple attempts for safety
 async function validateAndCheckCompletion(sessionId, attempt = 1) {
-    const maxAttempts = 3;
-    const delayBetweenAttempts = 500; // 0.5 seconds
+    const maxAttempts = 5; // Increased from 3 to 5
+    const delayBetweenAttempts = 1000; // Increased from 500ms to 1000ms
 
     try {
         console.log(`🔍 완료 검증 시도 ${attempt}/${maxAttempts}`);
