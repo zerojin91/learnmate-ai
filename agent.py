@@ -420,23 +420,28 @@ class MultiMCPAgent:
             constraints = session_data.get("constraints", "").strip()
             goal = session_data.get("goal", "").strip()
 
+            topic_complete = bool(topic)
+            # 제약조건은 수준과 시간이 모두 있어야 완료로 간주 (쉼표로 구분)
+            constraints_complete = bool(constraints and "," in constraints)
+            goal_complete = bool(goal)
+
             completed_steps = []
-            if topic: completed_steps.append("topic")
-            if constraints: completed_steps.append("constraints")
-            if goal: completed_steps.append("goal")
+            if topic_complete: completed_steps.append("topic")
+            if constraints_complete: completed_steps.append("constraints")
+            if goal_complete: completed_steps.append("goal")
 
             completion_rate = len(completed_steps) / 3.0
 
             # 다음 필요한 단계 결정
             missing_step = None
-            if not topic:
+            if not topic_complete:
                 missing_step = "topic"
-            elif not constraints:
+            elif not constraints_complete:
                 missing_step = "constraints"
-            elif not goal:
+            elif not goal_complete:
                 missing_step = "goal"
 
-            is_in_progress = completion_rate < 1.0
+            is_in_progress = not (topic_complete and constraints_complete and goal_complete)
 
             return {
                 "in_progress": is_in_progress,

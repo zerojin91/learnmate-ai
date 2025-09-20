@@ -175,11 +175,17 @@ class AssessmentAgentSystem:
             updated_messages = state.get("messages", []).copy()
             updated_messages.append({"role": "assistant", "content": response_result["response"]})
 
-            # 완료 여부 확인
+            # 완료 여부 확인 (더 견고하게)
+            constraints_ok = (
+                updated_constraints and
+                ("," in updated_constraints or (
+                    any(kw in updated_constraints for kw in ["초보", "중급", "고급", "수준", "경험", "처음"]) and
+                    any(kw in updated_constraints for kw in ["시간", "주", "일", "매일"])
+                ))
+            )
             completed = (
                 bool(updated_topic) and
-                bool(updated_constraints) and
-                "," in updated_constraints and  # 수준과 시간 둘 다 있는지 확인
+                constraints_ok and
                 bool(updated_goal)
             )
 
@@ -286,10 +292,16 @@ class AssessmentAgentSystem:
         missing = []
         if not topic:
             missing.append("학습 주제")
-        if not constraints or "," not in constraints:
-            if "수준" not in constraints.lower() and "초보" not in constraints.lower():
+        level_keywords = ["초보", "중급", "고급", "수준", "경험", "처음"]
+        time_keywords = ["시간", "주", "일", "매일"]
+        
+        has_level = any(kw in constraints for kw in level_keywords)
+        has_time = any(kw in constraints for kw in time_keywords)
+
+        if not has_level or not has_time:
+            if not has_level:
                 missing.append("현재 수준")
-            if "시간" not in constraints.lower() and "주" not in constraints.lower():
+            if not has_time:
                 missing.append("학습 시간")
         if not goal:
             missing.append("학습 목표")
