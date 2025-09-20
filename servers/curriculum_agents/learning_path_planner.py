@@ -4,6 +4,7 @@ Learning Path Planner Agent - 전체 학습 경로 분석 및 설계
 import asyncio
 import json
 import os
+import re
 from typing import Dict, List, Any
 from langchain_neo4j import Neo4jGraph
 from langchain_openai import ChatOpenAI
@@ -306,9 +307,10 @@ JSON만 출력하고 다른 설명이나 주석은 절대 포함하지 마세요
 
                 async def get_experts_for_doc(doc_record):
                     doc_id = doc_record['d']['doc_id']
+                    doc_title = doc_record['d']['title']
                     doc_info = self._convert_neo4j_datetime({
                         "doc_id": doc_id,
-                        "title": doc_record['d']['title'],
+                        "title": doc_title,
                         "department": doc_record['d'].get('department', ''),
                         "document_type": doc_record['d'].get('document_type', ''),
                         "target_audience": doc_record['d'].get('target_audience', ''),
@@ -320,6 +322,16 @@ JSON만 출력하고 다른 설명이나 주석은 절대 포함하지 마세요
                         "updated_date": doc_record['d'].get('updated_date', ''),
                         "experts": {}
                     })
+
+                    # 문서 콘텐츠 읽기
+                    if doc_title:
+                        content = self._read_document_content_by_title(doc_title)
+                        if content:
+                            doc_info["content"] = content
+                            doc_info["content_length"] = len(content)
+                        else:
+                            doc_info["content"] = ""
+                            doc_info["content_length"] = 0
 
                     doc_to_expert_query = """
                     MATCH (d:Document)<-[:AUTHORED]-(p:Person)
@@ -405,3 +417,113 @@ JSON만 출력하고 다른 설명이나 주석은 절대 포함하지 마세요
                 if skill_name not in available_skills_set:
                     self.log_debug(f"경고: '{skill_name}'은 DB에 존재하지 않는 스킬입니다 ({procedure_key})")
                     raise ValueError(f"존재하지 않는 스킬: {skill_name}")
+
+    def _read_document_content_by_title(self, title: str, docs_directory: str = None) -> str:
+        """
+        문서 제목을 기반으로 docs 디렉토리에서 해당 JSON 파일을 찾아 콘텐츠를 읽어오는 함수
+
+        Args:
+            title (str): 문서 제목 (예: "MES운영매뉴얼_2024하반기")
+            docs_directory (str): 문서가 저장된 디렉토리 경로
+
+        Returns:
+            str: 파일 내용 또는 오류 메시지
+        """
+        if docs_directory is None:
+            docs_directory = "/Users/jinwoo/Documents/project/2025_kt_intelligence/learnmate-ai/docs"
+
+        self.log_debug(f"문서 콘텐츠 읽기 시도: '{title}'")
+
+        if not title:
+            return ""
+
+        # 제목에 확장자가 없으면 .json을 추가
+        if not title.endswith('.json'):
+            filename = f"{title}.json"
+        else:
+            filename = title
+
+        file_path = os.path.join(docs_directory, filename)
+
+        try:
+            # JSON 파일 읽기
+            with open(file_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+
+            self.log_debug(f"파일 읽기 성공! (크기: {len(content)} 문자)")
+            return content
+
+        except FileNotFoundError:
+            # 정확한 파일명을 찾을 수 없는 경우, 유연한 검색
+            try:
+                def normalize_string(s):
+                    """특수문자, 공백, 확장자를 제거하고 소문자로 변환"""
+                    # 확장자 제거
+                    if s.endswith('.json'):
+                        s = s[:-5]
+                    # 특수문자와 공백 제거, 소문자 변환
+                    return re.sub(r'[^가-힣a-zA-Z0-9]', '', s).lower()
+
+                available_files = os.listdir(docs_directory)
+                normalized_title = normalize_string(title)
+
+                # 1단계: 공백 제거해서 정확 매칭
+                title_no_space = title.replace(' ', '')
+                if not title_no_space.endswith('.json'):
+                    title_no_space += '.json'
+
+                exact_match_no_space = os.path.join(docs_directory, title_no_space)
+                if os.path.exists(exact_match_no_space):
+                    with open(exact_match_no_space, 'r', encoding='utf-8') as f:
+                        content = f.read()
+                    self.log_debug(f"공백 제거 매칭으로 파일 '{title_no_space}' 읽기 성공!")
+                    return content
+
+                # 2단계: 유연한 문자열 포함 검색
+                matches = []
+                for file in available_files:
+                    if file.endswith('.json'):
+                        normalized_filename = normalize_string(file)
+
+                        # 양방향 포함 검색
+                        if normalized_title in normalized_filename or normalized_filename in normalized_title:
+                            matches.append((file, 'exact_contain'))
+                        # 부분 일치 검색
+                        elif len(normalized_title) > 3 and normalized_title[:4] in normalized_filename:
+                            matches.append((file, 'partial_match'))
+
+                # 3단계: 키워드 기반 검색
+                if not matches:
+                    title_words = [word for word in re.findall(r'[가-힣a-zA-Z0-9]+', title) if len(word) > 1]
+                    for file in available_files:
+                        if file.endswith('.json'):
+                            normalized_filename = normalize_string(file)
+                            # 제목의 키워드 중 하나라도 파일명에 포함되면 매칭
+                            if any(normalize_string(word) in normalized_filename for word in title_words):
+                                matches.append((file, 'keyword_match'))
+
+                if matches:
+                    # 매칭 우선순위
+                    matches.sort(key=lambda x: {'exact_contain': 0, 'partial_match': 1, 'keyword_match': 2}[x[1]])
+
+                    # 가장 좋은 매치 선택
+                    best_match_file = matches[0][0]
+                    similar_path = os.path.join(docs_directory, best_match_file)
+                    with open(similar_path, 'r', encoding='utf-8') as f:
+                        content = f.read()
+                    self.log_debug(f"유사한 파일 '{best_match_file}' 읽기 성공!")
+                    return content
+
+                self.log_debug(f"파일을 찾을 수 없음: {file_path}")
+                return ""
+
+            except Exception as e:
+                self.log_debug(f"디렉토리 검색 중 오류: {e}")
+                return ""
+
+        except json.JSONDecodeError as e:
+            self.log_debug(f"JSON 파일 형식 오류: {e}")
+            return ""
+        except Exception as e:
+            self.log_debug(f"파일 읽기 오류: {e}")
+            return ""
