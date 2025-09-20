@@ -10,14 +10,95 @@ function initializeChat() {
     chatMessages = document.getElementById('chatMessages');
     messageInput = document.getElementById('messageInput');
     sendButton = document.getElementById('sendButton');
-    
+
     if (!chatMessages || !messageInput || !sendButton) {
         console.error('Chat elements not found');
         return false;
     }
-    
+
     setupChatEventListeners();
+    loadChatHistory();
     return true;
+}
+
+// Load chat history from session
+async function loadChatHistory() {
+    try {
+        const sessionId = getSessionId();
+        if (!sessionId) return;
+
+        const response = await fetch(`/api/session/${sessionId}`, {
+            credentials: 'include'
+        });
+
+        if (!response.ok) return;
+
+        const sessionData = await response.json();
+
+        // 프로필 정보 복원
+        if (sessionData.topic || sessionData.constraints || sessionData.goal) {
+            console.log('🔄 프로필 정보 복원 중...');
+            const profileData = {
+                topic: sessionData.topic || '',
+                constraints: sessionData.constraints || '',
+                goal: sessionData.goal || ''
+            };
+
+            // 프로필 정보가 있는 것만 필터링
+            const validProfileData = Object.fromEntries(
+                Object.entries(profileData).filter(([key, value]) => value)
+            );
+
+            if (Object.keys(validProfileData).length > 0) {
+                updateProfileDisplay(validProfileData);
+                console.log('✅ 프로필 정보 복원 완료:', validProfileData);
+            }
+        }
+
+        if (sessionData.messages && sessionData.messages.length > 0) {
+            console.log('🔄 채팅 내역 복원 중...');
+
+            // Clear existing messages
+            chatMessages.innerHTML = '';
+
+            // Restore messages
+            sessionData.messages.forEach(msg => {
+                if (msg.role === 'user') {
+                    addUserMessage(msg.content);
+                } else if (msg.role === 'assistant') {
+                    addAIMessage(msg.content);
+                }
+            });
+
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            console.log('✅ 채팅 내역 복원 완료');
+        }
+    } catch (error) {
+        console.error('❌ 채팅 내역 로드 실패:', error);
+    }
+}
+
+// Add user message to chat
+function addUserMessage(content) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message user-message';
+    messageDiv.innerHTML = `
+        <div class="message-avatar user-avatar">You</div>
+        <div class="message-content">${content}</div>
+    `;
+    chatMessages.appendChild(messageDiv);
+}
+
+// Add AI message to chat
+function addAIMessage(content) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message ai-message';
+    messageDiv.innerHTML = `
+        <div class="message-avatar ai-avatar-small">AI</div>
+        <div class="message-content">${formatSimpleMarkdown(content)}</div>
+    `;
+    chatMessages.appendChild(messageDiv);
 }
 
 // Setup chat event listeners
@@ -36,13 +117,6 @@ function setupChatEventListeners() {
     // Auto-resize textarea
     messageInput.addEventListener('input', autoResizeTextarea);
     
-    // File attach button
-    const attachButton = document.getElementById('attachButton');
-    if (attachButton) {
-        attachButton.addEventListener('click', () => {
-            document.getElementById('fileInput').click();
-        });
-    }
     
     // Clear chat button
     const clearButton = document.getElementById('clearButton');
@@ -63,10 +137,10 @@ async function sendMessage() {
     if (!message || sendButton.disabled) return;
 
     console.log(`📤 메시지 전송: ${message}`);
-    
+
     // Add user message to chat
     addMessageToChat(message, 'user');
-    
+
     // Clear input and disable send button
     messageInput.value = '';
     messageInput.style.height = 'auto';
@@ -75,7 +149,13 @@ async function sendMessage() {
 
     try {
         const SESSION_ID = getSessionId();
-        
+        console.log(`🔗 사용할 세션 ID: ${SESSION_ID}`);
+
+        if (!SESSION_ID) {
+            throw new Error('세션 ID를 찾을 수 없습니다');
+        }
+
+        console.log('📡 요청 전송 중...');
         const response = await fetch('/chat', {
             method: 'POST',
             headers: {
@@ -83,11 +163,13 @@ async function sendMessage() {
                 'X-Session-ID': SESSION_ID
             },
             credentials: 'include',
-            body: JSON.stringify({ 
+            body: JSON.stringify({
                 message: message,
                 session_id: SESSION_ID
             })
         });
+
+        console.log(`📡 응답 상태: ${response.status} ${response.statusText}`);
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -99,23 +181,37 @@ async function sendMessage() {
         
         let aiMessageElement = null;
         let fullAiResponse = '';
+        let buffer = ''; // Buffer for incomplete JSON
 
         while (true) {
             const { value, done } = await reader.read();
             if (done) break;
 
             const chunk = decoder.decode(value);
-            const lines = chunk.split('\n');
+            console.log('📥 받은 청크:', chunk);
+            buffer += chunk;
+            const lines = buffer.split('\n');
+
+            // Keep the last line in buffer if it doesn't end with newline
+            buffer = lines.pop() || '';
 
             for (const line of lines) {
+                console.log('📄 처리 중인 라인:', line);
                 if (line.startsWith('data: ')) {
-                    const data = line.slice(6);
-                    if (data === '[DONE]') continue;
+                    const data = line.slice(6).trim();
+                    console.log('📦 SSE 데이터:', data);
+                    if (data === '[DONE]' || data === '') continue;
 
                     try {
                         const parsed = JSON.parse(data);
-                        
+                        console.log('✅ JSON 파싱 성공:', parsed);
+                        console.log('  - content:', parsed.content ? 'Y' : 'N');
+                        console.log('  - profile:', parsed.profile ? 'Y' : 'N');
+                        console.log('  - done:', parsed.done ? 'Y' : 'N');
+                        console.log('  - error:', parsed.error ? 'Y' : 'N');
+
                         if (parsed.error) {
+                            console.error('❌ 서버 오류:', parsed.error);
                             showNotification(`오류: ${parsed.error}`, 'error');
                             continue;
                         }
@@ -126,27 +222,95 @@ async function sendMessage() {
                         }
 
                         if (parsed.content) {
+                            console.log('📝 콘텐츠 수신:', parsed.content);
+
+                            // 커리큘럼 JSON 응답 감지 및 숨김 처리
+                            if (isCurriculumJsonResponse(parsed.content)) {
+                                console.log('📚 커리큘럼 JSON 응답 감지 - 대화창에서 숨김');
+
+                                // 커리큘럼 데이터 저장 (전체 응답이 완성되면 처리)
+                                fullAiResponse += parsed.content;
+
+                                // 대화창에는 간단한 메시지만 표시
+                                if (!aiMessageElement) {
+                                    console.log('🆕 새 AI 메시지 요소 생성 (커리큘럼용)');
+                                    aiMessageElement = addMessageToChat('', 'ai');
+                                }
+
+                                const friendlyMessage = '✅ 맞춤형 커리큘럼이 생성되었습니다! 상단의 "나의 커리큘럼" 탭에서 확인해보세요.';
+                                updateMessageContent(aiMessageElement, friendlyMessage);
+
+                                // 커리큘럼 탭으로 자동 전환 (선택사항)
+                                setTimeout(() => {
+                                    if (typeof switchToTab === 'function') {
+                                        switchToTab('curriculum');
+                                    }
+                                }, 1000);
+
+                                return; // 일반 처리 로직 건너뛰기
+                            }
+
+                            // 일반 응답 처리
+                            if (!aiMessageElement) {
+                                console.log('🆕 새 AI 메시지 요소 생성');
+                                aiMessageElement = addMessageToChat('', 'ai');
+                            }
+
+                            fullAiResponse += parsed.content;
+                            console.log('📊 전체 응답 길이:', fullAiResponse.length);
+
+                            // 큰 JSON의 경우 UI 업데이트를 디바운스
+                            if (fullAiResponse.length > 5000) {
+                                // 큰 응답의 경우 500ms마다 업데이트
+                                clearTimeout(window.updateTimeout);
+                                window.updateTimeout = setTimeout(() => {
+                                    updateMessageContent(aiMessageElement, fullAiResponse);
+                                }, 500);
+                            } else {
+                                // 작은 응답은 즉시 업데이트
+                                updateMessageContent(aiMessageElement, fullAiResponse);
+                            }
+                        }
+
+                        // 프로필 데이터 처리
+                        if (parsed.profile) {
+                            console.log('📊 프로필 데이터 수신:', parsed.profile);
+                            updateProfileDisplay(parsed.profile);
+                        }
+                    } catch (e) {
+                        // 큰 JSON이 여러 청크로 나뉠 수 있으므로 더 관대하게 처리
+                        if (!data.includes('{') && !data.includes('}')) {
+                            // JSON이 아닌 일반 텍스트라면 직접 추가
                             if (!aiMessageElement) {
                                 aiMessageElement = addMessageToChat('', 'ai');
                             }
-                            
-                            fullAiResponse += parsed.content;
+                            fullAiResponse += data;
                             updateMessageContent(aiMessageElement, fullAiResponse);
-                            
-                            // Handle profile updates
-                            if (parsed.profile) {
-                                handleProfileUpdate(parsed.profile);
-                            }
+                        } else {
+                            console.warn('JSON 파싱 건너뛰기 (불완전한 데이터):', e.message);
                         }
-                    } catch (e) {
-                        console.error('JSON 파싱 오류:', e);
                     }
                 }
             }
         }
 
+        // 마지막 업데이트 보장
+        if (fullAiResponse && aiMessageElement) {
+            clearTimeout(window.updateTimeout);
+            updateMessageContent(aiMessageElement, fullAiResponse);
+        }
+
         if (fullAiResponse) {
-            extractAndUpdateProfile(fullAiResponse);
+            // Profile extraction removed
+            
+            // Check for curriculum generation completion
+            if (typeof isGeneratingCurriculum !== 'undefined' && isGeneratingCurriculum) {
+                setTimeout(() => {
+                    if (typeof checkCurriculumCompletion === 'function') {
+                        checkCurriculumCompletion();
+                    }
+                }, 1000); // Give some time for data to be processed
+            }
         }
 
     } catch (error) {
@@ -193,25 +357,6 @@ function updateMessageContent(messageElement, content) {
     }
 }
 
-// Handle profile update from server
-function handleProfileUpdate(profileData) {
-    console.log('📊 프로필 업데이트 수신:', profileData);
-    
-    if (profileData.topic || profileData.constraints || profileData.goal) {
-        updateLearningProfile(
-            profileData.topic || '',
-            profileData.constraints || '', 
-            profileData.goal || ''
-        );
-        
-        // Store in localStorage
-        StorageManager.profile.set(
-            profileData.topic || '',
-            profileData.constraints || '',
-            profileData.goal || ''
-        );
-    }
-}
 
 // Clear chat function
 async function clearChat() {
@@ -227,12 +372,15 @@ async function clearChat() {
         const data = await response.json();
         
         if (response.ok) {
+            // Update session ID if provided
+            if (data.new_session_id) {
+                window.SESSION_ID = data.new_session_id;
+                console.log(`🔄 새로운 세션 ID 설정: ${data.new_session_id}`);
+            }
+
             // Clear chat messages
-            const activeTab = document.querySelector('.nav-link.active').dataset.page;
-            const initialMsg = activeTab === 'profile' 
-                ? '안녕하세요! 사내 지식이 풍부한 전문분야별 AI 멘토들이 여러분의 질문에 답변해드립니다. 궁금한 분야나 주제를 말씀해주시면, 해당 영역의 멘토들이 각자의 전문성을 살려 도움을 드리겠습니다.'
-                : '안녕하세요! LearningMate의 학습 멘토입니다. 어떤 주제에 대해 배우고 싶으신지 알려주세요. 맞춤형 학습 계획을 함께 만들어보겠습니다.';
-            
+            const initialMsg = '안녕하세요! LearningMate의 학습 멘토입니다. 어떤 주제에 대해 배우고 싶으신지 알려주세요. 맞춤형 학습 계획을 함께 만들어보겠습니다.';
+
             chatMessages.innerHTML = `
                 <div class="message ai-message">
                     <div class="message-avatar ai-avatar-small">AI</div>
@@ -241,22 +389,24 @@ async function clearChat() {
                     </div>
                 </div>
             `;
-            
+
             // Clear profile and curriculum data
-            updateLearningProfile('', '', '');
             StorageManager.profile.clear();
             StorageManager.curriculum.clear();
             StorageManager.curriculum.progress.clear();
-            
+
+            // Reset profile UI to initial state
+            resetProfileUI();
+
             // Reset generation state
             isGeneratingCurriculum = false;
-            
+
             // Refresh curriculum page if active
             const curriculumContent = document.getElementById('curriculumContent');
             if (curriculumContent && curriculumContent.style.display === 'block') {
                 showCurriculumContent(curriculumContent);
             }
-            
+
             showNotification('대화가 초기화되었습니다');
         } else {
             showNotification('대화 초기화에 실패했습니다', 'error');
@@ -268,24 +418,40 @@ async function clearChat() {
 
 // Get session ID from various sources
 function getSessionId() {
-    // Try to get from template variable first
+    // Try to get from global variable first
     if (typeof SESSION_ID !== 'undefined' && SESSION_ID) {
+        console.log('🔍 세션 ID 발견 (글로벌 변수):', SESSION_ID);
         return SESSION_ID;
     }
-    
+
+    // Try to get from window.SESSION_ID
+    if (typeof window.SESSION_ID !== 'undefined' && window.SESSION_ID) {
+        console.log('🔍 세션 ID 발견 (window 객체):', window.SESSION_ID);
+        return window.SESSION_ID;
+    }
+
     // Try to get from cookie
     const cookieSessionId = getCookie('session_id');
     if (cookieSessionId) {
+        console.log('🔍 세션 ID 발견 (쿠키):', cookieSessionId);
         return cookieSessionId;
     }
-    
+
     // Try to get from localStorage
-    const storedSessionId = StorageManager.get(StorageManager.keys.LAST_SESSION_ID);
-    if (storedSessionId) {
-        return storedSessionId;
+    if (typeof StorageManager !== 'undefined') {
+        const storedSessionId = StorageManager.get(StorageManager.keys.LAST_SESSION_ID);
+        if (storedSessionId) {
+            console.log('🔍 세션 ID 발견 (localStorage):', storedSessionId);
+            return storedSessionId;
+        }
     }
-    
-    console.warn('세션 ID를 찾을 수 없습니다');
+
+    console.error('❌ 세션 ID를 찾을 수 없습니다');
+    console.log('🔍 현재 상태:');
+    console.log('  - SESSION_ID:', typeof SESSION_ID !== 'undefined' ? SESSION_ID : 'undefined');
+    console.log('  - window.SESSION_ID:', typeof window.SESSION_ID !== 'undefined' ? window.SESSION_ID : 'undefined');
+    console.log('  - 쿠키:', document.cookie);
+    console.log('  - localStorage:', typeof StorageManager !== 'undefined' ? StorageManager.get(StorageManager.keys.LAST_SESSION_ID) : 'StorageManager undefined');
     return null;
 }
 
@@ -309,6 +475,142 @@ function formatSimpleMarkdown(text) {
         .replace(/^\* (.*$)/gim, '• $1');
 }
 
+// 커리큘럼 JSON 응답 감지 함수
+function isCurriculumJsonResponse(content) {
+    // JSON 형태이고 커리큘럼 관련 키워드가 포함된 경우
+    const trimmedContent = content.trim();
+
+    // JSON 시작 감지
+    if (trimmedContent.startsWith('{') || trimmedContent.includes('"title"') ||
+        trimmedContent.includes('"modules"') || trimmedContent.includes('"duration_weeks"') ||
+        trimmedContent.includes('"Learning Path"') || trimmedContent.includes('"level"')) {
+
+        console.log('🎯 커리큘럼 JSON 패턴 감지됨');
+        return true;
+    }
+
+    // 여러 줄의 JSON 시작 부분 감지
+    if (trimmedContent.includes('{\n"title"') || trimmedContent.includes('{ "title"')) {
+        console.log('🎯 커리큘럼 JSON 시작 감지됨');
+        return true;
+    }
+
+    return false;
+}
+
+// Reset profile UI to initial state
+function resetProfileUI() {
+    console.log('🔄 프로필 UI 초기화');
+
+    // 주제 초기화
+    const topicElement = document.getElementById('profileTopic');
+    const stepTopic = document.getElementById('stepTopic');
+    if (topicElement) {
+        topicElement.textContent = '설정 필요';
+        topicElement.classList.remove('completed');
+    }
+    if (stepTopic) {
+        stepTopic.classList.remove('completed');
+    }
+
+    // 조건 초기화
+    const constraintsElement = document.getElementById('profileConstraints');
+    const stepConstraints = document.getElementById('stepConstraints');
+    if (constraintsElement) {
+        constraintsElement.textContent = '설정 필요';
+        constraintsElement.classList.remove('completed');
+    }
+    if (stepConstraints) {
+        stepConstraints.classList.remove('completed');
+    }
+
+    // 목표 초기화
+    const goalElement = document.getElementById('profileGoal');
+    const stepGoal = document.getElementById('stepGoal');
+    if (goalElement) {
+        goalElement.textContent = '설정 필요';
+        goalElement.classList.remove('completed');
+    }
+    if (stepGoal) {
+        stepGoal.classList.remove('completed');
+    }
+
+    // 커리큘럼 섹션 숨기기
+    const curriculumSection = document.getElementById('curriculumSection');
+    if (curriculumSection) {
+        curriculumSection.style.display = 'none';
+        console.log('✅ 커리큘럼 섹션 숨김');
+    }
+
+    console.log('✅ 프로필 UI 초기화 완료');
+}
+
+// Profile display update function
+function updateProfileDisplay(profileData) {
+    console.log('🔄 프로필 UI 업데이트:', profileData);
+
+    // 주제 업데이트
+    if (profileData.topic) {
+        const topicElement = document.getElementById('profileTopic');
+        const stepTopic = document.getElementById('stepTopic');
+        if (topicElement) {
+            topicElement.textContent = profileData.topic;
+            topicElement.classList.add('completed');
+        }
+        if (stepTopic) {
+            stepTopic.classList.add('completed');
+        }
+        console.log('✅ 주제 업데이트:', profileData.topic);
+    }
+
+    // 조건 업데이트
+    if (profileData.constraints) {
+        const constraintsElement = document.getElementById('profileConstraints');
+        const stepConstraints = document.getElementById('stepConstraints');
+        if (constraintsElement) {
+            constraintsElement.textContent = profileData.constraints;
+            constraintsElement.classList.add('completed');
+        }
+        if (stepConstraints) {
+            stepConstraints.classList.add('completed');
+        }
+        console.log('✅ 조건 업데이트:', profileData.constraints);
+    }
+
+    // 목표 업데이트
+    if (profileData.goal) {
+        const goalElement = document.getElementById('profileGoal');
+        const stepGoal = document.getElementById('stepGoal');
+        if (goalElement) {
+            goalElement.textContent = profileData.goal;
+            goalElement.classList.add('completed');
+        }
+        if (stepGoal) {
+            stepGoal.classList.add('completed');
+        }
+        console.log('✅ 목표 업데이트:', profileData.goal);
+    }
+
+    // 모든 단계가 완료되면 커리큘럼 섹션 표시
+    const hasAllData = profileData.topic && profileData.constraints && profileData.goal;
+    if (hasAllData) {
+        const curriculumSection = document.getElementById('curriculumSection');
+        if (curriculumSection) {
+            curriculumSection.style.display = 'block';
+            console.log('✅ 커리큘럼 섹션 표시');
+        }
+    }
+
+    // localStorage에 저장
+    if (typeof StorageManager !== 'undefined') {
+        StorageManager.profile.set(
+            profileData.topic || '',
+            profileData.constraints || '',
+            profileData.goal || ''
+        );
+    }
+}
+
 // Export functions for global use
 window.initializeChat = initializeChat;
 window.sendMessage = sendMessage;
@@ -317,3 +619,5 @@ window.clearChat = clearChat;
 window.getSessionId = getSessionId;
 window.getCookie = getCookie;
 window.formatSimpleMarkdown = formatSimpleMarkdown;
+window.updateProfileDisplay = updateProfileDisplay;
+window.resetProfileUI = resetProfileUI;

@@ -18,7 +18,6 @@ const StorageManager = {
         CURRENT_PROFILE: 'currentProfile',
         GENERATED_CURRICULUM: 'generatedCurriculum',
         CURRICULUM_PROGRESS: 'curriculumProgress',
-        SELECTED_MENTORS: 'selectedMentors',
         LAST_SESSION_ID: 'lastSessionId',
         USER_INFO: 'learnai_user'
     },
@@ -119,7 +118,7 @@ const StorageManager = {
             },
             
             get() {
-                return StorageManager.get(StorageManager.keys.CURRICULUM_PROGRESS, {});
+                return StorageManager.get(StorageManager.keys.CURRICULUM_PROGRESS, []);
             },
             
             clear() {
@@ -139,20 +138,6 @@ const StorageManager = {
         }
     },
 
-    // Mentor management methods
-    mentors: {
-        set(data) {
-            StorageManager.set(StorageManager.keys.SELECTED_MENTORS, data);
-        },
-        
-        get() {
-            return StorageManager.get(StorageManager.keys.SELECTED_MENTORS, []);
-        },
-        
-        clear() {
-            StorageManager.remove(StorageManager.keys.SELECTED_MENTORS);
-        }
-    }
 };
 
 // Utility Functions
