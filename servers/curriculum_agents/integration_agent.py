@@ -62,6 +62,8 @@ class IntegrationAgent(BaseAgent):
             "session_id": state["session_id"],
             "original_constraints": state["constraints"],
             "original_goal": state["goal"],
+            "learning_path_analysis": state.get("learning_path_analysis"),
+            "graph_curriculum": state.get("graph_curriculum"),  # Neo4j 검색 결과 포함
             "generated_at": datetime.now().isoformat(),
             "processing_time": state.get("processing_time", 0),
             "total_estimated_hours": sum(m.get("estimated_hours", 0) for m in final_modules)
