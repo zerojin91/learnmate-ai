@@ -6,6 +6,7 @@ from pydantic import BaseModel
 import json
 import os
 import time
+from datetime import datetime
 from contextlib import asynccontextmanager
 
 from agent import MultiMCPAgent
@@ -194,15 +195,10 @@ async def clear_chat(request: Request, response: Response):
     # 새로운 세션 ID 생성
     new_session_id = random_uuid()[:8]
 
-    # 기존 세션 파일 삭제 (있다면)
+    # 기존 세션 파일은 기록 보존을 위해 삭제하지 않음
     if old_session_id:
-        old_session_file = f"sessions/{old_session_id}.json"
-        try:
-            if os.path.exists(old_session_file):
-                os.remove(old_session_file)
-                print(f"🗑️ 기존 세션 파일 삭제: {old_session_file}")
-        except Exception as e:
-            print(f"⚠️ 세션 파일 삭제 실패: {e}")
+        print(f"📂 기존 세션 파일 보존: sessions/{old_session_id}.json")
+        print(f"🆕 새로운 세션 시작: {new_session_id}")
 
     # 에이전트 대화 기록 초기화
     agent_instance.clear_conversation()
@@ -223,11 +219,14 @@ async def clear_chat(request: Request, response: Response):
         path="/"  # 모든 경로에서 접근 가능
     )
 
-    print(f"🔄 세션 초기화: {old_session_id} → {new_session_id}")
+    print(f"🔄 세션 초기화 완료: {old_session_id} → {new_session_id}")
+    print(f"🍪 새로운 세션 쿠키 설정: {new_session_id}")
 
     return {
         "message": "대화 기록이 초기화되었습니다.",
-        "new_session_id": new_session_id
+        "old_session_id": old_session_id,
+        "new_session_id": new_session_id,
+        "success": True
     }
 
 @app.get("/session-debug")
@@ -297,14 +296,19 @@ async def get_curriculum_progress(session_id: str):
                 progress_data = json.load(f)
             return progress_data
         else:
+            # 파일이 없으면 초기 상태 반환
             return {
-                "error": "진행 상황 데이터를 찾을 수 없습니다",
                 "session_id": session_id,
+                "current_phase": "waiting",
+                "step_name": "준비 중",
+                "message": "커리큘럼 생성을 준비하고 있습니다",
+                "progress_percent": 0,
+                "updated_at": datetime.now().isoformat(),
                 "phase_info": {
-                    "step": 0,
+                    "step": 1,
                     "total": 5,
                     "name": "대기 중",
-                    "description": "커리큘럼 생성을 시작하지 않았습니다"
+                    "description": "커리큘럼 생성을 준비하고 있습니다"
                 }
             }
     except Exception as e:
@@ -313,6 +317,42 @@ async def get_curriculum_progress(session_id: str):
             "error": f"진행 상황 조회 중 오류가 발생했습니다: {str(e)}",
             "session_id": session_id
         }
+
+@app.post("/api/progress/{session_id}/initialize")
+async def initialize_curriculum_progress(session_id: str):
+    """커리큘럼 생성 진행 상황 초기화"""
+    try:
+        progress_dir = "data/progress"
+        os.makedirs(progress_dir, exist_ok=True)
+
+        progress_file = f"{progress_dir}/{session_id}.json"
+
+        # 초기 진행 상황 데이터
+        initial_progress = {
+            "session_id": session_id,
+            "current_phase": "parameter_analysis",
+            "step_name": "커리큘럼 생성 준비",
+            "message": "커리큘럼 생성을 준비하고 있습니다",
+            "progress_percent": 0,
+            "updated_at": datetime.now().isoformat(),
+            "phase_info": {
+                "step": 1,
+                "total": 5,
+                "name": "학습 요구사항 분석",
+                "description": "커리큘럼 생성을 준비하고 있습니다"
+            }
+        }
+
+        # 초기 진행 상황 저장
+        with open(progress_file, 'w', encoding='utf-8') as f:
+            json.dump(initial_progress, f, ensure_ascii=False, indent=2)
+
+        print(f"📊 진행 상황 초기화 완료: {session_id}")
+        return {"status": "initialized", "session_id": session_id}
+
+    except Exception as e:
+        print(f"❌ 진행 상황 초기화 오류: {e}")
+        return {"error": f"진행 상황 초기화 중 오류가 발생했습니다: {str(e)}", "session_id": session_id}
 
 if __name__ == "__main__":
     import uvicorn

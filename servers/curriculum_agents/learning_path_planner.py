@@ -118,12 +118,19 @@ class LearningPathPlannerAgent(BaseAgent):
     async def _search_graph_curriculum(self, topic: str, goal: str, level: str) -> Dict[str, Any]:
         """Neo4j 그래프에서 학습 커리큘럼 검색"""
         try:
+            self.log_debug(f"Starting Neo4j graph search for topic: {topic}")
+
             # Neo4j 연결
-            graph = Neo4jGraph(
-                url=Config.NEO4J_BASE_URL,
-                username=Config.NEO4J_USERNAME,
-                password=os.getenv("NEO4J_PASSWORD")
-            )
+            try:
+                graph = Neo4jGraph(
+                    url=Config.NEO4J_BASE_URL,
+                    username=Config.NEO4J_USERNAME,
+                    password=os.getenv("NEO4J_PASSWORD")
+                )
+                self.log_debug("Neo4j connection established successfully")
+            except Exception as e:
+                self.log_debug(f"Neo4j connection failed: {e}")
+                return self._create_fallback_graph_curriculum(topic, goal, level)
 
             # 사용자 프로파일 구성
             user_profile = {
@@ -135,11 +142,17 @@ class LearningPathPlannerAgent(BaseAgent):
 
             # 그래프 검색 실행
             curriculum_result = await self._graph_search(graph, user_profile)
-            return curriculum_result
+
+            if curriculum_result:
+                self.log_debug("Graph search completed successfully")
+                return curriculum_result
+            else:
+                self.log_debug("Graph search returned empty result, using fallback")
+                return self._create_fallback_graph_curriculum(topic, goal, level)
 
         except Exception as e:
             self.log_debug(f"Graph search failed: {e}")
-            return None
+            return self._create_fallback_graph_curriculum(topic, goal, level)
 
     async def _graph_search(self, graph, user_profile: Dict[str, str]) -> Dict[str, Any]:
         """그래프에서 학습 커리큘럼 검색 (neo4j_search_test.py 기반)"""
@@ -405,3 +418,81 @@ JSON만 출력하고 다른 설명이나 주석은 절대 포함하지 마세요
                 if skill_name not in available_skills_set:
                     self.log_debug(f"경고: '{skill_name}'은 DB에 존재하지 않는 스킬입니다 ({procedure_key})")
                     raise ValueError(f"존재하지 않는 스킬: {skill_name}")
+
+    def _create_fallback_graph_curriculum(self, topic: str, goal: str, level: str) -> Dict[str, Any]:
+        """Neo4j 실패 시 기본 graph_curriculum 생성"""
+        self.log_debug("Creating fallback graph curriculum")
+
+        # 기본적인 학습 절차 생성
+        fallback_curriculum = {
+            "절차1": {
+                "title": f"{topic} 기초 이해",
+                "skills": {
+                    f"{topic} 기초": {
+                        "skill_info": {
+                            "name": f"{topic} 기초",
+                            "category": "기초",
+                            "description": f"{topic}의 기본 개념과 원리 학습",
+                            "keywords": [topic, "기초", "개념"],
+                            "difficulty": level,
+                            "importance_score": 8
+                        },
+                        "documents": {
+                            "basic_doc": {
+                                "doc_id": "fallback_basic",
+                                "title": f"{topic} 기초 학습 가이드",
+                                "department": "교육",
+                                "document_type": "guide",
+                                "target_audience": f"{topic} 학습자",
+                                "difficulty_level": level,
+                                "estimated_time": 120,
+                                "experts": {
+                                    "교육전문가": {
+                                        "name": "교육전문가",
+                                        "department": "교육",
+                                        "role": "전문가",
+                                        "expertise": f"{topic} 교육 및 컨설팅"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "절차2": {
+                "title": f"{topic} 실습 및 응용",
+                "skills": {
+                    f"{topic} 실습": {
+                        "skill_info": {
+                            "name": f"{topic} 실습",
+                            "category": "실습",
+                            "description": f"{topic}을 활용한 실제 프로젝트 수행",
+                            "keywords": [topic, "실습", "프로젝트"],
+                            "difficulty": level,
+                            "importance_score": 9
+                        },
+                        "documents": {
+                            "practice_doc": {
+                                "doc_id": "fallback_practice",
+                                "title": f"{topic} 실습 프로젝트 가이드",
+                                "department": "교육",
+                                "document_type": "project",
+                                "target_audience": f"{topic} 학습자",
+                                "difficulty_level": level,
+                                "estimated_time": 180,
+                                "experts": {
+                                    "프로젝트매니저": {
+                                        "name": "프로젝트매니저",
+                                        "department": "교육",
+                                        "role": "매니저",
+                                        "expertise": f"{topic} 프로젝트 관리"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return fallback_curriculum

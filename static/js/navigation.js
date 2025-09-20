@@ -84,9 +84,24 @@ function handleCurriculumPage(welcomeSubtitle) {
         curriculumContent = createCurriculumContent();
     }
 
-    // 안전하게 커리큘럼 콘텐츠 표시
+    // 커리큘럼 생성 중인지 확인
+    const isGenerating = window.isGeneratingCurriculum || false;
+    const hasGenerationStartTime = window.curriculumGenerationStartTime || false;
+
+    console.log('🔍 커리큘럼 탭 전환 - 생성 상태:', isGenerating, '시작 시간:', hasGenerationStartTime ? ' 있음' : '없음');
+
+    // 진행 상황 추적 중이면 로딩 상태 표시
+    if (isGenerating && hasGenerationStartTime) {
+        console.log('📊 커리큘럼 생성 진행 중 - 로딩 상태 유지');
+        // 로딩 상태가 이미 표시되어 있으므로 showCurriculumContent 호출하지 않음
+        curriculumContent.style.display = 'block';
+        return;
+    }
+
+    // 안전하게 커리큘럼 콘텐츠 표시 (생성 중이 아닐 때만)
     try {
         if (typeof showCurriculumContent === 'function') {
+            console.log('📚 일반 커리큘럼 콘텐츠 표시 시도');
             showCurriculumContent(curriculumContent).catch(error => {
                 console.log('📝 커리큘럼 로드 중 예상된 오류:', error.message);
                 // 기본 빈 상태 표시

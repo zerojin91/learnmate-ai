@@ -249,10 +249,19 @@ async function sendMessage() {
                                     const friendlyMessage = '✅ 맞춤형 커리큘럼이 생성되었습니다! 상단의 "나의 커리큘럼" 탭에서 확인해보세요.';
                                     updateMessageContent(aiMessageElement, friendlyMessage);
 
+                                    // Check if we're in generation mode with progress tracking
+                                    if (isGeneratingCurriculum && window.curriculumGenerationStartTime) {
+                                        console.log('📊 진행 상황 추적 중이므로 자동 전환을 생략하고 폴링 완료를 기다립니다');
+                                        // Let the progress polling handle the completion
+                                        return; // 일반 처리 로직 건너뛰기
+                                    }
+
+                                    // Legacy behavior for non-tracked generation
+                                    console.log('🔄 기존 방식으로 즉시 탭 전환 (진행 상황 추적 없음)');
                                     // 커리큘럼 생성 상태 해제
                                     isGeneratingCurriculum = false;
 
-                                    // 커리큘럼 탭으로 자동 전환
+                                    // 커리큘럼 탭으로 자동 전환 (레거시 동작)
                                     setTimeout(() => {
                                         if (typeof switchToTab === 'function') {
                                             switchToTab('curriculum');
@@ -402,8 +411,10 @@ async function clearChat() {
         if (response.ok) {
             // Update session ID if provided
             if (data.new_session_id) {
+                const oldSessionId = window.SESSION_ID;
                 window.SESSION_ID = data.new_session_id;
-                console.log(`🔄 새로운 세션 ID 설정: ${data.new_session_id}`);
+                console.log(`🔄 세션 ID 변경: ${oldSessionId} → ${data.new_session_id}`);
+                console.log(`📋 서버 응답 정보 - 이전: ${data.old_session_id}, 신규: ${data.new_session_id}`);
             }
 
             // Clear chat messages
@@ -446,36 +457,43 @@ async function clearChat() {
 
 // Get session ID from various sources
 function getSessionId() {
-    // Try to get from global variable first
-    if (typeof SESSION_ID !== 'undefined' && SESSION_ID) {
-        console.log('🔍 세션 ID 발견 (글로벌 변수):', SESSION_ID);
-        return SESSION_ID;
-    }
+    console.log('🔍 세션 ID 조회 시작');
 
-    // Try to get from window.SESSION_ID
-    if (typeof window.SESSION_ID !== 'undefined' && window.SESSION_ID) {
-        console.log('🔍 세션 ID 발견 (window 객체):', window.SESSION_ID);
-        return window.SESSION_ID;
-    }
-
-    // Try to get from cookie
+    // Try to get from cookie first (most reliable after clear-chat)
     const cookieSessionId = getCookie('session_id');
     if (cookieSessionId) {
-        console.log('🔍 세션 ID 발견 (쿠키):', cookieSessionId);
+        console.log('✅ 세션 ID 발견 (쿠키):', cookieSessionId);
+
+        // Update window.SESSION_ID to sync with cookie (avoid const reassignment)
+        if (typeof window !== 'undefined' && window.SESSION_ID !== cookieSessionId) {
+            console.log('🔄 window.SESSION_ID 동기화 필요');
+            const oldWindowSession = window.SESSION_ID;
+            window.SESSION_ID = cookieSessionId;
+            console.log(`📋 window.SESSION_ID 업데이트: ${oldWindowSession} → ${cookieSessionId}`);
+        }
+
         return cookieSessionId;
     }
 
-    // Try to get from localStorage
-    if (typeof StorageManager !== 'undefined') {
-        const storedSessionId = StorageManager.get(StorageManager.keys.LAST_SESSION_ID);
-        if (storedSessionId) {
-            console.log('🔍 세션 ID 발견 (localStorage):', storedSessionId);
-            return storedSessionId;
+    // Try to get from window.SESSION_ID (fallback)
+    if (typeof window !== 'undefined' && window.SESSION_ID) {
+        console.log('✅ 세션 ID 발견 (window 객체):', window.SESSION_ID);
+        return window.SESSION_ID;
+    }
+
+    // Try to get from const global variable (read-only fallback)
+    if (typeof SESSION_ID !== 'undefined' && SESSION_ID) {
+        console.log('✅ 세션 ID 발견 (글로벌 const):', SESSION_ID);
+        // Sync to window for future use
+        if (typeof window !== 'undefined') {
+            window.SESSION_ID = SESSION_ID;
+            console.log('🔄 window.SESSION_ID에 동기화됨');
         }
+        return SESSION_ID;
     }
 
     console.error('❌ 세션 ID를 찾을 수 없습니다');
-    console.log('🔍 현재 상태:');
+    console.log('🔍 현재 상태 상세 정보:');
     console.log('  - SESSION_ID:', typeof SESSION_ID !== 'undefined' ? SESSION_ID : 'undefined');
     console.log('  - window.SESSION_ID:', typeof window.SESSION_ID !== 'undefined' ? window.SESSION_ID : 'undefined');
     console.log('  - 쿠키:', document.cookie);

@@ -15,25 +15,35 @@ async function generateCurriculum() {
     const selectedDuration = durationSelect.value;
     console.log(`🚀 커리큘럼 생성 시작 - 기간: ${selectedDuration}개월`);
 
-    // 1. Set generation state
+    // 1. Clear existing curriculum data to prevent interference
+    console.log('🗑️ 기존 커리큘럼 데이터 정리 시작');
+    StorageManager.curriculum.clear();
+
+    // Store curriculum generation start time for validation
+    const generationStartTime = Date.now();
+    window.curriculumGenerationStartTime = generationStartTime;
+    console.log('⏰ 커리큘럼 생성 시작 시간 기록:', new Date(generationStartTime).toISOString());
+
+    // 2. Set generation state
     isGeneratingCurriculum = true;
 
-    // 2. Switch to curriculum tab first
+    // 3. Switch to curriculum tab first
     switchToTab('curriculum');
 
-    // 3. Show loading state
+    // 4. Show loading state
     const curriculumContent = document.getElementById('curriculumContent');
     if (curriculumContent) {
         displayLoadingState(curriculumContent);
     }
 
-    // 4. Disable button and show loading state
+    // 5. Disable button and show loading state
     generateBtn.disabled = true;
     generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 커리큘럼 생성 중...';
 
-    // 5. Start progress polling
+    // 6. Initialize progress and start polling
     const sessionId = getSessionId();
     if (sessionId) {
+        await initializeProgress(sessionId);
         startProgressPolling(sessionId);
     }
 
@@ -65,9 +75,61 @@ async function generateCurriculum() {
         }
 
     } finally {
-        // Restore button
+        // Restore button (but don't clear generation state here - let progress polling handle it)
         generateBtn.disabled = false;
         generateBtn.innerHTML = '<i class="fas fa-magic"></i> 맞춤형 커리큘럼 생성';
+
+        // Only clean up if there was an error and polling isn't handling it
+        if (!isGeneratingCurriculum) {
+            window.curriculumGenerationStartTime = null;
+            console.log('🗑️ 오류 발생으로 인한 생성 시간 정리');
+        }
+    }
+}
+
+// Validate if curriculum is newly generated
+function validateNewCurriculum(curriculumData) {
+    try {
+        // Check if curriculum generation start time exists
+        const generationStartTime = window.curriculumGenerationStartTime;
+        if (!generationStartTime) {
+            console.log('⚠️ 커리큘럼 생성 시작 시간이 없음');
+            return false;
+        }
+
+        // Check curriculum generated_at timestamp
+        const curriculumGeneratedAt = curriculumData.generated_at;
+        if (!curriculumGeneratedAt) {
+            console.log('⚠️ 커리큘럼 생성 시간 정보가 없음');
+            return false;
+        }
+
+        // Parse generated_at timestamp
+        let generatedTimestamp;
+        if (typeof curriculumGeneratedAt === 'string') {
+            generatedTimestamp = new Date(curriculumGeneratedAt).getTime();
+        } else if (typeof curriculumGeneratedAt === 'number') {
+            generatedTimestamp = curriculumGeneratedAt;
+        } else {
+            console.log('⚠️ 커리큘럼 생성 시간 형식이 올바르지 않음:', curriculumGeneratedAt);
+            return false;
+        }
+
+        // Check if curriculum was generated after generation start time
+        const isAfterStartTime = generatedTimestamp > generationStartTime;
+        console.log(`🕐 시간 비교: 시작시간=${new Date(generationStartTime).toISOString()}, 생성시간=${new Date(generatedTimestamp).toISOString()}, 신규여부=${isAfterStartTime}`);
+
+        // Validate session ID match
+        const currentSessionId = getSessionId();
+        const curriculumSessionId = curriculumData.session_id;
+        const sessionMatches = currentSessionId === curriculumSessionId;
+        console.log(`🔑 세션 비교: 현재=${currentSessionId}, 커리큘럼=${curriculumSessionId}, 일치여부=${sessionMatches}`);
+
+        return isAfterStartTime && sessionMatches;
+
+    } catch (error) {
+        console.error('❌ 커리큘럼 유효성 검사 오류:', error);
+        return false;
     }
 }
 
@@ -76,16 +138,34 @@ async function checkCurriculumCompletion() {
     console.log('🔍 커리큘럼 완료 상태 재확인 시작');
 
     try {
-        // Check recently generated curriculum
+        // Check recently generated curriculum with validation
         const curriculumData = StorageManager.curriculum.get();
         if (curriculumData) {
-            console.log('✅ 커리큘럼 발견 - 생성 완료 처리');
+            console.log('📋 커리큘럼 데이터 발견, 유효성 검사 시작:', curriculumData);
+
+            // Validate if this is a newly generated curriculum
+            const isNewCurriculum = validateNewCurriculum(curriculumData);
+            if (!isNewCurriculum) {
+                console.log('⚠️ 기존 커리큘럼 데이터로 판단, 계속 대기');
+
+                // Schedule another check after a delay
+                setTimeout(() => {
+                    console.log('🔄 커리큘럼 완료 상태 재확인 재시도');
+                    checkCurriculumCompletion();
+                }, 2000); // Check again in 2 seconds
+
+                return;
+            }
+
+            console.log('✅ 새로운 커리큘럼 확인됨 - 생성 완료 처리');
 
             // Stop any ongoing progress polling
             stopProgressPolling();
 
-            // Clear generation completion flag
+            // Clear generation completion flag and start time
             isGeneratingCurriculum = false;
+            window.curriculumGenerationStartTime = null;
+            console.log('🗑️ 커리큘럼 생성 상태 및 시작 시간 정리 완료');
 
             // 즉시 커리큘럼 탭으로 전환
             if (typeof switchToTab === 'function') {
@@ -106,8 +186,14 @@ async function checkCurriculumCompletion() {
             return;
         }
 
-        // Only perform real-time checking (remove timeout)
-        console.log('⏳ 커리큘럼 생성을 계속 기다립니다 (타임아웃 없음)');
+        // No curriculum data found yet - schedule another check
+        console.log('⏳ 커리큘럼 데이터 없음, 재시도 예약');
+
+        // Schedule another check after a delay
+        setTimeout(() => {
+            console.log('🔄 커리큘럼 완료 상태 재확인 (데이터 없음)');
+            checkCurriculumCompletion();
+        }, 3000); // Check again in 3 seconds
 
     } catch (error) {
         console.error('커리큘럼 완료 확인 오류:', error);
@@ -126,17 +212,41 @@ async function showCurriculumContent(curriculumContent) {
     const existingCurriculum = StorageManager.curriculum.get();
     console.log('💾 localStorage 커리큘럼 확인:', existingCurriculum ? '있음' : '없음');
 
+    // Check if we're currently generating a curriculum
+    const isGenerating = isGeneratingCurriculum || false;
+    const hasGenerationStartTime = window.curriculumGenerationStartTime || false;
+    console.log('🔍 커리큘럼 생성 상태 확인 - 생성 중:', isGenerating, '시작 시간:', hasGenerationStartTime ? '있음' : '없음');
+
     if (existingCurriculum) {
+        // If we're in active generation mode, don't show old curriculum
+        if (isGenerating && hasGenerationStartTime) {
+            console.log('📊 커리큘럼 생성 진행 중이므로 기존 데이터 표시를 건너뜀');
+            // Show empty state or loading instead
+            displayEmptyState(curriculumContent);
+            curriculumContent.style.display = 'block';
+            return;
+        }
+
         console.log('📚 기존 커리큘럼 표시 (localStorage에서)');
         displayCurriculumCards(curriculumContent, existingCurriculum);
         curriculumContent.style.display = 'block';
 
-        // 커리큘럼이 있으면 생성 플래그 해제
-        isGeneratingCurriculum = false;
-        console.log('✅ 생성 플래그 해제됨');
+        // Only clear generation flag if we're not actively generating
+        if (!isGenerating) {
+            isGeneratingCurriculum = false;
+            console.log('✅ 생성 플래그 해제됨 (비활성화 상태)');
+        }
         return;
     } else {
-        // Try to load curriculum from server
+        // If we're actively generating, don't query server - it might have stale data
+        if (isGenerating && hasGenerationStartTime) {
+            console.log('📊 커리큘럼 생성 진행 중이므로 서버 조회를 건너뜀 (간섭 방지)');
+            displayLoadingState(curriculumContent);
+            curriculumContent.style.display = 'block';
+            return;
+        }
+
+        // Try to load curriculum from server only when not generating
         console.log('🔄 서버에서 커리큘럼 데이터 로드 시도');
         const sessionId = getSessionId();
 
@@ -1749,6 +1859,31 @@ function toggleWeekCompletion(moduleIndex) {
 let progressPollingInterval = null;
 let lastProgressStep = 0;
 
+// Initialize progress file
+async function initializeProgress(sessionId) {
+    try {
+        console.log('🚀 진행 상황 초기화 시작:', sessionId);
+
+        const response = await fetch(`/api/progress/${sessionId}/initialize`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                action: 'initialize'
+            })
+        });
+
+        if (response.ok) {
+            console.log('✅ 진행 상황 초기화 완료');
+        } else {
+            console.warn('⚠️ 진행 상황 초기화 실패, 폴링 계속 진행');
+        }
+    } catch (error) {
+        console.warn('⚠️ 진행 상황 초기화 오류, 폴링 계속 진행:', error);
+    }
+}
+
 // Start progress polling
 function startProgressPolling(sessionId) {
     console.log('📊 진행 상황 폴링 시작:', sessionId);
@@ -1762,7 +1897,8 @@ function startProgressPolling(sessionId) {
             const response = await fetch(`/api/progress/${sessionId}`);
             const progressData = await response.json();
 
-            if (response.ok && progressData.phase_info) {
+            // Update progress if phase_info exists (even if response.ok is false)
+            if (progressData && progressData.phase_info) {
                 updateLoadingProgress(progressData);
 
                 // Stop polling if completed or error
@@ -1771,12 +1907,17 @@ function startProgressPolling(sessionId) {
                     stopProgressPolling();
 
                     if (progressData.current_phase === 'completed') {
-                        // Wait a bit then check for completed curriculum
+                        // Multiple validation for completion safety
+                        console.log('✅ 커리큘럼 생성 완료 신호 감지, 검증 시작');
+
+                        // Wait for data synchronization then validate multiple times
                         setTimeout(() => {
-                            checkCurriculumCompletion();
+                            validateAndCheckCompletion(sessionId, 1);
                         }, 1000);
                     }
                 }
+            } else if (!response.ok) {
+                console.warn('⚠️ 진행 상황 조회 응답 오류:', response.status, progressData);
             }
         } catch (error) {
             console.error('❌ 진행 상황 조회 오류:', error);
@@ -1793,13 +1934,62 @@ function stopProgressPolling() {
     }
 }
 
+// Validate completion with multiple attempts for safety
+async function validateAndCheckCompletion(sessionId, attempt = 1) {
+    const maxAttempts = 3;
+    const delayBetweenAttempts = 500; // 0.5 seconds
+
+    try {
+        console.log(`🔍 완료 검증 시도 ${attempt}/${maxAttempts}`);
+
+        // Check if curriculum data exists and is valid
+        const curriculumData = StorageManager.curriculum.get();
+        if (curriculumData && validateNewCurriculum(curriculumData)) {
+            console.log(`✅ 검증 성공 (시도 ${attempt}): 새로운 커리큘럼 확인됨`);
+            checkCurriculumCompletion();
+            return;
+        }
+
+        // If validation failed but we still have attempts left
+        if (attempt < maxAttempts) {
+            console.log(`⏳ 검증 실패 (시도 ${attempt}), ${delayBetweenAttempts}ms 후 재시도`);
+            setTimeout(() => {
+                validateAndCheckCompletion(sessionId, attempt + 1);
+            }, delayBetweenAttempts);
+            return;
+        }
+
+        // All attempts failed - fall back to basic completion check
+        console.log(`⚠️ 모든 검증 시도 실패, 기본 완료 체크로 대체`);
+        checkCurriculumCompletion();
+
+    } catch (error) {
+        console.error(`❌ 완료 검증 오류 (시도 ${attempt}):`, error);
+
+        // On error, try again if we have attempts left
+        if (attempt < maxAttempts) {
+            setTimeout(() => {
+                validateAndCheckCompletion(sessionId, attempt + 1);
+            }, delayBetweenAttempts);
+        } else {
+            // Last resort - basic completion check
+            checkCurriculumCompletion();
+        }
+    }
+}
+
 // Update loading progress UI
 function updateLoadingProgress(progressData) {
     try {
-        const phaseInfo = progressData.phase_info;
-        const currentStep = phaseInfo.step;
+        if (!progressData || !progressData.phase_info) {
+            console.warn('⚠️ 진행 상황 데이터가 올바르지 않습니다:', progressData);
+            return;
+        }
 
-        console.log(`📊 진행 상황 업데이트: ${currentStep}/5 - ${phaseInfo.name}`);
+        const phaseInfo = progressData.phase_info;
+        const currentStep = phaseInfo.step || 1;
+
+        console.log(`📊 진행 상황 업데이트: ${currentStep}/5 - ${phaseInfo.name || '진행 중'}`);
 
         // Update loading steps
         const loadingSteps = document.querySelectorAll('.loading-step');

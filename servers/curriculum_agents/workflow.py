@@ -113,20 +113,35 @@ class CurriculumGeneratorWorkflow:
         async def wrapped_execution(state: CurriculumState):
             session_id = state.get("session_id", "unknown")
 
+            # 각 단계별 고정 진행률 매핑
+            phase_progress = {
+                ProcessingPhase.PARAMETER_ANALYSIS: 20,
+                ProcessingPhase.LEARNING_PATH_PLANNING: 40,
+                ProcessingPhase.MODULE_STRUCTURE_DESIGN: 60,
+                ProcessingPhase.CONTENT_DETAIL_GENERATION: 75,
+                ProcessingPhase.RESOURCE_COLLECTION: 85,
+                ProcessingPhase.VALIDATION: 95,
+                ProcessingPhase.INTEGRATION: 100
+            }
+            progress_percent = phase_progress.get(phase, 0)
+
+            print(f"DEBUG: Starting {step_name} for session {session_id}", flush=True)
+
             # 단계 시작 로그
-            self._save_progress(session_id, phase, step_name, f"{step_name} 시작",
-                             int((phase.value.split('_')[0] if hasattr(phase.value, 'split') else 1) * 20))
+            self._save_progress(session_id, phase, step_name, f"{step_name} 시작", progress_percent)
 
             try:
                 # 원래 에이전트 실행
+                print(f"DEBUG: Executing agent function for {step_name}", flush=True)
                 result = await agent_func(state)
+                print(f"DEBUG: Agent {step_name} completed successfully", flush=True)
 
                 # 단계 완료 로그
-                self._save_progress(session_id, phase, step_name, f"{step_name} 완료",
-                                 int((phase.value.split('_')[0] if hasattr(phase.value, 'split') else 1) * 20))
+                self._save_progress(session_id, phase, step_name, f"{step_name} 완료", progress_percent)
 
                 return result
             except Exception as e:
+                print(f"ERROR: Agent {step_name} failed: {str(e)}", flush=True)
                 self._save_progress(session_id, ProcessingPhase.ERROR, step_name,
                                  f"{step_name} 오류: {str(e)}", 0)
                 raise e
