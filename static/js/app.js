@@ -3,13 +3,18 @@
    ============================================================================= */
 
 // Global variables
-const SESSION_ID = document.currentScript?.dataset?.sessionId || '';
+// SESSION_ID is already declared in index.html template
 
 // Application initialization
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 LearningMate 애플리케이션 시작');
     console.log('📱 세션 ID:', SESSION_ID);
-    
+
+    // 페이지 새로고침 시 스크롤 위치 초기화
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
+
     // Initialize all modules
     initializeApplication();
 });
@@ -17,17 +22,18 @@ document.addEventListener('DOMContentLoaded', function() {
 // Initialize application modules
 function initializeApplication() {
     try {
+        // 0. 페이지 로드 시 맨 위로 스크롤
+        window.scrollTo(0, 0);
+
         // 1. Initialize chat system
         if (!initializeChat()) {
             console.error('❌ 채팅 시스템 초기화 실패');
             return;
         }
-        
+
         // 2. Initialize navigation
         initializeNavigation();
         
-        // 3. Initialize profile from stored data
-        initializeProfile();
         
         // 4. Setup example card handlers
         setupExampleHandlers();
@@ -88,7 +94,7 @@ function initializeSession() {
     if (lastSessionId && sessionId && lastSessionId !== sessionId) {
         console.log('🔄 새 세션 감지 - 데이터 초기화');
         // Clear old session data but keep curriculum and progress
-        StorageManager.profile.clear();
+        // Profile data cleared since profile functionality was removed
         // Don't clear curriculum data as it might be valuable across sessions
     }
 }
@@ -102,6 +108,29 @@ window.addEventListener('error', function(event) {
 // Handle unhandled promise rejections
 window.addEventListener('unhandledrejection', function(event) {
     console.error('❌ Promise 오류:', event.reason);
+
+    // 커리큘럼 관련 오류는 정상적인 상황일 수 있으므로 알림 표시 안함
+    const errorMessage = event.reason?.message || event.reason?.toString() || '';
+    const isExpectedError = errorMessage.includes('curriculum') ||
+                          errorMessage.includes('커리큘럼') ||
+                          errorMessage.includes('get_curriculum') ||
+                          errorMessage.includes('HTTP error! status: 500') ||
+                          errorMessage.includes('도구를 찾을 수 없습니다');
+
+    if (isExpectedError) {
+        console.log('📝 예상된 오류 - 정상적인 상황으로 판단됨:', errorMessage);
+        event.preventDefault(); // 기본 오류 처리 방지
+        return;
+    }
+
+    // 네트워크 관련 오류도 조건부로 처리
+    if (errorMessage.includes('fetch') || errorMessage.includes('네트워크')) {
+        console.log('🌐 네트워크 관련 오류 감지');
+        showNotification('네트워크 연결을 확인해주세요', 'error');
+        return;
+    }
+
+    // 기타 중요한 오류만 표시
     showNotification('요청 처리 중 오류가 발생했습니다', 'error');
 });
 
@@ -131,7 +160,6 @@ window.LearningMate = {
     version: '1.0.0',
     modules: {
         chat: { initialized: !!chatMessages },
-        profile: { initialized: typeof updateLearningProfile !== 'undefined' },
         curriculum: { initialized: typeof generateCurriculum !== 'undefined' },
         navigation: { initialized: typeof switchToTab !== 'undefined' }
     },

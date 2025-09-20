@@ -2,7 +2,7 @@
    Sidebar Styles
    ============================================================================= */
 
-.sidebar {
+   .sidebar {
     width: var(--sidebar-width);
     background: var(--surface-blur);
     backdrop-filter: blur(10px);

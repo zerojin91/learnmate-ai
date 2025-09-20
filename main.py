@@ -4,6 +4,8 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import json
+import os
+import time
 from contextlib import asynccontextmanager
 
 from agent import MultiMCPAgent
@@ -24,7 +26,6 @@ async def lifespan(app: FastAPI):
         servers = [
             "servers/user_assessment.py",
             "servers/generate_curriculum.py",  # 임시 비활성화
-            "servers/mentor_chat.py",          # 멘토 채팅 서버 추가
             # "servers/evaluate_user.py"         # 임시 비활성화
         ]
         
@@ -96,7 +97,9 @@ async def home(request: Request, response: Response):
     if agent_instance:
         agent_instance.current_session_id = session_id
         
-    return templates.TemplateResponse("index.html", {"request": request, "session_id": session_id})
+    import time
+    timestamp = str(int(time.time()))
+    return templates.TemplateResponse("index.html", {"request": request, "session_id": session_id, "timestamp": timestamp})
 
 @app.post("/chat")
 async def chat(chat_request: Request):
@@ -175,13 +178,48 @@ async def chat(chat_request: Request):
     )
 
 @app.post("/clear-chat")
-async def clear_chat():
+async def clear_chat(request: Request, response: Response):
     """대화 기록 초기화"""
     if not agent_instance:
         return {"error": "Agent not initialized"}
-    
+
+    # 기존 세션 ID 가져오기
+    old_session_id = request.cookies.get("session_id")
+
+    # 새로운 세션 ID 생성
+    new_session_id = random_uuid()[:8]
+
+    # 기존 세션 파일 삭제 (있다면)
+    if old_session_id:
+        old_session_file = f"sessions/{old_session_id}.json"
+        try:
+            if os.path.exists(old_session_file):
+                os.remove(old_session_file)
+                print(f"🗑️ 기존 세션 파일 삭제: {old_session_file}")
+        except Exception as e:
+            print(f"⚠️ 세션 파일 삭제 실패: {e}")
+
+    # 에이전트 대화 기록 초기화
     agent_instance.clear_conversation()
-    return {"message": "대화 기록이 초기화되었습니다."}
+
+    # 새로운 세션 ID를 에이전트에 설정
+    agent_instance.current_session_id = new_session_id
+
+    # 새로운 세션 쿠키 설정
+    response.set_cookie(
+        key="session_id",
+        value=new_session_id,
+        max_age=86400,  # 24시간
+        httponly=True,
+        samesite="lax"
+    )
+
+    print(f"🔄 세션 초기화: {old_session_id} → {new_session_id}")
+
+    return {
+        "message": "대화 기록이 초기화되었습니다.",
+        "new_session_id": new_session_id
+    }
 
 @app.get("/session-debug")
 async def session_debug(request: Request):
@@ -194,216 +232,50 @@ async def session_debug(request: Request):
         "has_session_cookie": "session_id" in request.cookies
     }
 
-class MentorRecommendationRequest(BaseModel):
-    message: str
-    session_id: str
 
-@app.post("/api/mentor_chat/analyze_and_recommend_personas")
-async def analyze_and_recommend_personas(request: MentorRecommendationRequest):
-    """멘토 페르소나 분석 및 추천 API"""
+@app.get("/api/curriculum/{session_id}")
+async def get_curriculum(session_id: str):
+    """세션의 생성된 커리큘럼 데이터 조회"""
     if not agent_instance:
         return {"error": "Agent not initialized"}
-    
-    print(f"🎯 페르소나 추천 API 호출 - message: {request.message[:50]}, session_id: {request.session_id}")
-    
+
     try:
-        # MCP 도구 호출 - agent.py의 방식 사용
+        # MCP 도구를 사용하여 커리큘럼 데이터 조회
         tools = await agent_instance.client.get_tools()
-        recommend_tool = next((tool for tool in tools if tool.name == "analyze_and_recommend_personas"), None)
-        
-        if not recommend_tool:
-            raise Exception("analyze_and_recommend_personas 도구를 찾을 수 없습니다")
-        
-        tool_args = {
-            "message": request.message,
-            "session_id": request.session_id
-        }
-        
-        result = await recommend_tool.ainvoke(tool_args)
-        
-        # 결과가 문자열이면 JSON으로 파싱 시도
-        if isinstance(result, str):
-            try:
-                # JSON 내용 정리 (공백 및 오타 문제 해결)
-                clean_result = result.strip()
-                
-                # 공백이 포함된 키들 정리
-                clean_result = clean_result.replace('"recommended_ personas"', '"recommended_personas"')
-                clean_result = clean_result.replace('" recommended_personas"', '"recommended_personas"')
-                clean_result = clean_result.replace('" id"', '"id"')
-                clean_result = clean_result.replace('" name"', '"name"')
-                clean_result = clean_result.replace('" reason"', '"reason"')
-                clean_result = clean_result.replace('" reasoning"', '"reasoning"')
-                clean_result = clean_result.replace('" description"', '"description"')
-                clean_result = clean_result.replace('" explanation"', '"explanation"')
-                
-                # 다양한 키 이름 통합 (reason 계열)
-                clean_result = clean_result.replace('"reasoning":', '"reason":')
-                clean_result = clean_result.replace('"explanation":', '"reason":')
-                clean_result = clean_result.replace('"rationale":', '"reason":')
-                clean_result = clean_result.replace('"justification":', '"reason":')
-                
-                result = json.loads(clean_result)
-                
-                # 결과 후처리: 각 페르소나의 reason 필드 정규화
-                if isinstance(result, dict) and 'recommended_personas' in result:
-                    for persona in result['recommended_personas']:
-                        # reason 필드가 없으면 대체 필드에서 찾기
-                        if 'reason' not in persona:
-                            for alt_key in ['reasoning', 'explanation', 'rationale', 'justification', 'description']:
-                                if alt_key in persona:
-                                    persona['reason'] = persona[alt_key]
-                                    break
-                            else:
-                                # 모든 대체 필드가 없으면 기본값 설정
-                                persona['reason'] = f"{persona.get('name', '해당 분야')} 전문가로 추천되었습니다."
-                
-            except json.JSONDecodeError as e:
-                print(f"JSON 파싱 실패: {e}")
-                
-                # 키워드 기반으로 적절한 페르소나 추천
-                message = request.message.lower()
-                if any(word in message for word in ["건축", "집", "건물", "설계"]):
-                    fallback_personas = [
-                        {"id": "architecture", "name": "건축", "reason": "건축 관련 키워드 감지"}
-                    ]
-                elif any(word in message for word in ["전기", "전자", "회로"]):
-                    fallback_personas = [
-                        {"id": "electrical", "name": "전기 전자", "reason": "전기전자 관련 키워드 감지"}
-                    ]
-                elif any(word in message for word in ["기계", "제조", "설계"]):
-                    fallback_personas = [
-                        {"id": "mechanical", "name": "기계 금속", "reason": "기계공학 관련 키워드 감지"}
-                    ]
-                elif any(word in message for word in ["토목", "도시", "건설"]):
-                    fallback_personas = [
-                        {"id": "civil_urban", "name": "토목 도시", "reason": "토목/도시 관련 키워드 감지"}
-                    ]
-                elif any(word in message for word in ["컴퓨터", "프로그래밍", "웹", "소프트웨어"]):
-                    fallback_personas = [
-                        {"id": "computer", "name": "컴퓨터 통신", "reason": "컴퓨터 관련 키워드 감지"}
-                    ]
-                else:
-                    fallback_personas = [
-                        {"id": "computer", "name": "컴퓨터 통신", "reason": "기본 추천"}
-                    ]
-                
-                result = {
-                    "recommended_personas": fallback_personas,
-                    "reasoning": "자동 키워드 분석 기반 추천",
-                    "session_id": request.session_id
-                }
-        
-        # 응답에 세션 ID 포함하여 UI가 올바른 세션을 사용하도록 보장
-        if isinstance(result, dict):
-            result['session_id'] = request.session_id
-        
-        return result
-        
-    except Exception as e:
-        print(f"❌ 멘토 추천 오류: {e}")
-        import traceback
-        traceback.print_exc()
-        return {
-            "error": f"멘토 추천 중 오류가 발생했습니다: {str(e)}",
-            "session_id": request.session_id
-        }
+        get_curriculum_tool = next((tool for tool in tools if tool.name == "get_curriculum"), None)
 
-class PersonaSelectionRequest(BaseModel):
-    persona_id: str
-    session_id: str
+        if not get_curriculum_tool:
+            return {"error": "get_curriculum 도구를 찾을 수 없습니다"}
 
-class ExpertMentoringRequest(BaseModel):
-    message: str
-    session_id: str
+        # 커리큘럼 데이터 조회
+        result = await get_curriculum_tool.ainvoke({"user_id": session_id})
 
-@app.post("/api/mentor_chat/select_persona")
-async def api_select_persona(request: PersonaSelectionRequest):
-    """페르소나 선택 API"""
-    if not agent_instance:
-        return {"error": "Agent not initialized"}
-    
-    print(f"🔧 페르소나 선택 API 호출 - persona_id: {request.persona_id}, session_id: {request.session_id}")
-    
-    try:
-        # MCP 도구 호출 - select_persona
-        tools = await agent_instance.client.get_tools()
-        select_tool = next((tool for tool in tools if tool.name == "select_persona"), None)
-        
-        if not select_tool:
-            raise Exception("select_persona 도구를 찾을 수 없습니다")
-        
-        tool_args = {
-            "persona_id": request.persona_id,
-            "session_id": request.session_id
-        }
-        
-        result = await select_tool.ainvoke(tool_args)
-        
-        # 결과가 문자열이면 JSON으로 파싱 시도
         if isinstance(result, str):
             try:
                 result = json.loads(result)
             except json.JSONDecodeError:
-                result = {"message": result}
-        
-        # 응답에 세션 ID 포함
-        if isinstance(result, dict):
-            result['session_id'] = request.session_id
-        
-        return result
-        
-    except Exception as e:
-        print(f"❌ 페르소나 선택 오류: {e}")
-        import traceback
-        traceback.print_exc()
-        return {
-            "error": f"페르소나 선택 중 오류가 발생했습니다: {str(e)}",
-            "session_id": request.session_id
-        }
+                return {"error": "커리큘럼 데이터 파싱 실패"}
 
-@app.post("/api/mentor_chat/expert_mentoring")
-async def expert_mentoring(request: ExpertMentoringRequest):
-    """전문가 멘토링 API"""
-    if not agent_instance:
-        return {"error": "Agent not initialized"}
-    
-    try:
-        # MCP 도구 호출 - expert_mentoring
-        tools = await agent_instance.client.get_tools()
-        mentoring_tool = next((tool for tool in tools if tool.name == "expert_mentoring"), None)
-        
-        if not mentoring_tool:
-            raise Exception("expert_mentoring 도구를 찾을 수 없습니다")
-        
-        tool_args = {
-            "message": request.message,
-            "session_id": request.session_id
-        }
-        
-        result = await mentoring_tool.ainvoke(tool_args)
-        
-        # 결과가 문자열이면 JSON으로 파싱 시도
-        if isinstance(result, str):
-            try:
-                result = json.loads(result)
-            except json.JSONDecodeError:
-                result = {"response": result}
-        
-        # 응답에 세션 ID 포함
-        if isinstance(result, dict):
-            result['session_id'] = request.session_id
-        
         return result
-        
+
     except Exception as e:
-        print(f"❌ 전문가 멘토링 오류: {e}")
-        import traceback
-        traceback.print_exc()
-        return {
-            "error": f"전문가 멘토링 중 오류가 발생했습니다: {str(e)}",
-            "session_id": request.session_id
-        }
+        print(f"❌ 커리큘럼 조회 오류: {e}")
+        return {"error": f"커리큘럼 조회 중 오류가 발생했습니다: {str(e)}"}
+
+@app.get("/api/session/{session_id}")
+async def get_session(session_id: str):
+    """세션 데이터 조회"""
+    try:
+        session_file = f"sessions/{session_id}.json"
+        if os.path.exists(session_file):
+            with open(session_file, 'r', encoding='utf-8') as f:
+                session_data = json.load(f)
+            return session_data
+        else:
+            return {"error": "세션을 찾을 수 없습니다"}
+    except Exception as e:
+        print(f"❌ 세션 조회 오류: {e}")
+        return {"error": f"세션 조회 중 오류가 발생했습니다: {str(e)}"}
 
 if __name__ == "__main__":
     import uvicorn

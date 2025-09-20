@@ -12001,5 +12001,1655 @@
       "total_estimated_hours": 240,
       "id": 0
     }
+  ],
+  "bbf8bfa4": [
+    {
+      "title": "파이썬 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 4,
+      "weekly_hours": 2,
+      "focus_areas": [
+        "기초 개념 이해",
+        "기본 문법 학습",
+        "흥미 유발"
+      ],
+      "modules": [
+        {
+          "week": 1,
+          "title": "프로그래밍 기초 및 환경 설정",
+          "description": "이 모듈에서는 프로그래밍의 기본 개념과 원리를 이해하고, 파이썬 개발 환경을 설정하는 방법을 학습합니다. 프로그래밍 언어의 역사부터 시작하여 컴퓨터가 명령을 수행하는 기본 원리를 배우며, 실질적인 파이썬 설치 및 통합 개발 환경(IDE) 구성 방법을 익힙니다.",
+          "objectives": [
+            "프로그래밍의 기본 개념과 원리를 이해하고 설명할 수 있다",
+            "파이썬을 올바르게 설치하고 IDE 환경을 구성할 수 있다",
+            "Hello World 프로그램을 작성하고 실행할 수 있다"
+          ],
+          "learning_outcomes": [
+            "프로그래밍 언어의 기초 문법과 구조를 파악한다",
+            "실제 개발 환경에서 파이썬 코드를 실행할 수 있는 기반을 마련한다",
+            "프로그래밍 기본 원리를 실제 예제를 통해 체험한다"
+          ],
+          "key_concepts": [
+            "프로그래밍 언어의 정의와 역사",
+            "변수와 데이터 타입의 개념",
+            "문법 구조 및 제어 흐름",
+            "파이썬 설치 방법 및 환경 변수 설정",
+            "통합 개발 환경(IDE)의 기능과 활용",
+            "Hello World 예제를 통한 코드 실행 원리"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "하루 250원으로 1년 89,000원 전체 과목 무한수강, 최신 개정 수강",
+                "url": "https://ader.naver.com/v1/xvrOZI0sb97ogZDYz5AEXDJQ7PN_CfYJs62yIgXEfCibLotP3GFkYPwaBIO-cUR6g0SF31wmMGQ8oeobr1RCbzcuiwCnMSUQ4zYEeLSOgCKS9tN1ZX9e3wHto6VeLGjAVotZEMpXAPJvDk9OaPAE0E5lg0JfeyJier7xRO1XdWAF9Q4hyLbyC1phbLSG9CXGrmhBKU2Fb7RgGmYF9PKam0WTMQ4zp7qIsMEkqznVyQwUyYtw04BQeWkp-0s991C1FR9pzRm8Dh1Q6me-x49MNC_kYRG4GYtfFKSZ1XwktUWabUiL0tx5OW3vcfrP6D1qKQusVbc8SRD9AMNtE-7WWHHuIMgEmujZGSNDXvmVsrZ8PkyV_A-4Z2ESJCbjYPfizgGckQoXZMI8RKcF63Ft1E2Fx8F-fwEQBLdSyPylOosK5_2mreMkyq5ejEe3THXwExfN9wfclwKg6HrFscyO9zhb2sJQufdngIG7iiUxk2Trj7or332hFHwF5vdfkVs2vVrDctXTklBThbH3tByQpjmgnn4p1A50u-OMgCq-7xEQp_QO53XjSX2aH78dJU2f?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "컴퓨터인강 1년 동영상 전과목 89,000원,365일 피씨와 모바일 수강가능.",
+                "url": "https://ader.naver.com/v1/xD9v0bqsB6mIGmeLYzTXk8snoIB0HI_rIYUhoKL6wOLiVxLdf-Wp3fzCq4BPjX4hq0gm_Inqevv4n0Qfpi0vHZ_V9eMoeJCQII13w2I8x6-DEiH6TIJPnSePX3Ye_kaKnbIY5_3OP7Qqyt227ZAzKPYV8bpGF4S-j19efgxvS6e3OB8Fq1lE6tGMMKvbVXUaywQOVh1TjDSd6XEACpjx_q9h__MYxfUVFpdwVdAgh6DcrqXep0r_UKEoDfWU0xV5_UF4CYtqalK8TX-jdMryslyV2o3t_veaL2FNtsf2BX7rUDgexXjNvD4Pdym8X_uc2gSObh1K19uNY_F76guVeGLTUb-mpR7GhmKUWE_qBEW5IsEVeexkW8XVgt1fLfH-SPet74t9nboT5-G6DlcG2aNCczXTDf3pD08uLfIwKVfLem9u6myHqflFq4h3q9VbwhTHCVaZrX4ypwP3d59Mc6DKhYkPDdRAKd7aPpEY06TBXkItR1amdYefrYQEif-rGMhEwq9dpZuPSOnp3SZVfB87Nfh6suogM6-E4t2XCz9cQmY5fxvcuesaABVKtZ2L0sGxJwCD9UyVuSbx9zaqew==?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 2,
+          "title": "기본 문법과 제어 구조",
+          "description": "이 모듈에서는 파이썬 프로그래밍의 핵심이 되는 기본 문법과 제어 구조를 학습합니다. 조건문과 반복문을 활용하여 프로그램의 흐름을 제어하는 방법을 익히고, 리스트와 튜플 같은 기본 자료구조를 이해하여 데이터를 효과적으로 다루는 방법을 배웁니다.",
+          "objectives": [
+            "조건문(if, elif, else)을 사용하여 다양한 조건에 따른 프로그램 실행 흐름을 제어하는 방법을 익힌다",
+            "반복문(for, while)을 활용하여 반복적인 작업을 효율적으로 처리하는 코드를 작성할 수 있다",
+            "리스트와 튜플의 기초 개념을 이해하고 이를 활용한 데이터 처리 방법을 학습한다"
+          ],
+          "learning_outcomes": [
+            "조건문을 사용하여 프로그램의 논리적 흐름을 제어할 수 있게 된다",
+            "리스트와 튜플을 사용하여 데이터를 효율적으로 저장하고 관리할 수 있게 된다",
+            "반복문을 통해 동일한 코드 블록을 여러 번 실행하여 반복 작업을 자동화할 수 있게 된다"
+          ],
+          "key_concepts": [
+            "조건문과 논리 연산자",
+            "반복문의 종류와 사용법",
+            "리스트와 튜플의 기본 구조와 메서드"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "하루 250원으로 1년 89,000원 전체 과목 무한수강, 최신 개정 수강",
+                "url": "https://ader.naver.com/v1/rWv9O60DVchI7ilHYOEKVqSDVgQ7BPVh2li16ua7i-fDj5LwKfsAMhCpz33lERRQUmHPqH0A03ae93Cl0M3cRk_JR9UIivtQ67QSIh3z9uMfIDhTybud5x9qcPhYsFV3AEZO6Xefc_TgpOD_nubbPqAfeF7khLAeoqRJ6joLnq9OUXOYefHoX_f3Qhka2azebsLhOxDA7Zk08NmyIKhtfoL7VypDpj3GJ5OvlH_CYunbpLOv7QPd7fgmCUq2wOyN95_KzHVhuG3H5wJ5WiYCFd0eDRNUMoOGa94YFOfRk2JLA37KfJq9aCR_bb6pkPyc9GvJB7Vm6OjqSp5OWffvcpYUMvY0B9PTbJIK6osJ04QWZPLmEq0fVcZ6b9OwclDmy7hvNQaemOQt9sst__SsqN4WyhL7AvdEPWaBAIAjHxg--BbG_LDxjBGlYNQ5oLePI8X_FYgiloJvNla8H10O5pgxgEq_EEmgIV99Hwj8MO4yaYX4Mw2MGWvA4_IzRvGXWhxLRfY_YKgFVV_PRVP9dg==?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 3,
+          "title": "심화 문법과 함수 활용",
+          "description": "3주차 모듈에서는 파이썬의 고급 문법 요소들을 학습하고, 함수 설계 및 활용법을 심도 있게 다룹니다. 딕셔너리와 집합 같은 고급 자료구조를 활용하여 복잡한 데이터를 효율적으로 관리하는 방법과, 다양한 함수 매개변수 기법 및 모듈화된 코드 작성법을 학습합니다. 파일 입출력과 모듈 기초를 통해 실용적인 프로그래밍 능력을 향상시킵니다.",
+          "objectives": [
+            "딕셔너리와 집합 자료구조를 이해하고 실제 문제에 적용할 수 있다",
+            "함수의 매개변수와 반환값을 효율적으로 설계하고 활용할 수 있다",
+            "파이썬의 파일 입출력 기능과 모듈을 사용한 코드 구조화를 이해한다"
+          ],
+          "learning_outcomes": [
+            "복잡한 데이터 구조를 딕셔너리와 집합을 통해 구현하고 관리할 수 있다",
+            "재사용 가능한 함수와 모듈을 설계하여 프로그래밍 효율을 높일 수 있다",
+            "외부 데이터를 읽고 쓸 수 있는 파일 입출력 작업을 수행할 수 있다"
+          ],
+          "key_concepts": [
+            "딕셔너리와 집합 자료형의 특징 및 활용법",
+            "함수의 매개변수 유형과 반환값 처리 기법",
+            "파일 및 스트림 입출력 메서드와 모듈 임포트 방법"
+          ],
+          "estimated_hours": 3,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 4,
+          "title": "응용 및 프로젝트 실습",
+          "description": "이 모듈은 파이썬의 기본 및 심화 문법을 바탕으로 실제 프로젝트를 기획하고 구현하는 과정을 통해 실무 능력을 배양하는 실습 중심의 학습입니다. 학습자들은 파이썬의 고급 기능인 리스트 컴프리헨션과 제너레이터를 활용하여 효율적인 코드 작성 방법을 학습하고, 개인 프로젝트를 통해 문제 해결 능력을 기릅니다.",
+          "objectives": [
+            "간단한 계산기 프로그램을 직접 구현하여 파이썬의 제어 구조와 함수 활용 능력을 실전에서 적용해본다",
+            "리스트 컴프리헨션과 제너레이터의 개념을 이해하고 실제 프로젝트에 활용하여 코드를 간결하고 효율적으로 작성한다",
+            "개인 프로젝트를 처음 기획부터 배포 가능한 수준까지 완성하여 프로젝트 관리 능력과 실전 코딩 역량을 강화한다"
+          ],
+          "learning_outcomes": [
+            "파이썬으로 실용적인 계산기 프로그램을 구현할 수 있다",
+            "복잡한 반복 작업을 리스트 컴프리헨션과 제너레이터로 효과적으로 처리하는 방법을 익힌다",
+            "프로젝트 요구사항 분석, 설계, 구현, 테스트까지의 전체 개발 사이클을 경험할 수 있다"
+          ],
+          "key_concepts": [
+            "실용적인 파이썬 프로젝트 구현 방법",
+            "리스트 컴프리헨션과 제너레이터를 활용한 효율적인 코드 작성",
+            "프로젝트 기획 및 관리 프로세스"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "신촌IT학원 국비100%지원, IT취업전문, 전공/비전공 맞춤교육, 신촌역3분",
+                "url": "https://ader.naver.com/v1/Mf7j6lVahQjA1tnJ_TE2xkyPuoK1NSPXN-Qr5W8vBWN0cWYv6TZJviDMhQ27VmFPBEGw5on88R00ImV0WyltdBkEkxDTC0U7P6ftCGFGBZtnmScQa1BnMMHJWIAbVjTQpBj8XSixLZ3SkbYaU_Cr9qXHshXuKI-_LtdHKH20Ju0TH379lw764W002l0KAlMf8K1jtDmGzX270_0MJln-pn0f5DZtEdft8a7G7o6OIgThJksCqh9iZap8llRV8CFt4sDxbPX_Z3szuRovPqfNLrDuWxHIj9Gpcrd5XQpaolj5Zcmq5bj535IKUb-cmXjh?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        }
+      ],
+      "overall_goal": "파이썬 beginner 레벨의 기초를 체계적으로 학습하고 간단한 응용 프로그램을 직접 구현할 수 있는 능력 습득",
+      "basic_resources": [
+        {
+          "title": "검색 고객센터",
+          "url": "https://help.naver.com/alias/search/integration/main.naver",
+          "source": "Web Search"
+        }
+      ],
+      "session_id": "bbf8bfa4",
+      "original_constraints": "완전 초보자, 주 2시간",
+      "original_goal": "취미",
+      "generated_at": "2025-09-20T15:24:59.514440",
+      "processing_time": null,
+      "total_estimated_hours": 7,
+      "id": 0
+    }
+  ],
+  "b968ff19": [
+    {
+      "title": "파이썬 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 4,
+      "weekly_hours": 2,
+      "focus_areas": [
+        "개인 프로젝트",
+        "기초 프로그래밍"
+      ],
+      "modules": [
+        {
+          "week": 1,
+          "title": "파이썬 기초 문법과 제어문",
+          "description": "이 모듈에서는 파이썬 프로그래밍을 시작하기 위한 기초 문법을 학습합니다. 변수 선언과 다양한 자료형의 개념을 이해하고, 조건문과 반복문을 활용한 프로그램 로직 구현 방법을 배웁니다. 학습자들은 파이썬 환경에서 간단한 인터랙티브 프로그램을 작성하며 실습 경험을 쌓게 됩니다.",
+          "objectives": [
+            "파이썬의 기본적인 문법 구조와 식별자 규칙을 이해하고 올바르게 사용할 수 있다",
+            "정수, 실수, 문자열, 불린 등의 다양한 자료형을 활용하여 변수를 선언하고 연산할 수 있다",
+            "if, elif, else 구문을 사용한 조건문을 작성하고 다양한 조건에 따른 분기 처리를 구현할 수 있다",
+            "for, while 루프를 사용하여 반복문을 구현하고 컬렉션 데이터를 처리할 수 있다"
+          ],
+          "learning_outcomes": [
+            "파이썬 환경에서 간단한 스크립트를 작성하고 실행할 수 있다",
+            "조건문과 반복문을 사용하여 문제 해결을 위한 논리적 접근 방법을 이해하고 적용할 수 있다",
+            "간단한 숫자 맞추기 게임과 같은 인터랙티브 프로그램을 직접 구현할 수 있다"
+          ],
+          "key_concepts": [
+            "변수 선언과 할당",
+            "파이썬 기본 자료형 (int, float, str, bool)",
+            "조건문 (if, elif, else)",
+            "반복문 (for, while)",
+            "리스트와 튜플을 활용한 데이터 처리"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "하루 250원으로 1년 89,000원 전체 과목 무한수강, 최신 개정 수강",
+                "url": "https://ader.naver.com/v1/rWv9O60DVchI7ilHYOEKVnwN1KZsu9PoLB4_oLUwul0venK1RJ6txcxWyqsIx4VzcBCfm2HHMrYEvnpuqxlDVx68YTWgER7AR_3Yp3Nh48pb-poJP-LtH69ZbjVpM9Zt7AEEyia6fPt9xBG_f_SmDPnXLW5rtL0PaJGofqywu4I6Ap6S42OBBo3IqPP8CIEO9nfrymsAXetvKNsR1VrHoFXW-UIbqQAIkpIRJnQziLuuDJ9rHqXlhqueXYwWJDC5w0qzW-_vEtQl8gjOPndnpOBkRFAkNGnktNjxDxwoFtdwRWEVXshznCjRUYqM1HSXbFBJs6CCP2ESLYy7nGk0qfXv722KPcXtPtBBi9D28s-vasouti8fyY9UCJ3dm4aUz6PNrfROfbqk78YNZBN5GigQeEokzBPPNh6JY1-7W-TbdmvS-wVKDyL6w_E3076EU2ub0Cfl1lWMwufspzeyVC3eCZhsYTr2q1DA___uDFrAagkKrsWB3fDnFWYE0qSaek-xHgYYPOHcnzunfp23JA==?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 2,
+          "title": "함수와 모듈 활용",
+          "description": "이번 모듈에서는 함수의 정의와 매개변수 사용법, 그리고 파이썬의 내장 모듈과 패키지를 활용하는 방법을 학습합니다. 함수는 코드의 재사용성과 가독성을 높여주는 중요한 개념이며, 모듈은 다양한 기능을 체계적으로 관리할 수 있게 해줍니다. 특히 사용자 정의 함수 작성과 함께 실제 계산기 프로그램을 완성하며, 디버깅 기법도 함께 익히게 됩니다.",
+          "objectives": [
+            "사용자 정의 함수를 작성하고 인자와 반환값을 정의할 수 있다",
+            "파이썬 내장 모듈(math, time 등)과 패키지를 적절히 활용할 수 있다",
+            "함수와 모듈을 활용하여 간단한 계산기 프로그램을 완성할 수 있다",
+            "print 문, break, continue 등을 이용한 기본적인 디버깅 기법을 적용할 수 있다"
+          ],
+          "learning_outcomes": [
+            "함수를 정의하고 호출하는 방법을 이해하고 실습할 수 있다",
+            "매개변수와 반환값을 설정하여 함수를 다양하게 활용할 수 있다",
+            "모듈과 패키지를 가져와 실제 프로그램에서 사용할 수 있다",
+            "실제 문제 해결을 위해 함수와 모듈을 조합하여 사용할 수 있다"
+          ],
+          "key_concepts": [
+            "함수 정의와 호출 문법",
+            "매개변수와 기본값 설정",
+            "return 문을 통한 값 반환",
+            "모듈 import 및 사용법",
+            "디버깅 기법(print 활용 등)"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 3,
+          "title": "자료구조와 파일 입출력 기초",
+          "description": "이 모듈에서는 파이썬의 기본 자료구조인 리스트와 딕셔너리를 학습하고, 파일 입출력을 통해 외부 데이터를 다루는 방법을 배웁니다. 이전 모듈에서 학습한 파이썬 기초 문법과 함수 활용 능력을 바탕으로 더욱 복잡한 데이터 처리 기법을 익힙니다.",
+          "objectives": [
+            "다양한 자료구조(리스트, 딕셔너리)를 활용하여 데이터를 효율적으로 관리하고 처리할 수 있다",
+            "파일 읽기/쓰기를 통한 데이터 입출력을 구현하여 데이터 저장 및 활용 방법을 습득한다",
+            "프로젝트 아이디어를 선정하고 간단한 프로토타입을 개발하여 실무 적용 능력을 기른다"
+          ],
+          "learning_outcomes": [
+            "리스트를 사용하여 순차적 데이터를 저장하고 조작하는 방법을 이해한다",
+            "딕셔너리를 통해 키-값 쌍으로 데이터를 구조화하고 효율적으로 접근하는 방법을 익힌다",
+            "파일을 열고 데이터를 읽거나 쓰는 코드를 작성할 수 있다",
+            "CSV와 텍스트 파일의 구조를 이해하고 데이터를 읽고 쓸 수 있다"
+          ],
+          "key_concepts": [
+            "리스트의 생성, 인덱싱, 슬라이싱, 메서드",
+            "딕셔너리의 생성, 키-값 접근, 메서드",
+            "파일 열기 모드 (읽기, 쓰기, 추가)",
+            "파일 객체 사용법",
+            "CSV 파일 읽기/쓰기"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 4,
+          "title": "개인 프로젝트 완성 및 발표",
+          "description": "이 모듈에서는 이전에 개발한 함수와 모듈, 자료구조와 파일 입출력 기초에 대한 지식을 바탕으로 개인 프로젝트를 완성하고, 예외 처리 및 오류 대응 기능을 추가하여 프로젝트의 완성도를 높입니다. 또한 GitHub를 활용한 버전 관리 기법을 학습하며, 프로젝트 문서화 및 효과적인 발표 자료 준비 방법을 익힙니다.",
+          "objectives": [
+            "개인 프로젝트를 완성하고 기능을 테스트하여 안정적인 코드를 구현할 수 있다",
+            "예외 처리 및 오류 대응 기능을 추가하여 견고한 프로그램을 개발할 수 있다",
+            "프로젝트 문서화 및 발표 자료를 체계적으로 준비할 수 있다",
+            "GitHub를 통한 버전 관리 및 협업 기본 개념을 이해할 수 있다"
+          ],
+          "learning_outcomes": [
+            "프로젝트 요구사항을 분석하고 코드로 구현할 수 있다",
+            "예외 상황에 대한 적절한 대응 로직을 설계할 수 있다",
+            "효과적인 발표 자료를 구성하고 발표할 수 있다",
+            "Git 저장소 생성 및 커밋, 푸시 등의 기본 버전 관리 작업을 수행할 수 있다"
+          ],
+          "key_concepts": [
+            "프로젝트 완성 및 품질 관리",
+            "try-except를 활용한 예외 처리",
+            "오류 로그 기록 및 대응 전략",
+            "GitHub 저장소 생성 및 협업 워크플로우"
+          ],
+          "estimated_hours": 3,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        }
+      ],
+      "overall_goal": "4주 후에는 파이썬 기초 프로그래밍 능력을 갖추고, 의미있는 개인 프로젝트를 완성하여 실무에서 활용 가능한 기초 역량을 확보한다",
+      "basic_resources": [
+        {
+          "title": "업무자동화, 데이터분석, 부수입, 웹사이트 제작까지! 초보자도 가능한 AI코딩밸리",
+          "url": "https://ader.naver.com/v1/PoyfQEcuuBcgFHXOUKUBDgC6jn2Fsxq2clsxJVIb5tL7QwAQ7FG-tsM6xpTkJpeBKFaViTl0uYoYKi-PmxY3QSLVG2iIDRyHiSQLhiWwU67OOsBiEImgvlFLvDVU4LIub46-9P2LmKp_xQT2X8e_kbeq1qr3ccbOEqVrS565Pec727uauLR7xehEEpwQsO5D5kohemKhKe23_NETB2TZhiy00hy7CWIn3dFZveeD78GPJo4EVrjPa8XKMl4Hb47rCZiQ5OpnFUxgtXSZK5rhVdospN38vdp_COakuRO8CwmsnPz-2WQez2Bp5wE2UANPkDV4eVWMC6x1cwZzwVMLdZKSbETQUcWF_pFMF0sCNNNEd6a73g0vx82rld2rZsBdCZ1v9VBwbIa46dv_-c0F7iiW3iCl4Dox1De9U5GxdeBDR_2H55jFwLjgA3lnqXQzOW2X5nzW5BO3ZYfoLv-_8zg4MT2dNgkHB--NTHcaJaj0HXnaRiYYGh8ZFkukj-GL9C9iM84EyuPoFtCqW5W9nx3PdIoEJAettH13XM9Pp_gjGnbvYRzjeMZtvYeEfiwKz8rMoxQoj9hLxeAMX7lrKqk45FZe-BSp94lM4nSwEFQ=?c=naver.search.pc.plsearch&t=0",
+          "source": "Web Search"
+        },
+        {
+          "title": "검색 고객센터",
+          "url": "https://help.naver.com/alias/search/integration/main.naver",
+          "source": "Web Search"
+        }
+      ],
+      "session_id": "b968ff19",
+      "original_constraints": "완전 초보자, 일주일에 2시간",
+      "original_goal": "개인 프로젝트를 만들고 싶어서",
+      "generated_at": "2025-09-20T15:31:35.402887",
+      "processing_time": null,
+      "total_estimated_hours": 8,
+      "id": 0
+    }
+  ],
+  "ab1470d0": [
+    {
+      "title": "파이썬 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 4,
+      "weekly_hours": 2,
+      "focus_areas": [
+        "업무에 활용 가능한 실용적 지식",
+        "기본 개념 이해",
+        "실무 적용 방법"
+      ],
+      "modules": [
+        {
+          "week": 1,
+          "title": "파이썬 기초 및 개발 환경 설정",
+          "description": "이 모듈에서는 파이썬 프로그래밍의 시작점인 개발 환경을 구성하고, 파이썬의 기본 문법을 익히는 과정을 다룹니다. 윈도우, 맥, 리눅스 운영체제에서 파이썬을 설치하고, IDE(Integrated Development Environment)를 설정하는 방법을 학습합니다. 변수, 자료형, 조건문, 반복문과 같은 기본적인 프로그래밍 개념과 함수 정의 및 활용 방법을 실습을 통해 이해할 수 있습니다.",
+          "objectives": [
+            "파이썬 설치 및 IDE(통합 개발 환경) 설정을 완료할 수 있다",
+            "변수와 자료형의 개념을 이해하고 적절히 사용할 수 있다",
+            "제어문(조건문, 반복문)의 기본 구조와 활용 방법을 습득한다",
+            "함수를 정의하고 호출하는 방법을 실습할 수 있다"
+          ],
+          "learning_outcomes": [
+            "자신의 컴퓨터에 파이썬 개발 환경을 독립적으로 구축할 수 있다",
+            "기본적인 파이썬 프로그램을 작성할 수 있는 기초 역량을 갖춘다",
+            "간단한 문제를 파이썬 코드로 해결할 수 있는 능력을 기른다"
+          ],
+          "key_concepts": [
+            "파이썬 설치 및 환경변수 설정",
+            "IDLE, PyCharm, Visual Studio Code 등 IDE 사용법",
+            "변수 선언과 기본 자료형(정수, 실수, 문자열, 리스트)",
+            "if-else, for, while 등의 제어문 구조",
+            "함수 정의 및 매개변수 전달 방법"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 2,
+          "title": "핵심 라이브러리와 객체지향 프로그래밍",
+          "description": "이 모듈에서는 파이썬의 핵심 데이터 처리 라이브러리인 pandas를 활용하여 데이터 분석의 기초를 배우고, 객체지향 프로그래밍의 기본 개념과 파이썬 모듈 및 패키지 사용법을 학습합니다. 이전 주차에서 다룬 파이썬 기초 지식을 바탕으로 더 심화된 프로그래밍 스킬을 습득하게 됩니다.",
+          "objectives": [
+            "pandas 라이브러리를 사용하여 데이터 불러오기, 정제, 분석 및 시각화 능력 습득",
+            "클래스와 객체의 개념을 이해하고 실제 파이썬 코드에서 활용할 수 있음",
+            "모듈과 패키지의 구조를 이해하고 효율적으로 사용하는 방법 학습"
+          ],
+          "learning_outcomes": [
+            "CSV, Excel 등 다양한 형식의 데이터를 pandas로 처리하고 분석할 수 있음",
+            "객체지향 프로그래밍 원리를 적용하여 재사용 가능한 코드를 작성할 수 있음",
+            "필요한 라이브러리를 설치하고 패키지를 효율적으로 관리할 수 있음"
+          ],
+          "key_concepts": [
+            "pandas를 활용한 데이터프레임 생성 및 조작",
+            "클래스 정의, 객체 생성 및 메서드 활용",
+            "import와 from... import를 통한 모듈 및 패키지 사용법"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 3,
+          "title": "데이터 자동화와 API 활용",
+          "description": "이 모듈에서는 파이썬을 활용한 데이터 수집 및 처리의 자동화 방법을 학습합니다. 웹 스크래핑을 통해 다양한 온라인 데이터를 자동으로 수집하고, CSV/엑셀 파일의 데이터 처리를 자동화하는 방법을 다룹니다. 또한 공공데이터 API 연동을 통해 실시간으로 데이터를 활용하는 방법을 습득합니다.",
+          "objectives": [
+            "BeautifulSoup, requests 등의 라이브러리를 사용하여 웹 스크래핑을 통한 데이터 수집 자동화를 구현할 수 있다",
+            "pandas 라이브러리를 활용한 CSV/엑셀 데이터의 자동화된 처리 및 변환 방법을 습득한다",
+            "공공데이터 포털 API 및 기타 외부 API 연동을 통해 실시간 데이터를 파이썬 스크립트에서 활용할 수 있다"
+          ],
+          "learning_outcomes": [
+            "웹에서 원하는 데이터를 자동으로 수집하는 파이썬 스크립트를 작성할 수 있다",
+            "대용량 데이터를 효과적으로 처리하고 분석하는 자동화된 워크플로우를 설계할 수 있다",
+            "외부 API로부터 데이터를 가져와 파이썬 애플리케이션에 통합하는 방법을 이해하고 구현할 수 있다"
+          ],
+          "key_concepts": [
+            "웹 스크래핑 원리와 윤리적 고려사항",
+            "BeautifulSoup과 requests 라이브러리의 활용",
+            "pandas를 통한 데이터 프레임 작성 및 처리",
+            "공공데이터 API 인증 및 데이터 요청 방법",
+            "API 응답 데이터의 구조화 및 변환"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 4,
+          "title": "실무 프로젝트 및 협업 도구",
+          "description": "이 모듈에서는 실제 업무 환경에서 사용하는 협업 도구와 기법을 학습합니다. 통합 실무 프로젝트를 통해 팀원들과 효율적으로 협업하는 방법과 자동화 프로젝트 완성도를 높이는 과정을 경험합니다. 특히 버전 관리 도구인 Git의 기본 적용과 코드 품질 향상을 위한 디버깅 기법을 체계적으로 다룹니다.",
+          "objectives": [
+            "실제 업무 사례 기반의 자동화 프로젝트를 완성하고 실무에 적용할 수 있는 능력을 배양한다",
+            "Git을 활용한 버전 관리의 기본 개념과 실무 적용 방법을 습득한다",
+            "코드 품질 향상 및 효과적인 디버깅 기법을 이해하고 실무에 적용할 수 있다"
+          ],
+          "learning_outcomes": [
+            "실무 프로젝트에서 팀원들과 효과적으로 협업하는 방법을 이해하고 적용할 수 있다",
+            "Git을 사용하여 코드 변경 이력을 효과적으로 관리하고 협업할 수 있다",
+            "코드 품질을 분석하고 개선할 수 있는 디버깅 기법을 실무에 적용할 수 있다"
+          ],
+          "key_concepts": [
+            "Agile 방법론 기반의 실무 프로젝트 관리",
+            "Git을 활용한 버전 관리 시스템의 기본 원리",
+            "단위 테스트 및 통합 테스트를 통한 코드 품질 관리",
+            "협업 도구(Jira, Trello 등) 활용법"
+          ],
+          "estimated_hours": 3,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        }
+      ],
+      "overall_goal": "4주 후 파이썬을 활용한 실무 데이터 처리 및 자동화 역량 구축",
+      "basic_resources": [
+        {
+          "title": "업무자동화, 데이터분석, 부수입, 웹사이트 제작까지! 초보자도 가능한 AI코딩밸리",
+          "url": "https://ader.naver.com/v1/5a3IGqSPMwsJ5l6yaWwEFZCx5g-SK-ffZ_T8X3w2cWNRsEMq7FKd9sl4grT7DlOx76ae8Qy9VwBQaLw3FkMlxjHLjVEFA0VXjK3_-dPM_Sg7cQX3-frd2PnTLj8gIvIT1sYtRNQlumT2s_ig0lu2NcsBQCbtMo9SeT3zvGq8v7PdwYqcPR_uMDqQv8RJBxFJ97B6IzzsA7DVgfYFz0q7HmAEAYxKty8KZ_Z2AZhDpDC1pfB2_5fe0cHMKvmfNwTxkAHXzP1LX42C-uMu9uZ-wBiDJ06ROqyuiXfHjRVMRl0BjIbkEOIlGJQunK_7i8R85X1E-ej80FT0VYme85bQ0MITafC7jnzg38TC7lFHjTkWq5PGfp_MN3ohvtyrZ0Y3fQS-yFiAtFh4o-6iFh962ZuQ2b-frX_EXDv-FBsLN75_6gXyrnDDLt2_00ZG8nTZblKbGN5PL_2vp_Fda8QtjG_kNTrChHKbOlkZ6mmeku5bzzOVB5_SA6hZUvcjN8tgLXuzecgDt5VIf8pPZipX9f5Q5uMuPO2NzlL2z5Gh3ELjYPsDPK6WPxJVHer6m3ViixY3fCPT28-yKXpz69yZXX7b4QuBCU48enWSI4sgP3o=?c=naver.search.pc.plsearch&t=0",
+          "source": "Web Search"
+        },
+        {
+          "title": "검색 고객센터",
+          "url": "https://help.naver.com/alias/search/integration/main.naver",
+          "source": "Web Search"
+        }
+      ],
+      "session_id": "ab1470d0",
+      "original_constraints": "초보자 주2시간",
+      "original_goal": "현재 업무에 활용하려고",
+      "generated_at": "2025-09-20T15:38:45.997594",
+      "processing_time": null,
+      "total_estimated_hours": 8,
+      "id": 0
+    }
+  ],
+  "aa9548d5": [
+    {
+      "title": "파이썬 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 4,
+      "weekly_hours": 2,
+      "focus_areas": [
+        "업무 활용",
+        "기초 학습"
+      ],
+      "modules": [
+        {
+          "week": 1,
+          "title": "파이썬 기초 문법과 환경 설정",
+          "description": "이 모듈에서는 파이썬을 처음 접하는 수강생들을 위해 파이썬 개발 환경을 구축하고, 파이썬의 기본적인 문법과 자료형에 대해 학습합니다. 학습자가 파이썬 프로그래밍을 시작할 수 있는 견고한 기초를 마련하는 것이 목표입니다.",
+          "objectives": [
+            "파이썬 설치 및 개발 환경 구축 완료",
+            "기본 자료형(정수, 실수, 문자열, 불리언)에 대한 개념 이해와 활용",
+            "변수명 작성 규칙과 연산자 우선순위를 이해하고 코드에 적용"
+          ],
+          "learning_outcomes": [
+            "파이썬 개발 환경을 직접 설치하고 설정할 수 있다",
+            "기본 자료형을 적절히 활용하여 간단한 프로그램을 작성할 수 있다",
+            "변수명 규칙과 연산자 우선순위를 고려한 코드를 작성할 수 있다"
+          ],
+          "key_concepts": [
+            "파이썬 설치 및 환경 변수 설정",
+            "자료형: 정수(int), 실수(float), 문자열(str), 불리언(bool)",
+            "변수 선언과 연산자 우선순위"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "하루 250원으로 1년 89,000원 전체 과목 무한수강, 최신 개정 수강",
+                "url": "https://ader.naver.com/v1/duFTXpvqz5o53icsQOEOpgkmfkhStrDwMTMl6SMdJTbm5hVtEqtQTVjBomtH01VcwNGoI7nzPiAfl72ECILyC9SbdQfcvo7MVAx_5tLy-KCh9pNykZerk-ZxzbohbtNKniXBEFl1PXLsABPuki1oJu5afGL8ksdo57Tk2FTMeft-VSVtpwwvpTG05_zw2xReMjfNNHw-kln-ReQr7_yZzwOzSk11Rmtej2xeOdj2NTZU04ZFhdpiXxTGh_fIKKdsfj3T44YzDULFjRyjGuVqJn4giONxZ4HH860-RDvcAh6sf1XLCmFfxF6HejhAfmBpJiwcswDGM3MQww776TIjLxSnHEOrIiXnhlPMAtkZwUeenuN_3K2oqxVA4MBNdZYFe0v0LUuKZmT7X9T1tZxyczxkDzy5_sZa0u5NJBTs4s7pMTacmGVgHnPjRiGYgDAgm4oUUQTC_hIyIFRkDL4WzTFIgr6a-PMy3Jlsrg9bWsNuDmWd3FfsSPGRvFyK_2o8DBYpMFNokhwM-CqE4PBSyezz9Lq8Y5aS2Y_qjlDEstw=?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 2,
+          "title": "제어문과 함수 활용",
+          "description": "2주차 모듈에서는 파이썬 프로그래밍의 핵심 요소인 제어문과 함수에 대해 학습합니다. 조건문(if, else, elif)을 활용하여 프로그램의 흐름을 제어하는 방법과 반복문(for, while)을 통해 코드를 효율적으로 실행하는 방법을 배웁니다. 또한 함수를 정의하고 매개변수를 전달하여 재사용 가능한 코드를 작성하는 방법을 습득합니다.",
+          "objectives": [
+            "조건문(if, else, elif)을 작성하고 다양한 상황에서 활용할 수 있다.",
+            "반복문(for, while)을 사용하여 데이터 처리 및 반복 작업을 수행할 수 있다.",
+            "함수를 정의하고 매개변수와 반환값을 적절히 활용할 수 있다."
+          ],
+          "learning_outcomes": [
+            "조건에 따른 프로그램 흐름 제어 방법을 이해하고 적용할 수 있다.",
+            "반복적인 작업을 위한 적절한 반복문을 선택하여 사용할 수 있다.",
+            "함수를 설계하고 호출하여 코드의 재사용성과 가독성을 높일 수 있다."
+          ],
+          "key_concepts": [
+            "조건문(if, else, elif)의 구조와 활용",
+            "반복문(for, while)의 종류와 사용 사례",
+            "함수 정의 및 매개변수 전달 메커니즘"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 3,
+          "title": "자료구조와 기본 라이브러리 활용",
+          "description": "이 모듈에서는 파이썬의 핵심 자료구조인 리스트, 튜플, 딕셔너리의 사용법을 학습하고, 문자열 처리 메소드와 기본 파일 입출력 기능을 실습합니다. 이전 모듈에서 학습한 제어문과 함수 활용을 바탕으로 더욱 복잡한 데이터 처리와 시스템 프로그래밍의 기초를 다집니다.",
+          "objectives": [
+            "리스트, 튜플, 딕셔너리 자료구조의 특징과 기본 연산 방법을 이해한다",
+            "문자열 데이터 처리를 위한 다양한 메소드와 함수를 활용할 수 있다",
+            "파일 열기, 읽기, 쓰기 및 저장 등 기본 파일 입출력을 구현하고 활용할 수 있다"
+          ],
+          "learning_outcomes": [
+            "다양한 형태의 데이터를 효율적으로 관리하고 처리하는 능력을 기를 수 있다",
+            "문자열을 분석하고 가공하여 원하는 형태로 변환할 수 있다",
+            "프로그램에서 외부 데이터를 읽고 저장하여 실용적인 프로그램을 작성할 수 있다"
+          ],
+          "key_concepts": [
+            "리스트(List)와 튜플(Tuple)의 차이점과 활용",
+            "딕셔너리(Dictionary)의 키-값 쌍 구조와 탐색 방법",
+            "문자열(String) 메소드: split, join, replace, len 등",
+            "파일 I/O: open(), read(), write(), close() 메소드"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 4,
+          "title": "모듈과 패키지 활용 및 실무 적용",
+          "description": "Python에서 제공하는 다양한 패키지와 모듈을 활용하여 실무에 적용할 수 있는 자동화 도구를 만드는 방법을 학습합니다. 특히 데이터 분석에서 필수적인 pandas, numpy 패키지와 인터넷 리소스를 가져오는 requests 패키지의 설치 및 실무 활용 방안을 다룹니다.",
+          "objectives": [
+            "자주 사용하는 패키지(pandas, numpy, requests)의 설치 및 실무 적용 방법 학습",
+            "사용자 정의 모듈을 작성하고 재사용 가능한 기능을 구현하는 방법 습득",
+            "실무에서 활용 가능한 간단한 자동화 스크립트를 작성할 수 있는 능력 배양"
+          ],
+          "learning_outcomes": [
+            "필수 패키지의 설치 및 환경 설정을 수행할 수 있다",
+            "실무 데이터 처리를 위한 모듈을 직접 작성하고 활용할 수 있다",
+            "반복적인 업무를 자동화하는 스크립트를 체계적으로 설계할 수 있다"
+          ],
+          "key_concepts": [
+            "패키지 관리 시스템(pip, conda)을 통한 패키지 설치",
+            "pandas를 활용한 데이터프레임 처리 및 분석",
+            "numpy를 이용한 수치 계산 최적화",
+            "requests로 웹 API 데이터 수집 및 처리",
+            "모듈화와 재사용 가능한 함수 구현",
+            "스크립트를 통한 업무 자동화 설계"
+          ],
+          "estimated_hours": 3,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "하루 250원으로 1년 89,000원 전체 과목 무한수강, 최신 개정 수강",
+                "url": "https://ader.naver.com/v1/LaH9ptJhTbPl4hVb04Yi5GnfK3DQtMMBCa1qD_FBfG7mYJgh6HJ5P0Q1qRv0HU7pVkOpZSoqZi4a5M7UsW-NyaNHBjIjd32J10NlszLGlVp3sOvP4bbvac4O_9JuYo0wOBOVNP1n-WdYztSVkbDCaSwoZUS34dYt2Sn7Ps1CrZDK7IC97LgyjGpMzr5MoNmFL95SiSDlQXCJpzsgvRv0rHDGvlh5iLTySoAdrt5_FU0HJZT1AR1MGp9QFUnGC3adI2kPpjOQ0DwdvC65U2EqkNBkw76GcS2wbtL74Ac02_apYjlL30ByAOODiwyfnaIBjUZ1z1fUwsmP2D6rqxQpQSKW2xQ5hpP34trJVUqBA9jFbdccmJbzI8nNIKrIJzL3oXszIdwVf0eD1dM_tjQmlc1oZA3dk577CGofB8S6oMcuk-NiCw-vg0cpO3XCjfcm18GflcDXIGqDSS9VGWEbeWZL0kRQ5JRASeEebcqeRdnUhR04-iwlOlNohj9ZvzRPuX1RYI5m3wB0cZ7riolFPj2DM2A9yQe0ejYNf1CAxvR5PIG78u-mft1EjIqQZAGkKhBT0Vz7G18s21KvB4Kt_w==?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        }
+      ],
+      "overall_goal": "4주 과정을 통해 파이썬 기본 문법을 완성하고 실무 자동화 기초를 습득하여 향후 심화 학습을 위한 기초 확립",
+      "basic_resources": [
+        {
+          "title": "검색 고객센터",
+          "url": "https://help.naver.com/alias/search/integration/main.naver",
+          "source": "Web Search"
+        }
+      ],
+      "session_id": "aa9548d5",
+      "original_constraints": "완전 초보자 주 2시간",
+      "original_goal": "현재 업무에 활용하려고",
+      "generated_at": "2025-09-20T15:40:58.968499",
+      "processing_time": null,
+      "total_estimated_hours": 8,
+      "id": 0
+    }
+  ],
+  "8c7e53a3": [
+    {
+      "title": "파이썬 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 4,
+      "weekly_hours": 2,
+      "focus_areas": [
+        "업무 활용을 위한 기본 개념",
+        "기초 실무 적용",
+        "콘텐츠 제작 기초"
+      ],
+      "modules": [
+        {
+          "week": 1,
+          "title": "파이썬 기초 문법 확립",
+          "description": "본 모듈에서는 파이썬 프로그래밍의 기초를 다지며, 개발 환경을 설정하고 기본적인 문법을 학습합니다. 변수, 연산자, 조건문, 반복문 등 프로그래밍의 핵심 요소를 체계적으로 소개하며, 실습을 통해 실제 코드 구현 능력을 기르는 것을 목표로 합니다.",
+          "objectives": [
+            "Python 설치 및 IDE 환경 설정 완료",
+            "변수, 자료형, 연산자에 대한 이해와 활용",
+            "조건문(if, else, elif)과 반복문(for, while)의 기본 구조 숙달"
+          ],
+          "learning_outcomes": [
+            "파이썬 IDE를 활용하여 개발 환경 구축 가능",
+            "다양한 자료형을 활용한 변수 선언 및 연산 수행 능력",
+            "조건문과 반복문을 활용한 간단한 프로그램 작성 실력"
+          ],
+          "key_concepts": [
+            "파이썬 설치 및 환경 변수 설정",
+            "기본 자료형(정수, 실수, 문자열, 불)과 변수 선언",
+            "산술, 비교, 논리 연산자 활용"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "하루 250원으로 1년 89,000원 전체 과목 무한수강, 최신 개정 수강",
+                "url": "https://ader.naver.com/v1/Zwv5EEMBwvZom9cBMZT2LbbUYDrmkVhhgsXGc4BplVa5Oymvr2uP4HjBdnOo19Jdm3bCSNyimyFZeR9d_HjMaxu_SpyiMwwLi8ow2BXyjaTeRV2O_eH6S8erpz4pFoUCqWoa2uwvaFahCBLKXs7R60bQYd8TeZCi4UPDghCMfXmtmzMJuV4XEa6hzOmctX0TJ4wZjALBGXT1MihM3-Og8M67xKLLwQLhJsx1Gj8uvOxeeHUhcg8C3K6aXi5Hn5UrCpTYzGwvk20eCGDl9cUCWJoKS-dbirVKJPLifpJA8BXjmH8u575Urb29JAxZN3MIHvlLdryurSpcN8hMECtSbYE60RAzsPGDM8cXUFyTslPJK1FwhfR3FgmvdwCLVcVrq8gRJCWFrOytWGhO9hvlk0hHwcGHt95_5urqaLmarWRLJ7kIJzmQ7bof2lUM7PyolVSQDaFIKSMDsz_9vEs1lwHr9MWf1QVw4hhLlQHmbsPWdEKm4P986lMjBAH8dRbO?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 2,
+          "title": "자료구조와 함수 활용",
+          "description": "이 모듈에서는 파이썬에서 제공하는 고급 자료구조인 딕셔너리와 튜플을 심도 있게 학습합니다. 또한 함수의 정의 및 매개변수 처리 방법을 익히고, 모듈 임포트와 패키지 활용을 통해 코드를 구조화하는 방법을 배웁니다. 이를 통해 더 복잡한 프로그래밍 문제를 해결할 수 있는 기반을 마련하게 됩니다.",
+          "objectives": [
+            "딕셔너리, 튜플 등 파이썬의 고급 자료구조의 개념과 사용법을 이해한다",
+            "함수를 정의하고 매개변수를 효과적으로 처리하는 능력을 습득한다",
+            "모듈 임포트 및 패키지 활용 방법을 학습하여 코드를 체계적으로 구성한다"
+          ],
+          "learning_outcomes": [
+            "다양한 형태의 데이터를 효율적으로 관리할 수 있는 자료구조 선택 능력",
+            "재사용 가능한 코드 작성을 위한 함수 정의 및 활용 능력",
+            "외부 모듈 및 패키지를 프로젝트에 통합하여 활용하는 실무 능력"
+          ],
+          "key_concepts": [
+            "딕셔너리: 키-값 쌍으로 데이터를 저장하는 해시 테이블 구조",
+            "튜플: 불변(Immutable)의 순서가 있는 자료형",
+            "함수 매개변수: 기본 매개변수, 키워드 매개변수, 가변 인자 등의 활용"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 3,
+          "title": "실무 데이터 처리 기초",
+          "description": "이 모듈에서는 파이썬을 활용한 실무 데이터 처리의 기초를 학습합니다. 다양한 파일 형식에서 데이터를 읽고 쓰는 방법과 함께, 예외 상황에 대처하는 프로그래밍 기법을 익힙니다. 이를 통해 실무에서 발생하는 데이터 처리 문제를 해결할 수 있는 기반을 마련합니다.",
+          "objectives": [
+            "파이썬을 이용한 파일 입출력의 기본 방법을 습득한다",
+            "예외 처리 메커니즘과 디버깅 기법을 이해하고 적용한다",
+            "파일 입출력과 예외 처리를 활용한 간단한 데이터 처리 프로젝트를 완성한다"
+          ],
+          "learning_outcomes": [
+            "텍스트 및 바이너리 파일의 읽기/쓰기 작업을 수행할 수 있다",
+            "파일 입출력 과정에서 발생할 수 있는 예외 상황을 식별하고 처리할 수 있다",
+            "데이터를 효율적으로 읽고 처리하는 프로그램을 구현할 수 있다"
+          ],
+          "key_concepts": [
+            "파일 모드(open 모드: 'r', 'w', 'a', 'b') 이해",
+            "파일 객체와 반복자를 통한 데이터 처리",
+            "try-except 블록을 활용한 예외 처리 및 에러 핸들링"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 4,
+          "title": "콘텐츠 제작 및 응용 실습",
+          "description": "4주차 모듈에서는 실무에서 활용 가능한 자동화 도구 사용법과 데이터 수집 기법을 실습합니다. GUI 자동화 스크립트 작성을 통해 반복 작업을 효율화하고, 웹 스크래핑 기법으로 실무 데이터를 자동으로 수집하는 방법을 학습합니다. 또한 이전 주차에서 배운 자료구조와 데이터 처리 기술을 종합 프로젝트에 적용하여 실무 역량을 강화합니다.",
+          "objectives": [
+            "GUI 자동화 스크립트를 작성하여 반복적인 업무 프로세스를 자동화할 수 있다",
+            "웹 스크래핑 기법을 활용하여 다양한 웹 사이트에서 데이터를 자동 수집할 수 있다",
+            "이전 주차 학습 내용과 자동화 도구를 통합한 종합 프로젝트를 완성할 수 있다"
+          ],
+          "learning_outcomes": [
+            "Python을 활용한 자동화 스크립트 작성 능력 향상",
+            "웹 스크래핑을 통한 데이터 수집 및 전처리 역량 확보",
+            "실무 프로젝트 기획 및 실행 능력 강화"
+          ],
+          "key_concepts": [
+            "GUI 자동화 원리와 Python 라이브러리 사용법",
+            "웹 스크래핑 기법과 윤리적 데이터 수집 방법",
+            "프로젝트 기획 및 통합 실습 능력"
+          ],
+          "estimated_hours": 3,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "고용노동부 선정 의정부 유일 우수훈련기관, 실업자/재직자 무료, 전 과정 운영",
+                "url": "https://ader.naver.com/v1/_TKyCvYqie1EbfEBKHAJurLxHis8XdbN5uEmembYgICB6Q8tcrrzJwBeHXO4Rq9cQRMgoNEWRDPephXeJKyOMAR2taDnPthubZC4Er4ks0WxxTn2D7Qinh-h1e3maB9J0Bnj-YGpCSV_s4oTs70pMPW4KLgskY53sYdL3on7Qd9patvt9XK5EaER46y_SaZUsfwbJQaW5f8NEELVRvr2tD-DAag69V20YZ26uItn2JOGIO38OgEw-dZkDKsxz5oduGAVOpiz74iwMUe9CC-_O6CZGkB-tJT2MYmko4YHlAwA3tlWXr1Eb1pluc4Nr7UwrTip6cHv196s42iPqAOaKs-tlAUqE0I3fZDxfN32BuEDdwtkTuGzpzxzP_3YJOklCFr6S-kkxj6bxpE50usArcXSqA9oQ5FqFCyX1gGY4FqgAC05FqSXiaNVY_4tRo16eQ8SQ10QIfDB4iIjWmP2rMn6Zhm-0PiUQm4DIl-2fnd56JvjJ_JObbDxcbAndL3h?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        }
+      ],
+      "overall_goal": "4주 내 파이썬 beginner 수준의 실무 활용 능력 습득",
+      "basic_resources": [
+        {
+          "title": "검색 고객센터",
+          "url": "https://help.naver.com/alias/search/integration/main.naver",
+          "source": "Web Search"
+        }
+      ],
+      "session_id": "8c7e53a3",
+      "original_constraints": "완전 초보자 주2시간",
+      "original_goal": "현재 업무에 활용하려고",
+      "generated_at": "2025-09-20T15:43:38.940269",
+      "processing_time": null,
+      "total_estimated_hours": 9,
+      "id": 0
+    }
+  ],
+  "016cbaeb": [
+    {
+      "title": "파이썬 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 4,
+      "weekly_hours": 2,
+      "focus_areas": [
+        "업무 활용",
+        "기본 지식 습득"
+      ],
+      "modules": [
+        {
+          "week": 1,
+          "title": "파이썬 기초 및 환경 설정",
+          "description": "이 모듈에서는 파이썬 프로그래밍을 시작하기 위한 개발 환경 구축 방법과 기본 문법을 학습합니다. 파이썬 설치부터 통합 개발 환경(IDE) 선택까지의 과정을 다루며, 프로그래밍의 기초가 되는 변수, 자료형, 연산자, 제어문을 익힙니다.",
+          "objectives": [
+            "파이썬 개발 환경을 설치하고 구성할 수 있다",
+            "Python의 주요 IDE와 개발 도구를 이해하고 적절한 것을 선택할 수 있다",
+            "변수 선언, 자료형 활용, 연산자 사용 및 제어문 구현 방법을 습득한다",
+            "기본 함수 정의 및 호출을 통한 함수형 프로그래밍 기초를 이해한다"
+          ],
+          "learning_outcomes": [
+            "자신의 컴퓨터에 Python 환경을 구축하고 IDE를 설정할 수 있다",
+            "파이썬의 기본 문법(변수, 자료형, 연산자, 조건문, 반복문)을 활용하여 간단한 프로그램을 작성할 수 있다",
+            "함수를 정의하고 사용하여 코드의 재사용성을 높일 수 있다"
+          ],
+          "key_concepts": [
+            "Python 설치 및 환경 변수 설정 방법",
+            "VSCode, PyCharm 등 IDE별 특징과 활용",
+            "파이썬 자료형(int, float, str, bool, list, dict)",
+            "연산자 우선순위 및 복합 연산자 활용",
+            "조건문(if, elif, else)과 반복문(for, while)",
+            "함수 정의 및 매개변수, 반환값 활용"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "하루 250원으로 1년 89,000원 전체 과목 무한수강, 최신 개정 수강",
+                "url": "https://ader.naver.com/v1/a6KCmGzK6k1yMsVXi_xfed26VAn30pqWsktBWyYPBapag8qN8R5iQBVQ-unQBlun2eGCAdenEymEIivpsk2D3YebDJJVIE7zTvduLxK0vllg7JhvqmA8Ykb-feUx83CGAJ_R2qqwb58eBHkbA-C-QasHvqWKTiliyfkVq2-16THktRNNAz87UW4ZAuFdKc1xqjfnR1sCzzXP3NZd-QMdGCaWKysPYrqPpUvkgx-302-m1KQyBZjs9UUAcIpWpq0o3sc1NnyYnjV2L8BqbILWTQoNV4DoKywiC-sruJYp1rKiO8kqV33-XNt4wmtpwaUf04UI-QKX58TcOfP1KSMlN9hyIbx0gSqiR0-QsFECg4wfHCZQUcXrxCjAQyuoQXQek1jB0XZ3Sx2lMU8qr51K1uc7aejifYwI0nXwwwoPEmiXZZ9N8BI9vzsFbk8ytcBwNMby6YtZ3SP763KubYeCYvAf6zbBEpvgjU8eUGf-cb8WpiwDeLf_2s9-P4wL4srYYjbvidNzzpJgiJ-E8j-BDA==?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 2,
+          "title": "데이터 구조와 표준 라이브러리",
+          "description": "본 모듈에서는 파이썬에서 제공하는 다양한 데이터 구조와 표준 라이브러리를 활용하는 방법을 학습합니다. 리스트, 튜플, 딕셔너리, 집합 등의 자료구조를 심도 있게 이해하고, 실무에서 자주 사용되는 os, sys, math 등 표준 라이브러리의 주요 기능을 익힙니다. 또한 파일 입출력과 예외 처리를 통해 안정적인 프로그램 작성 방법을 학습합니다.",
+          "objectives": [
+            "리스트, 튜플, 딕셔너리, 집합 등 다양한 데이터 구조의 특성과 활용법을 이해하고 적용할 수 있다",
+            "os, sys, math 등 표준 라이브러리의 핵심 모듈을 활용하여 실무 기능을 구현할 수 있다",
+            "파일 입출력과 예외 처리 메커니즘을 이해하고 적절히 적용하여 견고한 파이썬 애플리케이션을 개발할 수 있다"
+          ],
+          "learning_outcomes": [
+            "여러 데이터 구조를 상황에 맞게 선택하고 효율적으로 활용할 수 있다",
+            "표준 라이브러리 모듈을 조합하여 복잡한 문제를 해결하는 코드를 작성할 수 있다",
+            "파일 처리와 예외 상황에 대한 안정적인 코드를 구현할 수 있다"
+          ],
+          "key_concepts": [
+            "자료구조의 특성 및 시간 복잡도 이해",
+            "표준 라이브러리별 주요 기능 및 활용 사례",
+            "파일 읽기/쓰기 및 예외 처리 패턴"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "하루 250원으로 1년 89,000원 전체 과목 무한수강, 최신 개정 수강",
+                "url": "https://ader.naver.com/v1/JuXldJuYxhom6EbyHe5e--UYB6OaOO2059A9MbtiqGPiBk8XYxn4hd1F_TeAmrz-u5iIXqMzj7vcNPEFtrn0vNt2K6GRQfoeojbudI0vFPsLv6eSxdnTDOinebv3eTl-mYwx2_Mr1PHPpynEKKXVmf-xbiSoBnNFO45SgyyM3gpwraEC9GhBdtH8qJLFQbPOFtZzvyG9XG_JuprXvU6Nc2-M7zgOQWd636wgkMD-sXlST8XwD71Y6tOOvdGdkQowg5TPl2Xtq3UOMkwrUD76LxQLnLMTPYozetSLXVTUCYhuEYpG4Wvfsnq4cQkt_37oQXyDu3ny7DNj0Z02iUHwWFj-0_OR_YqDBskui2QKXJ__vYJlKrB4G0-cC1XkDn_R49T7PCPjWvWPHHsw9rpQfKi9lz5hxrtmYrRlliCko-N-UzdcVFtAuuf1NSOqsHga5QunLI1ktaLqphRC381nOF3Ri4NfITzLxZRZY-CWwqRfnxpfIVYq2diivlt786ai5aIJw_aYNyNFwuCh5vrqfq6aCeWvx7rXgJ6kLMdFEgXLxUQTCMlUJme-jEkheXFv?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "G마켓 10% 쿠폰 무제한 발급! 인기 브랜드 최대 15% 적립과 카드 5%까지",
+                "url": "https://ader.naver.com/v1/p1M4rxYq2N1BYJnTgj3emBnln-ZCzKuR2zkE2TSqnz1eHp8xO4Pbl7C1avlHwFJSh-k7kc0XAqkJJYkYIvk0FSgrT-UqgguotEewokwMnn_Ii4IYJD4xH9IHLC2jzZxe9ADlOsNuUa4SvviJll_RnAIikg3hLdIgGFfwe_9WwWkIohZFCnB4bS7GdIH5SKoTHE4DhV-DimYT3x9iQZyIKHaX81Eq3bZmrOA_SEZuSYAJHopV4pCtIkfWulWv_Hz0GbN0_8Bg9Mlen3FLHamQ1Ageeakv-kzc7rRchXaNdgS0-YoAquOzugq5BpSllWwaVGM-na79cqkurGwDyv_b0JxDEjcXLOH457hhhs38oJNilXSwASxuuTWVEC8kzgIsgkVgRicxaffj9w2kesla0-wK7A4yy0118M4q9LgzgWcKMphxpiVEoVzKwoIPjksbyBOXEV0DwnclnOXrHM7aFTEWIiXmirS5rgWoYPzctRJFurW7-PWK4f4yBPzXtlcF38cbc8rctwljSU6qBqqk98-rb8_MzCvke5b1SlUcaZfbqoV3SgdsoX2pKktxUYi4nlDXyeVNCLJWP_c713sOwZ0zaHz_jnwdpDk1VEGtPVo=?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 3,
+          "title": "실무 자동화 스크립트 작성",
+          "description": "이번 모듈에서는 파이썬을 활용한 실무 중심의 자동화 스크립트 작성 방법을 학습합니다. 파일 관리 자동화부터 웹 데이터 수집 및 처리까지, 실제 업무에 바로 적용할 수 있는 기술들을 다룹니다. 특히 BeautifulSoup과 requests 라이브러리를 사용하여 웹 데이터를 효율적으로 수집하고, CSV 파일을 활용한 데이터 처리 방법을 익힙니다.",
+          "objectives": [
+            "파일 시스템을 자동으로 관리하는 스크립트를 작성할 수 있다",
+            "BeautifulSoup과 requests를 활용하여 웹에서 데이터를 수집하고 파싱할 수 있다",
+            "CSV 형식의 데이터를 읽고 처리하며 간단한 웹 스크래핑을 구현할 수 있다"
+          ],
+          "learning_outcomes": [
+            "자동화된 파일 관리 시스템을 구축할 수 있습니다",
+            "웹 데이터 수집 파이프라인을 설계하고 구현할 수 있습니다",
+            "CSV 데이터를 효과적으로 처리하고 분석할 수 있습니다"
+          ],
+          "key_concepts": [
+            "파일 입출력과 파일 시스템 자동화",
+            "requests 라이브러리를 이용한 HTTP 요청 및 응답 처리",
+            "BeautifulSoup을 활용한 HTML/XML 파싱"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "MY프로젝트, IT 풀스택 프론트엔드, 1:1취업컨설팅 취업준비&직장인 국비0원",
+                "url": "https://ader.naver.com/v1/oQh-O0CpGbROSLHbKfX8tOw-TNloH-w-jJUIfKlqOy5HVEoYICWYxR7W0xcMFxP0ILLgcgme-ig7_4HowwTjEHxUdrvgeADTdB_54L-U-udifPz5P75DJSbgPkKRtcayYA6-b4DYyzaX2VVuvRH4FS9-69QExr6zxsUaUu5Tl4pu7iqaTuUV6D5WU9h1VCxLIeDbpdHaMQT-RrOAoJeD4C_qjOAwsKFB13loQxEGHBHloDJrjhmnc1Pcf_kFmGITSXTCPk_fEtOUsdSrs5ofJIDmOEnvz-LGgl5PEnfspFPx1-t5vlIhYeqUXSpL6uU4vWU0aAuN8ecs27fsU1pMi2PRs27lzO0nsotcSSO870bKP9Fw7I33aTLcvvAZvk7ZLhio7fQCFANPan8tVomoKdcCYwjp69NRgYwHlgfcX4t-O7IvGHC8qYB7z0_23a_iJlHD6yJdULkdhoLVpgqaG-2mBnl0j6FlP8uOxXE8VZnJlNxDdjmKB1WooeuxAk44qugdZZyajfTypJ-XqjfNM2Y02aqP3k3zl_RqilZTqvU=?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 4,
+          "title": "실무 프로젝트 및 협업 도구",
+          "description": "이 모듈은 그동안 학습한 데이터 구조와 자동화 스크립트 기술을 바탕으로 실제 업무 환경에서 활용할 수 있는 프로젝트를 완성하는 과정입니다. 실무에서 자주 사용되는 Tkinter GUI 개발, SQLite 데이터베이스 연동, 그리고 Git 버전 관리 시스템을 함께 적용하여 종합적인 실무 역량을 기를 수 있습니다.",
+          "objectives": [
+            "업무 프로세스 자동화 프로젝트를 완성할 수 있다",
+            "Tkinter를 이용한 GUI 개발 기초를 습득한다",
+            "데이터베이스(SQLite) 연동과 버전 관리(Git)를 실무에 적용할 수 있다"
+          ],
+          "learning_outcomes": [
+            "실제 업무 프로세스를 자동화하는 파이썬 프로젝트를 설계하고 구현할 수 있다",
+            "Tkinter 라이브러리를 활용한 간단한 GUI 애플리케이션을 개발할 수 있다",
+            "SQLite 데이터베이스와 연동하여 프로젝트 데이터를 관리할 수 있다",
+            "Git을 사용하여 효율적인 협업과 코드 버전 관리를 수행할 수 있다"
+          ],
+          "key_concepts": [
+            "Tkinter GUI 개발 기초 및 위젯 배치",
+            "SQLite 데이터베이스 기본 구조 및 쿼리 작성",
+            "Git 버전 관리 시스템의 기본 명령어와 협업 워크플로우"
+          ],
+          "estimated_hours": 3,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        }
+      ],
+      "overall_goal": "4주 후 파이썬 기초부터 실무 자동화까지 가능한 초급 개발자로 성장",
+      "basic_resources": [
+        {
+          "title": "업무자동화, 데이터분석, 부수입, 웹사이트 제작까지! 초보자도 가능한 AI코딩밸리 시간없는 직장인도 하루 5분으로 업무자동화 가능! AI 코딩밸리",
+          "url": "https://ader.naver.com/v1/PoyfQEcuuBcgFHXOUKUBDp7hFeRm2qPqnP-I7JA030j_1ZDBqidnHt44ov8wufKwNyh-FfRllz-PyH5rBY70vdZHVGGw_Syy4aVdMIvqAaAaQAhVnCUzRncV1iZvHO6Xi1gjJyc1MB1_2XYQ-zkA2utyV5ZPWL6yhyYvlnQEuCF3fCNk4962nX0IlfaIkoDx_HKnT1gigeTT53ITuEOm0Ri06WwBK3DSVN7AmxIcgKivGX7R3jbzO9Cc60at72bKnIYSCiZzrRAPTftOL0bbPTIRQEjm5dY4zUVGuS8WpF-TIDqrlWZrZogR401Z6zorSpsDS4dL4bKEupDpGfQuWFKPj_6rvHtBJ_D9xN3STItHxVR42EFHZnRi-uOPjHPUW3InBAo9B8nMFIJwM0BoQHtw5fDEULlL-LsEEY-h8K92RsT3VtT5d3gwPsEuH8fVSQEzbf-EJ4-eCgHclTYRYJUDCTCg-UEXu2f5MiLGYAYvpquA8LbPaM9ObGe1CyYqVtU6DCyd2-E_sFH7KabxXSt2Mj3fThlPzz0AZbO7kMgkF0oo26JDRhZ1cCrJF1vdqQRM1DD1zVDGEVfqvTgBaaQ6jEjJrXPFms5YW6Sgy3s=?c=naver.search.pc.plsearch&t=0",
+          "source": "Web Search"
+        },
+        {
+          "title": "검색 고객센터",
+          "url": "https://help.naver.com/alias/search/integration/main.naver",
+          "source": "Web Search"
+        }
+      ],
+      "session_id": "016cbaeb",
+      "original_constraints": "완전 초보자, 일주일에 2시간",
+      "original_goal": "현재 업무 활용",
+      "generated_at": "2025-09-20T15:46:10.888999",
+      "processing_time": null,
+      "total_estimated_hours": 9,
+      "id": 0
+    }
+  ],
+  "c4eb3e06": [
+    {
+      "title": "파이썬 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 4,
+      "weekly_hours": 2,
+      "focus_areas": [
+        "취미 활동 시작",
+        "기초 스킬 습득",
+        "정기적인 연습"
+      ],
+      "modules": [
+        {
+          "week": 1,
+          "title": "파이썬 기본 환경 구축과 기초 문법",
+          "description": "이 모듈은 파이썬 프로그래밍의 첫 단계로, 개발 환경을 구축하고 파이썬의 기본 문법을 학습하는 과정입니다. 학생들은 파이썬을 설치하고, 적절한 IDE를 설정한 후 변수, 자료형, 연산자, 조건문, 반복문 등의 기초 개념을 익힙니다. 이를 통해 간단한 파이썬 프로그램을 작성하고 실행하는 능력을 기르게 됩니다.",
+          "objectives": [
+            "파이썬 설치 및 개발 환경 구축을 완료할 수 있다",
+            "변수, 자료형, 연산자, 조건문, 반복문의 기본 개념을 이해한다",
+            "간단한 파이썬 프로그램을 작성하고 실행할 수 있다"
+          ],
+          "learning_outcomes": [
+            "파이썬 실행 환경을 구축하여 즉시 코딩 실습을 시작할 수 있다",
+            "기본적인 데이터 타입과 연산을 활용할 수 있다",
+            "조건문과 반복문을 사용하여 프로그램의 흐름을 제어할 수 있다"
+          ],
+          "key_concepts": [
+            "파이썬 설치 및 개발 환경 설정",
+            "변수 선언과 자료형 이해",
+            "수학적 연산자와 비교 연산",
+            "if, elif, else를 활용한 조건문 구성",
+            "for와 while을 이용한 반복문 사용법"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "하루 250원으로 1년 89,000원 전체 과목 무한수강, 최신 개정 수강",
+                "url": "https://ader.naver.com/v1/9VhbdFoYJtUzbW8L74Oe6IulqqBOTrsGr_qmNwPsaPuGa5XqPj1RSxetmOJ1JSugs3wo65CnRcGdxebGNBYHx13jMdO2q3TpoFfEm-piNALWjq2cc9dXgxEdvFaejhMVcw5_fYtap2AdlGNCNdKSkLurfuZSvkQXgrrlhv_tHY6OW3Q8wbAlF45iPhojqggTmv6UmUDHSh9bVwVkvvC3w0yjlKawjqJCpbC_sX0o5m8iod_4KUZyEqRY6EJvQyQ7qKBK747QQGjZbJUWZXtkaBuVDDAmysR6pVlxPfFF75kJAlp-uSRpbeEyMhNUKj-5KBOyi26hmkiaQNbDK9OR9bKziTbXzr_7hFTSAu7bVEe12nRHGA1G6hGl90qnvwXN734PJLAvAj8saplRTcR4WmeCdhRBNCZgijnC-yelWfBi7N2KFvfxXHeE09RcIOa0Y761NrEp3KHAH3z89DFQVhSuYG4xDW9lUWC_wxD_YbGnF7TqyBL-E8-gImNQm4tGHeWEBvZmt0AcLH0380h16ZOBjKwmGoFYH5lU3f7XkzXiMtHtN4magdLKL0nsTv-6?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 2,
+          "title": "함수와 데이터 구조 활용",
+          "description": "이번 모듈에서는 파이썬의 함수 정의와 호출 방법을 배우고, 리스트와 딕셔너리와 같은 기본 데이터 구조를 활용하는 방법을 학습합니다. 또한 모듈과 패키지의 개념을 이해하고, 이를 활용한 기본 데이터 처리 프로그램 작성 능력을 기릅니다.",
+          "objectives": [
+            "함수를 정의하고 매개변수를 사용하여 호출할 수 있다",
+            "리스트와 딕셔너리 자료형의 생성, 접근, 수정 방법을 이해하고 활용할 수 있다",
+            "모듈과 패키지의 개념을 이해하고 이를 사용하여 재사용 가능한 코드를 작성할 수 있다",
+            "함수와 데이터 구조를 활용하여 간단한 데이터 처리 프로그램을 작성할 수 있다"
+          ],
+          "learning_outcomes": [
+            "함수 정의 및 매개변수 활용 능력 습득",
+            "리스트와 딕셔너리를 통한 데이터 관리 능력 향상",
+            "모듈화를 통한 코드 재사용성 이해",
+            "데이터 처리 로직 구현 능력 개발"
+          ],
+          "key_concepts": [
+            "함수 정의와 호출",
+            "매개변수와 반환값",
+            "리스트의 생성, 인덱싱, 슬라이싱",
+            "딕셔너리의 키-값 쌍 관리",
+            "모듈과 패키지의 개념",
+            "import와 from... import 구문"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 3,
+          "title": "파일 입출력과 기초 알고리즘 구현",
+          "description": "이 모듈에서는 파이썬을 사용하여 파일을 읽고 쓰는 기본 기능을 학습하고, 정렬과 검색 같은 기초 알고리즘을 파이썬으로 구현하는 방법을 배웁니다. 또한 리스트 컴프리헨션을 활용하여 데이터 처리를 효율적으로 수행하는 방법을 익힙니다.",
+          "objectives": [
+            "파일의 읽기와 쓰기 기능을 파이썬에서 구현할 수 있다",
+            "버블 정렬, 선택 정렬, 이진 검색 등 기본적인 알고리즘을 파이썬 코드로 구현할 수 있다",
+            "리스트 컴프리헨션을 활용하여 데이터 처리를 간결하게 수행할 수 있다",
+            "파일과 알고리즘을 활용한 실용적인 데이터 처리 프로그램을 작성할 수 있다"
+          ],
+          "learning_outcomes": [
+            "텍스트 파일에서 데이터를 읽어와 리스트나 딕셔너리로 구조화할 수 있다",
+            "다양한 정렬 알고리즘의 작동 원리를 이해하고 직접 구현할 수 있다",
+            "이진 검색 알고리즘을 사용하여 대량의 데이터에서 효율적으로 원하는 값을 찾을 수 있다",
+            "실제 데이터에 대한 파일 입출력과 알고리즘을 결합한 응용 프로그램을 설계할 수 있다"
+          ],
+          "key_concepts": [
+            "파일 입출력: open(), read(), write(), close() 메서드 활용",
+            "알고리즘 기초: 정렬(버블 정렬, 선택 정렬), 검색(선형 검색, 이진 검색)",
+            "리스트 컴프리헨션: 간결하고 효율적인 데이터 처리 기법"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "하루 250원으로 1년 89,000원 전체 과목 무한수강, 최신 개정 수강",
+                "url": "https://ader.naver.com/v1/h3Q9_ldoUCto3vUn5w3bqBYA7nrqXtbjsDjDgaC3Ef_zu4z0gl2xsBxh-392aS2epF9LHVSGE3rp7nmek1U-2Q1lpN1XaySnsmECD20HnyNkp4DvJhF1OE-x-pMKyDhA0hIV1IisbOVTeyYQBTqCaSzu2Hjt5Xa6zY7MWWIVbcPBc8G5YNw9XuBHtxh7pNGPa155IioxUvfb2k3xgyxD3xeq2qowuK1HRK-obaxR2H_jAZi4BtGM4-jR-wra181xZ-yRpqXQD-9w3NBg2GM7lgeDECVHvDUoL0eJ0CDlm0YilYABFrjBBP1MWDeVdlC96QcV_bouifYX5Wn1TnWknucG7sysPr068blI5-P90ZIzix8WIjZYPbJyUe14n00I0Fb2BN_2zjGQggU2JOmxxt2YPGPYBqPakb5fRNhsTmvSk9oytHsmLEZOwBuxhsaQ2WliJ1FPutefyxCrVDsvUQzBnm2k3TQ05uZISkMcKShdxxB2m0YdGC046B-g7QMD6hxLv9YkcfsB0VPsAfsmtDSMM3GlUATEvMULl0mrN6C9mJRnKc1VarVeKwDQ51JF?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 4,
+          "title": "종합 프로젝트 및 심화 학습",
+          "description": "이번 주차는 그동안 학습한 함수와 데이터 구조, 파일 입출력과 기초 알고리즘을 종합하여 실제 미니 프로젝트를 완성하는 단계입니다. 또한 프로그램 개발에서 필수적인 오류 처리 기법과 파이썬 커뮤니티를 효과적으로 활용하는 방법을 학습합니다. 이를 통해 실질적인 프로그래밍 능력을 강화하고, 향후 학습 방향을 설정하는 것을 목표로 합니다.",
+          "objectives": [
+            "개인 미니 프로젝트를 계획하고 완성하여 실제 구현 능력을 기를 수 있다",
+            "파이썬에서 다양한 예외 처리와 오류 처리 기법을 적절히 적용할 수 있다",
+            "파이썬 개발자 커뮤니티와 오픈소스 리소스를 활용하는 방법을 이해하고 실무에 적용할 수 있다",
+            "자신의 학습 진도를 평가하고 향후 추가 학습 방향을 스스로 설정할 수 있다"
+          ],
+          "learning_outcomes": [
+            "실제 프로젝트 요구사항을 분석하고 체계적인 계획을 수립할 수 있다",
+            "try-except 구문과 다양한 예외 처리 패턴을 구현할 수 있다",
+            "Stack Overflow, GitHub, PyPI 등 주요 파이썬 커뮤니티 리소스를 활용할 수 있다",
+            "자신의 기술 스택을 분석하여 개인 맞춤형 학습 로드맵을 작성할 수 있다"
+          ],
+          "key_concepts": [
+            "프로젝트 기반 학습(Project-Based Learning)",
+            "예외(Exception)와 오류(Error)의 차이",
+            "파이썬 예외 처리 문법 (try-except-finally)",
+            "커뮤니티 참여 및 오픈소스 기여 방법"
+          ],
+          "estimated_hours": 3,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        }
+      ],
+      "overall_goal": "4주 만에 파이썬 기초 문법을 마스터하고 기초 개발 역량을 확보한다",
+      "basic_resources": [
+        {
+          "title": "업무자동화, 데이터분석, 부수입, 웹사이트 제작까지! 초보자도 가능한 AI코딩밸리",
+          "url": "https://ader.naver.com/v1/5a3IGqSPMwsJ5l6yaWwEFSobL6RbcLHOSSbXq0_j5qFkc0uKf8jjQhzLdEvUyOcx5MnX1G9-q9ZSuCoJrwdCeEEaXxcjxy_LtLHzTJ3zDkfVJRaf6tSBDXn5AEW0R9kHq3sCvcGSIsMpQWbij6XNr6ow2eqCuQpBlI1AEXCiLJ2ix6rObBMAsiLp-cX2N4X7XBY0kj8ZZfdY0LkiFcSuxm2u72eO5W9GOsqT3jneETGoyq-ut-IEiaFXnVgWCUIg9-AWi2OQpaMEonPFVI_md1lRCOuWJ-L4vSlDFd525md9EL2VeOcsSMc72vf4FDdcL6tK40Cnb3bpfCqhJtSIcKquUgjH8TM8nS4Vs2xc2_OzefuMrRh4AZkD5Lufues6cMOEB3yTstodPalBh1LJfRisjFUeh63XuROXN4Jdp4EJVzmUM5Rkj4RCpRBiauzodWM0sU6TIQlqabCbdinLEno0Kf_Rpczqi_WF5FyGApSt-Kfh4Rnr_aB19-Um8tUp8qefjRx3HrrtLUDPb-lEhkTRnFMs8Aq2yDxW2UEOvQEKbyR47bQjHFfI4pLco0rEY--0FRVKoDHB2EWytilvkYlbl-L9Ofn4nQqD7wnhPd6T_H_PkyylITayo6a0soSP?c=naver.search.pc.plsearch&t=0",
+          "source": "Web Search"
+        },
+        {
+          "title": "검색 고객센터",
+          "url": "https://help.naver.com/alias/search/integration/main.naver",
+          "source": "Web Search"
+        }
+      ],
+      "session_id": "c4eb3e06",
+      "original_constraints": "주2시간",
+      "original_goal": "취미",
+      "generated_at": "2025-09-20T16:05:31.576244",
+      "processing_time": null,
+      "total_estimated_hours": 8,
+      "id": 0
+    }
+  ],
+  "592bb5a1": [
+    {
+      "title": "파이썬 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 12,
+      "weekly_hours": 2,
+      "focus_areas": [
+        "기본 업무 활용",
+        "기초 프로그래밍",
+        "실전 응용"
+      ],
+      "modules": [
+        {
+          "week": 1,
+          "title": "파이썬 개발 환경 설정",
+          "description": "이 모듈에서는 파이썬 프로그래밍을 시작하기 위한 기본 개발 환경을 구축합니다. Visual Studio Code와 Jupyter Notebook을 설치하고 설정하는 방법을 배우며, 이를 통해 파이썬 코드를 작성하고 실행할 수 있는 환경을 마련합니다. 효과적인 프로그래밍을 위한 필수 도구들의 기본 사용법과 실행 환경 구성 방법을 이해합니다.",
+          "objectives": [
+            "Visual Studio Code와 Jupyter Notebook을 올바르게 설치하고 구성할 수 있다",
+            "파이썬 IDE의 기본 설정 및 사용법을 이해하고 활용할 수 있다",
+            "개발 환경에서 파이썬 실행 환경을 설정하고 테스트할 수 있다"
+          ],
+          "learning_outcomes": [
+            "다양한 파이썬 개발 도구의 특성과 차이점을 이해할 수 있다",
+            "프로젝트 개발을 위한 기본 환경 설정 과정을 독립적으로 수행할 수 있다",
+            "개발 환경에서 간단한 파이썬 프로그램을 작성하고 실행할 수 있다"
+          ],
+          "key_concepts": [
+            "통합 개발 환경(IDE)의 역할과 중요성",
+            "Jupyter Notebook과 VS Code의 기능 비교",
+            "파이썬 가상환경(virtual environment)의 개념"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "하루 250원으로 1년 89,000원 전체 과목 무한수강, 최신 개정 수강",
+                "url": "https://ader.naver.com/v1/bk12Woi_BoTJdmoI9cJ82XXzQ9cBpoz7SI22uDhfdqpQ9NgGCfVFXQoqgP2WSLxkdAy4ZfWzQ9Un73yzYBH-sgncHYN1-I7dg6yyBBsBVVoCA8fVTsPx4CpRJ_tqFZJsNVIO7KPM6gJLpHGyAxXdZ3LT-bhFh5-10Oy0sn_ZfzBpqv8wc_8WzqCMVgFF0KQPEiQtRXzX7Bt4SWhIZ5LXPz9SHKLYmuw8S2FLkN9DuXLFRCw9KavYJuwZ3TnNCOxpCJH3PWe_42KHpzaHOIdG9Ytw9-zDyAHl1rviOV3kYkGeOkWT8XPkobl39WvKUa_n7kfKRMx5Zu4oF1qrp8cTbo0H5GDpHiTIxOXbe5uYC-W8a9rJ3Do_kiwU2QMXCb6YujhF5C5YxeMGRE6cLjXWJI5H7ipZuENP_OG4AlZC2Aenw3Am-MXk3KzBlHlQyjl41q22nkYpmk640kpodYzutTW3eZC35P7d5133xplYislwIcAY0Vfw8fnFrBIyl9ZzAaxNN8ZFZZMtAYZ_iq3hXA==?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "컴퓨터인강 1년 동영상 전과목 89,000원,365일 피씨와 모바일 수강가능.",
+                "url": "https://ader.naver.com/v1/ZFMg0XAq9WSheImmf8igNhokVEWamwZG138yjwCfhCN18q05GB9AZL6kOPRxe7jbRHwNUc2U0IM_9_a3MdYm1l7cjnqs91dg_ZTwjQnQEJbwGdMLdSmiMlRbTAoYGQDhHfIg1mCXaGc3L5qrtMAMScs_Fk6vTDsRy2qcR9qbVFUceEc-TBSlTlQ66e-9aGrBRmjr-3Ct7wds5OSazwPA9NsSqag7Mh0UQpXeLp6CJjngq23Oy-9URtwMQbk-bz2KVu6lYri4mVXoNsmc3rgeAF4RgRP0x2Z1yNP0wEyPGuIeRyqhcy_BqyCl1cWCX-WhFFA2k65iOM1HZJg3Zw_r3TfusiKH4ESxF56hSHBXO1Jac_84K6-y9aIcIxBEu45eELTrp8YDD-6WfL_sUtW0hhu9Q_56Tj90Qc6qMoRvvs377ZpDl2hkXHGdB9bsqxAtFAuNBiky6g7mn034hXpliMLmyTCJVkdSwgGYt5kIjzWTF4rAGUgUg0Outb82tGUTRAJ3Ke3GAid6gmRJsR98hw==?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 2,
+          "title": "기본 문법 입문",
+          "description": "파이썬 프로그래밍의 기초가 되는 기본 문법을 학습합니다. 변수 선언 방법, 다양한 자료형의 종류, 기본 연산자의 사용법을 익히고 실제 코드에서 이들을 활용하는 방법을 배웁니다.",
+          "objectives": [
+            "변수 선언과 자료형의 종류를 정확히 이해하고 구분할 수 있다",
+            "산술, 비교, 논리 등 기본 연산자의 사용법을 실습을 통해 익힌다",
+            "자료형 간의 타입 변환을 수행하고 그 원리를 이해한다"
+          ],
+          "learning_outcomes": [
+            "변수를 선언하고 다양한 자료형(정수, 실수, 문자열, 불리언 등)을 사용할 수 있게 된다",
+            "연산자를 활용하여 기본적인 계산 및 비교 작업을 수행할 수 있다",
+            "필요한 경우 적절한 타입 변환을 통해 데이터를 조작하고 처리할 수 있다"
+          ],
+          "key_concepts": [
+            "변수 선언 및 할당",
+            "기본 자료형 (int, float, str, bool, list, dict)",
+            "산술 연산자 (+, -, ×, ÷, %)",
+            "비교 연산자 (==,!=, <, >, <=, >=)",
+            "논리 연산자 (and, or, not)",
+            "타입 변환 (int(), float(), str(), bool())"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 3,
+          "title": "조건문과 반복문",
+          "description": "조건문과 반복문은 파이썬에서 프로그램의 흐름을 제어하는 핵심 요소입니다. 이 모듈에서는 if, else, elif를 사용한 조건문 작성 방법과 for, while을 활용한 반복문 구현을 학습합니다. 또한 복잡한 조건 조합과 여러 반복문이 중첩된 구조를 이해할 수 있도록 실습 위주로 구성되었습니다.",
+          "objectives": [
+            "if, else, elif 조건문을 활용하여 다양한 상황에 맞는 논리 구현",
+            "for, while 반복문을 실제 문제 해결에 적용할 수 있는 능력 배양",
+            "복합 조건문과 중첩 반복문 구조를 이해하고 활용할 수 있음"
+          ],
+          "learning_outcomes": [
+            "프로그래밍 로직을 설계하여 조건에 따라 다른 실행 경로를 구현할 수 있습니다.",
+            "데이터 목록이나 범위에 대한 반복 처리를 효율적으로 수행할 수 있습니다.",
+            "복잡한 비즈니스 로직을 조건문과 반복문으로 구조화하여 문제를 해결할 수 있습니다."
+          ],
+          "key_concepts": [
+            "조건문(if, else, elif)",
+            "반복문(for, while)",
+            "복합 조건문과 중첩 구조"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 4,
+          "title": "함수와 모듈 기초",
+          "description": "본 모듈에서는 프로그래밍의 기본 구성 요소인 함수와 모듈의 개념을 학습합니다. 함수는 코드의 재사용성을 높이고 가독성을 향상시키는 핵심 도구이며, 모듈은 관련된 함수와 변수를 하나의 파일로 묶어 관리하는 방법입니다. 또한 패키지를 통해 외부 라이브러리를 효과적으로 활용하는 방법도 다룹니다.",
+          "objectives": [
+            "함수를 정의하고 호출하는 기본 방법을 학습",
+            "매개변수와 반환값을 활용한 함수 사용법 실습",
+            "모듈과 패키지의 개념을 이해하고 실제로 적용하는 방법 습득"
+          ],
+          "learning_outcomes": [
+            "자신만의 함수를 정의하고 재사용할 수 있음",
+            "다양한 매개변수 처리 기법을 구현할 수 있음",
+            "패키지를 설치하고 모듈을 불러와 활용할 수 있음"
+          ],
+          "key_concepts": [
+            "함수 정의와 호출 문법",
+            "매개변수 전달 방식 (위치, 키워드, 기본값)",
+            "반환값과 None의 개념",
+            "모듈 생성 및 import 방법",
+            "패키지 설치 및 관리"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 5,
+          "title": "리스트와 튜플 활용",
+          "description": "Python의 기본 컬렉션 자료구조인 리스트와 튜플에 대해 학습합니다. 이 모듈에서는 리스트의 생성, 조작 방법과 튜플의 특징 및 활용법을 다루며, 다양한 컬렉션 연산을 실습합니다. 이전 모듈에서 학습한 조건문과 반복문, 함수와 모듈의 기초 지식을 바탕으로 컬렉션 자료구조를 효과적으로 활용하는 방법을 익힙니다.",
+          "objectives": [
+            "리스트 생성 및 기본적인 조작 방법(추가, 삭제, 수정 등)을 학습한다",
+            "튜플의 불변성과 특징을 이해하고 적절한 상황에서 사용하는 방법을 익힌다",
+            "컬렉션 연산(연결, 반복, 슬라이싱 등)을 실습하고 문제 해결에 적용한다"
+          ],
+          "learning_outcomes": [
+            "리스트와 튜플을 생성하고 이를 효과적으로 조작할 수 있다",
+            "리스트와 튜플의 장단점을 이해하고 적절한 자료구조를 선택할 수 있다",
+            "컬렉션 연산을 활용하여 데이터 처리와 알고리즘 문제를 해결할 수 있다"
+          ],
+          "key_concepts": [
+            "리스트 생성 및 기본 메서드(len, append, insert, remove)",
+            "튜플의 불변성 및 주요 특징과 사용법",
+            "컬렉션 연산(연결, 반복, 슬라이싱, 정렬)"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "하루 250원으로 1년 89,000원 전체 과목 무한수강, 최신 개정 수강",
+                "url": "https://ader.naver.com/v1/3CcZkBSGaZrzJuSn0GqvQu9oa6u3kjEYeTTXgzCEJfNuPwUvGBTYUZbz3B6S2Ka5iqoGwW-RUQmEhAMeMsgqDdmo2obaRtm_CyJOwU0nYcPICaoFiCMz0tbt0NYgcek2MnfHQPv0f4UhQ_nKG26VUs70ql_CS466QodM_it6JHD06z88rxztQEZFO-_mf9U-_T1UOKRLucHnJfzAaq8UBEiQed1ZKSiEnrFKGKLnutv-cz-wwRt8t7ajfLpcjvOYstt2WpZinErfLkNzb3u33pL8o30Yo8FaJkRrOfYYnsNa6PSNyNj8ulVSrwNydDfTwOInng1NF5z0azrMxKVGE5xhj7F5ZZsTvo1py1ZmrzUj-B7Ew44P8qe1C0BykLamGB6yWaYGFd5zTy5pli_KW7AZqB5IT8aNOGbC4VL8FxFwysIcqjmUAg74jI66Lx07RNl3v2xuTVe_NJ79vs1fjI7hzg3fvnzk6IsTl8XSG6ikJQxr2_KZIpJgVhcSKAlgnSPymqt74sDAu-Dko6_AXQ==?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 6,
+          "title": "객체지향 프로그래밍 기초",
+          "description": "이 모듈에서는 객체지향 프로그래밍의 핵심 개념인 클래스와 객체에 대해 학습합니다. 클래스의 정의 방법과 객체 생성 과정을 이해하고, 클래스 내 메서드와 속성의 역할을 탐구합니다. 또한 상속과 다형성의 기본 개념을 실습을 통해 익힐 수 있습니다.",
+          "objectives": [
+            "클래스를 정의하고 객체를 생성할 수 있다",
+            "메서드와 속성의 개념을 이해하고 활용할 수 있다",
+            "상속과 다형성의 기초를 실습할 수 있다"
+          ],
+          "learning_outcomes": [
+            "클래스와 객체의 관계를 설명할 수 있다",
+            "객체지향 프로그래밍의 기본 문법을 사용하여 코드를 작성할 수 있다",
+            "상속을 통한 코드 재사용과 다형성의 개념을 이해하고 적용할 수 있다"
+          ],
+          "key_concepts": [
+            "클래스(Class)와 객체(Object)의 정의",
+            "메서드(Method)와 속성(Attribute)의 개념",
+            "상속(Inheritance)과 다형성(Polymorphism)의 기초"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "Naver Pay 서비스 보기",
+                "url": "https://pay.naver.com/about?frm=sec",
+                "source": "Web Search"
+              },
+              {
+                "title": "Naver Pay 서비스 보기",
+                "url": "https://pay.naver.com/about?frm=sec",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 7,
+          "title": "파일 입출력 실습",
+          "description": "이 모듈에서는 파일을 읽고 쓰는 기본적인 방법부터 CSV 파일을 다루는 고급 기술까지 학습합니다. 파일 입출력은 프로그래밍에서 데이터를 영구적으로 저장하고 불러오는 핵심 기술로, 다양한 프로그래밍 언어에서 필수적으로 사용되는 기능입니다.",
+          "objectives": [
+            "파이썬에서 텍스트 파일의 읽기와 쓰기를 구현할 수 있다",
+            "CSV 포맷의 데이터를 읽고 쓸 수 있는 방법을 실습한다",
+            "파일 처리 과정에서 발생할 수 있는 예외 상황을 적절히 처리하는 방법을 학습한다"
+          ],
+          "learning_outcomes": [
+            "파일 객체 생성 및 파일 모드(open 모드)에 대한 이해",
+            "파일 포인터 위치 제어와 파일 전체를 읽는 방법 습득",
+            "CSV 라이브러리를 활용한 데이터 입출력 구현 능력",
+            "파일 작업 중 발생하는 에러 처리 및 예외 상황 대응 방법"
+          ],
+          "key_concepts": [
+            "파일 입출력 기본 원리",
+            "텍스트 파일 write/read 메서드",
+            "CSV 파일 생성과 읽기",
+            "with문을 활용한 안전한 파일 처리",
+            "파일 관련 예외(Exception) 처리 기법"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 8,
+          "title": "예외 처리 및 모듈화",
+          "description": "이 모듈에서는 파이썬에서 안정적인 프로그램을 작성하기 위한 핵심 기술인 예외 처리와 모듈화에 대해 학습합니다. 프로그램 실행 중 발생할 수 있는 오류를 효과적으로 관리하고, 코드의 재사용성을 높이기 위한 모듈화 기법을 실습합니다. 이전에 학습한 객체지향 프로그래밍과 파일 입출력 기술을 바탕으로 보다 견고한 소프트웨어 개발 능력을 기르게 됩니다.",
+          "objectives": [
+            "try-except 구문을 활용하여 프로그램의 예외 상황을 안전하게 처리하는 방법 학습",
+            "사용자 정의 예외 클래스를 생성하고 적절한 예외 처리를 구현하는 실습",
+            "함수와 클래스를 모듈로 패키징하여 코드의 재사용성을 높이는 방법 학습"
+          ],
+          "learning_outcomes": [
+            "다양한 예외 상황을 예측하고 try-except 블록으로 처리하는 능력 습득",
+            "사용자 정의 예외 클래스를 설계하여 특정 상황에 맞는 오류 메시지를 제공하는 기술 습득",
+            "모듈화를 통해 코드의 구조화와 재사용성을 극대화하는 방법 이해"
+          ],
+          "key_concepts": [
+            "예외 처리 메커니즘과 try-except-finally 블록의 작동 원리",
+            "Built-in 예외 클래스와 사용자 정의 예외 클래스의 차이점",
+            "import 문과 package 구조를 활용한 모듈화 기법"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 9,
+          "title": "데이터 분석 라이브러리 기초",
+          "description": "본 모듈에서는 데이터 분석의 핵심 도구인 pandas 라이브러리를 심도 있게 학습합니다. 데이터프레임 생성부터 정제, 전처리, 그리고 기초 통계 분석까지 실무에 바로 적용 가능한 pandas의 기본 기능들을 실습을 통해 익힙니다.",
+          "objectives": [
+            "pandas를 이용한 데이터프레임 생성 및 조작 방법 습득",
+            "데이터 정제 및 전처리 기법 실습을 통한 데이터 품질 향상 능력 배양",
+            "pandas 내장 통계 함수를 활용한 기초 데이터 분석 수행"
+          ],
+          "learning_outcomes": [
+            "다양한 데이터 소스에서 pandas 데이터프레임을 생성하고 변환할 수 있습니다.",
+            "결측치 처리, 중복 데이터 제거, 데이터 필터링 등 전처리 과정을 실습할 수 있습니다.",
+            "기술 통계량, 그룹별 통계 분석 등 pandas의 기본 통계 기능을 활용할 수 있습니다."
+          ],
+          "key_concepts": [
+            "pandas 데이터프레임 구조와 데이터 타입",
+            "데이터 불러오기 및 저장하기 (CSV, Excel)",
+            "데이터 정제 및 전처리 기법 (결측치 처리, 중복 제거 등)",
+            "데이터 집계 및 그룹화 연산",
+            "pandas 내장 통계 함수 (describe, sum, mean 등)"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 10,
+          "title": "웹 데이터 수집 기초",
+          "description": "웹 데이터 수집의 기초를 다루는 모듈로, 파이썬의 `requests` 라이브러리를 활용하여 웹 페이지에서 데이터를 요청하고 수집하는 방법을 학습합니다. HTML/CSS 구조를 이해하고 필요한 데이터를 추출하는 기본 원리를 실습을 통해 익힙니다.",
+          "objectives": [
+            "`requests` 라이브러리를 사용하여 웹 서버에 HTTP 요청을 보낼 수 있다",
+            "웹 스크래핑의 기본 원리와 윤리적 고려사항을 이해한다",
+            "HTML/CSS 구조에서 특정 데이터를 선택하고 추출하는 방법을 실습한다"
+          ],
+          "learning_outcomes": [
+            "웹 페이지의 구조를 이해하고 필요한 데이터를 정확히 요청할 수 있다",
+            "웹 스크래핑 과정에서 발생할 수 있는 예외 상황을 처리할 수 있다"
+          ],
+          "key_concepts": [
+            "HTTP 요청과 응답의 구조",
+            "HTML/CSS 선택자 및 DOM 트리 구조",
+            "웹 스크래핑 윤리 및 robots.txt 이해"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 11,
+          "title": "실무 자동화 스크립트 개발",
+          "description": "이 모듈에서는 실무에서 반복적으로 수행하는 업무를 자동화할 수 있는 스크립트 작성 방법과 GUI 기반 자동화 도구의 기초 구현 방법을 학습합니다. 다양한 자동화 도구를 활용하여 업무 효율성을 높이고, 작성된 스크립트의 성능을 최적화하는 실전 기술을 익히게 됩니다.",
+          "objectives": [
+            "반복 업무를 자동화할 수 있는 Python 스크립트 작성 능력 습득",
+            "GUI 기반 자동화 도구를 활용한 자동화 시스템 기초 구현 방법 학습",
+            "스크립트 성능을 분석하고 최적화하는 방법론 이해"
+          ],
+          "learning_outcomes": [
+            "실제 업무 환경에서 반복적인 작업을 자동화할 수 있는 스크립트를 작성할 수 있다",
+            "기본 GUI 요소를 포함한 자동화 도구를 설계하고 구현할 수 있다",
+            "자동화 스크립트의 실행 성능을 측정하고 개선 방안을 적용할 수 있다"
+          ],
+          "key_concepts": [
+            "자동화 스크립트의 구조와 모듈화 설계",
+            "GUI 자동화를 위한 도구 및 라이브러리 사용법",
+            "스크립트 실행 시간 측정 및 성능 최적화 기법"
+          ],
+          "estimated_hours": 4,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 12,
+          "title": "프로젝트 종합 및 리뷰",
+          "description": "이번 모듈에서는 11주 동안 학습한 파이썬 및 자동화 기술을 바탕으로 개인 프로젝트를 완성하고 발표하는 시간을 갖습니다. 웹 데이터 수집과 실무 자동화 스크립트 개발에서 배운 내용을 통합하여 실제 프로젝트에 적용하고, 동료 학습자들과 코드 리뷰를 통해 품질을 개선하며, 학습 내용을 종합적으로 정리하는 과정을 수행합니다.",
+          "objectives": [
+            "개인별 프로젝트를 완성하고 효과적으로 발표할 수 있다",
+            "동료의 코드에 대한 리뷰를 수행하고 건설적인 피드백을 제공할 수 있다",
+            "11주 동안 학습한 파이썬 및 자동화 기술을 종합적으로 정리하고 응용할 수 있다"
+          ],
+          "learning_outcomes": [
+            "통합 프로젝트 개발 경험을 통해 실무 적용 능력을 향상시킨다",
+            "코드 리뷰 프로세스를 이해하고 팀 협업 역량을 강화한다",
+            "파이썬을 활용한 데이터 처리 및 자동화 프로젝트 경험을 축적한다"
+          ],
+          "key_concepts": [
+            "프로젝트 관리 및 타임라인 설정",
+            "코드 품질 평가 및 개선 방법론",
+            "학습 내용의 실무 적용 및 통합"
+          ],
+          "estimated_hours": 3,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        }
+      ],
+      "overall_goal": "12주간 파이썬 프로그래밍 기초부터 실무 응용까지 체계적으로 학습하여 업무 자동화 능력을 갖춘 초급 개발자로 성장",
+      "basic_resources": [
+        {
+          "title": "업무자동화, 데이터분석, 부수입, 웹사이트 제작까지! 초보자도 가능한 AI코딩밸리",
+          "url": "https://ader.naver.com/v1/aNlg8thq5gGobbRwYanb0dPWAyMxjuViE82tn3OBjZvRP9V3y4XamE_UXGV9TtsvRUfoGs-uL_LROWBbJzsKiBnHMmJxWGYVNbsbUYaO_TZoceX2CzKfW47nnO0IXHf1vCfiSOjchWFJjZdCG6pjdMX-ZNM2o9u0ORrPLQRqyPoaCfQefUR_eMhMJHHaLfoU_sYAJiEXGplZqJWtPqYLwMwwVHEuyoZ2rqjJxZCGBpZ4kZRA5z1HlFPq-ByiEdfJTH_rRLot6_AeqnhEVfplQR7RryL2kp_JMqOEqnDusmBUYtMvvAyARfQmQfHufLQw34tXxJy9t6hyB95JxPk6cAGxHBU8xARvP8DpaVys0oO9o084xR1__C24oK96AMLNP-vMI3VumN8G64InUyjtLrG6UjQu_AKgZQaPrv32IF2U3jESCaPHf_rLSkte3AuCKUzkIjk9GcAeD0rbfivGVUdyPC_uIvIk1cDe3GyOYh88f7I9Hon-iBNwHKdBsebW3dAdi0AOcffDytRM3Kddoic9AyqBR7ixx_C0rvQ527zVHe3uv1YU5gObOFVyA0R4U6NPumvYYM_D-g9hLuSt54RyB2bzgsewKD4eFxt7Sis=?c=naver.search.pc.plsearch&t=0",
+          "source": "Web Search"
+        },
+        {
+          "title": "검색 고객센터",
+          "url": "https://help.naver.com/alias/search/integration/main.naver",
+          "source": "Web Search"
+        }
+      ],
+      "session_id": "592bb5a1",
+      "original_constraints": "초보자 주 2시간",
+      "original_goal": "현재 업무에 활용하려고",
+      "generated_at": "2025-09-20T18:51:11.921564",
+      "processing_time": null,
+      "total_estimated_hours": 22,
+      "id": 0
+    }
   ]
 }

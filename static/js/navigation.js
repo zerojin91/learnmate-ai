@@ -2,19 +2,22 @@
    Navigation and Tab Management
    ============================================================================= */
 
-// Global variables for mentor management
-let selectedMentors = [];
-let finalSelectedMentors = [];
 
 // Navigation and content switching
 function switchToTab(page) {
     console.log(`🔄 탭 전환: ${page}`);
 
+    // 페이지 상단으로 스크롤
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+
     // Update navigation state
     document.querySelectorAll('.nav-link').forEach(link => {
         link.classList.remove('active');
     });
-    
+
     const activeTab = document.querySelector(`[data-page="${page}"]`);
     if (activeTab) {
         activeTab.classList.add('active');
@@ -28,43 +31,29 @@ function switchToTab(page) {
     // Hide all content sections first
     const contentSections = [
         'curriculumContent',
-        'mentorContent', 
-        'datasourceContent',
-        'chatWithProfile',
-        'examplesSection'
+ 
+        'datasourceContent'
     ];
     
     contentSections.forEach(sectionId => {
-        const element = document.getElementById(sectionId) || document.querySelector(`.${sectionId}`);
+        const element = document.getElementById(sectionId);
         if (element) {
             element.style.display = 'none';
         }
     });
-
-    // Remove mentor profile section when switching away from profile page
-    const mentorProfileSection = document.getElementById('mentorProfileSection');
-    if (mentorProfileSection) {
-        mentorProfileSection.remove();
-    }
     
-    // Clear mentor selection when not on profile page
-    if (page !== 'profile') {
-        clearMentorSelection();
-    }
+    // Hide chat and examples sections properly
+    if (chatWithProfile) chatWithProfile.style.display = 'none';
+    if (examplesSection) examplesSection.style.display = 'none';
+
     
     // Handle different page types
     switch (page) {
         case 'datasource':
             handleDatasourcePage(welcomeSubtitle);
             break;
-        case 'mentor':
-            handleMentorPage(welcomeSubtitle);
-            break;
         case 'curriculum':
             handleCurriculumPage(welcomeSubtitle);
-            break;
-        case 'profile':
-            handleProfilePage(welcomeSubtitle, chatWithProfile, examplesSection);
             break;
         default:
             handleChatPage(welcomeSubtitle, chatWithProfile, examplesSection);
@@ -72,25 +61,6 @@ function switchToTab(page) {
     }
 }
 
-// Clear mentor selection
-function clearMentorSelection() {
-    selectedMentors = [];
-    finalSelectedMentors = [];
-    
-    StorageManager.mentors.clear();
-    
-    const selectedMentorsDisplay = document.getElementById('selectedMentors');
-    if (selectedMentorsDisplay) {
-        selectedMentorsDisplay.innerHTML = '<div style="color: #6b7280; font-size: 14px;">선택된 멘토들이 여기에 표시됩니다</div>';
-    }
-    
-    // Clear mentor card selection state
-    const mentorCards = document.querySelectorAll('.mentor-card');
-    mentorCards.forEach(card => {
-        card.style.borderColor = '#e5e7eb';
-        card.style.background = 'white';
-    });
-}
 
 // Handle datasource page
 function handleDatasourcePage(welcomeSubtitle) {
@@ -104,43 +74,38 @@ function handleDatasourcePage(welcomeSubtitle) {
     datasourceContent.style.display = 'block';
 }
 
-// Handle mentor page  
-function handleMentorPage(welcomeSubtitle) {
-    welcomeSubtitle.innerHTML = '<span class="highlight">AI 멘토</span>와 상담하기';
-    
-    let mentorContent = document.getElementById('mentorContent');
-    if (!mentorContent) {
-        mentorContent = createMentorContent();
-    }
-    
-    mentorContent.style.display = 'block';
-}
 
 // Handle curriculum page
 function handleCurriculumPage(welcomeSubtitle) {
     welcomeSubtitle.innerHTML = '나의 <span class="highlight">개인화 커리큘럼</span>';
-    
+
     let curriculumContent = document.getElementById('curriculumContent');
     if (!curriculumContent) {
         curriculumContent = createCurriculumContent();
     }
-    
-    showCurriculumContent(curriculumContent);
-}
 
-// Handle profile page
-function handleProfilePage(welcomeSubtitle, chatWithProfile, examplesSection) {
-    welcomeSubtitle.innerHTML = '<span class="highlight">전문 분야별 AI 멘토</span>들과 상담하기';
-    
-    if (chatWithProfile) chatWithProfile.style.display = 'flex';
-    if (examplesSection) examplesSection.style.display = 'block';
-    
-    // Update initial message for mentor consultation
-    const initialMessage = document.getElementById('initialMessage');
-    if (initialMessage) {
-        initialMessage.innerHTML = '안녕하세요! 사내 지식이 풍부한 전문분야별 AI 멘토들이 여러분의 질문에 답변해드립니다. 궁금한 분야나 주제를 말씀해주시면, 해당 영역의 멘토들이 각자의 전문성을 살려 도움을 드리겠습니다.';
+    // 안전하게 커리큘럼 콘텐츠 표시
+    try {
+        if (typeof showCurriculumContent === 'function') {
+            showCurriculumContent(curriculumContent).catch(error => {
+                console.log('📝 커리큘럼 로드 중 예상된 오류:', error.message);
+                // 기본 빈 상태 표시
+                curriculumContent.innerHTML = `
+                    <div class="empty-curriculum">
+                        <div class="empty-icon">📚</div>
+                        <h3>아직 생성된 커리큘럼이 없습니다</h3>
+                        <p>채팅 탭에서 학습 프로필을 완성한 후 커리큘럼을 생성해보세요.</p>
+                    </div>
+                `;
+            });
+        } else {
+            console.warn('showCurriculumContent 함수를 찾을 수 없습니다');
+        }
+    } catch (error) {
+        console.log('📝 커리큘럼 페이지 처리 중 오류:', error.message);
     }
 }
+
 
 // Handle chat page (default)
 function handleChatPage(welcomeSubtitle, chatWithProfile, examplesSection) {
@@ -160,51 +125,244 @@ function handleChatPage(welcomeSubtitle, chatWithProfile, examplesSection) {
 function createDatasourceContent() {
     const datasourceContent = document.createElement('div');
     datasourceContent.id = 'datasourceContent';
-    datasourceContent.className = 'content-section';
+    datasourceContent.style.cssText = `
+        width: 900px;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+        padding: 40px;
+        margin: 20px 0;
+    `;
+
+    // 원본 HTML에서 가져온 완전한 데이터 원천 UI
     datasourceContent.innerHTML = `
-        <div class="section-header">
-            <h2>커리큘럼 생성 데이터 원천</h2>
-            <p>AI가 맞춤형 커리큘럼을 생성할 때 참고하는 데이터 소스를 관리합니다.</p>
+        <div style="margin-bottom: 30px;">
+            <h2 style="font-size: 24px; font-weight: 700; color: #1f2937; margin-bottom: 10px;">
+                커리큘럼 생성 데이터 원천
+            </h2>
+            <p style="color: #6b7280; font-size: 14px;">
+                AI가 맞춤형 커리큘럼을 생성할 때 참고하는 데이터 소스를 관리합니다.
+            </p>
         </div>
-        
-        <div class="datasource-grid">
-            <div class="datasource-card">
-                <i class="fas fa-file-alt datasource-icon"></i>
-                <h3>사내 문서</h3>
-                <p>기술 문서, 가이드라인, 매뉴얼</p>
-                <div class="file-types">
-                    <div class="file-type-icon"><i class="fas fa-file-pdf"></i></div>
-                    <div class="file-type-icon"><i class="fas fa-file-powerpoint"></i></div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px;">
+            <!-- 사내 문서 -->
+            <div style="
+                background: white;
+                padding: 25px;
+                border-radius: 12px;
+                border: 1px solid #e5e7eb;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+                position: relative;
+                overflow: hidden;
+            ">
+                <i class="fas fa-file-alt" style="font-size: 32px; margin-bottom: 15px; color: #667eea;"></i>
+                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 8px; color: #1f2937;">사내 문서</h3>
+                <p style="font-size: 13px; color: #6b7280; margin-bottom: 15px;">기술 문서, 가이드라인, 매뉴얼</p>
+
+                <!-- 파일 형식 아이콘들 -->
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <div style="
+                        width: 45px;
+                        height: 45px;
+                        background: #f3f4f6;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+                    ">
+                        <i class="fas fa-file-pdf" style="color: #DC2626; font-size: 20px;"></i>
+                    </div>
+                    <div style="
+                        width: 45px;
+                        height: 45px;
+                        background: #f3f4f6;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+                    ">
+                        <i class="fas fa-file-powerpoint" style="color: #EA580C; font-size: 20px;"></i>
+                    </div>
                 </div>
-                <div class="status-badge active">
-                    <i class="fas fa-check-circle"></i> 127개 연동됨
+
+                <div style="
+                    background: #f3f4f6;
+                    padding: 8px 12px;
+                    border-radius: 8px;
+                    font-size: 12px;
+                    display: inline-block;
+                    color: #4b5563;
+                ">
+                    <i class="fas fa-check-circle" style="color: #10b981;"></i> 127개 연동됨
                 </div>
             </div>
-            
-            <div class="datasource-card">
-                <i class="fas fa-video datasource-icon"></i>
-                <h3>교육 영상</h3>
-                <p>사내 교육 콘텐츠, 웨비나</p>
-                <div class="kmooc-badge">K-MOOC</div>
-                <div class="status-badge active">
-                    <i class="fas fa-check-circle"></i> 42개 연동됨
+
+            <!-- 교육 영상 -->
+            <div style="
+                background: white;
+                padding: 25px;
+                border-radius: 12px;
+                border: 1px solid #e5e7eb;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            ">
+                <i class="fas fa-video" style="font-size: 32px; margin-bottom: 15px; color: #8b5cf6;"></i>
+                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 8px; color: #1f2937;">교육 영상</h3>
+                <p style="font-size: 13px; color: #6b7280; margin-bottom: 15px;">사내 교육 콘텐츠, 웨비나</p>
+
+                <!-- K-MOOC 로고 -->
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <div style="
+                        width: 45px;
+                        height: 45px;
+                        background: #f3f4f6;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+                        font-weight: 700;
+                        font-size: 10px;
+                        color: #1E40AF;
+                    ">
+                        K-MOOC
+                    </div>
+                </div>
+
+                <div style="
+                    background: #f3f4f6;
+                    padding: 8px 12px;
+                    border-radius: 8px;
+                    font-size: 12px;
+                    display: inline-block;
+                    color: #4b5563;
+                ">
+                    <i class="fas fa-check-circle" style="color: #10b981;"></i> 1개 연동됨
                 </div>
             </div>
-            
-            <div class="datasource-card">
-                <i class="fas fa-database datasource-icon"></i>
-                <h3>외부 지식베이스</h3>
-                <p>업계 표준, 참고 자료</p>
-                <div class="status-badge inactive">
-                    <i class="fas fa-times-circle"></i> 연동 대기중
+
+            <!-- 외부 웹 -->
+            <div style="
+                background: white;
+                padding: 25px;
+                border-radius: 12px;
+                border: 1px solid #e5e7eb;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            ">
+                <i class="fas fa-globe" style="font-size: 32px; margin-bottom: 15px; color: #a78bfa;"></i>
+                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 8px; color: #1f2937;">외부 웹</h3>
+                <p style="font-size: 13px; color: #6b7280; margin-bottom: 15px;">공식 문서, 튜토리얼, 블로그</p>
+
+                <!-- DuckDuckGo 로고 -->
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <div style="
+                        width: 45px;
+                        height: 45px;
+                        background: #f3f4f6;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+                        padding: 8px;
+                    ">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/88/DuckDuckGo_logo.svg/1200px-DuckDuckGo_logo.svg.png"
+                             alt="DuckDuckGo"
+                             style="width: 100%; height: 100%; object-fit: contain;"
+                        />
+                    </div>
+                </div>
+
+                <div style="
+                    background: #f3f4f6;
+                    padding: 8px 12px;
+                    border-radius: 8px;
+                    font-size: 12px;
+                    display: inline-block;
+                    color: #4b5563;
+                ">
+                    <i class="fas fa-check-circle" style="color: #10b981;"></i> 1개 연동됨
                 </div>
             </div>
+        </div>
+
+        <!-- 최근 업데이트 -->
+        <div style="
+            background: #f9fafb;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+        ">
+            <h3 style="font-size: 16px; font-weight: 600; color: #374151; margin-bottom: 15px;">
+                <i class="fas fa-sync-alt" style="margin-right: 8px; color: #6366f1;"></i>
+                최근 업데이트된 데이터
+            </h3>
+            <div style="space-y: 10px;">
+                <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e5e7eb;">
+                    <span style="color: #4b5563; font-size: 14px;">
+                        <i class="fas fa-file-alt" style="color: #667eea; margin-right: 8px;"></i>
+                        Python 개발 가이드 v2.1
+                    </span>
+                    <span style="color: #9ca3af; font-size: 12px;">2시간 전</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e5e7eb;">
+                    <span style="color: #4b5563; font-size: 14px;">
+                        <i class="fas fa-video" style="color: #f5576c; margin-right: 8px;"></i>
+                        React 18 마이그레이션 웨비나
+                    </span>
+                    <span style="color: #9ca3af; font-size: 12px;">5시간 전</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 10px 0;">
+                    <span style="color: #4b5563; font-size: 14px;">
+                        <i class="fas fa-globe" style="color: #00f2fe; margin-right: 8px;"></i>
+                        AWS Lambda 공식 문서
+                    </span>
+                    <span style="color: #9ca3af; font-size: 12px;">1일 전</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 액션 버튼들 -->
+        <div style="margin-top: 30px; text-align: center; display: flex; gap: 15px; justify-content: center;">
+            <button style="
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+                padding: 12px 30px;
+                border: none;
+                border-radius: 8px;
+                font-size: 15px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: transform 0.2s;
+                width: 220px;
+            " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                <i class="fas fa-plus-circle" style="margin-right: 8px;"></i>
+                새 데이터 원천 추가
+            </button>
+
+            <button onclick="switchToTab('chat')" style="
+                background: linear-gradient(135deg, #a855f7, #ec4899);
+                color: white;
+                border: none;
+                padding: 12px 30px;
+                border-radius: 8px;
+                font-size: 15px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: transform 0.2s;
+                width: 220px;
+            " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                <i class="fas fa-bullseye" style="margin-right: 8px;"></i>
+                맞춤형 학습 추천 시작
+            </button>
         </div>
     `;
-    
+
     const welcomeSection = document.querySelector('.welcome-section');
     welcomeSection.parentNode.insertBefore(datasourceContent, welcomeSection.nextSibling);
-    
+
     return datasourceContent;
 }
 
@@ -227,5 +385,4 @@ function initializeNavigation() {
 
 // Export functions for global use
 window.switchToTab = switchToTab;
-window.clearMentorSelection = clearMentorSelection;
 window.initializeNavigation = initializeNavigation;

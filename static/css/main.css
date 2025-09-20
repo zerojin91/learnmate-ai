@@ -2,7 +2,7 @@
    Main CSS - Variables and Base Styles
    ============================================================================= */
 
-:root {
+   :root {
     /* Colors */
     --primary-gradient: linear-gradient(135deg, #a855f7, #ec4899);
     --secondary-gradient: linear-gradient(135deg, #667eea, #764ba2);
@@ -48,7 +48,55 @@
     /* Layout */
     --sidebar-width: 280px;
     --content-max-width: 1200px;
-    --chat-height: 450px;
+}
+
+/* Modern Modal Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.92);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Scrollbar styling for modal content */
+*::-webkit-scrollbar {
+    width: 6px;
+}
+
+*::-webkit-scrollbar-track {
+    background: rgba(148, 163, 184, 0.1);
+    border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+    border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #9333ea 0%, #db2777 100%);
 }
 
 /* Reset and Base Styles */
