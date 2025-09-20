@@ -17,6 +17,11 @@ from .state import CurriculumState, ProcessingPhase
 class LearningPathPlannerAgent(BaseAgent):
     """전체 학습 경로를 분석하고 설계하는 에이전트"""
 
+    # 클래스 레벨에서 Neo4j 연결 풀링
+    _neo4j_graph = None
+    _connection_failed = False
+    _document_cache = {}  # 문서 콘텐츠 캐싱
+
     def __init__(self, llm=None):
         # BaseAgent 초기화를 위해 더미 llm이라도 전달해야 함
         if llm is None:
@@ -30,6 +35,29 @@ class LearningPathPlannerAgent(BaseAgent):
             api_key=os.getenv("OPENAI_API_KEY")
         )
         # workflow에서 전달되는 llm은 무시하고 OpenAI 사용
+
+        # Neo4j 연결 초기화
+        self._ensure_neo4j_connection()
+
+    def _ensure_neo4j_connection(self):
+        """Neo4j 연결 확보 (싱글톤 패턴)"""
+        if LearningPathPlannerAgent._connection_failed:
+            return False
+
+        if LearningPathPlannerAgent._neo4j_graph is None:
+            try:
+                LearningPathPlannerAgent._neo4j_graph = Neo4jGraph(
+                    url=Config.NEO4J_BASE_URL,
+                    username=Config.NEO4J_USERNAME,
+                    password=os.getenv("NEO4J_PASSWORD")
+                )
+                self.log_debug("Neo4j 연결 풀 생성 성공")
+                return True
+            except Exception as e:
+                self.log_debug(f"Neo4j 연결 실패: {e}")
+                LearningPathPlannerAgent._connection_failed = True
+                return False
+        return True
 
     async def _call_openai_llm(self, system_prompt: str, user_prompt: str) -> str:
         """OpenAI GPT-4o-mini를 사용하여 LLM 호출"""
@@ -121,17 +149,13 @@ class LearningPathPlannerAgent(BaseAgent):
         try:
             self.log_debug(f"Starting Neo4j graph search for topic: {topic}")
 
-            # Neo4j 연결
-            try:
-                graph = Neo4jGraph(
-                    url=Config.NEO4J_BASE_URL,
-                    username=Config.NEO4J_USERNAME,
-                    password=os.getenv("NEO4J_PASSWORD")
-                )
-                self.log_debug("Neo4j connection established successfully")
-            except Exception as e:
-                self.log_debug(f"Neo4j connection failed: {e}")
+            # 연결 풀에서 기존 연결 사용
+            if not self._ensure_neo4j_connection():
+                self.log_debug("Neo4j 연결 사용 불가, fallback 사용")
                 return self._create_fallback_graph_curriculum(topic, goal, level)
+
+            graph = LearningPathPlannerAgent._neo4j_graph
+            self.log_debug("Using existing Neo4j connection pool")
 
             # 사용자 프로파일 구성
             user_profile = {
@@ -158,18 +182,26 @@ class LearningPathPlannerAgent(BaseAgent):
     async def _graph_search(self, graph, user_profile: Dict[str, str]) -> Dict[str, Any]:
         """그래프에서 학습 커리큘럼 검색 (neo4j_search_test.py 기반)"""
 
-        # 사용 가능한 스킬 목록 가져오기
-        skills_query = """
-        MATCH (s:Skill)
-        RETURN s.name as name, s.keywords as keywords, s.category as category, s.description as description
-        ORDER BY s.name
-        """
+        # 캐시된 스킬 목록 사용 (클래스 레벨 캐싱)
+        if not hasattr(LearningPathPlannerAgent, '_cached_skills'):
+            self.log_debug("스킬 목록 캐싱 중...")
+            # 사용 가능한 스킬 목록 가져오기
+            skills_query = """
+            MATCH (s:Skill)
+            RETURN s.name as name, s.keywords as keywords, s.category as category, s.description as description
+            ORDER BY s.name
+            """
 
-        try:
-            skills_result = await asyncio.to_thread(graph.query, skills_query)
-        except Exception as e:
-            self.log_debug(f"스킬 목록 가져오기 오류: {e}")
-            return None
+            try:
+                skills_result = await asyncio.to_thread(graph.query, skills_query)
+                LearningPathPlannerAgent._cached_skills = skills_result
+                self.log_debug(f"스킬 목록 캐싱 완료: {len(skills_result)}개")
+            except Exception as e:
+                self.log_debug(f"스킬 목록 가져오기 오류: {e}")
+                return None
+        else:
+            skills_result = LearningPathPlannerAgent._cached_skills
+            self.log_debug(f"캐시된 스킬 목록 사용: {len(skills_result)}개")
 
         # 스킬 정보를 정리
         skills_context = ""
@@ -282,7 +314,36 @@ JSON만 출력하고 다른 설명이나 주석은 절대 포함하지 마세요
         return enriched_learning_path
 
     async def _enrich_with_documents_and_experts(self, graph, learning_path: Dict) -> Dict[str, Any]:
-        """학습 절차에 문서와 전문가 정보 추가"""
+        """학습 절차에 문서와 전문가 정보 추가 (배치 처리 최적화)"""
+
+        # 모든 스킬 이름 수집
+        all_skills = []
+        for procedure_data in learning_path.values():
+            all_skills.extend(procedure_data['skills'])
+
+        # 배치로 모든 스킬의 문서 정보 가져오기
+        batch_skill_to_doc_query = """
+        MATCH (s:Skill)<-[:COVERS]-(d:Document)
+        WHERE s.name IN $skill_names
+           OR ANY(skill IN $skill_names WHERE s.name CONTAINS skill OR s.keywords CONTAINS skill)
+        RETURN s, d
+        """
+
+        try:
+            self.log_debug(f"배치로 {len(all_skills)}개 스킬의 문서 정보 조회 중...")
+            batch_docs_result = await asyncio.to_thread(graph.query, batch_skill_to_doc_query, {"skill_names": all_skills})
+            self.log_debug(f"배치 조회 완료: {len(batch_docs_result)}개 결과")
+        except Exception as e:
+            self.log_debug(f"배치 조회 실패: {e}")
+            batch_docs_result = []
+
+        # 스킬별로 결과 그룹화
+        skill_docs_map = {}
+        for record in batch_docs_result:
+            skill_name = record['s']['name']
+            if skill_name not in skill_docs_map:
+                skill_docs_map[skill_name] = []
+            skill_docs_map[skill_name].append(record)
 
         async def process_skill(skill_name: str):
             """단일 스킬에 대한 문서와 전문가 정보를 가져옵니다."""
@@ -293,17 +354,16 @@ JSON만 출력하고 다른 설명이나 주석은 절대 포함하지 마세요
                 "documents": {}
             }
 
-            skill_to_doc_query = """
-            MATCH (s:Skill)<-[:COVERS]-(d:Document)
-            WHERE s.name = $skill_name
-               OR s.name CONTAINS $skill_name
-               OR s.keywords CONTAINS $skill_name
-            RETURN s, d
-            """
+            # 배치 결과에서 해당 스킬 찾기
+            skill_docs_result = []
+            for mapped_skill, records in skill_docs_map.items():
+                if (skill_name == mapped_skill or
+                    skill_name in mapped_skill or
+                    mapped_skill in skill_name):
+                    skill_docs_result.extend(records)
+                    break
 
             try:
-                skill_docs_result = await asyncio.to_thread(graph.query, skill_to_doc_query, {"skill_name": skill_name})
-
                 if not skill_docs_result:
                     self.log_debug(f"    -> 문서 0개 발견")
                     return skill_name, skill_data
@@ -512,7 +572,7 @@ JSON만 출력하고 다른 설명이나 주석은 절대 포함하지 마세요
 
     def _read_document_content_by_title(self, title: str, docs_directory: str = None) -> str:
         """
-        문서 제목을 기반으로 docs 디렉토리에서 해당 JSON 파일을 찾아 콘텐츠를 읽어오는 함수
+        문서 제목을 기반으로 docs 디렉토리에서 해당 JSON 파일을 찾아 콘텐츠를 읽어오는 함수 (캐싱)
 
         Args:
             title (str): 문서 제목 (예: "MES운영매뉴얼_2024하반기")
@@ -523,6 +583,11 @@ JSON만 출력하고 다른 설명이나 주석은 절대 포함하지 마세요
         """
         if docs_directory is None:
             docs_directory = "/Users/jinwoo/Documents/project/2025_kt_intelligence/learnmate-ai/docs"
+
+        # 캐시 확인
+        if title in LearningPathPlannerAgent._document_cache:
+            self.log_debug(f"캐시된 문서 사용: '{title}'")
+            return LearningPathPlannerAgent._document_cache[title]
 
         self.log_debug(f"문서 콘텐츠 읽기 시도: '{title}'")
 
@@ -542,7 +607,9 @@ JSON만 출력하고 다른 설명이나 주석은 절대 포함하지 마세요
             with open(file_path, 'r', encoding='utf-8') as f:
                 content = f.read()
 
-            self.log_debug(f"파일 읽기 성공! (크기: {len(content)} 문자)")
+            # 캐시에 저장
+            LearningPathPlannerAgent._document_cache[title] = content
+            self.log_debug(f"파일 읽기 성공! (크기: {len(content)} 문자) - 캐시에 저장")
             return content
 
         except FileNotFoundError:
@@ -568,7 +635,9 @@ JSON만 출력하고 다른 설명이나 주석은 절대 포함하지 마세요
                 if os.path.exists(exact_match_no_space):
                     with open(exact_match_no_space, 'r', encoding='utf-8') as f:
                         content = f.read()
-                    self.log_debug(f"공백 제거 매칭으로 파일 '{title_no_space}' 읽기 성공!")
+                    # 캐시에 저장
+                    LearningPathPlannerAgent._document_cache[title] = content
+                    self.log_debug(f"공백 제거 매칭으로 파일 '{title_no_space}' 읽기 성공! - 캐시에 저장")
                     return content
 
                 # 2단계: 유연한 문자열 포함 검색
@@ -603,7 +672,9 @@ JSON만 출력하고 다른 설명이나 주석은 절대 포함하지 마세요
                     similar_path = os.path.join(docs_directory, best_match_file)
                     with open(similar_path, 'r', encoding='utf-8') as f:
                         content = f.read()
-                    self.log_debug(f"유사한 파일 '{best_match_file}' 읽기 성공!")
+                    # 캐시에 저장
+                    LearningPathPlannerAgent._document_cache[title] = content
+                    self.log_debug(f"유사한 파일 '{best_match_file}' 읽기 성공! - 캐시에 저장")
                     return content
 
                 self.log_debug(f"파일을 찾을 수 없음: {file_path}")
