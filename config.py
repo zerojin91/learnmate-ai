@@ -7,10 +7,14 @@ load_dotenv()
 
 class Config:
     # LLM 설정
-    LLM_BASE_URL = "https://api.friendli.ai/serverless/v1"
-    LLM_API_KEY = os.getenv("LLM_API_KEY")
-    LLM_MODEL = "K-intelligence/Midm-2.0-Base-Instruct"
+    # LLM_BASE_URL = "https://api.friendli.ai/serverless/v1"
+    # LLM_API_KEY = os.getenv("LLM_API_KEY")
+    # LLM_MODEL = "K-intelligence/Midm-2.0-Base-Instruct"
     # LLM_MODEL = "midm-2.0-base-bf16"
+
+    LLM_BASE_URL = "https://api.friendli.ai/dedicated/v1"#"https://5fda9b8efc58.ngrok-free.app/v1"
+    LLM_API_KEY = os.getenv("LLM_API_KEY")#"ollama"
+    LLM_MODEL = "depnct19r37qy14"
     
     
     LLM_TEMPERATURE = 0.0

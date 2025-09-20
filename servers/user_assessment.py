@@ -331,8 +331,18 @@ class AssessmentAgentSystem:
         constraints = state.get("constraints", "")
         goal = state.get("goal", "")
 
+        # 디버깅용 로그 추가
+        logger.info(f"🔍 질문 생성 조건 체크:")
+        logger.info(f"  - topic_complete: {completion_result.topic_complete}")
+        logger.info(f"  - constraints_complete: {completion_result.constraints_complete}")
+        logger.info(f"  - goal_complete: {completion_result.goal_complete}")
+        logger.info(f"  - topic: '{topic}'")
+        logger.info(f"  - constraints: '{constraints}'")
+        logger.info(f"  - goal: '{goal}'")
+
         # 주제가 완성되지 않은 경우
         if not completion_result.topic_complete:
+            logger.info("📍 주제 질문 생성")
             return """
 🎯 **어떤 분야를 학습하고 싶으신가요?**
 
@@ -347,6 +357,8 @@ class AssessmentAgentSystem:
 
         # 제약조건이 완성되지 않은 경우
         elif not completion_result.constraints_complete:
+            logger.info("📍 제약조건 질문 생성")
+            logger.info(f"  missing_info: '{completion_result.missing_info}'")
             # missing_info를 활용하여 구체적인 질문 생성
             missing_info = completion_result.missing_info.lower()
 
@@ -389,6 +401,7 @@ class AssessmentAgentSystem:
 
         # 목표가 완성되지 않은 경우
         elif not completion_result.goal_complete:
+            logger.info("📍 목표 질문 생성")
             return f"""
 🚀 **{topic} 학습 목표를 알려주세요!**
 
