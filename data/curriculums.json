@@ -9916,5 +9916,2090 @@
       "id": 0,
       "created_at": "2025-09-11T23:20:39.047199"
     }
+  ],
+  "a198b3ae": [
+    {
+      "title": "Python 프로그래밍 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 24,
+      "weekly_hours": 2,
+      "focus_areas": [
+        "취업 준비",
+        "기본 프로그래밍",
+        "실무 적용"
+      ],
+      "modules": [
+        {
+          "week": 1,
+          "title": "Python 개발 환경 구축",
+          "description": "본 모듈에서는 Python 프로그래밍을 시작하기 위한 필수 개발 환경을 구축하는 방법을 학습합니다. Python 공식 홈페이지에서 최신 버전을 다운로드하고 설치하는 방법부터, 실무에서 가장 많이 사용하는 IDE인 VSCode와 PyCharm을 설치하고 설정하는 과정까지 다룹니다. 이를 통해 효율적인 코딩 환경을 구성하고 기본적인 테스트 방법을 익히게 됩니다.",
+          "objectives": [
+            "Python 공식 홈페이지에서 최신 버전의 Python을 다운로드하고 설치할 수 있다",
+            "VSCode 또는 PyCharm 중 하나를 선택하여 설치하고 기본 설정을 완료할 수 있다",
+            "개발 환경에서 간단한 Python 스크립트를 작성하고 실행할 수 있다"
+          ],
+          "learning_outcomes": [
+            "Python 개발에 필요한 시스템 요구사항을 이해하고 적용할 수 있다",
+            "IDE의 기본적인 기능(코드 완성, 디버깅, 버전 관리 등)을 활용할 수 있다",
+            "개발 환경에서 간단한 단위 테스트를 수행할 수 있다"
+          ],
+          "key_concepts": [
+            "Python 설치 프로세스 및 시스템 환경 변수 설정",
+            "VSCode와 PyCharm의 주요 기능 및 플러그인",
+            "IDE에서의 디버깅 및 테스트 실행 방법"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "인천파이썬 코딩을 쉽고 빠르게 빅데이터,AI,프론트엔드,백엔드 상위과정의 기초언어",
+                "url": "https://ader.naver.com/v1/neTAbSYtlF0Dn8Nex0T-zOBHyMpW7wGFlI4ZpERMhxPkE6zEDi00WKvF9m5Jqu-j2AshNec-MKkHZc4yt9US_xioP_JavtdGEUs5QCXvY8ZajJ9tNpvcinZ8NV2sPXPf-e3AC7BFPUoJ3NViRGNAymrDZjUQrhDIubnvEVwJdf4fpJKvpt6y9f1UFlUVHf65nF0dMa8FGaVlFe8Uc1n25dNFtLI_yb4INrLL-39AXIOTAnuVgtUUGLUSi_mYZKAKiCT42f9y7flGIrwEbLELi7LJrGgvUKK7NWy94j0Y7xyjTVrgpk-YPKHBb6xWlZdF-vdda3Xmy1REi3r-L10UwKeV9E7npX-jIPgCw_KOciAiqypmGja4bdeOQKz1eFBQgdr0-DASJv-51aqv5T6lR-frLTKytGmM9sGAIaFtuXQer9Oa29-7S1QnfFg-S0JDzVJP1PkG4nII1PAVSS_U54KlwlPh6DDx9ZoMd8OCzc4GPjvcOcx5lzwm7rqXWdQniFJQOTojJmpH0ww3V62h3i_AFeQ5CN3-vymDHpU2nfE=?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "국비지원 무료교육, 훈련수당지급, 100%취업연계, 종로/노량진 상담예약",
+                "url": "https://ader.naver.com/v1/nP7MxvFpISi0OURwfuWnGsMWvL-Qwul4g33iadui6u9sgMQtp5RXRkvtWD-WqdCFOH4-Xc5fqRiqhzlXsvyCMGldaKIV6geRgFKiEW_tyPW9rHOQOebX6-ofX_FpC_RPviaiLaXT-jjy9TMKKRFGa7guHNQF1YPaMMimAwqq7HXB6o8MuYg5N19IdBHK_fANZFdVumqh5kJpYbV1VN4IYiZkc5O_t9OKBXmY8iTD5BhGmomSQG5X9cp7LdKHNKE4A0JdwKC6vR-dhR5Kakk6nHf06yaUlOzREwVTQDwEL-CypLsgjgqA94l-bGDN74NB9DFH5WO_hEFFmV6dwqLPknFT3uIZYHuIpJJkkYTkS2QtMewimLBrJ-KKM2M-lnMPRwOkxCXr0SMsPUxU6tzdEMuGVlAJolmfN20_hWnN8ukAHxAZjtG5a2ujIh5ariHbhOZR5CpPMEWomQBWhwhsyqJ9wiNTFID5yo1oThT7RZBp7VsnA1fwUY5XuVFbx0_y?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 2,
+          "title": "Python 기본 문법",
+          "description": "이 모듈에서는 Python 프로그래밍 언어의 핵심이 되는 기본 문법을 학습합니다. Python의 가장 기본적인 구성 요소인 변수, 자료형, 연산자에 대해 깊이 있게 이해하고 활용할 수 있는 능력을 기릅니다. 이를 통해 프로그래밍의 기초를 탄탄히 다질 수 있습니다.",
+          "objectives": [
+            "정수, 실수, 문자열 등 Python의 기본 자료형을 이해하고 식별할 수 있다",
+            "변수의 선언 및 값 할당 방법을 정확히 습득하여 코드에서 활용할 수 있다",
+            "덧셈, 뺄셈, 곱셈, 나눗셈 등 기본 산술 연산자의 사용법과 우선순위를 이해하고 적용할 수 있다"
+          ],
+          "learning_outcomes": [
+            "다양한 자료형의 특성을 파악하고 적절한 상황에 맞게 사용할 수 있다",
+            "변수를 정의하고 이를 이용한 프로그램 로직을 구성할 수 있다",
+            "기본적인 연산자를 조합하여 복잡한 계산을 수행할 수 있다"
+          ],
+          "key_concepts": [
+            "자료형의 종류와 특징 (정수, 실수, 문자열, 불리언)",
+            "변수 선언 규칙과 명명 컨벤션",
+            "산술 연산자의 종류와 연산 우선순위"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "파이썬학원 코딩을 쉽고 빠르게 빅데이터,AI,프론트엔드,백엔드 상위과정의 기초언어 기초자바,c언어,파이썬부터 웹개발,AI빅데이터,정보보안 자격증까지 ALL PASS",
+                "url": "https://ader.naver.com/v1/bk12Woi_BoTJdmoI9cJ82SN3s6_FMTh9CIz10al5_33IUkP601Fhs7p7ietUvLhCHZMeps6fgvCxSCEzLJXlzPJngmQcuLeELSie1vC--fXyHYCXMBfbpu3tb2oO0AOQvlcz7d5rA8Kjogm1HlrhtctigesL7ow-BQnfPj7y2Zb9Z0AoKFH7RFQj8vzxz8mc75vbHLbi-yRRcgJDfczku24XUrKE8dd2FM-6rZLFhqzViqsbmT0bUB6g6W-66dkvZxq24nVg_e8Gl8gPvu0qwvnAruZtztTD3KVqJeW2FrQ9v5GfkRjBCk0_OJhEzxlQacyXDePU_V9_248Tegkf_-AWNxoSr-OyJlcx0XSUWRVJkS9kq6VYCy6aanCvEJhnhTztwEDGNaW8424aEdzAp3R3dEcMePonTT1mDWGaTJGUx3dJ2z0n6_D7-daeKJ3h05Lw0RLuhY532h4mRFF6XH_0gf7YwC8b0Ml1ZrrHeOJzyVYRNf1EaJcWGiqa4sNeDc7EfYfP0Z-iZb68I93aiA==?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "인천파이썬 코딩을 쉽고 빠르게 빅데이터,AI,프론트엔드,백엔드 상위과정의 기초언어 기초자바,c언어,파이썬부터 웹개발,AI빅데이터,정보보안 자격증까지 ALL PASS",
+                "url": "https://ader.naver.com/v1/0AvnxNwt-FjMFo3cnvCAphHM4OOl8iCrriwZxC9uhPQWz6jGARcCfiH0XyfyBdMT2fX3ww8Aku4o0o2RsNEzJjlm4Bv44Yr-zTA5w2L9ujcw9c9jlEzeypa7prcHtdCY5S3VsIG8M6Lq_nHQlBzWNer5SqY7wh4b9t67SWIwiHP7yi0sPLVUT6nQVpWRZZIqUipk3XMhmyiCzQEqabJ920-TfzXFpF8hHypLGzmOEOP5Mb1UamW1oCeFQOONAXlYf6Atq6wHFiob_cJiAx_BCv-JiJad_rL1_qEX3aw-7jQFMRIuOE9PqvcKdgJ9lAOOW6Zwss-rQnfRr4EpFt0dnrOIUYYIIRjLzFBvCYySGf8Uh9KKI9ubUKl3_J-kYMI1aIQhUKRS8uH2Aw2z3q770yZRwDsG2RyoI0PycH6FhBTPoh65x3ssiC84BfKG4kEoEZfhw9T4HnAi1Mh4ATfFptzI7SZLNQED71zpVd_K04x0-kxw2GGacBWDTvEW69PL7_R6wicOGOxXXniCBTSSmA==?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 3,
+          "title": "제어문 기초",
+          "description": "본 모듈에서는 Python을 활용한 조건문과 반복문의 기초를 학습합니다. 프로그램의 흐름을 제어하는 기본적인 논리 구조를 이해하고, 이를 통해 효율적인 코드 작성 방법을 배웁니다.",
+          "objectives": [
+            "if, else 조건문을 활용한 논리적 판단 구문 작성법 학습",
+            "for와 while 반복문을 사용한 반복 실행 구조 이해",
+            "복합 조건문(elif 포함)을 활용한 다양한 조건 처리 연습"
+          ],
+          "learning_outcomes": [
+            "조건에 따른 프로그램 흐름 제어 방법 습득",
+            "반복 작업을 효율적으로 처리하는 방법 이해",
+            "복합 조건 처리를 통한 복잡한 논리 구현 능력 개발"
+          ],
+          "key_concepts": [
+            "조건문 구조: if, elif, else 블록의 사용법",
+            "반복문 구조: for 루프와 while 루프의 차이점과 활용",
+            "복합 조건문: 여러 조건을 조합하여 처리하는 방법"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "IT 인재로 성장하는 치트키! 국비지원 받고 수강료 5만원에 파이썬 정복!",
+                "url": "https://ader.naver.com/v1/LTFpPysgEUY-oAgN2qv19owar2PXlHoO2r4w4WbrI_52i6mJqMzjGK-fmU0bdacuWgFTWNPm0B9RF0JsIhcIi03vSDwYhr_GpnqfGZI9Kbz-DrCf7ncYjDEoToVNLKaJnQW69P6mI1w2eSU1DzpMcGczqqVWq39ADlv8V81kXbbmYcS2Qv-4myjgrwZ97IXmF1qvxjOjVkLdiJGnpGo9F1Zz6saCTOvkSQ2UBzBr_APDQqLOl7qK6GCRi7BLDNcIPzjfmuLCHdCFCeCqV_mehvYeYGMy64gtTMOPpsTg3kI5C0ON7rX1tJ5QpJtZL2PTWCjBRU7aPmHin-ZOCnmH7QvUQMaRLxFDVgagrRNNgopkFepjD6Lz473XVgkV1URvGB8n9qxQ7sDZW4_ixZn-hKE1yDiE0sJ2Gu_Dojt0JWU=?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 4,
+          "title": "함수와 모듈 개념",
+          "description": "이 모듈에서는 Python에서 함수의 정의와 사용법, 그리고 모듈의 개념 및 활용법을 학습합니다. 함수는 코드의 재사용성을 높이고 프로그램을 구조화하는데 필수적인 요소입니다. 모듈은 함수들을 그룹화하여 관리하고 다른 파일에서 재사용할 수 있게 해주는 중요한 개념입니다.",
+          "objectives": [
+            "함수 정의 방법을 이해하고 기본적인 함수를 직접 작성할 수 있다",
+            "Python 내장 모듈을 임포트하고 활용할 수 있다",
+            "내장 함수와 사용자 정의 함수의 차이점을 설명할 수 있다"
+          ],
+          "learning_outcomes": [
+            "매개변수와 반환값을 포함한 함수를 정의할 수 있다",
+            "import 구문을 사용하여 외부 모듈을 불러오고 사용할 수 있다",
+            "함수와 모듈의 장단점을 비교하고 적절한 상황에 맞게 활용할 수 있다"
+          ],
+          "key_concepts": [
+            "함수 정의 및 호출 문법 (def, return)",
+            "모듈 임포트 방식 (import, from... import)",
+            "내장 함수와 사용자 정의 함수의 비교"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "신촌파이썬 코딩을 쉽고 빠르게 빅데이터,AI,프론트엔드,백엔드 상위과정의 기초언어",
+                "url": "https://ader.naver.com/v1/9dfpBIA_h7YxrzX2NcXJFxDL-VhbNjTkI1HRl1jVHFLsvCNFrTjQCULlCzekQkrj7vVo8jC2Vj4TOiL_prU0_Tbjsn4I0VdmXtsub9FoKAUiDHDRNak_gC_iVAWpSLf1vdQksH4A16qYViku9S_aXF0lgiuFO9gsmloB92sCWvYkW8IVAT5VXDGB0dV-an0mMwri52QCKGY6WRzTsnOFiEOMAqTS9YSmRrXFWFITbhQttnpE0nm4oKqSXwQO-hPEeH7PPzDkY-l3nSG-0oOczrk1hup35JFK8PJJqO5b57lI3GI-5Rsv6MeF5iYZpbjWxGBmuU80AI2nPvVpRQ76r0rKuKfLc1P7s55kKM_agH57ArxGP9ZrT-_HbGRClaN19lKEPNb20BcpYrh4iEKI9c2f2saJmDTM7yg_YGiUi0JDWAhdOPHbnm9MH4KGhRYTr8o-Q6m3SA6Yg8PQSu3XGusGCsYIb-3gPEvm7UqIdLLbIcVsvkuXN6oSLBPFcKhjS6HT_gmTk0mHHJ9NOOMM4YMNnWsUcsI39a7EFn1zf0E=?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "강남파이썬 코딩을 쉽고 빠르게 빅데이터,AI,프론트엔드,백엔드 상위과정의 기초언어 기초자바,c언어,파이썬부터 웹개발,AI빅데이터,정보보안 자격증까지 ALL PASS",
+                "url": "https://ader.naver.com/v1/EKwendIjNtQQY19mXYODU_xTr7M7OItIx9PXk6IyUDSgpWXvdCr8oUNtUW-3mQTat4TwLBbHSJT48Bje0rh0j_53-h4f-2XNSnnvZWBHmcTThkxdjGfpYjfXI8poyxqaWrO0l17j59-xtlFhTayDYST7WlpvM2s-YcciT6fkU3JXq9hdAWPbuv22_iWO3btx1e2CoBRAUp0eH57R6UEiUryLk-uwM5FsXFppk8I08x5IjEqmJrTwu3C_rWTfphHoBuyd304bZF8FSEeKik75EiahuyQhXAV9hfp1R0e6iui5RSxsWPw3_pgMWS7Unxloe_5Cq0HL9j3d86qxzseuwL_0sklS0zlBQ8ula0yv1K2_l_Bau-SESFEWYPiKbg9YBcNprV7cFAz0EqfFJo3raP4UuIVzAcK-o4MRBOo3JD9zelKvqG0-4Sn1GI0arS9B7BX5M65-2Urad9c5Z1ZOcJP13lj5AXvtulsJrEFuyqUfSa8blkYneO4EnknezfZAs_BOqbVLW49nt8eIXzIPls0Htmx2BfhQ1wX-NHUSZQNDmZTxR-HmfdXJcTxUoVAH?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 5,
+          "title": "데이터 구조 기초",
+          "description": "이 모듈에서는 파이썬에서 가장 기본적이면서도 중요한 데이터 구조인 리스트와 튜플에 대해 학습합니다. 데이터를 효율적으로 저장하고 관리하는 방법을 배우며, 프로그래밍에서 데이터 구조를 활용할 수 있는 기초를 다집니다.",
+          "objectives": [
+            "리스트를 생성하고 인덱스를 활용한 접근 방법을 학습한다",
+            "튜플의 불변 특성을 이해하고 활용 방법을 익힌다",
+            "리스트의 다양한 기본 메서드를 사용하여 데이터를 조작하고 처리하는 방법을 익힌다"
+          ],
+          "learning_outcomes": [
+            "리스트와 튜플의 생성 및 인덱싱을 통해 데이터에 접근하고 관리할 수 있다",
+            "튜플의 불변 특성을 이해하고 적절한 상황에서 활용할 수 있다",
+            "리스트의 append, insert, remove, sort 등의 메서드를 활용하여 데이터를 효과적으로 조작할 수 있다"
+          ],
+          "key_concepts": [
+            "리스트의 동적 데이터 구조 특성",
+            "튜플의 불변(immutable) 특성과 그 활용",
+            "리스트의 인덱싱과 슬라이싱",
+            "리스트 메서드(add, remove, sort 등)의 이해와 활용"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 6,
+          "title": "문자열과 집합",
+          "description": "이 모듈에서는 파이썬의 문자열 처리 기법과 집합 자료형의 활용법을 학습합니다. 문자열의 기본 메서드부터 고급 활용 방법을 다루고, 집합 자료형의 특징과 다양한 연산을 이해합니다. 이전 모듈에서 학습한 함수와 데이터 구조 개념을 확장하여 실제 문제 해결에 적용하는 방법을 배웁니다.",
+          "objectives": [
+            "문자열 메서드의 종류와 활용법을 이해하고 실무에 적용할 수 있다",
+            "집합 자료형의 특징(중복 불허, 순서 없음)을 파악하고 효율적으로 활용할 수 있다",
+            "문자열과 집합을 결합하여 실용적 프로그래밍 문제를 해결할 수 있다"
+          ],
+          "learning_outcomes": [
+            "문자열 조작을 위한 다양한 메서드를 코드로 구현할 수 있다",
+            "집합 연산(합집합, 교집합, 차집합)을 활용하여 데이터 처리를 최적화할 수 있다",
+            "문자열과 집합을 함께 사용하여 중복 제거, 데이터 분석 등의 작업을 수행할 수 있다"
+          ],
+          "key_concepts": [
+            "문자열 인덱싱과 슬라이싱",
+            "문자열 메서드(str.split(), str.join(), str.replace(), 등)",
+            "집합 자료형의 특징 및 연산(union, intersection, difference)",
+            "문자열과 집합을 활용한 데이터 정제 및 분석"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 7,
+          "title": "파일 입출력",
+          "description": "본 모듈에서는 파이썬에서 파일을 읽고 쓰는 기본적인 방법을 학습합니다. 다양한 파일 모드를 이해하고, 실제 응용 프로그램에서 파일 입출력을 안전하고 효율적으로 처리하는 방법을 다룹니다. 특히 예외 처리를 통해 파일 작업 중 발생할 수 있는 오류를 효과적으로 관리하는 방법을 익힙니다.",
+          "objectives": [
+            "open() 함수의 다양한 사용 방법을 이해하고 적용할 수 있다",
+            "읽기 모드와 쓰기 모드의 차이점을 구별하고 적절한 모드를 선택할 수 있다",
+            "파일 입출력 작업 중 발생할 수 있는 예외 상황을 처리할 수 있다"
+          ],
+          "learning_outcomes": [
+            "텍스트 파일을 생성, 읽기, 수정, 삭제할 수 있다",
+            "파일 입출력 과정에서 발생할 수 있는 일반적인 오류를 식별하고 해결할 수 있다",
+            "파일 처리를 위한 적절한 예외 처리 기법을 구현할 수 있다"
+          ],
+          "key_concepts": [
+            "파일 모드 ('r', 'w', 'a', 'r+', 'w+', 'a+', 'b' 모드)",
+            "with문을 사용한 자동 리소스 관리",
+            "파일 입출력 예외 처리 (FileNotFoundError, PermissionError 등)",
+            "대용량 파일 읽기/쓰기 전략"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "파이썬학원 코딩을 쉽고 빠르게 빅데이터,AI,프론트엔드,백엔드 상위과정의 기초언어",
+                "url": "https://ader.naver.com/v1/3b2xwY9EA2zDOQI9HyYza4KfB3EamrDxDLNZt666mF8-afNfWprPs29OQJbbWapg1Xiri1ahkHy-qWUb7FcHzGpRysShNd7o1J9i_wRjrIc6QGBFJcZq33coVTuLHUrCzMk4Ui6vkSmYjY5BAxLBentIhTRkhrdgDvMNMZZlWTjfRq1yyQ2ALwQegmGiQ0fYthE7M4k05-7RfqFQouQH9iet01jaXHGxBRkGLWzpktdfNtYEw_kUFUFxeTjUhmqhN84g9R8xFb2FZC1b3qFZrR3B70568jEa_XOEgwOUkmppqviKTMySiuDDqQf7P9-lk44-6IbS6S7djPdlmip1c2cvsDtKbnleBq7Clc2D_nTb_2WOFyJJj_S-16zLj2Q7rwHd-D6WsITZazR-QuJzMixmjbDhoUY6p1tuRok6iCNNSn6sR6zvvvHNzygRAjMGxT1HI9aCzcC9ozH7s8mLnhn7pHXkNSpEDMbZNWYSTVe3WGtZovJpmkcyRnc4ciOGO-kdGlEFGVMGKrstNY8KlA==?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "인천파이썬 코딩을 쉽고 빠르게 빅데이터,AI,프론트엔드,백엔드 상위과정의 기초언어 기초자바,c언어,파이썬부터 웹개발,AI빅데이터,정보보안 자격증까지 ALL PASS",
+                "url": "https://ader.naver.com/v1/Pq0tsWiOpcf-XVjeoTthLvKU0Ey5juGrGoNRTNR0QNTMucHpUa82XGi3Ixq1402ezS0gzOXWjgtTS9whm9oEI8PhPBmfaYuudlZQDdIGFn7NjHDkSWea3g_2IyI2Tj0RaMwox4KgqSfxTZHpeMVC-CbQTibCSCU9j5UZIZ-BCtr-xfS88098Wb7gRto4HzcCT307mbV8mSXZeN_yvRM0UCoo7PXXKjOAmnjwaijd1NxBw8JJOv9cV1aUy8Fx06ZvqvoGLOqteCFKqwRYipuOgtN8Nt6PraeCEoGU6Mxss42ISCnFLBQCZtQCMg7K3WEI8ru8MLyFe_LDFIVqlHMPmJuRgVtUGGsyV5UIqYsA018Ik52e7KvoeqfQoSj0YCg9OY5AI5ItCSfWYaHf5Rh3ED4ZXH75FX_mmNqhqXboddV0vYSoUkS9flavoAqDysK2CVIZqg9umdTQJ6iCEXIYIZKWRRsi_v7qht1Ff2FnyJeJampGpZc270jVCXHBorjMevM7-UjDlL_BaLnRD4tYExVzyzfvaXiYbv2_FeAUVoU=?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "강남파이썬 코딩을 쉽고 빠르게 빅데이터,AI,프론트엔드,백엔드 상위과정의 기초언어",
+                "url": "https://ader.naver.com/v1/Z0hQEmqTy0FQzSgwLZh_RwNKgOhu_othJ5J6koT7jzhgkxjlNm4HF8wQTyuF6-X3ECUBNYIeB9g-Rj_HsRgxEbHOyxL4r7HM9CX_-nnByrI9dyLoL9LTFqdR3Pd0zFhfyXFYsFPJehIT-CfeNAD8Pp-3l3iT5MO8NIMO6c_gv-_WwBg6-lRHXj66dotZfsaNdJH7jdI8mcIcrcIVF3bEIqsMkgQKyShOZi6HeqHDCoNPvfZ5IfVsspLT1IuP3v00AYz15ipEkoV-rF4EKlbm4AecWopiZs5tw08-0k1-vMvndQQfNRZ2YKNjeImZf1ficDnWhTR8-mPfU3IwSY7DAnym1BMu9zRNSQc-QeR8I9QOJSUf8dYDCmWiR8OdLvpFZlmONVJjYVRxCptOdzpZWny3ytQCerMwRhVTpPgOkrXVKmHAMaCRYKQ4UbX2Nh8K1GCeBK1l5bYEFFU1v4lqb0if-gACVuJyENGFG1pvMXYQj0z6BIoluY_mWeXussPvPU0275Juc_3T-sS2pwAPEoxxjvCoN0miVyJGXx3KQJU=?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 8,
+          "title": "예외 처리",
+          "description": "이 모듈에서는 프로그래밍에서 발생할 수 있는 예외 상황을 우아하게 처리하는 방법에 대해 학습합니다. 특히 Python의 try-except-finally 구조를 통해 프로그램의 안정성을 높이고, 예기치 않은 오류가 발생하더라도 프로그램이 중단되지 않고 적절히 대응할 수 있는 예외 처리 기법을 다룹니다. 파일 입출력 모듈에서 배운 내용을 바탕으로 실제 작업에서 발생할 수 있는 다양한 예외 상황에 대비하는 방법을 익힙니다.",
+          "objectives": [
+            "예외가 발생하는 시점을 정확히 파악하고 예측할 수 있다",
+            "try-except-finally 블록을 적절히 활용하여 예외를 처리할 수 있다",
+            "사용자 정의 예외를 생성하고 처리하는 방법을 구현할 수 있다"
+          ],
+          "learning_outcomes": [
+            "실행 중 발생하는 다양한 예외 상황을 식별하고 문서화할 수 있다",
+            "복잡한 프로그램에서 예외 처리를 통해 안정성을 향상시킬 수 있다",
+            "특정 비즈니스 로직에 맞는 사용자 정의 예외 클래스를 설계할 수 있다"
+          ],
+          "key_concepts": [
+            "try 블록과 except 블록의 기본 구조",
+            "다양한 예외 타입과 그 특성",
+            "finally 블록의 역할과 활용",
+            "사용자 정의 예외 클래스 생성 (Exception 상속)",
+            "예외 전파와 예외 필터링 기법"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 9,
+          "title": "객체지향 프로그래밍",
+          "description": "본 모듈에서는 객체지향 프로그래밍의 핵심 개념인 클래스에 대해 학습합니다. 클래스의 정의와 객체 생성 방법을 이해하고, 클래스의 속성과 메서드를 활용하는 방법을 배웁니다. 이를 통해 객체지향 프로그래밍의 기본 개념을 습득하고 실제 프로그래밍에서 클래스를 효과적으로 활용할 수 있는 능력을 기릅니다.",
+          "objectives": [
+            "클래스를 정의하고 객체를 생성할 수 있다",
+            "클래스의 속성(인스턴스 변수)과 메서드(인스턴스 메서드)를 이해하고 활용할 수 있다",
+            "객체지향 프로그래밍의 기본 개념과 클래스의 역할을 설명할 수 있다"
+          ],
+          "learning_outcomes": [
+            "클래스를 직접 정의하고 인스턴스를 생성할 수 있다",
+            "클래스 내부에 속성과 메서드를 적절히 배치하여 객체지향적으로 구현할 수 있다"
+          ],
+          "key_concepts": [
+            "클래스와 객체의 개념",
+            "클래스 속성 및 메서드 정의",
+            "생성자(Constructor)와 소멸자(Destructor)",
+            "캡슐화와 추상화"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 10,
+          "title": "상속과 다형성",
+          "description": "객체지향 프로그래밍의 핵심 개념 중 하나인 상속과 다형성에 대해 학습합니다. 이 모듈에서는 클래스 상속 관계를 설정하고, 메서드 오버라이딩을 통해 상위 클래스의 메서드를 하위 클래스에서 재정의하는 방법을 학습합니다. 또한 다형성 구현 사례를 통해 유연한 코드 설계 방법을 이해하게 됩니다.",
+          "objectives": [
+            "클래스 상속 관계를 설정하고 활용하는 방법을 익힐 수 있습니다.",
+            "메서드 오버라이딩의 개념과 구현 방법을 이해할 수 있습니다.",
+            "다형성 구현을 통해 유연하고 확장 가능한 코드를 작성할 수 있습니다."
+          ],
+          "learning_outcomes": [
+            "상속을 통해 코드 재사용성을 높이는 방법을 구현할 수 있습니다.",
+            "다형성을 활용하여 동일한 인터페이스로 다양한 객체를 처리할 수 있습니다.",
+            "실제 프로젝트에서 상속과 다형성을 적절히 적용할 수 있습니다."
+          ],
+          "key_concepts": [
+            "클래스 상속(Class Inheritance)",
+            "메서드 오버라이딩(Method Overriding)",
+            "다형성(Polymorphism)과 동적 바인딩(Dynamic Binding)"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 11,
+          "title": "웹 크롤링 기초",
+          "description": "이 모듈에서는 웹 크롤링의 기초를 다루며, BeautifulSoup 라이브러리를 활용하여 웹사이트의 HTML 구조를 분석하고 필요한 데이터를 추출하는 방법을 학습합니다. 실습을 통해 실제 웹사이트에서 데이터를 수집하고 저장하는 방법을 익히게 됩니다.",
+          "objectives": [
+            "BeautifulSoup 라이브러리를 사용하여 HTML 문서를 파싱할 수 있다",
+            "웹사이트의 HTML 구조를 이해하고 분석할 수 있다",
+            "크롤링한 데이터를 다양한 포맷으로 추출하고 저장할 수 있다"
+          ],
+          "learning_outcomes": [
+            "HTML 태그와 구조를 식별하고 파싱하는 방법을 습득",
+            "실제 웹 페이지에서 목적에 맞는 데이터를 추출하는 능력 개발",
+            "크롤링 결과를 CSV, JSON 등의 형식으로 저장하는 기술 습득"
+          ],
+          "key_concepts": [
+            "HTML 파싱과 DOM 구조 이해",
+            "BeautifulSoup 라이브러리의 주요 메소드 활용",
+            "웹 크롤링 윤리와 법적 고려사항"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 12,
+          "title": "데이터 분석 기초",
+          "description": "이 모듈에서는 Python의 Pandas 라이브러리를 활용하여 데이터프레임을 생성하고 조작하는 방법을 학습합니다. 데이터를 불러오고 저장하는 방법과 함께 기본적인 데이터 분석 기법을 익히게 됩니다. 이전 모듈인 상속과 다형성, 웹 크롤링 기초를 바탕으로 실무에서 활용 가능한 데이터 처리 능력을 키우는 것이 목표입니다.",
+          "objectives": [
+            "Pandas 라이브러리를 사용하여 데이터프레임을 생성하고 조작할 수 있다",
+            "다양한 형식의 데이터를 불러오고 저장하는 방법을 실습할 수 있다",
+            "데이터프레임을 활용한 기본적인 데이터 분석 기법을 적용할 수 있다"
+          ],
+          "learning_outcomes": [
+            "실제 데이터셋을 불러와서 Pandas 데이터프레임으로 변환할 수 있다",
+            "데이터 정제, 필터링, 정렬 등의 기본 작업을 수행할 수 있다",
+            "데이터 집계 및 그룹화를 통한 분석을 실행할 수 있다"
+          ],
+          "key_concepts": [
+            "Pandas 데이터프레임 구조와 기본 연산",
+            "CSV, Excel 파일 불러오기 및 저장하기",
+            "데이터 필터링, 정렬, 그룹화 기법"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 13,
+          "title": "자동화 스크립트",
+          "description": "이 모듈에서는 Python을 활용하여 시스템 명령어를 자동으로 실행하고 처리하는 방법을 학습합니다. os 모듈을 사용하여 운영체제와 상호작용하고, 반복적인 작업을 스크립트로 자동화하여 효율성을 높이는 방법을 배웁니다.",
+          "objectives": [
+            "os 모듈의 다양한 함수를 활용하여 시스템 정보를 조회하고 명령어를 실행할 수 있다",
+            "시스템 명령어를 Python 스크립트 내에서 호출하고 그 결과를 처리할 수 있다",
+            "반복적인 시스템 작업을 자동화 스크립트로 구현하여 업무 효율성을 향상시킬 수 있다"
+          ],
+          "learning_outcomes": [
+            "시스템 명령 실행을 위한 os 모듈의 주요 함수들을 이해하고 활용할 수 있다",
+            "스크립트를 통해 파일 관리, 디렉토리 작업, 프로세스 제어 등을 자동화할 수 있다",
+            "자동화 스크립트 작성 시 발생할 수 있는 오류를 식별하고 해결할 수 있다"
+          ],
+          "key_concepts": [
+            "os.system()과 os.exec() 함수의 차이점",
+            "os.walk()를 통한 디렉토리 트리 탐색 방법",
+            "subprocess 모듈을 활용한 명령 실행과 출력 처리"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 14,
+          "title": "고급 데이터 구조",
+          "description": "이 모듈에서는 파이썬의 딕셔너리와 집합 데이터 구조에 대해 심도 있게 학습합니다. 딕셔너리의 고급 키-값 쌍 관리 기법과 집합 연산의 심화 활용법을 다루며, 실제 프로젝트에서 적절한 데이터 구조를 선택하는 기준을 학습합니다.",
+          "objectives": [
+            "딕셔너리의 특수 키-값 쌍 관리 기법을 이해하고 구현할 수 있다",
+            "집합의 복합 연산과 고급 활용 방법을 실무에 적용할 수 있다",
+            "데이터의 특성에 따라 적절한 데이터 구조를 선택하는 기준을 수립할 수 있다"
+          ],
+          "learning_outcomes": [
+            "딕셔너리의 다양한 메서드와 특수 기능을 활용할 수 있다",
+            "집합 연산을 통해 데이터 분석 및 처리 작업을 효율적으로 수행할 수 있다",
+            "복잡한 데이터 문제에 적합한 데이터 구조를 선택하고 설계할 수 있다"
+          ],
+          "key_concepts": [
+            "딕셔너리의 키 중복 방지와 동적 관리",
+            "집합 연산의 시간 복잡도 분석",
+            "딕셔너리와 집합을 결합한 복합 데이터 처리 기법"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 15,
+          "title": "GUI 프로그래밍",
+          "description": "이 모듈에서는 Python의 Tkinter 라이브러리를 사용하여 그래픽 사용자 인터페이스(GUI)를 개발하는 기초를 학습합니다. 윈도우와 위젯을 생성하고, 사용자 입력에 대한 이벤트 처리 방법을 익히며, 실제 동작하는 간단한 GUI 애플리케이션을 구현해볼 것입니다.",
+          "objectives": [
+            "Tkinter를 사용하여 기본 윈도우와 다양한 위젯(버튼, 레이블, 텍스트 입력 필드 등)을 생성할 수 있다",
+            "GUI 애플리케이션에서 발생하는 이벤트(클릭, 키 입력 등)를 처리하는 기본 방법을 이해한다",
+            "위젯 배치, 속성 설정, 이벤트 핸들러 연결을 통해 간단한 GUI 애플리케이션을 구현할 수 있다"
+          ],
+          "learning_outcomes": [
+            "기본적인 GUI 애플리케이션 구조를 이해하고 설계할 수 있다",
+            "Tkinter의 주요 위젯들과 그 속성을 활용할 수 있다",
+            "이벤트-핸들러 연결을 통해 사용자 상호작용을 처리하는 코드를 작성할 수 있다"
+          ],
+          "key_concepts": [
+            "Tkinter 라이브러리 기초",
+            "윈도우 및 위젯 생성과 관리",
+            "이벤트 처리 메커니즘",
+            "GUI 레이아웃 관리(그리드, 팩터 등)"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 16,
+          "title": "웹 프레임워크 기초",
+          "description": "본 모듈에서는 파이썬의 대표적인 마이크로 웹 프레임워크인 Flask를 사용하여 웹 애플리케이션을 구축하는 기초를 학습합니다. Flask의 설치부터 시작하여 기본적인 라우팅 설정과 HTML 템플릿 연동까지 단계적으로 학습하게 됩니다.",
+          "objectives": [
+            "Flask 애플리케이션을 설치하고 기본 환경을 설정할 수 있다",
+            "Flask를 사용하여 간단한 라우팅을 구현할 수 있다",
+            "Flask와 HTML 템플릿을 연동하여 동적 웹 페이지를 생성할 수 있다"
+          ],
+          "learning_outcomes": [
+            "파이썬 Flask를 사용한 웹 애플리케이션의 기초 구조를 이해하고 구축할 수 있다",
+            "URL 라우팅 원리를 적용하여 다양한 경로에 대한 핸들러를 작성할 수 있다",
+            "HTML 템플릿 엔진을 활용해 Flask 애플리케이션과 연동할 수 있다"
+          ],
+          "key_concepts": [
+            "Flask 설치 및 환경 설정",
+            "URL 라우팅과 뷰 함수",
+            "템플릿 엔진과 Jinja2"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 17,
+          "title": "데이터 시각화",
+          "description": "이 모듈에서는 Python의 대표적인 시각화 라이브러리인 Matplotlib을 활용하여 다양한 형태의 데이터 시각화 기법을 학습합니다. 기본적인 그래프 생성부터 시작하여 그래프의 세부적인 요소를 커스터마이징하는 방법까지 체계적으로 학습합니다. GUI 프로그래밍과 웹 프레임워크의 기초 지식을 연계하여 데이터 시각화를 실무에 적용하는 방법을 익힙니다.",
+          "objectives": [
+            "Matplotlib을 사용하여 선 그래프, 막대 그래프, 산점도 등 다양한 형태의 그래프를 생성할 수 있다",
+            "그래프의 레이아웃, 색상, 레이블, 제목 등을 커스터마이징하여 정보 전달력을 높일 수 있다",
+            "데이터 시각화의 기본 원리와 다양한 시각화 기법을 이해하고 적절히 적용할 수 있다"
+          ],
+          "learning_outcomes": [
+            "Python 환경에서 Matplotlib 라이브러리를 설치하여 사용할 수 있다",
+            "데이터의 특성에 맞는 적절한 그래프 유형을 선택하고 구현할 수 있다",
+            "시각적으로 명확하고 정보 전달력이 높은 데이터 시각화 결과물을 생성할 수 있다"
+          ],
+          "key_concepts": [
+            "Matplotlib 설치 및 기본 환경 설정",
+            "다양한 그래프 유형 생성 방법 (line, bar, scatter, histogram)",
+            "그래프 요소 커스터마이징 (labels, titles, colors, styles)",
+            "데이터 시각화의 기본 원리 (축 설정, 스케일링, 레이블링)",
+            "복합 그래프 및 서브플롯 구현"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 18,
+          "title": "프로젝트 기획",
+          "description": "본 모듈에서는 전체 Python 프로젝트의 종합적인 설계 과정을 학습합니다. 이전 모듈에서 학습한 웹 프레임워크 기초와 데이터 시각화 기술을 바탕으로, 실제 프로젝트를 기획하고 실행하는 데 필요한 요구사항 분석, 아키텍처 설계, 일정 계획 수립 방법을 다룹니다.",
+          "objectives": [
+            "Python 프로젝트의 요구사항을 체계적으로 분석할 수 있다",
+            "효율적인 프로젝트 아키텍처를 설계할 수 있다",
+            "현실적이고 실행 가능한 작업 일정을 계획할 수 있다"
+          ],
+          "learning_outcomes": [
+            "프로젝트 요구사항을 문서화하고 이해관계자들과 효과적으로 소통하는 능력",
+            "프로젝트의 구조와 구성요소를 논리적으로 설계하는 역량",
+            "프로젝트 진행 과정에서 발생할 수 있는 리스크를 예측하고 관리 계획을 수립하는 능력"
+          ],
+          "key_concepts": [
+            "요구사항 분석 방법론과 유스케이스 정의",
+            "객체지향 설계 패러다임과 시스템 아키텍처 패턴",
+            "간트 차트를 활용한 프로젝트 일정 관리"
+          ],
+          "estimated_hours": 4,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 19,
+          "title": "웹 개발 구현",
+          "description": "이번 19주차에서는 파이썬 기반의 웹 프레임워크 Flask를 사용하여 실제 웹 애플리케이션을 구축하는 방법을 학습합니다. API 엔드포인트 설계와 구현, 데이터 입출력 처리, 그리고 기본적인 사용자 인증 시스템을 구현하는 실습을 진행합니다.",
+          "objectives": [
+            "Flask를 사용한 RESTful API 엔드포인트 구현 능력 습득",
+            "Flask에서 JSON 데이터 입출력 처리 방법 이해",
+            "JWT 기반 사용자 인증 시스템의 기본 원리 학습"
+          ],
+          "learning_outcomes": [
+            "실제 웹 애플리케이션에서 API 엔드포인트를 설계하고 구현할 수 있다",
+            "Flask를 사용하여 데이터베이스와 연동된 CRUD 기능을 구현할 수 있다",
+            "기본적인 사용자 인증 및 권한 관리 시스템을 구축할 수 있다"
+          ],
+          "key_concepts": [
+            "Flask 프레임워크의 기본 구조와 라우팅",
+            "RESTful API 설계 원칙과 HTTP 메서드 활용",
+            "SQLAlchemy를 활용한 데이터베이스 연동",
+            "JSON 데이터 포맷과 직렬화/역직렬화",
+            "JWT(JSON Web Token) 기반 인증 방식"
+          ],
+          "estimated_hours": 4,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 20,
+          "title": "데이터 분석 심화",
+          "description": "이 모듈에서는 데이터 분석 작업의 핵심인 전처리 및 분석 기법을 심도 있게 학습합니다. 데이터 품질을 향상시키기 위한 결측치 처리 방법과 데이터 변환 및 집계 기법을 다루며, 실용적인 통계 분석 기법을 실제 데이터에 적용하는 방법을 배웁니다.",
+          "objectives": [
+            "다양한 결측치 처리 방법을 이해하고 실무에 적용할 수 있다",
+            "데이터 변환 및 집계 기법을 통해 데이터를 효과적으로 정제하고 분석할 수 있다",
+            "적절한 통계 분석 기법을 선택하고 적용하여 인사이트를 도출할 수 있다"
+          ],
+          "learning_outcomes": [
+            "데이터 전처리 과정에서 결측치를 효과적으로 처리하는 능력을 습득",
+            "데이터 변환 및 집계를 통해 데이터 분석을 위한 적절한 형태로 가공 가능",
+            "통계 분석 기법을 활용하여 데이터에서 의미 있는 패턴과 관계를 발견"
+          ],
+          "key_concepts": [
+            "결측치 탐지 및 처리 전략",
+            "데이터 집계와 피벗팅 기법",
+            "기술통계 및 추론통계 기법"
+          ],
+          "estimated_hours": 4,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 21,
+          "title": "자동화 시스템 구현",
+          "description": "본 21주차 모듈에서는 스크립팅을 통한 자동화 시스템의 구현 방법을 학습합니다. 반복 작업의 자동화, 로그 파일의 효율적인 관리, 그리고 시스템 모니터링 자동화 기술을 습득하여 실무에서 활용 가능한 자동화 솔루션을 개발할 수 있도록 합니다.",
+          "objectives": [
+            "반복적이고 시간이 많이 소요되는 작업을 스크립팅으로 자동화하는 방법을 이해",
+            "로그 파일을 체계적으로 관리하고 분석하는 자동화 스크립트 작성",
+            "시스템 상태를 지속적으로 모니터링하는 자동화 시스템 구현"
+          ],
+          "learning_outcomes": [
+            "Python 등의 스크립팅 언어를 활용한 자동화 스크립트 작성 능력 습득",
+            "정기적인 로그 파일 정리 및 분석 자동화 기술 구현",
+            "시스템 모니터링 자동화 도구 개발 및 운영 역량 확보"
+          ],
+          "key_concepts": [
+            "스크립트 기반 자동화 워크플로우 설계",
+            "로그 파일의 주기적 백업 및 아카이빙",
+            "시스템 성능 모니터링을 위한 자동화 대시보드 구현"
+          ],
+          "estimated_hours": 4,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 22,
+          "title": "포트폴리오 정리",
+          "description": "이 모듈에서는 지금까지 학습한 프로젝트와 코드를 체계적으로 정리하고 문서화하는 방법을 학습합니다. 효과적인 포트폴리오 구성을 통해 자신의 역량을 명확히 전달할 수 있는 실무 능력을 기릅니다.",
+          "objectives": [
+            "코드 문서화 작성 방법 습득",
+            "프로젝트 설명서 작성 기술 향상",
+            "효과적인 발표 자료 구성법 이해"
+          ],
+          "learning_outcomes": [
+            "자신의 프로젝트를 체계적으로 문서화할 수 있음",
+            "프로젝트의 목적과 과정을 명확히 설명할 수 있음",
+            "청중을 고려한 발표 자료를 준비할 수 있음"
+          ],
+          "key_concepts": [
+            "문서화의 중요성과 원칙",
+            "프로젝트 설명서 구조화 방법",
+            "효과적인 프레젠테이션 기법"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 23,
+          "title": "기술 면접 준비",
+          "description": "이 모듈은 소프트웨어 개발자 및 기술 직군 면접에서 자주 출제되는 알고리즘 문제 해결 능력을 향상시키기 위한 과정입니다. 기본적인 알고리즘 유형과 시간 복잡도 분석 방법을 학습하고, 실제 코딩 인터뷰 상황에 대비한 준비 기법을 익힙니다.",
+          "objectives": [
+            "기본적인 알고리즘 유형을 이해하고 분류할 수 있다",
+            "알고리즘의 시간 복잡도와 공간 복잡도를 분석할 수 있다",
+            "코딩 인터뷰에서 자주 사용되는 문제 해결 기법을 익힌다"
+          ],
+          "learning_outcomes": [
+            "재귀, 정렬, 그래프 등 다양한 알고리즘 유형을 설명할 수 있다",
+            "Big-O 표기법을 활용하여 알고리즘의 효율성을 평가할 수 있다",
+            "코딩 인터뷰에서 효과적으로 문제를 접근하고 해결하는 프로세스를 적용할 수 있다"
+          ],
+          "key_concepts": [
+            "알고리즘의 기초 유형 (정렬, 탐색, 그래프 등)",
+            "시간 복잡도와 공간 복잡도 분석 기법",
+            "백트래킹과 동적 프로그래밍을 활용한 문제 해결 전략"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "코딩전문교육 기초코딩부터 파이썬,자바,C언어 실무 코딩 자격증까지 ALL PASS 기초자바,c언어,파이썬부터 웹개발,AI빅데이터,정보보안 자격증까지 ALL PASS",
+                "url": "https://ader.naver.com/v1/duFTXpvqz5o53icsQOEOpplafUswpvAsIkip8WQ_HU4NQLpoLI6No0iRIQNdf7qPy3MaV13-xYbs06SvYPI0HIBq6d9VknZAxksOZMJ5ABOCH-Gb_mnjI07awZL9raOipmyS9X8icIDUVVVxxnXWF1b2g1ue9kY_RJZU7iOnvJ9rKhnccPB3EHijH0FEWl5iQ_YUCj65sk5_DMLw5EG7N9xfm_eSm2pFPBL9UPpesy6XwEhx1K_0Q-IjlFnHyBKvyPnM1x48lH38PtPtXFfC2uywBntjRtJmhWVC6T5YhtEh2B79-Trf_gNvP4KkNhSqwxzE_hg3ua9HhV7NWe6hBSYwvVuEc4Hi3kxS0F3dJ-RQOsHvdHu40-sLlLNvYKew1EL4qom2RO-a_Il9OHdvx0jnK242D5WvWzI9CITH8J7-zpzvLJKNNRhXoiCA56eWutPAdfTIHI9i9P_uJbAOtRMRiK9ZcPSCI3kkQrMh4_rfTvfrc7lefj4E342LCwyx_zIn-lPpz4GcoanFU56JdAuxXXCFeNHrBMhAIXJkRvE=?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "집에서 완성하는 개발자 취업 완성 커리큘럼, 이제는 스스로 한계를 깰 때 비전공자도 쉽게 배우는 코딩 교육, 스파르타 내일배움캠프",
+                "url": "https://ader.naver.com/v1/YvM4inRZ4BCItgbDCLPiqVSUgO0DLYmiwdxMZImQIZ_A6I8kkJJTjjwJgGtmn5IlwldeK4Rd95SXwoNi_hcxZ6gHOiA2niMoklwfWzpTsXuruFwq1On6aUVZ4SsADsjeNttnkqkcMh-moJvBZN0Mf5SzQuj1Vqh5d15LPGG8RXxQq2USt_ONgrxPK4qRgkeQacANmOtzGHwwnj9I7o-w50QWg4IDdAj1DzmH2WQwzbgNcwCin8VK6bLkuFWnVT_g9ZYIRpp0y1K4JYgoWpXjR7TuNq5SFT6evG_DV4R3DIWeO0bpx2l5sH1cLKdBSL5dqE46Xqt-80rHAyeE2vKKCPm0vE35p8C7vxFIRGufcG5S3lkXAtljysQhBBhCXNoh6D9YgrGsmhNqJZpa1mUMyStQriYzYyn4yOODd8NMn_tBTQ6FVbk_4GFyhA8wLfXB0qvaC3s7BxaSrdGzVpQk42LZbhbEjBAeGAs9-AgPbVFlEq_Pdbykc_tFlM3RhmwYJ9PFOZRR9SiGpOBFQ-CkLWHJ4KNLSeZk33sNE66zdKMmx8ZU6jNSTdieiIEzUqpqZTdeP0LIem1aGTe0c4rnwg==?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "강남코딩전문교육 기초코딩부터 파이썬,자바,C언어 실무코딩 자격증까지 ALLPASS",
+                "url": "https://ader.naver.com/v1/Mk3GDWLmZES91XZ8YES5uDScLMEL5mrkpGi0za50znvjDnM6ICCBUdRpSZW1Ox1Oi4Zc4fP1MRlcNrGOX_2wp5i4qXuNYnCpvbQwTu2DKw_Aqpey2vRYCr2xp5bhJmw2l4_ahUxCXr3BL7BH_oGoS9KM_Z9qkx_HssZ21AHU22KL6ORG2FmNUSYliH6m1rwKmw_Bd2DP4BzuuCvuqgwQS4B3pgwbXrkklQPbzoSiIgLaT810KSCv1aS8obK3PXWKcacIYMEKWWNw33XjrmRTuSU2RaJDCNDe3JqVKkvBDnhPwWE8HM2nYevobVVG99M1Prr8lh3DbKJPtruTbyxemgCT9npe5EJ6QKhWhj3iiNDYbD0WDrSc6yPLEsYvz-S5MN2Lb1OEX58XxXgUeQAZNJvpAZL9hEaVvryr0w12b0vhfkMSpcPxLDxXY790VBDdCs30DsXvR_XLUTpHgUmWUVoCtjhT7IvjfEYncTz6TzzLmssQw7oqTlj6OAGcfa7GYoczw8BF5ER0IoFu3A7YSmPe4MesVUFZoBw3f90BU2w=?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 24,
+          "title": "모의 면접 및 마무리",
+          "description": "이 모듈은 24주차에 진행되는 최종 단계로, 지금까지 학습한 모든 내용을 종합하여 실제 면접 상황을 시뮬레이션하고 피드백을 통해 최종 점검하는 과정입니다. 포트폴리오와 기술 면접 준비를 기반으로 실무 면접 적응력을 높이고, 학습한 내용을 체계적으로 정리하여 향후 커리어 개발 방향을 설정합니다.",
+          "objectives": [
+            "모의 면접 실시 및 구체적인 피드백 받기",
+            "지금까지 학습한 내용을 체계적으로 최종 정리하기",
+            "개인의 향후 학습 및 커리어 방향 설정하기"
+          ],
+          "learning_outcomes": [
+            "실제 면접과 유사한 환경에서 자신의 역량을 점검하고 개선점을 파악할 수 있습니다",
+            "학습한 기술과 지식을 효과적으로 표현하는 방법을 습득합니다"
+          ],
+          "key_concepts": [
+            "면접 전략 및 대응 기법",
+            "자기 PR 및 스토리텔링",
+            "자기 평가 및 개선 계획 수립"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        }
+      ],
+      "overall_goal": "24주 내 Python beginner에서 실무 적용 가능한 개발자로 성장",
+      "basic_resources": [
+        {
+          "title": "인천파이썬 코딩을 쉽고 빠르게 빅데이터,AI,프론트엔드,백엔드 상위과정의 기초언어",
+          "url": "https://ader.naver.com/v1/0ynUbcnTANWtxbLTCAryozJ3VrFHv4kg229IsvquTN_zKHoJf5bSPdio1ZjFSleU-za1VfgqZYwtVEL26jHJiuMsq21Kx__S5lW7JCv_Dz0JYm9eg2VbAfe98ZXxH9OQnpJXDRAFAATuSFigcqE5AjVIcQVBrt3vE7-jTmLPX2ZT2-2-V-vmnPIhMFHWzo2db4ir0moyK0WTXRmGUoVrYs5Sp5i-V-zNB2cMHOKUMf8QACULX2o_ydtiNFwtfwMoZju3FT5_rC5mSt-v3NRJe862fF5P5jv0ThEMbGQzQH16xZoy5nDoMuBll_xlaWzsTb1Tzfik161V-HhsslvISi5mhnwnzDzhthBchnyqr1PT9_ZCikHu0_yZCMmQHyGgpMgjOI0qqJ9engOsm96CeFsd0KSshYQpj3u9lXrol7tPmD4Q8iFtyImHnGRp18XtZgsIhFEd5oXfnlECVxVWRTQb01jrJS7EtnFa-tTYtgjp1N0B3yCGFK0VLWrW-7YVWW8_AGE3EYL_VH_xj1n5vAgk3HZWyTbeJyy4Gp_31tU=?c=naver.search.pc.plsearch&t=0",
+          "source": "Web Search"
+        },
+        {
+          "title": "검색 고객센터",
+          "url": "https://help.naver.com/alias/search/integration/main.naver",
+          "source": "Web Search"
+        }
+      ],
+      "session_id": "a198b3ae",
+      "original_constraints": "완전 초보자, 주 2시간",
+      "original_goal": "취업",
+      "generated_at": "2025-09-20T14:28:25.453331",
+      "processing_time": null,
+      "total_estimated_hours": 46,
+      "id": 0
+    }
+  ],
+  "84902ed3": [
+    {
+      "title": "AI Learning Path",
+      "level": "beginner",
+      "duration_weeks": 12,
+      "weekly_hours": 2,
+      "focus_areas": [
+        "개인 프로젝트",
+        "기본 학습"
+      ],
+      "modules": [
+        {
+          "week": 1,
+          "title": "Python 프로그래밍 기초",
+          "description": "이 모듈에서는 파이썬 언어의 기본적인 문법과 프로그래밍 환경 설정 방법을 학습합니다. 파이썬의 핵심 문법 요소인 변수, 자료형, 조건문, 반복문을 체계적으로 이해하고 실습을 통해 익힙니다. 또한 데이터 과학과 머신러닝에 널리 사용되는 개발 환경인 Anaconda와 Jupyter Notebook의 설치 및 설정 방법을 배워 실제 개발 환경을 구축할 수 있게 됩니다.",
+          "objectives": [
+            "파이썬 변수와 다양한 자료형(정수, 실수, 문자열, 리스트, 튜플, 딕셔너리)의 개념과 사용법을 익힌다",
+            "조건문(if, elif, else)과 반복문(for, while)을 활용하여 논리 흐름을 제어할 수 있다",
+            "Anaconda를 설치하고 Jupyter Notebook을 실행하여 파이썬 개발 환경을 구성할 수 있다"
+          ],
+          "learning_outcomes": [
+            "기본적인 파이썬 코드를 작성하고 실행할 수 있다",
+            "다양한 자료형과 연산을 활용하여 프로그래밍 문제를 해결할 수 있다",
+            "Anaconda 환경에서 Jupyter Notebook을 통해 파이썬 코드를 작성하고 공유할 수 있다"
+          ],
+          "key_concepts": [
+            "파이썬 기본 문법과 실행 환경",
+            "자료형의 종류와 변환 방법",
+            "조건문을 통한 프로그램 흐름 제어",
+            "반복문을 사용한 효율적인 코드 작성",
+            "Anaconda 설치 및 Jupyter Notebook 활용"
+          ],
+          "estimated_hours": 3,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "IT 인재로 성장하는 치트키! 국비지원 받고 수강료 5만원에 파이썬 정복!",
+                "url": "https://ader.naver.com/v1/XVbLQMhoLHCOdz4QRrmsuDGUelv4de1gUWPRk-LFm49cTvZ3iRE2Q3etHOE9pzmSLuXXjN_tjZlsBFk65jjjrrD57AL9YFEb5LrJfccqnzy6nNpt9WVCKFS-76qNPmNBeJ_lMIn4c5hO3zsiGFcHsWQxUpRRHyr--eRtkIPBfg3EyZJRUiB_IeBDXVm7x8_ffb7y4Eynx2UJFslHC9u_Sz6TiiGVnRX6N-hKFHWHDGbOGmx-jYBCrh6Le9dutz6_HJGv891j7iccVLCrFST715gUidmQVLRGO6YuQTtfco595UkW43cMJ7Q4SsuzyO1ZdmRNCHmaaz67cJG20Y3U5TBXygVQk3tfeP3UwycsYrQ25psVW78oSFmjV2Z7mNbX8msMN2NI25TX1UwqstuA3g==?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "국비지원최대100%, IT/자바/풀스택/빅데이터/파이썬, 종각역 8번출구 평균89.8%의 압도적 취업률 달성! 비전공자도 이해가능! 종각역 8번출구",
+                "url": "https://ader.naver.com/v1/LeiT2y7l3pK2AQcB0nL6xCkuF0EIhZhP_oVUVavUNHmxQm5u1cxeg3bEdW-SDSCn-5buo304o_QQbFttjOuH27cvkPvp03F64wR0W9bhk0JDruCxoSeQAk5-BrrvWjcbl8kE3wmBpda0lOEquShdAiogY8FBmZ4auEi1Qrrww9baWzua4zFhGEY9oFRZibkT_hzgbgMEEmaBpCpMRFasgJfTrS8Iei_DzMFSSGc4FwTIXA8x9TMKQG0CjzLwkDKBEefvqa5el5kdkTh5gUK9cJBmRwtUsyF1b7QHoIrWsS2vtYWN9c-BeERxY_GJM1MLaHZygKI1wgO-BHW1x5D1kwEJqIoV6mrzeFVv2IP_0qQn9MQpPehSw9EdaaxiE7TRVAmMveqGtVV8-VgYlp3wGHBkPkJS1bqDqTVB_GJlbCK4MapbdDEztd1ocRXuPHTcvIS_fpEYQLbPnjPy_FejYN7H3IBhcGbJ9c_05UotC-o=?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 2,
+          "title": "데이터 처리와 라이브러리",
+          "description": "이 모듈에서는 Python의 강력한 데이터 처리 라이브러리인 Pandas와 NumPy를 활용하여 데이터를 효과적으로 조작하는 방법을 학습합니다. 이전 주차에서 배운 Python 기초 지식을 바탕으로, 실제 데이터 분석에 필요한 실무적인 기술을 습득하게 됩니다.",
+          "objectives": [
+            "Pandas의 Series와 DataFrame 구조를 명확히 이해하고 활용할 수 있다",
+            "CSV, Excel 등 다양한 형식의 데이터를 Python으로 불러오는 방법을 익힌다",
+            "데이터를 정리, 필터링, 정렬하여 분석 가능한 형태로 가공할 수 있다"
+          ],
+          "learning_outcomes": [
+            "다양한 데이터 소스로부터 데이터를 효율적으로 불러올 수 있다",
+            "Pandas의 Series와 DataFrame을 활용하여 데이터를 구조화하고 관리할 수 있다",
+            "데이터 정제 및 전처리 기술을 적용하여 분석 가능한 데이터셋을 만들 수 있다"
+          ],
+          "key_concepts": [
+            "Pandas의 Series와 DataFrame 데이터 구조",
+            "NumPy 배열과 벡터화 연산",
+            "데이터 불러오기 및 저장하기",
+            "데이터 필터링, 정렬, 그룹핑 기법"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 3,
+          "title": "AI/ML 기본 개념",
+          "description": "인공지능과 머신러닝의 기초 이론을 학습하며, AI 기술이 어떻게 발전해왔는지 역사적 맥락을 이해하고 머신러닝과 딥러닝의 개념적 차이를 명확히 구분하는 모듈입니다. 이전 주차에서 학습한 Python 프로그래밍과 데이터 처리 기술을 기반으로 AI/ML의 기본 원리를 실무에 적용할 수 있는 기초를 마련합니다.",
+          "objectives": [
+            "인공지능의 역사와 주요 발전 과정을 연대순으로 설명할 수 있다",
+            "머신러닝과 딥러닝의 개념적 차이점을 기술적 특징과 적용 사례를 통해 비교할 수 있다",
+            "인공지능 기술이 다양한 산업 분야에서 어떻게 활용되고 있는지 이해할 수 있다"
+          ],
+          "learning_outcomes": [
+            "AI/ML 관련 주요 용어들을 정의하고 설명할 수 있다",
+            "지도학습, 비지도학습, 강화학습과 같은 머신러닝 방법론의 기본 개념을 이해할 수 있다",
+            "인공지능 기술이 한국 및 글로벌 산업에 미치는 영향을 분석할 수 있다"
+          ],
+          "key_concepts": [
+            "인공지능(AI)의 정의와 분류",
+            "머신러닝과 딥러닝의 차이점 및 관계",
+            "주요 AI 알고리즘과 그 응용 사례"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 4,
+          "title": "지도학습 기초",
+          "description": "이번 모듈에서는 지도학습의 가장 기본적인 두 가지 모델인 선형회귀와 로지스틱회귀에 대해 학습합니다. 선형회귀를 통해 연속형 변수 예측 문제를 접근하고, 로지스틱회귀를 통해 이진 분류 문제를 해결하는 방법을 이해하게 됩니다. 이 두 모델은 머신러닝의 기초가 되는 중요한 알고리즘으로, 다양한 실무 문제에 적용할 수 있는 기본 틀을 제공합니다.",
+          "objectives": [
+            "선형회귀 모델의 수식과 원리를 이해하고 적용할 수 있다",
+            "로지스틱회귀를 통해 이진 분류 문제를 해결할 수 있다",
+            "두 회귀 모델의 차이점과 적용 영역을 비교할 수 있다"
+          ],
+          "learning_outcomes": [
+            "선형회귀 모델을 활용하여 실제 데이터에 대한 예측값을 계산할 수 있다",
+            "로지스틱 함수를 이해하고 임계값에 따른 분류 결과를 도출할 수 있다",
+            "모델 성능을 평가하는 지표들을 활용하여 회귀 및 분류 모델의 성능을 비교할 수 있다"
+          ],
+          "key_concepts": [
+            "선형회귀의 최소제곱법과 경사하강법 최적화",
+            "로지스틱 함수와 시그모이드 곡선의 특성",
+            "결정경계와 확률적 분류 모델의 원리"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 5,
+          "title": "TensorFlow/Keras 실습",
+          "description": "이 모듈에서는 딥러닝 프레임워크인 TensorFlow와 Keras를 설치하고 기본적인 API 사용법을 학습합니다. 이전 모듈에서 학습한 지도학습 기초 개념을 바탕으로, 실제 딥러닝 모델을 구현하기 위한 환경을 구축하고 간단한 신경망 모델을 직접 만들어보는 실습을 진행합니다.",
+          "objectives": [
+            "TensorFlow와 Keras를 로컬 환경에 설치하고 실행 환경을 구축할 수 있다",
+            "TensorFlow/Keras의 기본 API를 이해하고 활용할 수 있다",
+            "Sequential 모델을 사용하여 기본적인 신경망 구조를 설계하고 학습할 수 있다"
+          ],
+          "learning_outcomes": [
+            "TensorFlow와 Keras의 패키지 설치 방법과 환경 설정을 익힐 수 있다",
+            "Keras API를 사용하여 입력층, 은닉층, 출력층으로 구성된 신경망 모델을 구성할 수 있다",
+            "데이터셋을 불러와 모델에 학습시키고 예측 결과를 시각화할 수 있다"
+          ],
+          "key_concepts": [
+            "TensorFlow와 Keras의 차이점 및 각각의 장점",
+            "Sequential 모델을 활용한 기본적인 신경망 구조 설계",
+            "데이터셋 전처리 및 분할 방법",
+            "모델 학습 및 평가 방법"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 6,
+          "title": "이미지 분류 실습",
+          "description": "본 모듈에서는 컴퓨터 비전의 기초인 이미지 분류를 직접 실습합니다. MNIST 손글씨 숫자 데이터셋을 활용하여 기본적인 합성곱 신경망(CNN) 모델을 TensorFlow/Keras로 구현함으로써 이미지 인식의 원리와 CNN 구조를 이해합니다.",
+          "objectives": [
+            "MNIST 데이터셋의 특성을 이해하고 전처리 방법을 익힌다",
+            "TensorFlow/Keras를 사용하여 CNN 구조를 설계하고 구축한다",
+            "분류 모델의 학습 과정과 평가 방법을 실습한다"
+          ],
+          "learning_outcomes": [
+            "실제 이미지 데이터를 사용하여 이미지 분류 모델을 구현할 수 있다",
+            "CNN의 층 구성과 각 층의 역할을 설명할 수 있다",
+            "모델 학습 후 정확도를 측정하고 평가할 수 있다"
+          ],
+          "key_concepts": [
+            "합성곱 신경망(CNN) 구조와 작동 원리",
+            "MNIST 손글씨 데이터셋의 특성",
+            "TensorFlow/Keras의 기본 모델 생성 및 학습 과정",
+            "이미지 데이터 전처리 기법"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 7,
+          "title": "개인 프로젝트 계획",
+          "description": "이번 모듈에서는 개인 프로젝트를 위한 체계적인 계획 수립 방법을 학습합니다. TensorFlow와 이미지 분류 실습에서 배운 기술을 바탕으로 자신만의 프로젝트를 구상하고, 구체적인 실행 계획을 세워봅니다. 프로젝트 주제 선정부터 주요 기능 정의, 기술 스택 결정까지 전 과정을 다룹니다.",
+          "objectives": [
+            "성공적인 개인 프로젝트 주제를 브레인스토밍하고 선정할 수 있다",
+            "프로젝트의 주요 기능을 체계적으로 정의하고 문서화할 수 있다",
+            "프로젝트에 적합한 기술 스택과 도구를 선정할 수 있다"
+          ],
+          "learning_outcomes": [
+            "실제 적용 가능한 프로젝트 아이디어를 구체화할 수 있다",
+            "프로젝트 계획 문서를 작성하여 개발 방향을 명확히 설정할 수 있다",
+            "기술 요구사항을 분석하여 적절한 개발 환경을 구성할 수 있다"
+          ],
+          "key_concepts": [
+            "프로젝트 요구사항 분석",
+            "기능 우선순위 설정",
+            "기술 스택 선정 기준"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 8,
+          "title": "데이터 수집과 분석",
+          "description": "이번 모듈에서는 공공 데이터 포털에서 데이터를 수집하는 방법과 수집된 데이터의 특성을 파악하기 위한 전처리 및 시각화 기법을 학습합니다. 데이터의 품질을 확인하고 분석에 적합한 형태로 가공하는 과정을 실습합니다.",
+          "objectives": [
+            "공공 데이터 포털(publicdata.go.kr)에서 원하는 데이터셋을 검색하고 수집할 수 있다.",
+            "수집된 데이터의 결측치, 이상치를 파악하고 전처리할 수 있다.",
+            "데이터의 특성을 효과적으로 시각화하여 분석할 수 있다."
+          ],
+          "learning_outcomes": [
+            "데이터 수집 프로세스를 이해하고 실습할 수 있다.",
+            "탐색적 데이터 분석(EDA)을 통해 데이터의 분포와 패턴을 파악할 수 있다.",
+            "Python을 활용한 데이터 전처리 및 시각화 기법을 적용할 수 있다."
+          ],
+          "key_concepts": [
+            "공공 데이터 포털 활용법",
+            "데이터 전처리 기법(Missing Value Handling)",
+            "데이터 시각화 도구(Matplotlib, Seaborn)"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "실무 교육은 결과로 증명됩니다. 많은 수료생이 취업으로 답한 No.1 내일배움캠프 수강료 0원! 국비지원으로 원하는 기업에 맞춰 전략적으로 준비하세요",
+                "url": "https://ader.naver.com/v1/htG7Ux9xRNh81ARUJm-dqlcXOfWoAXu5afpM_wJvPToRLu0sy2hgbzWC6RkurKlCWTyqaHhBZEqvzkZhSpn0Lh1fUWC7PSBHwkOmkGsnNpnNNFg7-f_CmKck43OEEF46JuzYQ_lrGS2ZAWlXPZpq9mcdaxaw7-cts3hr3YFY26Snlnxrh2CJf4JKDPBuEQgl3yCR-p5u6TqqPlp4pfLx31Wk8cU0grpm_dKgFo10WTAm1ZinrJbJ5SQ1iWzLztm4R5kCMrxJBWmiZBuiTjIz0bh33-qqRQftGQgkxjjWC6UFMOKINKuxxWLhqKNVto0UCqZ4RhsTJvf86MWaMPkVd6i9o2bFnAkZa49ZVfXk1JkDeX-5QcA7n1kMmBsc39ZMEZWR2YpNkWIVwuyH8X3uU4DtuVrhPomaUZutkwJHnN2pJUFLllJkUNtTMVDxDCq2aAdJWquA-VsGC3SCLDM7byV0Ehkv5ZvbOKYzdOn-0qCuxLpWjtzsoYmlXyc2HE8Wa7NyZTAxC7j2NqcXlMSLmg==?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 9,
+          "title": "프로젝트 개발",
+          "description": "9주차 모듈에서는 이전 주차에서 계획 및 데이터 수집을 완료한 개인 AI 프로젝트를 본격적으로 구현하는 과정을 다룹니다. 선택한 AI 모델을 실제로 학습시키고 구현하며, 중간 점검을 통해 프로젝트의 진행 상황을 평가하고 필요에 따라 방향을 수정하는 방법을 학습합니다.",
+          "objectives": [
+            "선택한 AI 모델의 학습 및 구현 방법을 이해하고 적용할 수 있다",
+            "프로젝트 진행 상황을 중간 점검하고 개선 방향을 설정할 수 있다",
+            "AI 모델 구현 과정에서 발생할 수 있는 문제점을 파악하고 해결 방안을 모색할 수 있다"
+          ],
+          "learning_outcomes": [
+            "실제 AI 모델을 구현하고 학습시키는 경험을 통해 실무 능력을 향상시킬 수 있다",
+            "프로젝트 관리 및 중간 평가 능력을 기를 수 있다"
+          ],
+          "key_concepts": [
+            "AI 모델 선택 기준 및 구현 방법론",
+            "프로젝트 중간 점검 프로세스",
+            "모델 성능 평가 및 개선 방향 설정"
+          ],
+          "estimated_hours": 3,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 10,
+          "title": "프로젝트 고도화",
+          "description": "10주차 모듈에서는 머신러닝 프로젝트의 완성도를 높이기 위한 모델 성능 최적화와 체계적인 문서화 방법을 학습합니다. 하이퍼파라미터 튜닝을 통해 모델 성능을 개선하고, 프로젝트 결과를 효과적으로 문서화하여 발표 자료를 준비하는 과정을 다룹니다.",
+          "objectives": [
+            "하이퍼파라미터 튜닝 기법을 이해하고 적용하여 모델 성능을 최적화할 수 있다",
+            "머신러닝 프로젝트 결과를 체계적으로 문서화하는 방법을 습득한다",
+            "효과적인 발표 자료를 구성하여 프로젝트 성과를 명확하게 전달할 수 있다"
+          ],
+          "learning_outcomes": [
+            "그리드 서치, 랜덤 서치 등 다양한 하이퍼파라미터 튜닝 기법을 실습할 수 있다",
+            "프로젝트 진행 과정과 결과를 보고서 형태로 문서화하는 능력을 갖출 수 있다",
+            "청중을 고려한 발표 자료 구조화 및 시각 자료 제작 기술을 습득할 수 있다"
+          ],
+          "key_concepts": [
+            "하이퍼파라미터 최적화 기법 (그리드 서치, 랜덤 서치, 베이지안 최적화)",
+            "모델 성능 평가 지표 (Accuracy, Precision, Recall, F1 Score)",
+            "프로젝트 문서화 표준 (README, 프로젝트 보고서, 기술 문서)",
+            "발표 자료 구성 전략 (스토리텔링, 시각 자료 활용)"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 11,
+          "title": "심화 주제 선택",
+          "description": "11주차 '심화 주제 선택' 모듈에서는 AI의 핵심 분야인 비전 처리(Vision Processing)와 자연어 처리(Natural Language Processing) 중 하나를 선택하여 더욱 깊이 있는 이론 학습을 진행합니다. 이전 주차에서 개발한 프로젝트를 기반으로 특정 주제를 심화하여 학습하고, 해당 분야의 최신 논문을 분석하며 기술 동향을 파악하게 됩니다.",
+          "objectives": [
+            "비전 또는 자연어 처리 중 하나의 특정 AI 분야에 대한 심화 이론을 체계적으로 학습한다",
+            "선택한 AI 분야와 관련된 최신 논문을 분석하고 핵심 기술 동향을 파악한다",
+            "이전 프로젝트에서 학습한 내용을 심화된 이론적 배경과 연결하여 응용 능력을 향상시킨다"
+          ],
+          "learning_outcomes": [
+            "선택한 AI 분야의 핵심 알고리즘과 이론적 배경을 깊이 이해할 수 있다",
+            "최근 2-3년 내 발표된 관련 분야의 주요 논문을 분석하고 요약할 수 있다",
+            "최신 기술 동향을 파악하고 이를 자신의 프로젝트에 적용할 수 있는 아이디어를 도출할 수 있다"
+          ],
+          "key_concepts": [
+            "컴퓨터 비전의 딥러닝 모델 아키텍처 (CNN, Transformer 등)",
+            "자연어 처리의 언어 모델 구조 및 발전사",
+            "선택 분야의 최신 연구 동향 및 향후 발전 방향"
+          ],
+          "estimated_hours": 3,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 12,
+          "title": "모델 배포 및 발표",
+          "description": "이번 모듈에서는 학습자들이 개발한 머신러닝 모델을 실제 클라우드 환경에 배포하는 방법과 프로젝트 결과를 효과적으로 발표하는 기술을 습득합니다. Azure, AWS, GCP 등 다양한 클라우드 플랫폼을 활용하여 모델을 배포하는 실습과 함께, 동료 및 전문가로부터 피드백을 받는 발표 세션을 진행합니다.",
+          "objectives": [
+            "간단한 클라우드 플랫폼(Azure, AWS, GCP)에 머신러닝 모델을 성공적으로 배포할 수 있다",
+            "프로젝트 결과를 효과적으로 시각화하여 발표할 수 있다",
+            "동료 및 전문가로부터 받은 피드백을 분석하고 개선점을 도출할 수 있다"
+          ],
+          "learning_outcomes": [
+            "클라우드 환경에서 모델 배포 워크플로우를 이해하고 적용할 수 있다",
+            "기술적 내용을 비전문가도 이해할 수 있도록 발표하는 스킬을 습득한다",
+            "발표 후 받은 피드백을 체계적으로 정리하고 향후 개선 방향을 설정할 수 있다"
+          ],
+          "key_concepts": [
+            "클라우드 컴퓨팅 기초와 머신러닝 모델 배포 원리",
+            "MLOps(Machine Learning Operations) 개념",
+            "효과적인 기술 프레젠테이션 기법"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        }
+      ],
+      "overall_goal": "12주 후 AI 기본 이론과 실무 능력을 갖춘 초급 개발자로 성장",
+      "basic_resources": [
+        {
+          "title": "검색 고객센터",
+          "url": "https://help.naver.com/alias/search/integration/main.naver",
+          "source": "Web Search"
+        }
+      ],
+      "session_id": "84902ed3",
+      "original_constraints": "초보자, 주 2시간",
+      "original_goal": "개인 프로젝트",
+      "generated_at": "2025-09-20T14:30:33.439478",
+      "processing_time": null,
+      "total_estimated_hours": 24,
+      "id": 0
+    }
+  ],
+  "36643524": [
+    {
+      "title": "AI와 머신러닝 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 4,
+      "weekly_hours": 10,
+      "focus_areas": [
+        "개인 프로젝트",
+        "기초 프로그래밍"
+      ],
+      "modules": [
+        {
+          "week": 1,
+          "title": "기초 프로그래밍과 데이터 준비",
+          "description": "이 주차에서는 데이터 사이언스 학습의 기초가 되는 프로그래밍 언어인 Python의 기본 문법을 학습합니다. 변수, 조건문, 반복문 등의 기본 개념을 익히고, 개발 환경을 구축하여 데이터 처리를 위한 준비를 완료합니다. 또한 Numpy 라이브러리를 활용하여 기초적인 배열 연산을 숙달합니다.",
+          "objectives": [
+            "Python의 기본 문법 요소인 변수, 조건문, 반복문의 개념을 이해하고 실제 코드 작성에 활용할 수 있다.",
+            "Jupyter Notebook과 VSCode와 같은 데이터 사이언스용 개발 환경을 설치하고 활용할 수 있다.",
+            "Numpy 라이브러리를 사용하여 기본적인 배열 및 행렬 연산을 수행할 수 있다."
+          ],
+          "learning_outcomes": [
+            "Python을 이용한 간단한 프로그래밍 문제를 해결할 수 있다.",
+            "데이터 사이언스 프로젝트를 위한 적절한 개발 환경을 설정할 수 있다.",
+            "Numpy를 활용하여 데이터 배열을 효과적으로 처리할 수 있다."
+          ],
+          "key_concepts": [
+            "Python 기본 문법(변수 선언, 할당, 연산)",
+            "조건문과 반복문 활용(If, Else, For, While)",
+            "Jupyter Notebook 및 VSCode 환경 설정",
+            "Numpy 배열과 행렬의 기본 연산"
+          ],
+          "estimated_hours": 12,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "신촌IT학원 국비100%지원, IT취업전문, 전공/비전공 맞춤교육, 신촌역3분",
+                "url": "https://ader.naver.com/v1/-cm5TsIKJTqTZN4tXRzhsQVr4elkvHpwm6t1ZvlKuP9Zbt16w7JmjS_whQpKVqCsBPQXKJ15kH-MjSmliTzoCr7i8mUjRCR2FxryIq0Dz1npgSBmsxS_sSZOHp4SJtfFZF9FtRjISuLkd_xgysPqzHX_GWGkSVM0hAZn3PYkt1wBXr-nnMk4QSY6pmeOTITlxo43FWRoxxXpKSrsi98P5rFco9qxzkCVNH5d0CJpSRA0xAyLaM8Be5yHT3hrkqEvlMiF_rmfjf23ghATL3xqEm2wnzJMcCbqVjTFFjK8FymP-FcEHSPJsuiSFgxBXWOw4XEpjdiisAREV60A74n7Sw==?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 2,
+          "title": "데이터 처리 및 시각화 기초",
+          "description": "이번 2주차 모듈에서는 데이터 분석의 핵심 도구인 Pandas를 활용한 데이터 처리 방법과 Matplotlib 및 Seaborn을 이용한 데이터 시각화 기법을 학습합니다. 기초 프로그래밍과 데이터 준비에서 다룬 개념을 바탕으로 실제 데이터를 처리하고 시각적으로 표현하는 능력을 기릅니다.",
+          "objectives": [
+            "Pandas 라이브러리를 사용하여 DataFrame을 생성하고 조작하는 능력 습득",
+            "Matplotlib과 Seaborn 라이브러리를 활용한 다양한 데이터 시각화 구현",
+            "결측치 처리, 데이터 정제, 변환 등 기본적인 데이터 전처리 방법 이해"
+          ],
+          "learning_outcomes": [
+            "주어진 데이터를 효율적으로 DataFrame으로 변환하고 원하는 형태로 조작할 수 있다",
+            "다양한 차트와 그래프를 통해 데이터의 패턴과 인사이트를 시각적으로 표현할 수 있다",
+            "실무에서 자주 사용되는 데이터 전처리 기법들을 이해하고 적용할 수 있다"
+          ],
+          "key_concepts": [
+            "Pandas DataFrame의 기본 구조와 생성 방법",
+            "데이터 필터링, 정렬, 그룹화와 같은 DataFrame 조작 기법",
+            "Matplotlib을 이용한 선 그래프, 막대 그래프, 히스토그램 생성",
+            "Seaborn을 활용한 상관 행렬, 바이올린 플롯, 상자 수염 그림 시각화",
+            "결측치 처리 전략과 데이터 타입 변환 방법"
+          ],
+          "estimated_hours": 6,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 3,
+          "title": "머신러닝 개념과 도구 활용",
+          "description": "본 모듈에서는 머신러닝의 기본 개념과 지도학습 및 비지도학습 분류 기법을 학습합니다. Scikit-learn 라이브러리를 활용하여 실제 데이터셋에 기본 머신러닝 모델을 적용하고 평가하는 방법을 익히게 됩니다. 실무에서 자주 사용하는 알고리즘을 실습하고, 데이터 전처리부터 모델 평가까지의 전체 워크플로우를 경험합니다.",
+          "objectives": [
+            "머신러닝의 주요 분류 기법인 지도학습과 비지도학습의 개념 및 차이점을 이해한다",
+            "Scikit-learn을 사용하여 선형 회귀, 로지스틱 회귀, 의사결정나무 등의 기본 모델을 구현하고 학습시킨다",
+            "머신러닝 모델의 평가 지표(정밀도, 재현율, F1-score 등)를 이해하고 결과를 해석한다"
+          ],
+          "learning_outcomes": [
+            "다양한 데이터셋에 적용 가능한 머신러닝 기본 모델을 선택하고 구현할 수 있다",
+            "머신러닝 모델의 학습 과정과 평가 방법을 실무에 적용할 수 있다",
+            "데이터 전처리부터 모델 평가까지의 머신러닝 파이프라인을 구축할 수 있다"
+          ],
+          "key_concepts": [
+            "지도학습(Supervised Learning)과 비지도학습(Unsupervised Learning)의 개념과 예시",
+            "Scikit-learn 라이브러리의 주요 클래스와 함수들(데이터셋 로딩, 모델 학습, 평가)",
+            "교차검증(Cross-Validation)과 과적합(Overfitting) 방지 기법"
+          ],
+          "estimated_hours": 6,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 4,
+          "title": "개인 프로젝트 완성",
+          "description": "이번 4주차 모듈에서는 지금까지 학습한 머신러닝 개념과 도구를 활용하여 개인 프로젝트를 완성합니다. 선택한 주제에 따른 실전 프로젝트 구현을 통해 모델 성능 평가와 결과 해석 능력을 기르고, 코드 문서화 및 포트폴리오 작성 방법을 학습합니다.",
+          "objectives": [
+            "선택한 주제로 개인 머신러닝 프로젝트를 처음부터 끝까지 완성할 수 있다",
+            "모델의 성능을 다양한 지표로 평가하고 결과를 해석할 수 있다",
+            "프로젝트 코드를 체계적으로 문서화하고 포트폴리오로 정리할 수 있다"
+          ],
+          "learning_outcomes": [
+            "실제 데이터셋을 활용한 프로젝트 수행 능력",
+            "머신러닝 모델 성능 평가 방법론 이해",
+            "효율적인 코드 문서화 및 코드 품질 관리 스킬"
+          ],
+          "key_concepts": [
+            "프로젝트 요구사항 분석 및 기획",
+            "모델 선택과 하이퍼파라미터 튜닝",
+            "성능 지표 해석 (정확도, 정밀도, 재현율, F1-score 등)",
+            "코드 문서화 및 버전 관리"
+          ],
+          "estimated_hours": 16,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        }
+      ],
+      "overall_goal": "4주 후 개인 머신러닝 프로젝트 완성 및 AI/ML 기초 이해",
+      "basic_resources": [
+        {
+          "title": "검색 고객센터",
+          "url": "https://help.naver.com/alias/search/integration/main.naver",
+          "source": "Web Search"
+        }
+      ],
+      "session_id": "36643524",
+      "original_constraints": "초보자 2시간",
+      "original_goal": "개인프로젝트하려고",
+      "generated_at": "2025-09-20T14:36:20.043550",
+      "processing_time": null,
+      "total_estimated_hours": 40,
+      "id": 0
+    }
+  ],
+  "1086eb4f": [
+    {
+      "title": "AI와 머신러닝 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 12,
+      "weekly_hours": 10,
+      "focus_areas": [
+        "개인 프로젝트",
+        "초보자 수준 학습"
+      ],
+      "modules": [
+        {
+          "week": 1,
+          "title": "프로그래밍 기초 및 환경 설정",
+          "description": "이 모듈은 프로그래밍을 처음 접하는 학습자들을 위한 기초 과정으로, Python의 기본 문법을 소개하고 데이터 과학 작업에 필수적인 개발 환경을 구축하는 방법을 다룹니다. 학습자들은 Python 언어의 기본 개념을 이해하고, Anaconda와 Jupyter Notebook을 설치하여 Python 개발 환경을 준비하며, 데이터 과학에 필요한 다양한 라이브러리를 설치하는 방법을 배웁니다.",
+          "objectives": [
+            "Python의 기본적인 문법과 구조를 이해한다",
+            "Anaconda 패키지 매니저를 설치하고 활용한다",
+            "Jupyter Notebook을 설치하고 Python 코드를 실행할 수 있다",
+            "데이터 과학에 필수적인 라이브러리(Pandas, NumPy, Matplotlib)를 설치하고 환경을 구성한다"
+          ],
+          "learning_outcomes": [
+            "간단한 Python 스크립트를 작성하고 실행할 수 있다",
+            "데이터 과학 프로젝트를 위한 환경을 독립적으로 구축할 수 있다",
+            "Jupyter Notebook을 통해 대화형으로 데이터 분석 작업을 수행할 수 있다",
+            "필요한 데이터 과학 라이브러리를 검색하고 설치할 수 있다"
+          ],
+          "key_concepts": [
+            "변수와 데이터 타입",
+            "제어문(조건문과 반복문)",
+            "함수 정의와 호출",
+            "리스트와 딕셔너리 데이터 구조",
+            "Anaconda 설치 및 환경 관리",
+            "Jupyter Notebook 인터페이스 사용법",
+            "파이썬 패키지 관리(Pip와 Conda)"
+          ],
+          "estimated_hours": 8,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 2,
+          "title": "프로그래밍 심화 및 실습",
+          "description": "이 모듈에서는 Python 프로그래밍의 심화 개념을 학습하고 실습을 통해 데이터 구조를 이해합니다. 변수, 함수, 제어문을 활용한 프로그램 작성법을 익히고, 리스트와 딕셔너리와 같은 기본 데이터 구조를 사용하여 데이터 처리 능력을 향상시킵니다. 또한 데이터 과학 환경에서 간단한 데이터 처리 실습을 통해 실무 적용 능력을 배양합니다.",
+          "objectives": [
+            "변수, 함수, 제어문을 효과적으로 활용하여 Python 프로그램을 작성할 수 있다.",
+            "리스트, 딕셔너리, 튜플, 세트 등 다양한 데이터 구조의 특성과 사용법을 이해하고 실습할 수 있다.",
+            "데이터 과학 환경에서 데이터를 불러오고, 전처리하는 간단한 데이터 처리 작업을 수행할 수 있다."
+          ],
+          "learning_outcomes": [
+            "Python 스크립트 내에서 함수를 정의하고 호출하는 방법을 익힐 수 있다.",
+            "리스트와 딕셔너리를 활용한 데이터 저장 및 조작 기술을 습득할 수 있다.",
+            "pandas와 같은 라이브러리를 사용하여 데이터 프레임을 생성하고 기본 데이터를 처리할 수 있다."
+          ],
+          "key_concepts": [
+            "함수 정의와 호출",
+            "제어문(조건문과 반복문)",
+            "데이터 구조(리스트, 딕셔너리, 세트, 튜플)"
+          ],
+          "estimated_hours": 15,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 3,
+          "title": "데이터 전처리 기초",
+          "description": "이 모듈에서는 데이터 분석의 기본이 되는 Numpy와 Pandas 라이브러리를 활용한 데이터 핸들링 기법을 학습합니다. 실질적인 데이터 분석 프로젝트에서 사용되는 데이터 구조와 처리 방법을 이해하고 실습을 통해 데이터 전처리 역량을 강화합니다.",
+          "objectives": [
+            "Numpy를 사용하여 다차원 배열을 생성하고 효율적으로 연산할 수 있다",
+            "Pandas 시리즈와 DataFrame의 구조 및 특징을 이해하고 활용할 수 있다",
+            "다양한 형식의 데이터 파일을 읽어들이고 기본적인 데이터 조작을 수행할 수 있다"
+          ],
+          "learning_outcomes": [
+            "Numpy 배열과 벡터화 연산을 통해 수치 데이터를 효과적으로 처리하는 방법 습득",
+            "Pandas를 이용한 데이터 구조화 및 데이터 탐색 능력 향상",
+            "실제 데이터셋을 불러와 정제하고 분석하는 실무 능력 배양"
+          ],
+          "key_concepts": [
+            "NumPy 배열: 다차원 배열의 생성, 인덱싱, 슬라이싱",
+            "Pandas 시리즈: 1차원 데이터 구조 및 인덱싱 기법",
+            "DataFrame: 2차원 데이터 구조와 데이터 조작 메서드"
+          ],
+          "estimated_hours": 8,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 4,
+          "title": "탐색적 데이터 분석(Exploratory Data Analysis)",
+          "description": "본 모듈에서는 데이터 분석의 기초 단계로서 데이터의 특성을 시각적으로 파악하고 기술통계량을 활용하여 데이터의 전반적인 특성을 이해하는 방법을 학습합니다. Python의 대표적인 시각화 라이브러리인 Matplotlib과 Seaborn을 통해 효과적인 데이터 시각화를 구현하고, 이를 바탕으로 데이터의 분포, 평균, 표준편차 등의 기초 통계량을 분석하는 방법을 익힙니다.",
+          "objectives": [
+            "Matplotlib과 Seaborn을 활용하여 다양한 유형의 데이터 시각화 구현하기",
+            "기술통계량(평균, 표준편차, 중앙값 등)을 계산하여 데이터 분석하기",
+            "데이터 분포와 변수 간 관계를 시각적으로 파악하는 방법 습득하기"
+          ],
+          "learning_outcomes": [
+            "주어진 데이터셋에 대해 적절한 시각화 기법을 선택하고 적용할 수 있다",
+            "데이터의 기술통계량을 계산하여 데이터의 특성을 설명할 수 있다",
+            "히스토그램, 산점도 등을 통해 데이터의 분포와 관계를 파악할 수 있다"
+          ],
+          "key_concepts": [
+            "데이터 시각화의 중요성과 목적",
+            "Matplotlib과 Seaborn 라이브러리의 주요 기능",
+            "기술통계량(평균, 중앙값, 표준편차, 사분위수 등)의 개념과 계산",
+            "데이터 분포의 이해(정규분포, 왜도, 첨도)",
+            "변수 간 관계 분석 및 상관관계 파악"
+          ],
+          "estimated_hours": 8,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 5,
+          "title": "선형 회귀 모델 구현",
+          "description": "본 모듈에서는 선형 회귀의 수학적 원리를 이해하고, Scikit-learn 라이브러리를 활용하여 실제 선형 회귀 모델을 구현하는 방법을 학습합니다. 데이터 전처리와 탐색적 데이터 분석(EDA)을 기반으로 한 기초 지식을 활용하여 실용적인 머신러닝 모델을 구축하는 과정을 다룹니다.",
+          "objectives": [
+            "선형 회귀 모델의 수학적 원리를 이해하고 설명할 수 있다",
+            "Scikit-learn 라이브러리를 사용하여 선형 회귀 모델을 구현할 수 있다",
+            "모델의 성능을 평가하기 위한 주요 지표를 이해하고 활용할 수 있다"
+          ],
+          "learning_outcomes": [
+            "선형 회귀 모델을 직접 구축하고 해석할 수 있다",
+            "모델 성능을 다양한 평가 지표로 측정하고 비교할 수 있다",
+            "머신러닝 프로젝트의 전체 파이프라인을 이해하고 적용할 수 있다"
+          ],
+          "key_concepts": [
+            "선형 회귀의 수학적 정의 및 수식",
+            "최소제곱법을 통한 최적 모델 파라미터 추정",
+            "R-제곱, RMSE, MAE 등 모델 평가 지표의 의미와 활용"
+          ],
+          "estimated_hours": 6,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 6,
+          "title": "로지스틱 회귀 및 모델 평가",
+          "description": "이 모듈에서는 이진 분류 문제를 해결하기 위한 로지스틱 회귀 모델의 이론적 배경과 구현 방법을 학습합니다. 또한 분류 모델의 성능을 측정하는 다양한 평가 지표와 교차검증을 통한 모델 검증 방법을 실습합니다. 선형 회귀 모델에서 확장된 로지스틱 회귀를 이해함으로써 예측 문제에 대한 보다 정교한 접근법을 학습하게 됩니다.",
+          "objectives": [
+            "로지스틱 회귀 모델의 개념과 수학적 기초를 이해한다",
+            "분류 문제에서 사용되는 평가 지표(Sensitivity, Specificity, Precision, Recall, F1 Score 등)를 학습한다",
+            "교차검증 기법(K-Fold Cross Validation)을 활용하여 모델 성능을 검증하는 방법을 실습한다"
+          ],
+          "learning_outcomes": [
+            "로지스틱 회귀를 사용하여 이진 분류 문제를 해결할 수 있다",
+            "분류 모델의 성능을 다양한 평가 지표로 측정하고 비교할 수 있다",
+            "교차검증을 통해 모델의 일반화 성능을 평가하고 과적합을 방지할 수 있다"
+          ],
+          "key_concepts": [
+            "로지스틱 함수와 시그모이드 함수의 역할",
+            "오즈(Odds)와 로짓(Logit) 변환",
+            "분류 임계값(Threshold) 설정과 ROC 곡선 분석"
+          ],
+          "estimated_hours": 8,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 7,
+          "title": "모델 성능 향상 기법",
+          "description": "이 모듈에서는 머신러닝 모델의 성능을 향상시키기 위한 다양한 기법을 다룹니다. 과적합과 과소적합의 개념을 이해하고, 이를 방지하기 위한 교차검증 기법을 실습합니다. 또한 하이퍼파라미터 튜닝을 통해 모델 성능을 최적화하는 방법을 학습합니다.",
+          "objectives": [
+            "교차검증 실습을 통해 모델의 일반화 성능 평가하기",
+            "과적합과 과소적합 문제의 원인과 증상을 이해하고 식별하기",
+            "하이퍼파라미터 튜닝 기법을 사용하여 모델 성능 최적화하기"
+          ],
+          "learning_outcomes": [
+            "다양한 교차검증 방법(K-fold, Stratified K-fold)의 원리와 실습 능력",
+            "과적합과 과소적합을 시각적으로 구분하고 해결책 제시하기",
+            "하이퍼파라미터 튜닝 도구(Google Optimize, GridSearchCV 등) 활용 능력"
+          ],
+          "key_concepts": [
+            "과적합(Overfitting)과 과소적합(Underfitting)의 개념과 특징",
+            "교차검증(Cross-Validation)의 필요성과 다양한 형태",
+            "하이퍼파라미터 튜닝(Hyperparameter Tuning)의 방법론과 도구"
+          ],
+          "estimated_hours": 6,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 8,
+          "title": "모델 최적화 및 앙상블 기초",
+          "description": "이 8주차 모듈에서는 머신러닝 모델의 성능을 향상시키기 위한 최적화 기법과 앙상블 방법론의 기초를 학습합니다. 실습 중심으로 하이퍼파라미터 튜닝을 통해 모델의 예측 정확도를 높이고, 여러 모델을 결합하는 앙상블 기법의 개념을 이해하며 실제 사례를 통해 모델 성능 개선 전략을 분석합니다.",
+          "objectives": [
+            "하이퍼파라미터 튜닝 실습을 통해 모델 성능 최적화 방법을 익힌다",
+            "앙상블 기법의 기본 개념과 주요 방법론을 이해한다",
+            "실제 사례 분석을 통해 모델 성능 개선 전략을 수립할 수 있다"
+          ],
+          "learning_outcomes": [
+            "교차검증을 활용한 하이퍼파라미터 최적화 기법을 실습할 수 있다",
+            "배깅, 부스팅 등의 앙상블 기법을 구현하고 적용할 수 있다",
+            "다양한 성능 지표를 활용하여 모델 개선 효과를 정량적으로 평가할 수 있다"
+          ],
+          "key_concepts": [
+            "하이퍼파라미터 튜닝의 개념과 실습",
+            "앙상블 학습의 원리와 유형(배깅, 부스팅)",
+            "성능 지표와 교차검증 방법론"
+          ],
+          "estimated_hours": 6.5,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 9,
+          "title": "의사결정나무와 랜덤포레스트",
+          "description": "이 모듈에서는 결정 트리 기반의 머신러닝 모델에 대해 학습합니다. 의사결정나무의 기본 원리를 이해하고, 이를 실습을 통해 구현하며, 랜덤포레스트와 같은 앙상블 기법의 개념을 학습합니다. 이를 통해 복잡한 의사결정 문제를 해결하고 다양한 실무 사례에 적용할 수 있는 능력을 기릅니다.",
+          "objectives": [
+            "의사결정나무 모델을 Python 라이브러리를 사용하여 직접 구현할 수 있다",
+            "랜덤포레스트 모델의 앙상블 원리와 작동 방식을 이해할 수 있다",
+            "트리 기반 모델이 활용되는 다양한 실무 사례를 분석하고 설명할 수 있다"
+          ],
+          "learning_outcomes": [
+            "데이터 분할 기준과 트리 구조를 이해하고 새로운 데이터에 적용할 수 있다",
+            "랜덤포레스트의 배깅 및 부스팅 개념을 실습을 통해 체득한다",
+            "실제 비즈니스 문제에서 트리 기반 모델의 적용 가능성을 평가할 수 있다"
+          ],
+          "key_concepts": [
+            "결정 트리 알고리즘의 분할 기준과 정보 이득",
+            "랜덤포레스트의 배깅(Bagging)과 특징 샘플링",
+            "과적합 방지를 위한 트리 깊이 제한과 가지치기 기법",
+            "모델 해석성과 설명 가능한 AI 개념"
+          ],
+          "estimated_hours": 6,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 10,
+          "title": "SVM과 클러스터링 기초",
+          "description": "이번 모듈에서는 고급 머신러닝 모델인 서포트 벡터 머신(SVM)과 클러스터링 기법에 대해 학습합니다. SVM의 분류 원리를 이해하고, 다양한 클러스터링 알고리즘을 실습을 통해 익히며, 모델 간의 차이점과 적용 방법을 비교 분석합니다. 이전 모듈에서 학습한 의사결정나무와 랜덤포레스트의 기초를 바탕으로 더욱 정교한 머신러닝 기법을 다룹니다.",
+          "objectives": [
+            "SVM 모델의 작동 원리와 커널 트릭을 이해할 수 있다",
+            "K-means, 계층적 클러스터링 등 다양한 클러스터링 기법을 실습할 수 있다",
+            "분류 및 군집 모델의 성능을 비교하고 적절한 모델 선택 기준을 마련할 수 있다"
+          ],
+          "learning_outcomes": [
+            "SVM을 활용하여 비선형 데이터 분류 문제를 해결할 수 있다",
+            "주어진 데이터셋에 적합한 클러스터링 기법을 선택하고 결과를 해석할 수 있다",
+            "SVM과 클러스터링 모델의 장단점을 다른 머신러닝 모델과 비교할 수 있다"
+          ],
+          "key_concepts": [
+            "SVM의 마진 최대화 원리와 서포트 벡터",
+            "커널 트릭(Kernel Trick)을 통한 비선형 분류",
+            "클러스터링의 목적과 평가 지표",
+            "중심 기반 클러스터링 vs 계층적 클러스터링"
+          ],
+          "estimated_hours": 8,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 11,
+          "title": "개인 프로젝트 준비",
+          "description": "이 모듈에서는 데이터 분석 프로젝트를 성공적으로 수행하기 위한 체계적인 계획 수립과 데이터 수집 방법에 대해 학습합니다. 이전에 학습한 의사결정나무, 랜덤포레스트, SVM, 클러스터링 기법을 활용하여 실제 데이터셋을 탐색하고, 명확한 문제 정의와 목표 설정을 통해 체계적인 프로젝트 수행 계획을 수립합니다.",
+          "objectives": [
+            "실제 데이터셋을 탐색하고 적절한 데이터셋을 선택할 수 있다",
+            "프로젝트의 문제를 정의하고 구체적인 목표를 설정할 수 있다",
+            "프로젝트 일정을 체계적으로 계획하고 관리할 수 있다"
+          ],
+          "learning_outcomes": [
+            "다양한 데이터셋을 평가하고 프로젝트에 적합한 데이터를 선택할 수 있다",
+            "분석하고자 하는 문제를 명확하게 정의하고 측정 가능한 목표를 설정할 수 있다",
+            "프로젝트 진행을 위한 단계별 일정과 마일스톤을 효과적으로 계획할 수 있다"
+          ],
+          "key_concepts": [
+            "데이터셋 선택 기준 및 평가 방법",
+            "문제 정의 방법론과 SMART 목표 설정",
+            "간트 차트 및 프로젝트 일정 관리 기법"
+          ],
+          "estimated_hours": 8,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 12,
+          "title": "개인 프로젝트 완성",
+          "description": "이번 주차에서는 그동안 진행해온 개인 프로젝트의 최종 단계를 완성합니다. 데이터 전처리가 완료된 데이터셋을 바탕으로 최종 모델을 구현하고 평가하며, 프로젝트 결과를 체계적으로 정리하여 발표를 준비하는 과정을 학습합니다.",
+          "objectives": [
+            "개인 프로젝트 데이터 전처리 과정을 마무리하고 정제된 데이터셋을 확보한다",
+            "선택한 머신러닝 알고리즘으로 최종 모델을 구현하고 하이퍼파라미터 튜닝을 수행한다",
+            "모델 성능 평가 지표를 활용하여 구현 결과를 분석하고 개선점을 도출한다"
+          ],
+          "learning_outcomes": [
+            "실제 데이터를 활용한 프로젝트 경험을 통해 데이터 전처리부터 모델 구현까지의 전체 프로세스를 이해할 수 있습니다",
+            "모델 평가 방법론을 학습하고 다양한 성능 지표를 통해 모델의 강점과 약점을 파악할 수 있습니다"
+          ],
+          "key_concepts": [
+            "모델 구현 및 평가 방법론",
+            "하이퍼파라미터 튜닝 기법",
+            "모델 성능 분석 및 개선 전략"
+          ],
+          "estimated_hours": 10,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        }
+      ],
+      "overall_goal": "12주 동안 AI와 머신러닝의 기초를 탄탄히 다지고, 실제 개인 프로젝트를 통해 데이터 수집부터 모델 배포까지의 전체 파이프라인 경험을 습득한다.",
+      "basic_resources": [
+        {
+          "title": "검색 고객센터",
+          "url": "https://help.naver.com/alias/search/integration/main.naver",
+          "source": "Web Search"
+        }
+      ],
+      "session_id": "1086eb4f",
+      "original_constraints": "초보자 2일",
+      "original_goal": "개인 프로젝트를 수행하고 싶어",
+      "generated_at": "2025-09-20T14:52:01.668018",
+      "processing_time": null,
+      "total_estimated_hours": 97.5,
+      "id": 0
+    }
+  ],
+  "9b15cb70": [
+    {
+      "title": "AI와 머신러닝 Learning Path",
+      "level": "intermediate",
+      "duration_weeks": 12,
+      "weekly_hours": 20,
+      "focus_areas": [
+        "자기계발",
+        "목표달성",
+        "효율적 학습"
+      ],
+      "modules": [
+        {
+          "week": 1,
+          "title": "개발환경 구축 및 Python 기초",
+          "description": "1주차 모듈에서는 Python 프로그래밍을 시작하기 위한 개발환경을 구축하고, Python의 기본적인 문법과 개념을 학습합니다. 이 모듈을 통해 Python 개발을 위한 필수적인 도구를 설치하고, 변수, 자료형, 기본적인 제어문과 데이터 구조를 이해하게 됩니다.",
+          "objectives": [
+            "Python 개발환경(IDE 및 개발 도구)을 성공적으로 설치하고 설정할 수 있다",
+            "변수 선언과 자료형(int, float, str, bool 등)의 개념을 이해하고 활용할 수 있다",
+            "조건문(if, elif, else)과 반복문(for, while)의 사용법을 익히고 적용할 수 있다",
+            "리스트(list)와 딕셔너리(dictionary)와 같은 기본 데이터 구조를 생성하고 조작할 수 있다"
+          ],
+          "learning_outcomes": [
+            "환경 설정을 통해 Python 개발을 독립적으로 시작할 수 있다",
+            "Python 코드의 기본적인 구조와 문법을 이해하고 실습할 수 있다",
+            "다양한 제어문을 사용하여 프로그램의 흐름을 제어할 수 있다",
+            "데이터 구조를 활용하여 간단한 데이터 처리 작업을 수행할 수 있다"
+          ],
+          "key_concepts": [
+            "Python IDE 설치 및 환경 구성",
+            "변수 선언과 데이터 타입의 종류",
+            "조건문과 반복문의 문법 및 활용법",
+            "리스트와 딕셔너리의 생성, 접근, 수정 방법"
+          ],
+          "estimated_hours": 22,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 2,
+          "title": "선형대수 핵심 개념",
+          "description": "이 모듈에서는 선형대수의 기초가 되는 벡터와 행렬의 기본 연산을 학습합니다. 내적과 행렬 곱셈을 직접 구현해보면서 선형 변환의 개념과 기저 이론을 이해합니다. 데이터 과학과 머신러닝에서 필수적인 선형대수의 핵심 원리를 체계적으로 학습합니다.",
+          "objectives": [
+            "벡터와 행렬의 기본 연산을 이해하고 적용할 수 있다",
+            "내적(dot product)과 행렬 곱셈(matrix multiplication)을 프로그래밍으로 구현할 수 있다",
+            "선형 변환(linear transformation)과 기저(basis)의 개념을 설명할 수 있다"
+          ],
+          "learning_outcomes": [
+            "데이터를 벡터로 표현하고 행렬 연산으로 처리하는 방법 습득",
+            "내적을 통한 벡터 간 관계 및 각도 계산 능력 향상",
+            "선형 변환을 활용한 데이터 변환 및 기저 변환 이해"
+          ],
+          "key_concepts": [
+            "벡터 공간(Vector Space)과 벡터 연산",
+            "행렬 곱셈과 전치(Transpose)",
+            "내적(Dot Product)과 직교성(Orthogonality)",
+            "선형 변환(Linear Transformation)과 행렬 표현",
+            "기저(Basis)와 차원(Dimension)"
+          ],
+          "estimated_hours": 20,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 3,
+          "title": "선형회귀 모델 구축",
+          "description": "본 모듈에서는 지도학습의 기본이 되는 선형회귀 모델의 수학적 원리를 학습하고, 경사하강법을 활용한 파라미터 최적화 기법을 이해합니다. Python 라이브러리를 활용하여 선형회귀 모델을 직접 구현하고 실습하는 과정을 통해 실무 적용 능력을 배양합니다.",
+          "objectives": [
+            "선형회귀 모델의 수학적 원리와 기본 가정을 이해할 수 있다",
+            "경사하강법의 작동 원리를 이해하고 파라미터 최적화 과정을 설명할 수 있다",
+            "Python의 머신러닝 라이브러리를 사용하여 선형회귀 모델을 구현할 수 있다"
+          ],
+          "learning_outcomes": [
+            "독립변수와 종속변수 간의 선형 관계를 수식으로 표현할 수 있다",
+            "비용함수의 값을 최소화하기 위한 경사하강법 알고리즘을 구현하고 실행할 수 있다",
+            "실제 데이터셋에 선형회귀 모델을 적용하고 결과를 해석할 수 있다"
+          ],
+          "key_concepts": [
+            "선형관계와 최소자승법",
+            "비용함수와 손실함수(MSE, Mean Squared Error)",
+            "경사하강법과 확률적 경사하강법(SGD)"
+          ],
+          "estimated_hours": 20,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 4,
+          "title": "로지스틱회귀와 손실함수",
+          "description": "이 모듈에서는 이진 분류 문제를 해결하기 위한 로지스틱 회귀 모델의 원리와 구현 방법을 학습합니다. 선형 회귀의 연장선상에서 확률적 해석을 추가하고, 이를 위한 적절한 비용함수와 최적화 기법을 살펴봅니다. Python의 scikit-learn 라이브러리를 활용하여 실제 데이터에 로지스틱 회귀를 적용하는 실습을 진행합니다.",
+          "objectives": [
+            "이진 분류를 위한 로지스틱 함수와 그 성질을 이해하고 설명할 수 있다",
+            "로지스틱 회귀의 비용함수(교차 엔트로피 손실)를 이해하고 계산할 수 있다",
+            "경사하강법을 사용하여 로지스틱 회귀 모델의 파라미터를 최적화할 수 있다",
+            "Python으로 로지스틱 회귀 모델을 구현하고 학습시킬 수 있다"
+          ],
+          "learning_outcomes": [
+            "이진 분류 문제에서 확률적 해석의 필요성을 이해한다",
+            "로지스틱 함수와 시그모이드 곡선의 특성을 설명할 수 있다",
+            "경사하강법이 로지스틱 회귀에서 어떻게 동작하는지 실습할 수 있다",
+            "실제 데이터셋에 로지스틱 회귀 모델을 적용하여 분류할 수 있다"
+          ],
+          "key_concepts": [
+            "로지스틱 함수와 시그모이드 함수의 수학적 정의",
+            "교차 엔트로피 손실 함수의 원리와 계산 방법",
+            "경사하강법을 통한 로지스틱 회귀 최적화 과정",
+            "이진 분류에서 확률 예측과 결정 경계의 해석"
+          ],
+          "estimated_hours": 20,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 5,
+          "title": "SVM과 커널 기법",
+          "description": "이 모듈에서는 머신러닝의 강력한 지도학습 모델인 서포트 벡터 머신(SVM)의 기본 원리와 커널 기법을 학습합니다. 선형 모델의 한계를 극복하는 비선형 분류 방법으로서 SVM의 특성을 이해하고, Python 라이브러리를 활용한 실제 구현 방법을 다룹니다.",
+          "objectives": [
+            "SVM의 분류 원리와 작동 방식을 이해하고 설명할 수 있다",
+            "커널 트릭을 통한 비선형 분류 문제 해결 방법을 학습한다",
+            "Python의 scikit-learn 라이브러리를 사용하여 SVM 모델을 구현하고 적용할 수 있다"
+          ],
+          "learning_outcomes": [
+            "선형 분리가 어려운 데이터셋에 대해 SVM을 적용하여 분류 모델을 구축할 수 있다",
+            "다양한 커널 함수(선형, RBF, 다항식 등)의 특성과 적용 상황을 구분할 수 있다",
+            "SVM 모델의 주요 하이퍼파라미터를 이해하고 튜닝할 수 있다"
+          ],
+          "key_concepts": [
+            "마진 최대화 원리와 서포트 벡터",
+            "커널 트릭을 통한 특징 공간 확장",
+            "SVM의 하이퍼파라미터(C, 감마, 커널 유형)",
+            "비선형 분류 문제 해결"
+          ],
+          "estimated_hours": 18,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 6,
+          "title": "의사결정나무와 앙상블",
+          "description": "이번 모듈에서는 지도학습 기법 중 의사결정트리와 이를 활용한 앙상블 방법론에 대해 학습합니다. 의사결정트리의 분할 기준을 이해하고, 과적합 문제를 해결하기 위한 앙상블 기법들을 살펴봅니다. Python의 Scikit-learn 라이브러리를 활용하여 실제 적용 방법도 함께 다룹니다.",
+          "objectives": [
+            "의사결정트리의 분할 기준(정보 이득, 지니 불순도)을 이해하고 설명할 수 있다",
+            "과적합을 방지하기 위한 앙상블 학습 기법의 원리를 설명할 수 있다",
+            "Scikit-learn을 활용하여 의사결정트리 및 앙상블 모델을 구현하고 평가할 수 있다"
+          ],
+          "learning_outcomes": [
+            "의사결정트리가 데이터를 분류하는 논리적 과정을 이해하고 시각화할 수 있다",
+            "랜덤 포레스트와 부스팅 같은 앙상블 모델의 작동 원리를 설명할 수 있다",
+            "모델 성능 평가 지표(정확도, 정밀도, 재현율, F1 스코어)를 활용해 앙상블 모델을 비교 분석할 수 있다"
+          ],
+          "key_concepts": [
+            "정보 이득과 엔트로피를 통한 의사결정트리 분할 기준",
+            "과적합과 그 방지를 위한 앙상블 기법(배깅, 부스팅)",
+            "랜덤 포레스트, 그래디언트 부스팅 등의 앙상블 모델",
+            "Scikit-learn을 활용한 모델 학습 및 평가"
+          ],
+          "estimated_hours": 20,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 7,
+          "title": "클러스터링 기법",
+          "description": "이 모듈에서는 비지도학습의 핵심 기법 중 하나인 클러스터링에 대해 학습합니다. 데이터를 자동으로 유사한 그룹으로 분할하는 방법을 이해하고, 실무에서 활용할 수 있는 다양한 클러스터링 기법을 다룹니다. 특히 K-means 알고리즘의 원리와 구현, 적절한 클러스터 개수 선정 방법을 중점적으로 학습합니다.",
+          "objectives": [
+            "K-means 알고리즘의 원리와 작동 방식을 이해할 수 있다",
+            "실전 데이터에서 적절한 클러스터 개수를 선정하는 다양한 방법을 학습한다",
+            "Python의 scikit-learn 라이브러리를 사용하여 클러스터링을 구현할 수 있다"
+          ],
+          "learning_outcomes": [
+            "비지도학습 환경에서 데이터의 숨겨진 패턴을 발견하는 능력을 얻는다",
+            "데이터 전처리부터 클러스터링 결과 해석까지의 전체 프로세스를 익힐 수 있다",
+            "다양한 클러스터링 기법의 장단점을 이해하고 적절한 상황에 적용할 수 있다"
+          ],
+          "key_concepts": [
+            "K-means 알고리즘의 초기화 및 반복 과정",
+            "클러스터 개수(K) 선정을 위한 실루엣 계수와 엘보우 방법",
+            "고차원 데이터에 대한 차원 축소와 클러스터링의 결합"
+          ],
+          "estimated_hours": 21,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 8,
+          "title": "차원축소 및 이상탐지",
+          "description": "8주차 모듈에서는 데이터 분석과 머신러닝에서 중요한 두 가지 비지도학습 기법인 차원축소와 이상탐지에 대해 학습합니다. 고차원 데이터를 효율적으로 처리하고, 데이터의 숨겨진 패턴을 발견하는 방법을 다룹니다.",
+          "objectives": [
+            "PCA(주성분 분석)와 t-SNE의 기본 개념과 원리를 이해하고 설명할 수 있다",
+            "다양한 이상값 탐지 방법론을 학습하고 각각의 장단점을 비교할 수 있다",
+            "Python을 사용하여 PCA, t-SNE, 이상탐지 기법들을 실습을 통해 구현할 수 있다"
+          ],
+          "learning_outcomes": [
+            "차원축소 기법을 통해 고차원 데이터를 저차원으로 변환하는 방법을 습득",
+            "시각화를 통해 데이터의 구조와 패턴을 효과적으로 표현하는 능력 배양",
+            "이상치 및 이상패턴을 식별하고 처리하는 실무 능력 향상"
+          ],
+          "key_concepts": [
+            "주성분 분석(PCA): 선형 차원축소 기법",
+            "t-SNE: 비선형 차원축소 기법",
+            "이상값 탐지(Anomaly Detection): 데이터 정규성 가정하의 통계적 방법과 머신러닝 기반 방법"
+          ],
+          "estimated_hours": 19,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 9,
+          "title": "강화학습 기초",
+          "description": "본 모듈에서는 강화학습의 기초 개념과 Q-learning 알고리즘을 학습합니다. 강화학습은 환경과 상호작용하며 보상을 최대화하는 의사결정 방법으로, 다양한 인공지능 응용 분야에서 활용되고 있습니다. 특히 Q-learning은 대표적인 강화학습 알고리즘으로, 상태-행동 가치 함수를 학습하여 최적 정책을 찾는 방법을 중점적으로 다룹니다.",
+          "objectives": [
+            "강화학습의 기본 개념과 원리를 이해한다",
+            "Q-learning 알고리즘의 수학적 기초와 구현 방법을 분석한다",
+            "간단한 환경에서 Q-learning을 실제로 구현할 수 있다"
+          ],
+          "learning_outcomes": [
+            "Q-learning을 활용하여 동적 환경에서의 최적 의사결정 방법을 설명할 수 있다",
+            "Q-table을 이용한 상태-행동 가치 평가 방법을 실습을 통해 익힌다",
+            "간단한 게임 환경에서 Q-learning 알고리즘을 적용하여 학습시킬 수 있다"
+          ],
+          "key_concepts": [
+            "강화학습의 구성요소 (에이전트, 환경, 상태, 행동, 보상)",
+            "Q-learning의 Bellman 방정식과 업데이트 규칙",
+            "ε-greedy 정책과 탐험-활용 균형"
+          ],
+          "estimated_hours": 19,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 10,
+          "title": "정책학습과 환경 모델링",
+          "description": "이번 10주차 모듈에서는 강화학습의 핵심 요소인 정책학습에 대해 학습합니다. 정책함수와 가치함수의 관계를 이론적으로 이해하고, 실제 환경 모델링을 통해 강화학습의 원리를 체득합니다. Python 프로그래밍을 활용하여 강화학습 알고리즘을 직접 구현해보는 실습을 진행합니다.",
+          "objectives": [
+            "정책함수(policy function)와 가치함수(value function) 간의 수학적 관계 및 개념적 차이를 명확히 이해할 수 있다",
+            "실제 강화학습 환경을 모델링하고 시뮬레이션할 수 있는 능력을 기른다",
+            "Python의 라이브러리를 활용하여 강화학습 알고리즘을 직접 구현하고 테스트할 수 있다"
+          ],
+          "learning_outcomes": [
+            "정책함수를 통해 최적의 행동 선택 방법을 설계할 수 있다",
+            "다양한 강화학습 환경(예: 격자 환경, 연속 제어 환경 등)을 모델링하고 구현할 수 있다",
+            "Python 코드로 정책경사법, Q-learning 등의 정책학습 알고리즘을 구현할 수 있다"
+          ],
+          "key_concepts": [
+            "정책함수와 가치함수의 수학적 표현 및 상호관계",
+            "동적계획법과 몬테카를로 방법을 활용한 정책평가",
+            "Python을 활용한 강화학습 환경 구축 및 에이전트 학습"
+          ],
+          "estimated_hours": 19,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 11,
+          "title": "프로젝트 준비 및 데이터 탐색",
+          "description": "이번 11주차 모듈에서는 실제 프로젝트를 위한 데이터셋 분석 및 전처리 기술을 학습합니다. 주어진 데이터셋의 구조적 특성을 파악하고, 실무에서 자주 발생하는 결측치 문제를 처리하며, 효과적인 특성 엔지니어링 기법을 다룹니다. 또한 데이터의 분포를 시각적으로 표현하는 다양한 방법을 익혀 데이터의 특성을 직관적으로 이해할 수 있도록 합니다.",
+          "objectives": [
+            "실제 데이터셋의 구조를 체계적으로 분석하고 이해할 수 있다",
+            "결측치를 효과적으로 처리하고 대체할 수 있는 다양한 방법론을 습득한다",
+            "특성 엔지니어링 기법을 활용하여 데이터 분석의 정확도를 향상시킬 수 있다",
+            "다양한 시각화 도구를 사용하여 데이터 분포와 패턴을 효과적으로 표현할 수 있다"
+          ],
+          "learning_outcomes": [
+            "데이터셋의 구조와 특성을 파악하는 실무 능력을 배양한다",
+            "결측치 처리 및 이상치 검출에 대한 실용적 기술을 습득한다",
+            "특성 엔지니어링을 통해 모델 성능을 향상시키는 방법을 익힌다",
+            "데이터 분포를 시각화함으로써 데이터의 패턴과 이상치를 식별할 수 있다"
+          ],
+          "key_concepts": [
+            "데이터셋 구조 분석",
+            "결측치 처리 기법 (삭제, 대체, 예측)",
+            "특성 엔지니어링 (정규화, 인코딩, 상호작용 항 생성)",
+            "데이터 분포 시각화 (히스토그램, 박스플롯, 산점도)"
+          ],
+          "estimated_hours": 19,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 12,
+          "title": "통합 프로젝트 구현 및 평가",
+          "description": "이번 주 모듈에서는 AI 정책학습과 환경 모델링 이론을 실제 프로젝트로 구현합니다. 데이터 전처리부터 모델 학습, 평가에 이르는 전체 파이프라인을 구축하고, 프로젝트 결과를 체계적으로 분석하여 발표 자료까지 완성하는 과정을 학습합니다. 이전 주차에서 준비한 데이터를 활용하여 실제 문제 정의부터 결과 해석까지의 통합적인 프로젝트 경험을 제공합니다.",
+          "objectives": [
+            "정책학습과 환경 모델링 이론을 실제 프로젝트에 적용하여 문제 정의부터 모델 평가까지의 전체 과정을 수행할 수 있다",
+            "데이터 전처리, 모델 학습, 결과 평가를 포함하는 최적화된 머신러닝 파이프라인을 구축할 수 있다",
+            "프로젝트 결과를 분석하고 이해하기 쉽게 발표 자료로 준비하는 방법을 학습한다"
+          ],
+          "learning_outcomes": [
+            "실제 데이터를 활용한 통합 프로젝트 구현 경험을 통해 실무 역량을 강화할 수 있다",
+            "머신러닝 파이프라인의 각 단계를 유기적으로 연결하여 최적화된 모델을 구축할 수 있다",
+            "프로젝트 결과물을 효과적으로 시각화하고 발표하는 커뮤니케이션 스킬을 습득한다"
+          ],
+          "key_concepts": [
+            "머신러닝 파이프라인 구축 및 최적화",
+            "모델 성능 평가 지표 및 해석 방법",
+            "데이터 시각화를 통한 결과 전달 전략"
+          ],
+          "estimated_hours": 23,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        }
+      ],
+      "overall_goal": "12주 동안 AI와 머신러닝 중급 수준의 통합적 역량 완성",
+      "basic_resources": [
+        {
+          "title": "검색 고객센터",
+          "url": "https://help.naver.com/alias/search/integration/main.naver",
+          "source": "Web Search"
+        }
+      ],
+      "session_id": "9b15cb70",
+      "original_constraints": "중급자 5시간",
+      "original_goal": "자기계발",
+      "generated_at": "2025-09-20T14:59:13.225267",
+      "processing_time": null,
+      "total_estimated_hours": 240,
+      "id": 0
+    }
   ]
 }
