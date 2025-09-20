@@ -71,17 +71,26 @@ async function checkCurriculumCompletion() {
         const curriculumData = StorageManager.curriculum.get();
         if (curriculumData) {
             console.log('✅ 커리큘럼 발견 - 생성 완료 처리');
-            
+
             // Clear generation completion flag
             isGeneratingCurriculum = false;
-            
-            // Display curriculum
-            const curriculumContent = document.getElementById('curriculumContent');
-            if (curriculumContent) {
-                displayCurriculumCards(curriculumContent, curriculumData);
-                showNotification('커리큘럼이 완성되었습니다!', 'success');
+
+            // 즉시 커리큘럼 탭으로 전환
+            if (typeof switchToTab === 'function') {
+                switchToTab('curriculum');
+                console.log('📚 커리큘럼 탭으로 자동 전환');
             }
-            
+
+            // Display curriculum immediately after tab switch
+            setTimeout(() => {
+                const curriculumContent = document.getElementById('curriculumContent');
+                if (curriculumContent) {
+                    displayCurriculumCards(curriculumContent, curriculumData);
+                    showNotification('커리큘럼이 완성되었습니다!', 'success');
+                    console.log('📊 커리큘럼 카드 표시 완료');
+                }
+            }, 100); // 탭 전환 후 짧은 지연
+
             return;
         }
         
@@ -96,12 +105,23 @@ async function checkCurriculumCompletion() {
 
 // Show curriculum content
 async function showCurriculumContent(curriculumContent) {
+    // Debug logs
+    console.log('🔍 showCurriculumContent 호출됨');
+    console.log('📊 isGeneratingCurriculum 상태:', isGeneratingCurriculum);
+
     // Check existing curriculum in localStorage first
     const existingCurriculum = StorageManager.curriculum.get();
+    console.log('💾 localStorage 커리큘럼 확인:', existingCurriculum ? '있음' : '없음');
 
     if (existingCurriculum) {
-        console.log('📚 기존 커리큘럼 표시');
+        console.log('📚 기존 커리큘럼 표시 (localStorage에서)');
         displayCurriculumCards(curriculumContent, existingCurriculum);
+        curriculumContent.style.display = 'block';
+
+        // 커리큘럼이 있으면 생성 플래그 해제
+        isGeneratingCurriculum = false;
+        console.log('✅ 생성 플래그 해제됨');
+        return;
     } else {
         // Try to load curriculum from server
         console.log('🔄 서버에서 커리큘럼 데이터 로드 시도');

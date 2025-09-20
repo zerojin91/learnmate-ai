@@ -224,30 +224,51 @@ async function sendMessage() {
                         if (parsed.content) {
                             console.log('📝 콘텐츠 수신:', parsed.content);
 
-                            // 커리큘럼 JSON 응답 감지 및 숨김 처리
+                            // 커리큘럼 JSON 응답 감지 및 처리
                             if (isCurriculumJsonResponse(parsed.content)) {
-                                console.log('📚 커리큘럼 JSON 응답 감지 - 대화창에서 숨김');
+                                console.log('📚 커리큘럼 JSON 응답 감지 - 데이터 저장 중');
 
-                                // 커리큘럼 데이터 저장 (전체 응답이 완성되면 처리)
+                                // 커리큘럼 데이터 누적
                                 fullAiResponse += parsed.content;
 
-                                // 대화창에는 간단한 메시지만 표시
-                                if (!aiMessageElement) {
-                                    console.log('🆕 새 AI 메시지 요소 생성 (커리큘럼용)');
-                                    aiMessageElement = addMessageToChat('', 'ai');
-                                }
+                                // JSON이 완성되었는지 확인하고 저장
+                                try {
+                                    const curriculumData = JSON.parse(fullAiResponse);
+                                    console.log('✅ 커리큘럼 JSON 파싱 성공:', curriculumData);
 
-                                const friendlyMessage = '✅ 맞춤형 커리큘럼이 생성되었습니다! 상단의 "나의 커리큘럼" 탭에서 확인해보세요.';
-                                updateMessageContent(aiMessageElement, friendlyMessage);
+                                    // 커리큘럼 데이터를 localStorage에 저장
+                                    StorageManager.curriculum.set(curriculumData);
+                                    console.log('💾 커리큘럼 데이터 저장 완료');
 
-                                // 커리큘럼 탭으로 자동 전환 (선택사항)
-                                setTimeout(() => {
-                                    if (typeof switchToTab === 'function') {
-                                        switchToTab('curriculum');
+                                    // 대화창에는 간단한 메시지만 표시
+                                    if (!aiMessageElement) {
+                                        console.log('🆕 새 AI 메시지 요소 생성 (커리큘럼용)');
+                                        aiMessageElement = addMessageToChat('', 'ai');
                                     }
-                                }, 1000);
 
-                                return; // 일반 처리 로직 건너뛰기
+                                    const friendlyMessage = '✅ 맞춤형 커리큘럼이 생성되었습니다! 상단의 "나의 커리큘럼" 탭에서 확인해보세요.';
+                                    updateMessageContent(aiMessageElement, friendlyMessage);
+
+                                    // 커리큘럼 생성 상태 해제
+                                    isGeneratingCurriculum = false;
+
+                                    // 커리큘럼 탭으로 자동 전환
+                                    setTimeout(() => {
+                                        if (typeof switchToTab === 'function') {
+                                            switchToTab('curriculum');
+                                            // 커리큘럼 콘텐츠 즉시 업데이트
+                                            const curriculumContent = document.getElementById('curriculumContent');
+                                            if (curriculumContent && typeof displayCurriculumCards === 'function') {
+                                                displayCurriculumCards(curriculumContent, curriculumData);
+                                            }
+                                        }
+                                    }, 1000);
+
+                                    return; // 일반 처리 로직 건너뛰기
+                                } catch (jsonError) {
+                                    // JSON이 아직 완성되지 않았거나 파싱 오류 - 계속 누적
+                                    console.log('⏳ JSON 아직 미완성 - 계속 수신 중');
+                                }
                             }
 
                             // 일반 응답 처리
@@ -302,14 +323,21 @@ async function sendMessage() {
 
         if (fullAiResponse) {
             // Profile extraction removed
-            
-            // Check for curriculum generation completion
+
+            // Check for curriculum generation completion (only if not already handled)
             if (typeof isGeneratingCurriculum !== 'undefined' && isGeneratingCurriculum) {
-                setTimeout(() => {
-                    if (typeof checkCurriculumCompletion === 'function') {
-                        checkCurriculumCompletion();
-                    }
-                }, 1000); // Give some time for data to be processed
+                // Check if curriculum data was already saved in the streaming process
+                const existingCurriculum = StorageManager.curriculum.get();
+                if (!existingCurriculum) {
+                    setTimeout(() => {
+                        if (typeof checkCurriculumCompletion === 'function') {
+                            checkCurriculumCompletion();
+                        }
+                    }, 1000); // Give some time for data to be processed
+                } else {
+                    console.log('📚 커리큘럼 이미 저장됨 - 추가 체크 생략');
+                    isGeneratingCurriculum = false;
+                }
             }
         }
 

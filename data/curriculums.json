@@ -7039,5 +7039,3518 @@
       "total_estimated_hours": 22,
       "id": 0
     }
+  ],
+  "a6f13472": [
+    {
+      "title": "파이썬 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 12,
+      "weekly_hours": 2,
+      "focus_areas": [
+        "기본 개념 이해",
+        "취미 활동으로서의 접근",
+        "자기계발 목적"
+      ],
+      "modules": [
+        {
+          "week": 1,
+          "title": "파이썬 소개 및 설치",
+          "description": "이 모듈에서는 파이썬 언어의 개요를 소개하고, 개발 환경을 설정하는 방법을 배웁니다. 파이썬이 왜 인기 있는 프로그래밍 언어인지 이해하고, 실제 코드 작성을 위한 IDE 설정까지 학습합니다.",
+          "objectives": [
+            "Python 및 주요 IDE(PyCharm, VS Code, Jupyter Notebook) 설치 방법 이해",
+            "파이썬의 동적 타입, 인터프리터 언어 특성 파악",
+            "파이썬 개발 환경 설정 및 첫 프로그램 실행 방법 습득"
+          ],
+          "learning_outcomes": [
+            "다양한 운영체제에서 파이썬 설치 및 환경 변수 설정 가능",
+            "개발 도구 선택 기준을 이해하고 자신에게 맞는 IDE 선택",
+            "간단한 파이썬 스크립트를 작성하고 실행할 수 있음"
+          ],
+          "key_concepts": [
+            "인터프리터 언어의 특성과 장단점",
+            "동적 타이핑과 정적 타이핑의 차이",
+            "REPL 환경과 IDE의 역할"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 2,
+          "title": "기본 문법 - 변수와 데이터 타입",
+          "description": "이 모듈에서는 프로그래밍의 기본 구성 요소인 변수와 다양한 데이터 타입에 대해 학습합니다. 변수를 선언하고 값을 할당하는 방법을 이해하고, 파이썬에서 지원하는 정수, 실수, 문자열, 불리언과 같은 기본 자료형의 특성과 사용법을 배웁니다. 또한 서로 다른 자료형 간의 변환 방법과 실제 프로그래밍에서의 활용 방법을 실습합니다.",
+          "objectives": [
+            "변수 선언 및 할당 방법 습득",
+            "정수, 실수, 문자열, 불리언 자료형의 특징과 사용법 이해",
+            "자료형 변환 및 다양한 자료형을 활용한 실습 수행"
+          ],
+          "learning_outcomes": [
+            "변수를 선언하고 다양한 값을 올바르게 할당할 수 있다",
+            "파이썬의 기본 자료형(정수, 실수, 문자열, 불리언)을 구분하고 사용할 수 있다",
+            "자료형 간 변환이 필요한 상황을 파악하고 적절한 변환 방법을 적용할 수 있다"
+          ],
+          "key_concepts": [
+            "변수 선언과 할당 (Variable Declaration and Assignment)",
+            "기본 데이터 타입 (Basic Data Types)",
+            "형 변환 (Type Conversion)"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 3,
+          "title": "기본 문법 - 연산자와 조건문",
+          "description": "3주차 모듈에서는 파이썬 프로그래밍의 핵심인 연산자와 조건문에 대해 학습합니다. 이 모듈을 통해 다양한 연산자를 활용하여 데이터를 처리하고, 프로그램의 흐름을 제어하는 조건문 작성 방법을 익히게 됩니다. 특히 if-elif-else 구조를 통해 복잡한 조건 분기를 구현하는 실무 능력을 배양합니다.",
+          "objectives": [
+            "산술, 비교, 논리 연산자를 정확히 이해하고 활용할 수 있다",
+            "if, elif, else를 사용한 조건문을 작성하고 실행할 수 있다",
+            "복합 조건문을 구성하고 실습을 통해 문제 해결 능력을 기를 수 있다"
+          ],
+          "learning_outcomes": [
+            "다양한 연산자를 사용하여 수치 및 논리 연산을 수행할 수 있다",
+            "조건에 따라 프로그램의 실행 흐름을 제어하는 코드를 작성할 수 있다",
+            "복잡한 조건을 논리적으로 구성하여 실용적인 프로그램을 구현할 수 있다"
+          ],
+          "key_concepts": [
+            "산술 연산자(+,-,*,/,%, //, **)",
+            "비교 연산자(==,!=, >, <, >=, <=)",
+            "논리 연산자(and, or, not)와 중첩 조건문"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "하루 250원으로 1년 89,000원 전체 과목 무한수강, 최신 개정 수강",
+                "url": "https://ader.naver.com/v1/rEAYw4hHYOzB9ecsMPnHp5cpWyD_xRZUPHn1bVN3rD-x-oJ739nJGAB6QhwiTsz3LbXFr8JC_QUDTkRZW0uDc2C30u9n-V7cZKZMxam6_u1oYJ8t14ZzVShSp6W7bfqziHx_hr6cDqtY6ApMbrGMmlLYXimUdN1h7NzXm-rMUqlfaHmL8UCc2vIMsI7vFJdjMHmd_xhANTENlrWTMuv-DmFVo0BTeIxy95WSgu8Ap4Qn22-w2eHUBp0tLQph2B7INkEmDzcNeqgTA2dFWp0BmU2bkH9yhwXLSFzUNWj9ACNYcNF2hyupWabuRoLALLDE15HvR4UWQsgM5CZL3kdZ84BevR_Qhvv9qd6s1oVfi_Y9o1Aw9fpnWopvailkDBrqER221KQg-BQBeJhPcIVgvkDh9ZQJWyKYFvaoGxGhrNWb5OaHztF3fRZbrGI1vIXRF0SAUrrMNWeBMD50CLhR_l1FqrLzD4qlqzSL0BrWe-ruFqqMaSH0uOCo0Uxgg70VdCqeb6wYSIZQOu_dmsKw7N1x94LvS8pbQMaRxcm1TuQ=?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 4,
+          "title": "반복문과 리스트",
+          "description": "본 모듈에서는 프로그래밍에서 필수적인 반복문과 리스트 구조에 대해 학습합니다. 데이터를 효율적으로 처리하고 자동화하는 방법을 익히며, 리스트를 이용한 다양한 프로그래밍 기법을 다룹니다. 기본적인 for문과 while문의 개념부터 시작하여, 리스트의 생성, 수정, 순회 방법을 심도 있게 이해하고, 리스트 내포와 다양한 메서드 활용법을 학습합니다.",
+          "objectives": [
+            "for문과 while문의 기본 문법과 활용 방법을 정확히 이해하고 사용할 수 있다",
+            "리스트를 생성, 수정, 순회하는 다양한 방법을 익히고 실무에 적용할 수 있다",
+            "리스트 내포(list comprehension)와 리스트 관련 메서드를 효과적으로 활용할 수 있다"
+          ],
+          "learning_outcomes": [
+            "반복문을 사용하여 코드의 간결성과 효율성을 높일 수 있다",
+            "다양한 리스트 연산을 통해 데이터를 구조화하고 처리할 수 있다",
+            "복잡한 데이터 처리 작업을 리스트와 반복문을 조합하여 구현할 수 있다"
+          ],
+          "key_concepts": [
+            "for문과 while문의 구조적 차이점과 적절한 사용 시점",
+            "리스트의 기본 연산(추가, 삭제, 수정, 접근)",
+            "리스트 내포를 통한 코드 간결화와 성능 최적화"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "하루 250원으로 1년 89,000원 전체 과목 무한수강, 최신 개정 수강",
+                "url": "https://ader.naver.com/v1/Nj8JNUDF6BbTKEYenhxycFah1NnJBYCX14UtgQa-nv0op9INE_ewt8v-pqmaGiK6V2Jzla8g7GAJuBAtXSvFdqtuaTGIRxi2RnnQ4_Kotfk2_QuDYwbD5Kd8iMUwEeJGc4IncvR604NEL5b_7htWDFPRLn11RVYdtd7SgLkBylpXacFChlADP338O6v1IqgKNdP0-emkl9OF6W5tcdtJmufqDgx2eAz_RoB0_Fa8IIbwS_N6NYJdBTMKccZssriaT4N9exYIPGo-Bq8i10wZxb5H2d-CHCdc2yR2R4afbzLmwAMOiyVJx1vZWg5HBJytA_Q1OrvXisUw1yyd18deFeKc5bK6tbEm85fR1kPxeta0Mi0BXu-s9PTBl89pF0y5JRYWuny_36CoOqal28S2l7sk0GJ0DTlx3JgeJ01Lbj7OOKdIrJaN_TuPw1M231fW9YJAVs34evcSh5Evkc7GyP_KCQeMhlAcxZb-ug20TuNw2va1XQjsJH3Os2d6pzqF?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 5,
+          "title": "튜플, 딕셔너리, 집합",
+          "description": "이 모듈에서는 파이썬의 고급 자료구조인 튜플, 딕셔너리, 집합을 학습합니다. 각 자료구조의 특성과 활용 방법을 이해하고, 실무에서 효율적으로 사용하는 방법을 배웁니다. 이전 모듈에서 학습한 기본 문법과 반복문, 리스트를 바탕으로 더욱 복잡한 데이터 구조를 다룰 수 있게 됩니다.",
+          "objectives": [
+            "튜플의 불변성과 다양한 활용법을 이해하고 적용할 수 있다",
+            "딕셔너리를 생성하고 키-값 쌍을 효율적으로 관리하는 방법을 습득한다",
+            "집합 자료형의 특징과 교집합, 합집합 등의 메서드를 활용할 수 있다"
+          ],
+          "learning_outcomes": [
+            "튜플을 사용하여 데이터의 안정성을 보장하는 방법을 구현할 수 있다",
+            "딕셔너리를 활용해 복잡한 데이터를 구조화하고 빠르게 조회할 수 있다",
+            "집합 연산을 통해 중복 제거 및 데이터 필터링 작업을 효율적으로 수행할 수 있다"
+          ],
+          "key_concepts": [
+            "튜플의 불변성(Immutability)과 생성 방법",
+            "딕셔너리의 키-값 쌍 구조와 조회/업데이트 메서드",
+            "집합 자료형의 특징(중복 불허, 순서 없음)과 집합 연산"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 6,
+          "title": "파일 입출력",
+          "description": "이번 주차에서는 컴퓨터 프로그래밍의 핵심 개념인 파일 입출력에 대해 학습합니다. 파일은 프로그램이 데이터를 영구적으로 저장하고 불러올 수 있게 해주는 중요한 메커니즘입니다. 텍스트 파일을 읽고 쓰는 기본적인 방법부터 시작하여, 다양한 입출력 모드와 파일 경로 처리, 디렉토리 관리 기법까지 포괄적으로 다룹니다.",
+          "objectives": [
+            "텍스트 파일을 읽고 쓰는 다양한 방법을 습득한다",
+            "파일 입출력 함수의 다양한 모드를 이해하고 활용할 수 있다",
+            "파일 경로 및 디렉토리 구조를 효과적으로 관리할 수 있다"
+          ],
+          "learning_outcomes": [
+            "파일을 열고 데이터를 읽고 쓸 수 있는 능력을 갖추게 된다",
+            "파일 모드(읽기, 쓰기, 추가 등)에 따라 적절한 함수를 선택할 수 있다",
+            "상대 경로와 절대 경로를 구분하여 파일 위치를 정확히 지정할 수 있다"
+          ],
+          "key_concepts": [
+            "파일 객체와 파일 핸들",
+            "텍스트 모드와 바이너리 모드의 차이점",
+            "절대 경로와 상대 경로 개념",
+            "디렉토리 변경 및 생성 방법"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 7,
+          "title": "예외 처리",
+          "description": "이 모듈에서는 Python에서 오류를 효과적으로 관리하고 프로그램의 안정성을 높이기 위한 예외 처리 기법을 학습합니다. try-except 구문을 활용하여 예상치 못한 오류 상황을 우아하게 처리하는 방법과, 특정 상황에 맞는 사용자 정의 예외를 생성하는 실습을 통해 실무에 바로 적용할 수 있는 예외 처리 능력을 기릅니다.",
+          "objectives": [
+            "try-except 구문을 활용한 기본 오류 처리 방법을 이해한다",
+            "다양한 예외 발생 상황을 인지하고 적절히 처리하는 방법을 학습한다",
+            "특정 비즈니스 요구사항에 맞는 사용자 정의 예외를 생성하고 활용하는 실습을 진행한다"
+          ],
+          "learning_outcomes": [
+            "일반적인 예외 상황에서 try-except 구조를 사용하여 프로그램이 중단되지 않도록 할 수 있다",
+            "조건에 따라 적절한 예외 메시지를 제공하고 로그를 남기는 방법을 구현할 수 있다",
+            "특정 도메인에 특화된 예외 클래스를 설계하고 활용할 수 있다"
+          ],
+          "key_concepts": [
+            "Built-in Exceptions (내장 예외)",
+            "Try-Except-Else-Finally 블록 구조",
+            "사용자 정의 예외 클래스 생성 및 활용"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 8,
+          "title": "기본 라이브러리 활용",
+          "description": "Python의 표준 라이브러리 중 math, datetime, random 모듈을 실습을 통해 학습합니다. 각 모듈의 주요 함수를 활용하여 실생활 예제를 만들어보고, 이를 통해 응용력을 키울 수 있습니다.",
+          "objectives": [
+            "math 라이브러리의 수학적 함수들을 활용할 수 있다",
+            "datetime 모듈을 사용하여 날짜와 시간을 처리할 수 있다",
+            "random 라이브러리로 난수 생성 및 관련 기능을 실습한다"
+          ],
+          "learning_outcomes": [
+            "다양한 수학적 계산을 라이브러리 함수를 통해 구현하는 방법 습득",
+            "날짜와 시간 관련 데이터를 효율적으로 다루는 기술 습득",
+            "확률적 요소가 필요한 프로그램에서 난수 생성을 활용하는 능력 향상"
+          ],
+          "key_concepts": [
+            "수학적 연산과 상수 (math 모듈)",
+            "날짜 및 시간 연산과 형식화 (datetime 모듈)",
+            "난수 생성과 확률 분포 (random 모듈)"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 9,
+          "title": "프로젝트 기획",
+          "description": "이 모듈에서는 개인 프로젝트를 성공적으로 기획하고 실행하기 위한 기초적인 계획 수립 방법을 학습합니다. 자신의 관심사에 기반한 창의적인 프로젝트 아이디어를 발굴하고, 이를 체계적으로 분석하여 요구사항을 도출하며 프로젝트 구현을 위한 구체적인 계획을 세우는 과정을 다룹니다.",
+          "objectives": [
+            "개인의 관심사와 역량을 바탕으로 실현 가능한 프로젝트 주제를 선정할 수 있다",
+            "프로젝트의 요구사항을 체계적으로 분석하고 설계할 수 있다",
+            "프로젝트 구현을 위한 단계별 실행 계획을 수립할 수 있다"
+          ],
+          "learning_outcomes": [
+            "자신만의 독창적인 프로젝트 아이디어를 브레인스토밍하는 방법 습득",
+            "프로젝트 요구사항 명세서 작성 능력 향상",
+            "현실적인 프로젝트 구현 일정 및 자원 계획 수립 능력 배양"
+          ],
+          "key_concepts": [
+            "프로젝트 아이디어 브레인스토밍 기법",
+            "요구사항 분석 및 정의 방법론",
+            "프로젝트 계획 수립 및 일정 관리"
+          ],
+          "estimated_hours": 3,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 10,
+          "title": "프로젝트 구현",
+          "description": "이 모듈에서는 이전 주차에서 기획한 프로젝트를 실제 코드로 구현하는 과정을 학습합니다. 선택한 프로그래밍 언어와 툴을 활용하여 프로젝트의 기본 구조를 설계하고, 주요 기능을 단계적으로 구현하여 최종적으로 작동 가능한 프로그램을 만드는 것을 목표로 합니다.",
+          "objectives": [
+            "계획한 프로젝트의 코드를 실제로 구현한다",
+            "프로젝트의 기본 기능을 단계적으로 구현하고 테스트한다",
+            "코드에서 발생한 오류를 식별하고 디버깅하여 수정한다"
+          ],
+          "learning_outcomes": [
+            "프로젝트 요구사항에 맞는 코드 구조를 설계하고 구현할 수 있다",
+            "다양한 테스트 방법을 통해 기능의 정확성을 검증할 수 있다",
+            "디버깅 도구를 사용하여 코드 오류를 효과적으로 수정할 수 있다"
+          ],
+          "key_concepts": [
+            "코딩 표준 및 베스트 프랙티스",
+            "모듈화와 함수 설계",
+            "테스트 주도 개발(TDD) 기초",
+            "디버깅 기법 및 오류 메시지 분석"
+          ],
+          "estimated_hours": 3,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 11,
+          "title": "프로젝트 개선",
+          "description": "본 모듈에서는 기존에 구현된 프로젝트의 완성도를 높이기 위한 여러 개선 작업을 다룹니다. 코드 최적화와 가독성 개선을 통해 유지보수가 용이한 코드를 작성하고, 사용자 피드백을 반영하여 추가 기능을 구현합니다. 프로젝트 구현 단계에서 완성된 기본 기능을 바탕으로 실질적인 제품으로 발전시킬 수 있는 방법을 학습합니다.",
+          "objectives": [
+            "코드 최적화 및 가독성 개선을 통해 효율적인 프로그램 구조 설계",
+            "추가 기능 구현과 기존 기능 보완을 통한 프로젝트 완성도 향상",
+            "사용자 피드백을 체계적으로 수집하고 분석하여 개선사항 도출"
+          ],
+          "learning_outcomes": [
+            "기존 코드의 성능을 측정하고 최적화할 수 있는 능력 습득",
+            "사용자 요구사항을 효과적으로 해석하고 구현하는 방법 이해",
+            "프로젝트 품질 개선을 위한 체계적인 피드백 수집 및 분석 기법 학습"
+          ],
+          "key_concepts": [
+            "코드 리팩토링과 유지보수성",
+            "사용자 경험(UX) 개선을 위한 인터페이스 설계",
+            "지속적인 피드백 사이클과 애자일 방법론 적용"
+          ],
+          "estimated_hours": 3,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        },
+        {
+          "week": 12,
+          "title": "최종 발표 및 피드백",
+          "description": "이 모듈에서는 각자의 프로젝트 결과물을 동료들과 교수진 앞에서 발표하고, 코드 리뷰를 통해 피드백을 받으며 학습 내용을 정리하는 시간을 갖습니다. 프로젝트의 성과를 공유하고 개선점을 도출하여 향후 프로젝트 계획을 수립하는 것이 목표입니다.",
+          "objectives": [
+            "프로젝트 결과물 발표 능력 향상",
+            "코드 리뷰 및 피드백 수용",
+            "학습 내용 정리 및 향후 계획 수립"
+          ],
+          "learning_outcomes": [
+            "효과적인 프로젝트 발표 기법 습득",
+            "건설적인 피드백을 주고받는 방법 이해",
+            "프로젝트 경험을 바탕으로 한 향후 개발 방향 설정"
+          ],
+          "key_concepts": [
+            "프로젝트 프레젠테이션 기술",
+            "코드 리뷰 프로세스",
+            "피드백 기반 개선 방법론"
+          ],
+          "estimated_hours": 3,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": []
+          }
+        }
+      ],
+      "overall_goal": "파이썬 기초 문법부터 개인 프로젝트 완성까지 단계적 학습 및 실습을 통한 실력 향상",
+      "basic_resources": [
+        {
+          "title": "시간없는 직장인도 하루 5분으로 업무자동화 가능! AI 코딩밸리",
+          "url": "https://ader.naver.com/v1/JFfTo5rPwp6cZlCyTnQSQ84lorwbMogx7y9vwRkfdygxf13Kn0AIKgtifXULRcVzxdQAelfPlY8c6Y7Tv3_a_vr8-SGCahwiL6roFmx3ZViMICZl6rHACpwSCOc5dQezCvYhKskwGAP59ckBT-ut4w9NasGGumWmivrW5VHM51INbS9Nc1CfJn0-gfeKaLs_OHsO-z9x-CCPpup21JgmvJaAa6sXyMVCk5BOvH6tqtOf0iyJXMtXhQrPL_s3Qic9pbcO58RbhrQ7W-pY3MRok1xKy2ZsX-7rMf855H-PlEPeW9_9JlfhXlnuegnTgHC7G79Y1MeVGMogvEFv_XYR8tyXEBI5vZDNAV2M3eXfeuLzXLo33AW85SNsoqINMtVgJDsIPTmcjJyQhT9jsZv1U8u9eEXAQGBiXW_xppnvKhd4tn4v4j9nG5Tm3vFG691zcF6Bqo8aE1ZDwthVUAAbK_rlaaZh8tXSqi7Tys9cn-rY6_aFf6cegqXExS4lssn5usHSJ1rJOgOuUj50FQRSyue5LyqT0c_qMDxAS0hNX0HETwseUT2z9JYRh-E4IkUxAGj4KLcT3Hubn0rk0LK_TMvvyTl0BC8evxRfYGjRZ1w=?c=naver.search.pc.plsearch&t=0",
+          "source": "Web Search"
+        },
+        {
+          "title": "검색 고객센터",
+          "url": "https://help.naver.com/alias/search/integration/main.naver",
+          "source": "Web Search"
+        }
+      ],
+      "session_id": "a6f13472",
+      "original_constraints": "완전 초보자, 주에 2시간",
+      "original_goal": "취미나 자기계발",
+      "learning_path_analysis": "### 1. 이 주제의 핵심 학습 영역\n\n파이썬을 배우기 위한 핵심 학습 영역은 다음과 같습니다:\n\n- **기본 문법**: 변수, 데이터 타입, 연산자, 조건문, 반복문\n- **함수와 모듈**: 함수 정의, 매개변수, 반환값, 모듈 임포트\n- **자료구조**: 리스트, 튜플, 딕셔너리, 집합\n- **파일 입출력**: 파일 읽기 및 쓰기\n- **예외 처리**: 오류 처리 및 예외 발생\n- **기본 라이브러리 활용**: `math`, `datetime`, `random` 등\n- **기초적인 프로젝트**: 간단한 프로그램 작성 및 문제 해결\n\n### 2. beginner 수준에서 시작하여 어떤 순서로 학습해야 하는가?\n\n학습 순서는 다음과 같이 설정할 수 있습니다:\n\n1. **1주차**: 파이썬 소개 및 설치, 기본 문법 (변수, 데이터 타입)\n2. **2주차**: 기본 문법 (연산자, 조건문)\n3. **3주차**: 반복문 (for, while) 및 리스트\n4. **4주차**: 함수 정의 및 호출, 매개변수와 반환값\n5. **5주차**: 튜플, 딕셔너리, 집합\n6. **6주차**: 파일 입출력 (텍스트 파일 읽기 및 쓰기)\n7. **7주차**: 예외 처리 및 오류 관리\n8. **8주차**: 기본 라이브러리 활용 (math, datetime, random)\n9. **9주차**: 간단한 프로젝트 아이디어 브레인스토밍\n10. **10주차**: 선택한 프로젝트 구현 (예: 간단한 계산기, To-Do 리스트)\n11. **11주차**: 프로젝트 개선 및 디버깅\n12. **12주차**: 최종 프로젝트 발표 및 피드백\n\n### 3. 기본 개념 이해, 취미 활동으로서의 접근, 자기계발 목적을 고려할 때 중점을 둬야 할 부분은?\n\n- **기본 개념 이해**: 각 주차별로 학습한 내용을 충분히 이해하고 연습할 수 있도록 문제를 제공해야 합니다. 실습 위주의 학습이 중요합니다.\n- **취미 활동으로서의 접근**: 재미있는 프로젝트 아이디어를 제공하여 학습자가 흥미를 느낄 수 있도록 합니다. 예를 들어, 간단한 게임이나 유용한 도구를 만드는 것을 추천합니다.\n- **자기계발 목적**: 학습자가 자신의 목표와 연계된 프로젝트를 선택하도록 유도하여, 실질적인 자기계발 효과를 느낄 수 있도록 합니다.\n\n### 4. 12주 동안 현실적으로 달성 가능한 목표는?\n\n- **기본 문법 및 자료구조에 대한 이해**: 파이썬의 기본적인 문법과 자료구조를 이해하고 활용할 수 있다.\n- **간단한 프로그램 작성**: 주어진 문제를 해결하는 간단한 프로그램을 작성할 수 있다.\n- **자신만의 프로젝트 완성**: 개인의 관심사에 맞는 간단한 프로젝트를 기획하고 구현할 수 있다.\n- **문제 해결 능력 향상**: 코드 작성 중 발생하는 오류를 스스로 해결할 수 있는 능력을 기른다.\n\n### 전체 학습 로드맵\n\n| 주차 | 학습 내용                          | 목표 및 활동                                      |\n|------|-----------------------------------|--------------------------------------------------|\n| 1    | 파이썬 소개 및 설치, 기본 문법  | 파이썬 설치, 기본 문법 연습                      |\n| 2    | 조건문 및 연산자                 | 조건문을 활용한 간단한 프로그램 작성            |\n| 3    | 반복문 및 리스트                  | 리스트를 활용한 데이터 처리 연습                  |\n| 4    | 함수 정의 및 호출                 | 간단한 함수 작성 및 활용                          |\n| 5    | 튜플, 딕셔너리, 집합             | 다양한 자료구조 활용 연습                          |\n| 6    | 파일 입출력                       | 텍스트 파일 읽기 및 쓰기 실습                    |\n| 7    | 예외 처리                        | 오류 발생 시 예외 처리 연습                       |\n| 8    | 기본 라이브러리 활용              | 라이브러리를 활용한 간단한 계산기 만들기          |\n| 9    | 프로젝트 아이디어 브레인스토밍   | 개인 프로젝트 아이디어 선정                       |\n| 10   | 프로젝트 구현                    | 선택한 프로젝트 구현 시작                         |\n| 11   | 프로젝트 개선 및 디버깅         | 구현한 프로젝트 개선 및 오류 수정                 |\n| 12   | 최종 프로젝트 발표 및 피드백     | 프로젝트 발표 및 피드백 세션                     |\n\n이 로드맵을 통해 학습자는 파이썬의 기본 개념을 이해하고, 흥미로운 프로젝트를 통해 실력을 향상시키며, 자기계발의 기회를 가질 수 있습니다.",
+      "graph_curriculum": {
+        "절차1": {
+          "title": "파이썬 기초 이해",
+          "skills": {
+            "Python 기초": {
+              "skill_info": {},
+              "documents": {}
+            },
+            "Python 프로그래밍": {
+              "skill_info": {
+                "name": "Python 프로그래밍",
+                "category": "프로그래밍",
+                "description": "데이터 분석 및 예측 모델 개발을 위한 Python 활용",
+                "keywords": [
+                  "Python",
+                  "데이터 분석",
+                  "프로그래밍",
+                  "모델 개발"
+                ],
+                "difficulty": "중급",
+                "importance_score": 7
+              },
+              "documents": {
+                "b3a2614a-679f-4a35-babf-81e363181310": {
+                  "doc_id": "b3a2614a-679f-4a35-babf-81e363181310",
+                  "title": "스마트 팩토리 구축 계획서",
+                  "department": "IT디지털",
+                  "document_type": "digitalization",
+                  "target_audience": "배터리 제조 공장 디지털화 담당자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:55:15.278338",
+                  "updated_date": "2025-09-19T15:36:51.464000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "디지털 현장 전문가": {
+                      "name": "디지털 현장 전문가",
+                      "department": "IT디지털",
+                      "role": "전문가",
+                      "expertise": "OT와 IT 연결, BMS 데이터 분석, SOH 예측 모델 튜닝",
+                      "updated_date": "2025-09-19T15:36:51.816000000+00:00"
+                    }
+                  }
+                }
+              }
+            },
+            "Python 데이터 분석": {
+              "skill_info": {
+                "name": "Python 데이터 분석",
+                "category": "데이터 분석",
+                "description": "생산 데이터 분석 및 AI 모델 결과 해석",
+                "keywords": [
+                  "Python",
+                  "데이터 분석",
+                  "AI 모델",
+                  "결과 해석"
+                ],
+                "difficulty": "중급",
+                "importance_score": 7
+              },
+              "documents": {
+                "f6512905-3f96-4f0b-993a-6bc7bcdabfd0": {
+                  "doc_id": "f6512905-3f96-4f0b-993a-6bc7bcdabfd0",
+                  "title": "배터리 기술자 역량 개발 프로그램 - 디지털 전환",
+                  "department": "교육인사",
+                  "document_type": "skill_development",
+                  "target_audience": "배터리 기술자(신입~중급)",
+                  "difficulty_level": "중급",
+                  "estimated_time": 2560,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "07_교육인사",
+                  "created_date": "2025-09-18T09:52:16.723300",
+                  "updated_date": "2025-09-19T15:26:36.778000000+00:00",
+                  "experts": {
+                    "김민수": {
+                      "name": "김민수",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 안전 프로토콜",
+                      "updated_date": "2025-09-19T15:40:40.307000000+00:00"
+                    }
+                  }
+                },
+                "39c01c72-2fe7-4e89-89e2-bc16ac883629": {
+                  "doc_id": "39c01c72-2fe7-4e89-89e2-bc16ac883629",
+                  "title": "배터리 생산 데이터 관리 지침서 - 공정 최적화",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "배터리 생산라인 데이터 관리자, IT 엔지니어",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:53:11.947822",
+                  "updated_date": "2025-09-19T15:36:22.252000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "f38644a7-8eff-4020-bc7a-c2d33a4248d0": {
+                  "doc_id": "f38644a7-8eff-4020-bc7a-c2d33a4248d0",
+                  "title": "스마트 팩토리 구축 계획서 - 기술 혁신",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "전사 제조 부문",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:35:01.670201",
+                  "updated_date": "2025-09-19T15:36:24.179000000+00:00",
+                  "experts": {
+                    "김민철": {
+                      "name": "김민철",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전",
+                      "updated_date": "2025-09-19T15:41:27.686000000+00:00"
+                    },
+                    "데이터 사이언티스트": {
+                      "name": "데이터 사이언티스트",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "AI 모델 개발 및 데이터 분석",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "IoT 엔지니어": {
+                      "name": "IoT 엔지니어",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "IoT 센서 시스템 구축 및 운영",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "디지털 프로세스 전문가": {
+                      "name": "디지털 프로세스 전문가",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "프로세스 디지털화 및 최적화 (신규 채용 12명)",
+                      "updated_date": "2025-09-19T15:36:24.548000000+00:00"
+                    }
+                  }
+                },
+                "1ccc6e53-1bd9-4aa1-bf22-7f1b7ae25c7a": {
+                  "doc_id": "1ccc6e53-1bd9-4aa1-bf22-7f1b7ae25c7a",
+                  "title": "스마트 팩토리 구축 계획서",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "배터리 제조공장 전 직원",
+                  "difficulty_level": "중급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:37:53.559309",
+                  "updated_date": "2025-09-19T15:36:43.665000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "8004bc75-367a-435a-93b5-63d105a7a556": {
+                  "doc_id": "8004bc75-367a-435a-93b5-63d105a7a556",
+                  "title": "배터리 생산 데이터 관리 지침서",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "IT팀, 생산팀, 품질팀, 연구팀",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:53:41.666212",
+                  "updated_date": "2025-09-19T15:36:55.267000000+00:00",
+                  "experts": {
+                    "김태현": {
+                      "name": "김태현",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전",
+                      "updated_date": "2025-09-19T15:41:10.602000000+00:00"
+                    }
+                  }
+                },
+                "98b65c7d-5865-416a-9eae-6f7aafb6f866": {
+                  "doc_id": "98b65c7d-5865-416a-9eae-6f7aafb6f866",
+                  "title": "스마트 팩토리 구축 계획서 - ESS용",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "ESS 제조업체 엔지니어 및 관리자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": ".ipynb_checkpoints",
+                  "created_date": "2025-09-18T12:58:44.258900",
+                  "updated_date": "2025-09-19T15:37:56.155000000+00:00",
+                  "experts": {
+                    "데이터 사이언티스트": {
+                      "name": "데이터 사이언티스트",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "AI 모델 개발 및 데이터 분석",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "IoT 엔지니어": {
+                      "name": "IoT 엔지니어",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "IoT 센서 시스템 구축 및 운영",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "김재현": {
+                      "name": "김재현",
+                      "department": "디지털혁신팀",
+                      "role": "책임자",
+                      "expertise": "스마트 팩토리 구축 및 디지털 트랜스포메이션",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "디지털 트윈 전문가": {
+                      "name": "디지털 트윈 전문가",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "디지털 트윈 모델링 및 시뮬레이션",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    }
+                  }
+                },
+                "e71590c0-bc57-4e4f-88d1-9e7bc85b6c71": {
+                  "doc_id": "e71590c0-bc57-4e4f-88d1-9e7bc85b6c71",
+                  "title": "배터리 생산 데이터 관리 지침서 - 비용 절감",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "IT 엔지니어, 데이터 관리자, 생산 시스템 운영자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:54:15.829973",
+                  "updated_date": "2025-09-19T15:37:12.471000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "박서연": {
+                      "name": "박서연",
+                      "department": "기술안전부",
+                      "role": "검토자",
+                      "expertise": "기술안전 검토",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "이동혁": {
+                      "name": "이동혁",
+                      "department": "IT팀",
+                      "role": "승인자",
+                      "expertise": "IT 인프라 관리",
+                      "updated_date": "2025-09-19T15:37:12.822000000+00:00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "절차2": {
+          "title": "기본 데이터 구조와 알고리즘 학습",
+          "skills": {
+            "Python 데이터 분석": {
+              "skill_info": {
+                "name": "Python 데이터 분석",
+                "category": "데이터 분석",
+                "description": "생산 데이터 분석 및 AI 모델 결과 해석",
+                "keywords": [
+                  "Python",
+                  "데이터 분석",
+                  "AI 모델",
+                  "결과 해석"
+                ],
+                "difficulty": "중급",
+                "importance_score": 7
+              },
+              "documents": {
+                "f6512905-3f96-4f0b-993a-6bc7bcdabfd0": {
+                  "doc_id": "f6512905-3f96-4f0b-993a-6bc7bcdabfd0",
+                  "title": "배터리 기술자 역량 개발 프로그램 - 디지털 전환",
+                  "department": "교육인사",
+                  "document_type": "skill_development",
+                  "target_audience": "배터리 기술자(신입~중급)",
+                  "difficulty_level": "중급",
+                  "estimated_time": 2560,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "07_교육인사",
+                  "created_date": "2025-09-18T09:52:16.723300",
+                  "updated_date": "2025-09-19T15:26:36.778000000+00:00",
+                  "experts": {
+                    "김민수": {
+                      "name": "김민수",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 안전 프로토콜",
+                      "updated_date": "2025-09-19T15:40:40.307000000+00:00"
+                    }
+                  }
+                },
+                "39c01c72-2fe7-4e89-89e2-bc16ac883629": {
+                  "doc_id": "39c01c72-2fe7-4e89-89e2-bc16ac883629",
+                  "title": "배터리 생산 데이터 관리 지침서 - 공정 최적화",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "배터리 생산라인 데이터 관리자, IT 엔지니어",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:53:11.947822",
+                  "updated_date": "2025-09-19T15:36:22.252000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "f38644a7-8eff-4020-bc7a-c2d33a4248d0": {
+                  "doc_id": "f38644a7-8eff-4020-bc7a-c2d33a4248d0",
+                  "title": "스마트 팩토리 구축 계획서 - 기술 혁신",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "전사 제조 부문",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:35:01.670201",
+                  "updated_date": "2025-09-19T15:36:24.179000000+00:00",
+                  "experts": {
+                    "김민철": {
+                      "name": "김민철",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전",
+                      "updated_date": "2025-09-19T15:41:27.686000000+00:00"
+                    },
+                    "데이터 사이언티스트": {
+                      "name": "데이터 사이언티스트",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "AI 모델 개발 및 데이터 분석",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "IoT 엔지니어": {
+                      "name": "IoT 엔지니어",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "IoT 센서 시스템 구축 및 운영",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "디지털 프로세스 전문가": {
+                      "name": "디지털 프로세스 전문가",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "프로세스 디지털화 및 최적화 (신규 채용 12명)",
+                      "updated_date": "2025-09-19T15:36:24.548000000+00:00"
+                    }
+                  }
+                },
+                "1ccc6e53-1bd9-4aa1-bf22-7f1b7ae25c7a": {
+                  "doc_id": "1ccc6e53-1bd9-4aa1-bf22-7f1b7ae25c7a",
+                  "title": "스마트 팩토리 구축 계획서",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "배터리 제조공장 전 직원",
+                  "difficulty_level": "중급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:37:53.559309",
+                  "updated_date": "2025-09-19T15:36:43.665000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "8004bc75-367a-435a-93b5-63d105a7a556": {
+                  "doc_id": "8004bc75-367a-435a-93b5-63d105a7a556",
+                  "title": "배터리 생산 데이터 관리 지침서",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "IT팀, 생산팀, 품질팀, 연구팀",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:53:41.666212",
+                  "updated_date": "2025-09-19T15:36:55.267000000+00:00",
+                  "experts": {
+                    "김태현": {
+                      "name": "김태현",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전",
+                      "updated_date": "2025-09-19T15:41:10.602000000+00:00"
+                    }
+                  }
+                },
+                "98b65c7d-5865-416a-9eae-6f7aafb6f866": {
+                  "doc_id": "98b65c7d-5865-416a-9eae-6f7aafb6f866",
+                  "title": "스마트 팩토리 구축 계획서 - ESS용",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "ESS 제조업체 엔지니어 및 관리자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": ".ipynb_checkpoints",
+                  "created_date": "2025-09-18T12:58:44.258900",
+                  "updated_date": "2025-09-19T15:37:56.155000000+00:00",
+                  "experts": {
+                    "데이터 사이언티스트": {
+                      "name": "데이터 사이언티스트",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "AI 모델 개발 및 데이터 분석",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "IoT 엔지니어": {
+                      "name": "IoT 엔지니어",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "IoT 센서 시스템 구축 및 운영",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "김재현": {
+                      "name": "김재현",
+                      "department": "디지털혁신팀",
+                      "role": "책임자",
+                      "expertise": "스마트 팩토리 구축 및 디지털 트랜스포메이션",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "디지털 트윈 전문가": {
+                      "name": "디지털 트윈 전문가",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "디지털 트윈 모델링 및 시뮬레이션",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    }
+                  }
+                },
+                "e71590c0-bc57-4e4f-88d1-9e7bc85b6c71": {
+                  "doc_id": "e71590c0-bc57-4e4f-88d1-9e7bc85b6c71",
+                  "title": "배터리 생산 데이터 관리 지침서 - 비용 절감",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "IT 엔지니어, 데이터 관리자, 생산 시스템 운영자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:54:15.829973",
+                  "updated_date": "2025-09-19T15:37:12.471000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "박서연": {
+                      "name": "박서연",
+                      "department": "기술안전부",
+                      "role": "검토자",
+                      "expertise": "기술안전 검토",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "이동혁": {
+                      "name": "이동혁",
+                      "department": "IT팀",
+                      "role": "승인자",
+                      "expertise": "IT 인프라 관리",
+                      "updated_date": "2025-09-19T15:37:12.822000000+00:00"
+                    }
+                  }
+                }
+              }
+            },
+            "Python 기반 데이터 분석": {
+              "skill_info": {
+                "name": "Python 기반 데이터 분석",
+                "category": "데이터 분석",
+                "description": "Pandas, Scikit-learn을 활용한 배터리 데이터 분석",
+                "keywords": [
+                  "Python",
+                  "Pandas",
+                  "Scikit-learn",
+                  "데이터분석"
+                ],
+                "difficulty": "중급",
+                "importance_score": 8
+              },
+              "documents": {
+                "b28154ee-c198-4d64-ae9a-f2c63936bd29": {
+                  "doc_id": "b28154ee-c198-4d64-ae9a-f2c63936bd29",
+                  "title": "스마트 팩토리 구축 계획서 - 품질 개선",
+                  "department": "IT디지털",
+                  "document_type": "digitalization",
+                  "target_audience": "디지털혁신팀, 품질관리자, 현장운영자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내비공개",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:55:42.280368",
+                  "updated_date": "2025-09-19T15:36:53.382000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "c045c38a-3be1-46c6-88ce-6dda6a37735e": {
+                  "doc_id": "c045c38a-3be1-46c6-88ce-6dda6a37735e",
+                  "title": "스마트 팩토리 구축 계획서",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "배터리 제조 공장 엔지니어 및 현장 작업자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:31:56.289864",
+                  "updated_date": "2025-09-19T15:37:16.262000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "7af38bc9-4496-4e77-a6fa-599e7b9bde47": {
+                  "doc_id": "7af38bc9-4496-4e77-a6fa-599e7b9bde47",
+                  "title": "스마트 팩토리 구축 계획서",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "생산직 근로자, 엔지니어, 품질관리팀",
+                  "difficulty_level": "중급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:34:06.050670",
+                  "updated_date": "2025-09-19T15:37:22.023000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "데이터 사이언티스트": {
+                      "name": "데이터 사이언티스트",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "AI 모델 개발 및 데이터 분석",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "IoT 시스템 관리자": {
+                      "name": "IoT 시스템 관리자",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "IoT 센서 네트워크 관리",
+                      "updated_date": "2025-09-19T15:37:22.374000000+00:00"
+                    },
+                    "디지털 트윈 엔지니어": {
+                      "name": "디지털 트윈 엔지니어",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "디지털 트윈 모델링 및 시뮬레이션",
+                      "updated_date": "2025-09-19T15:37:22.374000000+00:00"
+                    }
+                  }
+                },
+                "dc97fe3f-ca4f-43ce-bedc-b6f66f01e3ba": {
+                  "doc_id": "dc97fe3f-ca4f-43ce-bedc-b6f66f01e3ba",
+                  "title": "배터리 생산 데이터 관리 지침서 - 공정 최적화",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "IT 개발자, 품질 관리자, 시스템 관리자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:49:25.790848",
+                  "updated_date": "2025-09-19T15:37:31.454000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "절차3": {
+          "title": "파이썬을 활용한 간단한 프로젝트 진행",
+          "skills": {
+            "Python 데이터 분석": {
+              "skill_info": {
+                "name": "Python 데이터 분석",
+                "category": "데이터 분석",
+                "description": "생산 데이터 분석 및 AI 모델 결과 해석",
+                "keywords": [
+                  "Python",
+                  "데이터 분석",
+                  "AI 모델",
+                  "결과 해석"
+                ],
+                "difficulty": "중급",
+                "importance_score": 7
+              },
+              "documents": {
+                "f6512905-3f96-4f0b-993a-6bc7bcdabfd0": {
+                  "doc_id": "f6512905-3f96-4f0b-993a-6bc7bcdabfd0",
+                  "title": "배터리 기술자 역량 개발 프로그램 - 디지털 전환",
+                  "department": "교육인사",
+                  "document_type": "skill_development",
+                  "target_audience": "배터리 기술자(신입~중급)",
+                  "difficulty_level": "중급",
+                  "estimated_time": 2560,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "07_교육인사",
+                  "created_date": "2025-09-18T09:52:16.723300",
+                  "updated_date": "2025-09-19T15:26:36.778000000+00:00",
+                  "experts": {
+                    "김민수": {
+                      "name": "김민수",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 안전 프로토콜",
+                      "updated_date": "2025-09-19T15:40:40.307000000+00:00"
+                    }
+                  }
+                },
+                "39c01c72-2fe7-4e89-89e2-bc16ac883629": {
+                  "doc_id": "39c01c72-2fe7-4e89-89e2-bc16ac883629",
+                  "title": "배터리 생산 데이터 관리 지침서 - 공정 최적화",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "배터리 생산라인 데이터 관리자, IT 엔지니어",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:53:11.947822",
+                  "updated_date": "2025-09-19T15:36:22.252000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "f38644a7-8eff-4020-bc7a-c2d33a4248d0": {
+                  "doc_id": "f38644a7-8eff-4020-bc7a-c2d33a4248d0",
+                  "title": "스마트 팩토리 구축 계획서 - 기술 혁신",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "전사 제조 부문",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:35:01.670201",
+                  "updated_date": "2025-09-19T15:36:24.179000000+00:00",
+                  "experts": {
+                    "김민철": {
+                      "name": "김민철",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전",
+                      "updated_date": "2025-09-19T15:41:27.686000000+00:00"
+                    },
+                    "데이터 사이언티스트": {
+                      "name": "데이터 사이언티스트",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "AI 모델 개발 및 데이터 분석",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "IoT 엔지니어": {
+                      "name": "IoT 엔지니어",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "IoT 센서 시스템 구축 및 운영",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "디지털 프로세스 전문가": {
+                      "name": "디지털 프로세스 전문가",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "프로세스 디지털화 및 최적화 (신규 채용 12명)",
+                      "updated_date": "2025-09-19T15:36:24.548000000+00:00"
+                    }
+                  }
+                },
+                "1ccc6e53-1bd9-4aa1-bf22-7f1b7ae25c7a": {
+                  "doc_id": "1ccc6e53-1bd9-4aa1-bf22-7f1b7ae25c7a",
+                  "title": "스마트 팩토리 구축 계획서",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "배터리 제조공장 전 직원",
+                  "difficulty_level": "중급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:37:53.559309",
+                  "updated_date": "2025-09-19T15:36:43.665000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "8004bc75-367a-435a-93b5-63d105a7a556": {
+                  "doc_id": "8004bc75-367a-435a-93b5-63d105a7a556",
+                  "title": "배터리 생산 데이터 관리 지침서",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "IT팀, 생산팀, 품질팀, 연구팀",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:53:41.666212",
+                  "updated_date": "2025-09-19T15:36:55.267000000+00:00",
+                  "experts": {
+                    "김태현": {
+                      "name": "김태현",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전",
+                      "updated_date": "2025-09-19T15:41:10.602000000+00:00"
+                    }
+                  }
+                },
+                "98b65c7d-5865-416a-9eae-6f7aafb6f866": {
+                  "doc_id": "98b65c7d-5865-416a-9eae-6f7aafb6f866",
+                  "title": "스마트 팩토리 구축 계획서 - ESS용",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "ESS 제조업체 엔지니어 및 관리자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": ".ipynb_checkpoints",
+                  "created_date": "2025-09-18T12:58:44.258900",
+                  "updated_date": "2025-09-19T15:37:56.155000000+00:00",
+                  "experts": {
+                    "데이터 사이언티스트": {
+                      "name": "데이터 사이언티스트",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "AI 모델 개발 및 데이터 분석",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "IoT 엔지니어": {
+                      "name": "IoT 엔지니어",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "IoT 센서 시스템 구축 및 운영",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "김재현": {
+                      "name": "김재현",
+                      "department": "디지털혁신팀",
+                      "role": "책임자",
+                      "expertise": "스마트 팩토리 구축 및 디지털 트랜스포메이션",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "디지털 트윈 전문가": {
+                      "name": "디지털 트윈 전문가",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "디지털 트윈 모델링 및 시뮬레이션",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    }
+                  }
+                },
+                "e71590c0-bc57-4e4f-88d1-9e7bc85b6c71": {
+                  "doc_id": "e71590c0-bc57-4e4f-88d1-9e7bc85b6c71",
+                  "title": "배터리 생산 데이터 관리 지침서 - 비용 절감",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "IT 엔지니어, 데이터 관리자, 생산 시스템 운영자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:54:15.829973",
+                  "updated_date": "2025-09-19T15:37:12.471000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "박서연": {
+                      "name": "박서연",
+                      "department": "기술안전부",
+                      "role": "검토자",
+                      "expertise": "기술안전 검토",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "이동혁": {
+                      "name": "이동혁",
+                      "department": "IT팀",
+                      "role": "승인자",
+                      "expertise": "IT 인프라 관리",
+                      "updated_date": "2025-09-19T15:37:12.822000000+00:00"
+                    }
+                  }
+                }
+              }
+            },
+            "Python 기반 배터리 데이터 분석": {
+              "skill_info": {
+                "name": "Python 기반 배터리 데이터 분석",
+                "category": "데이터 분석",
+                "description": "PyBaMM, Prophet 등을 활용한 배터리 특성 분석",
+                "keywords": [
+                  "Python",
+                  "PyBaMM",
+                  "Prophet",
+                  "Isolation Forest"
+                ],
+                "difficulty": "고급",
+                "importance_score": 9
+              },
+              "documents": {
+                "cbcd89e5-7536-4f77-ac72-a537166fbab9": {
+                  "doc_id": "cbcd89e5-7536-4f77-ac72-a537166fbab9",
+                  "title": "배터리 생산 데이터 관리 지침서 - 디지털 전환",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "공정 엔지니어, 품질 관리자, 데이터 분석가",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:33:02.130654",
+                  "updated_date": "2025-09-19T15:36:31.790000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "이수현": {
+                      "name": "이수현",
+                      "department": "품질보증팀",
+                      "role": "검토자",
+                      "expertise": "품질보증 및 검토",
+                      "updated_date": "2025-09-19T15:41:25.770000000+00:00"
+                    },
+                    "박대영": {
+                      "name": "박대영",
+                      "department": "IT팀",
+                      "role": "팀장",
+                      "expertise": "IT 시스템 아키텍처",
+                      "updated_date": "2025-09-19T15:36:32.140000000+00:00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "절차4": {
+          "title": "파이썬으로 데이터 시각화하기",
+          "skills": {
+            "Python 데이터 분석": {
+              "skill_info": {
+                "name": "Python 데이터 분석",
+                "category": "데이터 분석",
+                "description": "생산 데이터 분석 및 AI 모델 결과 해석",
+                "keywords": [
+                  "Python",
+                  "데이터 분석",
+                  "AI 모델",
+                  "결과 해석"
+                ],
+                "difficulty": "중급",
+                "importance_score": 7
+              },
+              "documents": {
+                "f6512905-3f96-4f0b-993a-6bc7bcdabfd0": {
+                  "doc_id": "f6512905-3f96-4f0b-993a-6bc7bcdabfd0",
+                  "title": "배터리 기술자 역량 개발 프로그램 - 디지털 전환",
+                  "department": "교육인사",
+                  "document_type": "skill_development",
+                  "target_audience": "배터리 기술자(신입~중급)",
+                  "difficulty_level": "중급",
+                  "estimated_time": 2560,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "07_교육인사",
+                  "created_date": "2025-09-18T09:52:16.723300",
+                  "updated_date": "2025-09-19T15:26:36.778000000+00:00",
+                  "experts": {
+                    "김민수": {
+                      "name": "김민수",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 안전 프로토콜",
+                      "updated_date": "2025-09-19T15:40:40.307000000+00:00"
+                    }
+                  }
+                },
+                "39c01c72-2fe7-4e89-89e2-bc16ac883629": {
+                  "doc_id": "39c01c72-2fe7-4e89-89e2-bc16ac883629",
+                  "title": "배터리 생산 데이터 관리 지침서 - 공정 최적화",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "배터리 생산라인 데이터 관리자, IT 엔지니어",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:53:11.947822",
+                  "updated_date": "2025-09-19T15:36:22.252000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "f38644a7-8eff-4020-bc7a-c2d33a4248d0": {
+                  "doc_id": "f38644a7-8eff-4020-bc7a-c2d33a4248d0",
+                  "title": "스마트 팩토리 구축 계획서 - 기술 혁신",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "전사 제조 부문",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:35:01.670201",
+                  "updated_date": "2025-09-19T15:36:24.179000000+00:00",
+                  "experts": {
+                    "김민철": {
+                      "name": "김민철",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전",
+                      "updated_date": "2025-09-19T15:41:27.686000000+00:00"
+                    },
+                    "데이터 사이언티스트": {
+                      "name": "데이터 사이언티스트",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "AI 모델 개발 및 데이터 분석",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "IoT 엔지니어": {
+                      "name": "IoT 엔지니어",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "IoT 센서 시스템 구축 및 운영",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "디지털 프로세스 전문가": {
+                      "name": "디지털 프로세스 전문가",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "프로세스 디지털화 및 최적화 (신규 채용 12명)",
+                      "updated_date": "2025-09-19T15:36:24.548000000+00:00"
+                    }
+                  }
+                },
+                "1ccc6e53-1bd9-4aa1-bf22-7f1b7ae25c7a": {
+                  "doc_id": "1ccc6e53-1bd9-4aa1-bf22-7f1b7ae25c7a",
+                  "title": "스마트 팩토리 구축 계획서",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "배터리 제조공장 전 직원",
+                  "difficulty_level": "중급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:37:53.559309",
+                  "updated_date": "2025-09-19T15:36:43.665000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "8004bc75-367a-435a-93b5-63d105a7a556": {
+                  "doc_id": "8004bc75-367a-435a-93b5-63d105a7a556",
+                  "title": "배터리 생산 데이터 관리 지침서",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "IT팀, 생산팀, 품질팀, 연구팀",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:53:41.666212",
+                  "updated_date": "2025-09-19T15:36:55.267000000+00:00",
+                  "experts": {
+                    "김태현": {
+                      "name": "김태현",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전",
+                      "updated_date": "2025-09-19T15:41:10.602000000+00:00"
+                    }
+                  }
+                },
+                "98b65c7d-5865-416a-9eae-6f7aafb6f866": {
+                  "doc_id": "98b65c7d-5865-416a-9eae-6f7aafb6f866",
+                  "title": "스마트 팩토리 구축 계획서 - ESS용",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "ESS 제조업체 엔지니어 및 관리자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": ".ipynb_checkpoints",
+                  "created_date": "2025-09-18T12:58:44.258900",
+                  "updated_date": "2025-09-19T15:37:56.155000000+00:00",
+                  "experts": {
+                    "데이터 사이언티스트": {
+                      "name": "데이터 사이언티스트",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "AI 모델 개발 및 데이터 분석",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "IoT 엔지니어": {
+                      "name": "IoT 엔지니어",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "IoT 센서 시스템 구축 및 운영",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "김재현": {
+                      "name": "김재현",
+                      "department": "디지털혁신팀",
+                      "role": "책임자",
+                      "expertise": "스마트 팩토리 구축 및 디지털 트랜스포메이션",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "디지털 트윈 전문가": {
+                      "name": "디지털 트윈 전문가",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "디지털 트윈 모델링 및 시뮬레이션",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    }
+                  }
+                },
+                "e71590c0-bc57-4e4f-88d1-9e7bc85b6c71": {
+                  "doc_id": "e71590c0-bc57-4e4f-88d1-9e7bc85b6c71",
+                  "title": "배터리 생산 데이터 관리 지침서 - 비용 절감",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "IT 엔지니어, 데이터 관리자, 생산 시스템 운영자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:54:15.829973",
+                  "updated_date": "2025-09-19T15:37:12.471000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "박서연": {
+                      "name": "박서연",
+                      "department": "기술안전부",
+                      "role": "검토자",
+                      "expertise": "기술안전 검토",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "이동혁": {
+                      "name": "이동혁",
+                      "department": "IT팀",
+                      "role": "승인자",
+                      "expertise": "IT 인프라 관리",
+                      "updated_date": "2025-09-19T15:37:12.822000000+00:00"
+                    }
+                  }
+                }
+              }
+            },
+            "Python 기반 데이터 분석": {
+              "skill_info": {
+                "name": "Python 기반 데이터 분석",
+                "category": "데이터 분석",
+                "description": "Pandas, Scikit-learn을 활용한 배터리 데이터 분석",
+                "keywords": [
+                  "Python",
+                  "Pandas",
+                  "Scikit-learn",
+                  "데이터분석"
+                ],
+                "difficulty": "중급",
+                "importance_score": 8
+              },
+              "documents": {
+                "b28154ee-c198-4d64-ae9a-f2c63936bd29": {
+                  "doc_id": "b28154ee-c198-4d64-ae9a-f2c63936bd29",
+                  "title": "스마트 팩토리 구축 계획서 - 품질 개선",
+                  "department": "IT디지털",
+                  "document_type": "digitalization",
+                  "target_audience": "디지털혁신팀, 품질관리자, 현장운영자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내비공개",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:55:42.280368",
+                  "updated_date": "2025-09-19T15:36:53.382000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "c045c38a-3be1-46c6-88ce-6dda6a37735e": {
+                  "doc_id": "c045c38a-3be1-46c6-88ce-6dda6a37735e",
+                  "title": "스마트 팩토리 구축 계획서",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "배터리 제조 공장 엔지니어 및 현장 작업자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:31:56.289864",
+                  "updated_date": "2025-09-19T15:37:16.262000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "7af38bc9-4496-4e77-a6fa-599e7b9bde47": {
+                  "doc_id": "7af38bc9-4496-4e77-a6fa-599e7b9bde47",
+                  "title": "스마트 팩토리 구축 계획서",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "생산직 근로자, 엔지니어, 품질관리팀",
+                  "difficulty_level": "중급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:34:06.050670",
+                  "updated_date": "2025-09-19T15:37:22.023000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "데이터 사이언티스트": {
+                      "name": "데이터 사이언티스트",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "AI 모델 개발 및 데이터 분석",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "IoT 시스템 관리자": {
+                      "name": "IoT 시스템 관리자",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "IoT 센서 네트워크 관리",
+                      "updated_date": "2025-09-19T15:37:22.374000000+00:00"
+                    },
+                    "디지털 트윈 엔지니어": {
+                      "name": "디지털 트윈 엔지니어",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "디지털 트윈 모델링 및 시뮬레이션",
+                      "updated_date": "2025-09-19T15:37:22.374000000+00:00"
+                    }
+                  }
+                },
+                "dc97fe3f-ca4f-43ce-bedc-b6f66f01e3ba": {
+                  "doc_id": "dc97fe3f-ca4f-43ce-bedc-b6f66f01e3ba",
+                  "title": "배터리 생산 데이터 관리 지침서 - 공정 최적화",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "IT 개발자, 품질 관리자, 시스템 관리자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:49:25.790848",
+                  "updated_date": "2025-09-19T15:37:31.454000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "절차5": {
+          "title": "파이썬으로 간단한 자동화 스크립트 작성",
+          "skills": {
+            "Python 프로그래밍": {
+              "skill_info": {
+                "name": "Python 프로그래밍",
+                "category": "프로그래밍",
+                "description": "데이터 분석 및 예측 모델 개발을 위한 Python 활용",
+                "keywords": [
+                  "Python",
+                  "데이터 분석",
+                  "프로그래밍",
+                  "모델 개발"
+                ],
+                "difficulty": "중급",
+                "importance_score": 7
+              },
+              "documents": {
+                "b3a2614a-679f-4a35-babf-81e363181310": {
+                  "doc_id": "b3a2614a-679f-4a35-babf-81e363181310",
+                  "title": "스마트 팩토리 구축 계획서",
+                  "department": "IT디지털",
+                  "document_type": "digitalization",
+                  "target_audience": "배터리 제조 공장 디지털화 담당자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:55:15.278338",
+                  "updated_date": "2025-09-19T15:36:51.464000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "디지털 현장 전문가": {
+                      "name": "디지털 현장 전문가",
+                      "department": "IT디지털",
+                      "role": "전문가",
+                      "expertise": "OT와 IT 연결, BMS 데이터 분석, SOH 예측 모델 튜닝",
+                      "updated_date": "2025-09-19T15:36:51.816000000+00:00"
+                    }
+                  }
+                }
+              }
+            },
+            "Python 데이터 분석": {
+              "skill_info": {
+                "name": "Python 데이터 분석",
+                "category": "데이터 분석",
+                "description": "생산 데이터 분석 및 AI 모델 결과 해석",
+                "keywords": [
+                  "Python",
+                  "데이터 분석",
+                  "AI 모델",
+                  "결과 해석"
+                ],
+                "difficulty": "중급",
+                "importance_score": 7
+              },
+              "documents": {
+                "f6512905-3f96-4f0b-993a-6bc7bcdabfd0": {
+                  "doc_id": "f6512905-3f96-4f0b-993a-6bc7bcdabfd0",
+                  "title": "배터리 기술자 역량 개발 프로그램 - 디지털 전환",
+                  "department": "교육인사",
+                  "document_type": "skill_development",
+                  "target_audience": "배터리 기술자(신입~중급)",
+                  "difficulty_level": "중급",
+                  "estimated_time": 2560,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "07_교육인사",
+                  "created_date": "2025-09-18T09:52:16.723300",
+                  "updated_date": "2025-09-19T15:26:36.778000000+00:00",
+                  "experts": {
+                    "김민수": {
+                      "name": "김민수",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 안전 프로토콜",
+                      "updated_date": "2025-09-19T15:40:40.307000000+00:00"
+                    }
+                  }
+                },
+                "39c01c72-2fe7-4e89-89e2-bc16ac883629": {
+                  "doc_id": "39c01c72-2fe7-4e89-89e2-bc16ac883629",
+                  "title": "배터리 생산 데이터 관리 지침서 - 공정 최적화",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "배터리 생산라인 데이터 관리자, IT 엔지니어",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:53:11.947822",
+                  "updated_date": "2025-09-19T15:36:22.252000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "f38644a7-8eff-4020-bc7a-c2d33a4248d0": {
+                  "doc_id": "f38644a7-8eff-4020-bc7a-c2d33a4248d0",
+                  "title": "스마트 팩토리 구축 계획서 - 기술 혁신",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "전사 제조 부문",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:35:01.670201",
+                  "updated_date": "2025-09-19T15:36:24.179000000+00:00",
+                  "experts": {
+                    "김민철": {
+                      "name": "김민철",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전",
+                      "updated_date": "2025-09-19T15:41:27.686000000+00:00"
+                    },
+                    "데이터 사이언티스트": {
+                      "name": "데이터 사이언티스트",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "AI 모델 개발 및 데이터 분석",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "IoT 엔지니어": {
+                      "name": "IoT 엔지니어",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "IoT 센서 시스템 구축 및 운영",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "디지털 프로세스 전문가": {
+                      "name": "디지털 프로세스 전문가",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "프로세스 디지털화 및 최적화 (신규 채용 12명)",
+                      "updated_date": "2025-09-19T15:36:24.548000000+00:00"
+                    }
+                  }
+                },
+                "1ccc6e53-1bd9-4aa1-bf22-7f1b7ae25c7a": {
+                  "doc_id": "1ccc6e53-1bd9-4aa1-bf22-7f1b7ae25c7a",
+                  "title": "스마트 팩토리 구축 계획서",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "배터리 제조공장 전 직원",
+                  "difficulty_level": "중급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:37:53.559309",
+                  "updated_date": "2025-09-19T15:36:43.665000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "8004bc75-367a-435a-93b5-63d105a7a556": {
+                  "doc_id": "8004bc75-367a-435a-93b5-63d105a7a556",
+                  "title": "배터리 생산 데이터 관리 지침서",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "IT팀, 생산팀, 품질팀, 연구팀",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:53:41.666212",
+                  "updated_date": "2025-09-19T15:36:55.267000000+00:00",
+                  "experts": {
+                    "김태현": {
+                      "name": "김태현",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전",
+                      "updated_date": "2025-09-19T15:41:10.602000000+00:00"
+                    }
+                  }
+                },
+                "98b65c7d-5865-416a-9eae-6f7aafb6f866": {
+                  "doc_id": "98b65c7d-5865-416a-9eae-6f7aafb6f866",
+                  "title": "스마트 팩토리 구축 계획서 - ESS용",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "ESS 제조업체 엔지니어 및 관리자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": ".ipynb_checkpoints",
+                  "created_date": "2025-09-18T12:58:44.258900",
+                  "updated_date": "2025-09-19T15:37:56.155000000+00:00",
+                  "experts": {
+                    "데이터 사이언티스트": {
+                      "name": "데이터 사이언티스트",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "AI 모델 개발 및 데이터 분석",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "IoT 엔지니어": {
+                      "name": "IoT 엔지니어",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "IoT 센서 시스템 구축 및 운영",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "김재현": {
+                      "name": "김재현",
+                      "department": "디지털혁신팀",
+                      "role": "책임자",
+                      "expertise": "스마트 팩토리 구축 및 디지털 트랜스포메이션",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "디지털 트윈 전문가": {
+                      "name": "디지털 트윈 전문가",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "디지털 트윈 모델링 및 시뮬레이션",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    }
+                  }
+                },
+                "e71590c0-bc57-4e4f-88d1-9e7bc85b6c71": {
+                  "doc_id": "e71590c0-bc57-4e4f-88d1-9e7bc85b6c71",
+                  "title": "배터리 생산 데이터 관리 지침서 - 비용 절감",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "IT 엔지니어, 데이터 관리자, 생산 시스템 운영자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:54:15.829973",
+                  "updated_date": "2025-09-19T15:37:12.471000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "박서연": {
+                      "name": "박서연",
+                      "department": "기술안전부",
+                      "role": "검토자",
+                      "expertise": "기술안전 검토",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "이동혁": {
+                      "name": "이동혁",
+                      "department": "IT팀",
+                      "role": "승인자",
+                      "expertise": "IT 인프라 관리",
+                      "updated_date": "2025-09-19T15:37:12.822000000+00:00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "generated_at": "2025-09-20T20:06:05.424882",
+      "processing_time": null,
+      "total_estimated_hours": 23,
+      "id": 0
+    }
+  ],
+  "761a757e": [
+    {
+      "title": "전지지식 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 4,
+      "weekly_hours": 2,
+      "focus_areas": [
+        "언어학습",
+        "취미개발",
+        "자기계발"
+      ],
+      "modules": [
+        {
+          "week": 1,
+          "title": "언어학습 기초",
+          "description": "이 모듈은 언어학습의 기본 개념과 기초 역량을 구축하는 데 중점을 둡니다. 학습자들은 새로운 언어에 대한 첫 접촉을 통해 기본 어휘와 문법 구조를 익히며, 실생활에서 바로 활용할 수 있는 간단한 문장과 표현들을 학습합니다.",
+          "objectives": [
+            "기본 어휘 100개 학습",
+            "간단한 문장 10개 작성 및 이해",
+            "일상 대화 기본 표현 5회 연습"
+          ],
+          "learning_outcomes": [
+            "새로운 언어의 기본 단어들을 인식하고 사용할 수 있습니다",
+            "일상적인 상황에서 사용되는 간단한 문장을 이해하고 직접 만들어 표현할 수 있습니다",
+            "기본적인 대화 표현을 통해 기초적인 의사소통이 가능합니다"
+          ],
+          "key_concepts": [
+            "언어의 음성학적 특징과 발음 기초",
+            "어휘 학습의 효과적인 방법",
+            "기본 문법 구조와 문장 형성 원리"
+          ],
+          "estimated_hours": 3,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 2,
+          "title": "취미 탐색 및 선택",
+          "description": "이 모듈에서는 다양한 취미 활동을 소개하고, 자신에게 적합한 취미를 탐색하는 방법을 배웁니다. 참가자들은 여러 취미 분야의 특성과 장점을 이해한 후, 자신의 관심사와 적성에 맞는 취미를 선택하고 기본 기술을 연습하게 됩니다.",
+          "objectives": [
+            "다양한 취미 활동을 탐색하고 각 취미의 특성을 이해한다",
+            "개인의 관심사와 적성에 맞는 취미 분야를 1개 선택한다",
+            "선택한 취미의 기초 기술 3가지를 습득하고 실습한다"
+          ],
+          "learning_outcomes": [
+            "다양한 취미 활동에 대한 지식과 이해를 얻는다",
+            "개인적 흥미와 일치하는 취미를 명확히 선택할 수 있다",
+            "선택한 취미 분야의 기본 기술을 실제로 적용할 수 있다"
+          ],
+          "key_concepts": [
+            "취미의 정의와 중요성",
+            "취미 선택 시 고려해야 할 요소",
+            "기본 기술 습득의 단계적 접근법"
+          ],
+          "estimated_hours": 1,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 3,
+          "title": "자기계발 기초 다지기",
+          "description": "이 모듈에서는 개인의 성장을 위한 기초 역량을 개발합니다. 자신의 강점과 약점을 파악하고, 구체적인 목표 설정과 시간 관리 방법을 배우며, 일상에서 활용할 수 있는 효과적인 의사소통 기술을 연습합니다.",
+          "objectives": [
+            "개인 목표 1개를 구체적이고 측정 가능하게 설정하기",
+            "하루 및 주간 시간 관리 계획과 우선순위 체계 수립하기",
+            "기본적인 의사소통 기술 3가지를 실제 상황에 적용하는 연습하기"
+          ],
+          "learning_outcomes": [
+            "SMART 목표 설정 방법론을 이해하고 적용할 수 있음",
+            "시간 관리 도구와 기법을 활용하여 효율적으로 일정을 관리할 수 있음",
+            "명확하고 공감적인 의사소통 스타일을 실생활에서 구현할 수 있음"
+          ],
+          "key_concepts": [
+            "SMART 목표 설정(Specific, Measurable, Achievable, Relevant, Time-bound)",
+            "아이젠하워 매트릭스를 활용한 우선순위 결정",
+            "비폭력 대화(NVC)와 적극적 경청 기법"
+          ],
+          "estimated_hours": 3,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        },
+        {
+          "week": 4,
+          "title": "통합 프로젝트 및 발표",
+          "description": "이번 주차에서는 이전 주차에 탐색하고 선택한 취미에 관한 종합적인 프로젝트를 완성하고, 이를 5분간 발표하는 실습을 진행합니다. 효과적인 의사소통 기술과 자기 반성 능력을 기르며, 타인의 피드백을 통한 성장 방법을 학습합니다.",
+          "objectives": [
+            "선택한 취미에 관한 프로젝트를 체계적으로 완성한다",
+            "프로젝트 내용을 5분 발표 형태로 준비 및 실행할 수 있다",
+            "발표 후 피드백을 수집하고 자기 평가를 체계적으로 수행할 수 있다"
+          ],
+          "learning_outcomes": [
+            "프로젝트 기획부터 완성까지의 전 과정을 경험하게 된다",
+            "효과적인 시간 관리와 발표 스킬을 습득한다",
+            "피드백을 통한 개선 방법과 자기 평가 능력을 개발한다"
+          ],
+          "key_concepts": [
+            "프로젝트 관리 프로세스",
+            "프레젠테이션 스킬 및 비주얼 커뮤니케이션",
+            "피드백 루프와 지속적 개선"
+          ],
+          "estimated_hours": 2,
+          "resources": {
+            "videos": [],
+            "documents": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ]
+          }
+        }
+      ],
+      "overall_goal": "4주 동안 언어학습, 취미개발, 자기계발의 기초를 다지고 통합적으로 적용할 수 있는 전지지식 능력 개발",
+      "basic_resources": [
+        {
+          "title": "검색 고객센터",
+          "url": "https://help.naver.com/alias/search/integration/main.naver",
+          "source": "Web Search"
+        }
+      ],
+      "session_id": "761a757e",
+      "original_constraints": "완전 초보, 주 2시간",
+      "original_goal": "취미나 자기계발",
+      "learning_path_analysis": "### 1. 이 주제의 핵심 학습 영역\n\n전지지식(General Knowledge)은 다양한 분야에 대한 기본적인 이해와 정보를 포함합니다. 핵심 학습 영역은 다음과 같습니다:\n\n- **언어학습**: 기본적인 어휘와 문법, 일상 대화 능력, 독해 및 작문 능력.\n- **취미개발**: 다양한 취미 활동에 대한 이해와 실습, 예술, 음악, 스포츠 등.\n- **자기계발**: 자기 인식, 목표 설정, 시간 관리, 의사소통 능력 향상.\n\n### 2. Beginner 수준에서 시작하여 어떤 순서로 학습해야 하는가?\n\nBeginner 수준에서는 기초부터 시작하는 것이 중요합니다. 다음과 같은 순서를 추천합니다:\n\n1. **기초 언어학습 (1주차)**:\n   - 기본 어휘 및 문법 학습.\n   - 간단한 문장 구성 연습.\n   - 일상 대화 연습 (인사, 자기소개 등).\n\n2. **취미 탐색 (2주차)**:\n   - 다양한 취미에 대한 소개 및 기본 정보 학습.\n   - 관심 있는 취미 분야 선택 (예: 그림, 음악, 요리).\n   - 선택한 취미에 대한 기초 기술 연습.\n\n3. **자기계발 기초 (3주차)**:\n   - 자기 인식 및 목표 설정 방법 학습.\n   - 시간 관리 및 우선순위 설정 연습.\n   - 의사소통 기술 향상 연습.\n\n4. **종합적 적용 (4주차)**:\n   - 언어, 취미, 자기계발을 통합하여 실습.\n   - 프로젝트 또는 발표 준비 (예: 선택한 취미에 대한 발표).\n   - 피드백 및 자기 평가.\n\n### 3. 언어학습, 취미개발, 자기계발을 고려할 때 중점을 둬야 할 부분\n\n- **언어학습**: 일상 대화에서 사용할 수 있는 실용적인 표현과 어휘에 중점을 두어야 합니다. 언어는 소통의 도구이므로, 실제 상황에서 사용할 수 있는 내용을 중심으로 학습해야 합니다.\n  \n- **취미개발**: 다양한 취미를 탐색하되, 개인의 흥미와 적성에 맞는 활동을 선택하도록 유도해야 합니다. 취미는 스트레스를 해소하고 창의성을 발휘할 수 있는 기회를 제공합니다.\n\n- **자기계발**: 자기 인식과 목표 설정이 중요합니다. 개인의 강점과 약점을 이해하고, 이를 바탕으로 발전할 수 있는 방향을 설정해야 합니다. 또한, 실천 가능한 목표를 세우고 이를 달성하기 위한 계획을 세워야 합니다.\n\n### 4. 4주 동안 현실적으로 달성 가능한 목표\n\n- **1주차**: 기본 어휘 100개, 간단한 문장 10개 작성, 일상 대화 5회 연습.\n- **2주차**: 선택한 취미에 대한 기본 기술 3가지 습득, 관련 자료 2개 읽기.\n- **3주차**: 개인 목표 1개 설정, 시간 관리 계획 수립, 의사소통 기술 연습 3회.\n- **4주차**: 선택한 취미에 대한 프로젝트 완성, 발표 준비 및 피드백 수집.\n\n### 전체 학습 로드맵\n\n| 주차  | 학습 영역       | 활동 내용                                   | 목표                                   |\n|-------|----------------|------------------------------------------|--------------------------------------|\n| 1주차 | 언어학습       | 기본 어휘 및 문법 학습, 일상 대화 연습    | 어휘 100개, 문장 10개 작성          |\n| 2주차 | 취미개발       | 다양한 취미 탐색, 선택한 취미 실습        | 기본 기술 3가지 습득                 |\n| 3주차 | 자기계발       | 목표 설정, 시간 관리, 의사소통 연습       | 개인 목표 1개 설정, 계획 수립       |\n| 4주차 | 종합적 적용    | 프로젝트 준비 및 발표, 피드백 수집       | 프로젝트 완성 및 발표                |\n\n이 로드맵을 통해 학습자는 전지지식의 기초를 다지고, 언어, 취미, 자기계발의 통합적인 이해를 높일 수 있습니다. 각 주차별 목표를 달성함으로써 자신감을 얻고, 지속적인 학습의 기초를 마련할 수 있습니다.",
+      "graph_curriculum": {
+        "절차1": {
+          "title": "전지 기초 이해",
+          "skills": {
+            "리튬이온 배터리 기본 원리": {
+              "skill_info": {
+                "name": "리튬이온 배터리 기본 원리",
+                "category": "배터리 기술",
+                "description": "리튬이온이 양극과 음극 사이를 이동하며 전기에너지를 저장하는 과정",
+                "keywords": [
+                  "리튬이온",
+                  "양극",
+                  "음극",
+                  "전해질",
+                  "분리막"
+                ],
+                "difficulty": "초급",
+                "importance_score": 8
+              },
+              "documents": {
+                "b6f187cd-5b15-4549-bb1e-4bbe0263db7c": {
+                  "doc_id": "b6f187cd-5b15-4549-bb1e-4bbe0263db7c",
+                  "title": "전기차용 배터리 안전 교육 프로그램",
+                  "department": "교육인사",
+                  "document_type": "safety_training",
+                  "target_audience": "전기차 배터리 취급 관련 전 직군",
+                  "difficulty_level": "중급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "07_교육인사",
+                  "created_date": "2025-09-18T09:55:08.012855",
+                  "updated_date": "2025-09-19T15:24:59.789000000+00:00",
+                  "experts": {
+                    "김민재": {
+                      "name": "김민재",
+                      "department": "생산기술팀",
+                      "role": "선임",
+                      "expertise": "전극 제조 공정",
+                      "updated_date": "2025-09-19T15:33:31.178000000+00:00"
+                    }
+                  }
+                },
+                "1170466c-8784-439f-b0fd-9306d862cd77": {
+                  "doc_id": "1170466c-8784-439f-b0fd-9306d862cd77",
+                  "title": "배터리 안전 관리 프로토콜 - 스마트 팩토리",
+                  "department": "안전관리팀",
+                  "document_type": "safety_protocol",
+                  "target_audience": "배터리 제조 스마트 팩토리 작업자 및 관리감독자",
+                  "difficulty_level": "중급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "01_안전관리",
+                  "created_date": "2025-09-18T13:47:50.137919",
+                  "updated_date": "2025-09-19T15:40:11.818000000+00:00",
+                  "experts": {
+                    "김현우": {
+                      "name": "김현우",
+                      "department": "안전관리팀",
+                      "role": "책임",
+                      "expertise": "배터리 안전 관리 프로토콜",
+                      "updated_date": "2025-09-19T15:40:12.168000000+00:00"
+                    }
+                  }
+                }
+              }
+            },
+            "리튬이온 배터리 구조 이해": {
+              "skill_info": {
+                "name": "리튬이온 배터리 구조 이해",
+                "category": "배터리 기술",
+                "description": "양극재, 음극재, 분리막, 전해액의 역할과 특성",
+                "keywords": [
+                  "NCM",
+                  "NCA",
+                  "LFP",
+                  "흑연",
+                  "분리막",
+                  "전해액"
+                ],
+                "difficulty": "초급",
+                "importance_score": 9
+              },
+              "documents": {
+                "deb9ef2f-c276-483c-99d8-014a76d6df2c": {
+                  "doc_id": "deb9ef2f-c276-483c-99d8-014a76d6df2c",
+                  "title": "신입사원 배터리 기초 교육 - 비용 절감",
+                  "department": "교육인사",
+                  "document_type": "training_material",
+                  "target_audience": "신입사원 및 배터리 업무 초임자",
+                  "difficulty_level": "초급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "07_교육인사",
+                  "created_date": "2025-09-18T09:41:13.895203",
+                  "updated_date": "2025-09-19T15:25:52.202000000+00:00",
+                  "experts": {
+                    "김민지": {
+                      "name": "김민지",
+                      "department": "교육팀",
+                      "role": "선임",
+                      "expertise": "배터리 기초 교육",
+                      "updated_date": "2025-09-19T15:25:52.558000000+00:00"
+                    }
+                  }
+                },
+                "94d15666-ca9d-4214-bd9f-6f91a6983e1a": {
+                  "doc_id": "94d15666-ca9d-4214-bd9f-6f91a6983e1a",
+                  "title": "배터리 셀 조립 작업지침서",
+                  "department": "제조공정",
+                  "document_type": "guide",
+                  "target_audience": "배터리 제조 작업자, 생산기술 담당자",
+                  "difficulty_level": "중급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "02_제조공정",
+                  "created_date": "2025-09-18T11:58:18.716436",
+                  "updated_date": "2025-09-19T15:34:15.054000000+00:00",
+                  "experts": {
+                    "김태현": {
+                      "name": "김태현",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전",
+                      "updated_date": "2025-09-19T15:41:10.602000000+00:00"
+                    },
+                    "박미정": {
+                      "name": "박미정",
+                      "department": "품질관리팀",
+                      "role": "검토자",
+                      "expertise": "배터리 품질 검증",
+                      "updated_date": "2025-09-19T15:34:15.422000000+00:00"
+                    },
+                    "이동욱": {
+                      "name": "이동욱",
+                      "department": "생산기술팀",
+                      "role": "승인자",
+                      "expertise": "생산기술 총괄",
+                      "updated_date": "2025-09-19T15:34:15.422000000+00:00"
+                    }
+                  }
+                }
+              }
+            },
+            "리튬이온 배터리 기술": {
+              "skill_info": {
+                "name": "리튬이온 배터리 기술",
+                "category": "배터리기술",
+                "description": "원통형, 파우치형, 각형 배터리 특성 및 응용",
+                "keywords": [
+                  "18650",
+                  "21700",
+                  "파우치형",
+                  "각형",
+                  "에너지밀도"
+                ],
+                "difficulty": "중급",
+                "importance_score": 8
+              },
+              "documents": {
+                "3d1c83f3-0275-4a79-8bd0-344062c75533": {
+                  "doc_id": "3d1c83f3-0275-4a79-8bd0-344062c75533",
+                  "title": "글로벌 배터리 시장 분석 보고서",
+                  "department": "경영전략",
+                  "document_type": "market_analysis",
+                  "target_audience": "사업전략팀, 경영진",
+                  "difficulty_level": "중급",
+                  "estimated_time": 120,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "08_경영전략",
+                  "created_date": "2025-09-18T10:06:30.243901",
+                  "updated_date": "2025-09-19T15:27:52.962000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "6e29ffed-b12a-4178-8f4b-63c81e2c58da": {
+                  "doc_id": "6e29ffed-b12a-4178-8f4b-63c81e2c58da",
+                  "title": "글로벌 배터리 시장 분석 보고서 - 글로벌 표준",
+                  "department": "경영전략",
+                  "document_type": "market_analysis",
+                  "target_audience": "사업전략 담당자, 배터리 사업 관련자",
+                  "difficulty_level": "중급",
+                  "estimated_time": 120,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "08_경영전략",
+                  "created_date": "2025-09-18T10:13:59.732202",
+                  "updated_date": "2025-09-19T15:27:54.885000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "절차2": {
+          "title": "전지의 작동 원리 학습",
+          "skills": {
+            "리튬이온 배터리 전기화학적 원리": {
+              "skill_info": {
+                "name": "리튬이온 배터리 전기화학적 원리",
+                "category": "배터리 기술",
+                "description": "전해질과 전극 간 이온 이동 메커니즘 이해",
+                "keywords": [
+                  "전기화학",
+                  "이온 이동",
+                  "네른스트 방정식",
+                  "바틀러-볼머 방정식"
+                ],
+                "difficulty": "중급",
+                "importance_score": 10
+              },
+              "documents": {
+                "6f74b749-94ca-4891-a6ce-526e672cb80a": {
+                  "doc_id": "6f74b749-94ca-4891-a6ce-526e672cb80a",
+                  "title": "배터리 기술자 역량 개발 프로그램 - 전기차용",
+                  "department": "교육팀",
+                  "document_type": "skill_development",
+                  "target_audience": "전기차용 배터리 기술자",
+                  "difficulty_level": "중급",
+                  "estimated_time": 19200,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "07_교육인사",
+                  "created_date": "2025-09-18T09:28:37.293209",
+                  "updated_date": "2025-09-19T15:26:28.957000000+00:00",
+                  "experts": {
+                    "김태현": {
+                      "name": "김태현",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전",
+                      "updated_date": "2025-09-19T15:41:10.602000000+00:00"
+                    }
+                  }
+                }
+              }
+            },
+            "리튬이온 배터리 전기화학적 특성 이해": {
+              "skill_info": {
+                "name": "리튬이온 배터리 전기화학적 특성 이해",
+                "category": "배터리 기술",
+                "description": "NCM811, LFP 배터리의 화학적 특성과 안전성 차이 이해",
+                "keywords": [
+                  "NCM811",
+                  "LFP",
+                  "전기화학",
+                  "SOH",
+                  "C-rate"
+                ],
+                "difficulty": "중급",
+                "importance_score": 9
+              },
+              "documents": {
+                "0a4864c0-dd98-4f94-ad3c-1392e4f2a804": {
+                  "doc_id": "0a4864c0-dd98-4f94-ad3c-1392e4f2a804",
+                  "title": "배터리 안전 교육 프로그램 - 해외 공장",
+                  "department": "교육인사",
+                  "document_type": "safety_training",
+                  "target_audience": "해외 공장 배터리 관련 업무 종사자",
+                  "difficulty_level": "중급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "07_교육인사",
+                  "created_date": "2025-09-18T09:50:25.806137",
+                  "updated_date": "2025-09-19T15:25:31.105000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "97f9af15-5439-4758-afee-e047266d8db5": {
+                  "doc_id": "97f9af15-5439-4758-afee-e047266d8db5",
+                  "title": "배터리 안전 교육 프로그램 - 스마트 팩토리",
+                  "department": "교육인사",
+                  "document_type": "safety_training",
+                  "target_audience": "스마트 팩토리 배터리 제조 및 운영 담당자",
+                  "difficulty_level": "중급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "07_교육인사",
+                  "created_date": "2025-09-18T09:51:01.041400",
+                  "updated_date": "2025-09-19T15:25:58.159000000+00:00",
+                  "experts": {
+                    "김민재": {
+                      "name": "김민재",
+                      "department": "생산기술팀",
+                      "role": "선임",
+                      "expertise": "전극 제조 공정",
+                      "updated_date": "2025-09-19T15:33:31.178000000+00:00"
+                    }
+                  }
+                }
+              }
+            },
+            "리튬이온 배터리 작동 메커니즘": {
+              "skill_info": {
+                "name": "리튬이온 배터리 작동 메커니즘",
+                "category": "배터리 기초 이론",
+                "description": "분자 수준에서의 리튬이온 배터리 작동 원리 이해",
+                "keywords": [
+                  "리튬이온",
+                  "작동 메커니즘",
+                  "분자 수준",
+                  "배터리"
+                ],
+                "difficulty": "고급",
+                "importance_score": 10
+              },
+              "documents": {
+                "01f795aa-19db-4ec7-8c53-cadc366b3e23": {
+                  "doc_id": "01f795aa-19db-4ec7-8c53-cadc366b3e23",
+                  "title": "배터리 기술자 역량 개발 프로그램 - 2024년 하반기",
+                  "department": "교육팀",
+                  "document_type": "skill_development",
+                  "target_audience": "배터리 기술자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 9600,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "07_교육인사",
+                  "created_date": "2025-09-18T09:44:19.274797",
+                  "updated_date": "2025-09-19T15:26:16.428000000+00:00",
+                  "experts": {
+                    "김민수": {
+                      "name": "김민수",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 안전 프로토콜",
+                      "updated_date": "2025-09-19T15:40:40.307000000+00:00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "절차3": {
+          "title": "전지 안전 관리 기초",
+          "skills": {
+            "리튬이온 배터리 화재 위험성 이해": {
+              "skill_info": {
+                "name": "리튬이온 배터리 화재 위험성 이해",
+                "category": "안전관리",
+                "description": "열폭주 현상과 독성가스 발생 메커니즘 이해",
+                "keywords": [
+                  "열폭주",
+                  "불화수소",
+                  "일산화탄소",
+                  "SOC",
+                  "LFP배터리"
+                ],
+                "difficulty": "초급",
+                "importance_score": 10
+              },
+              "documents": {
+                "32bc4bd5-a46d-46ee-ada4-5d5e81f4ccde": {
+                  "doc_id": "32bc4bd5-a46d-46ee-ada4-5d5e81f4ccde",
+                  "title": "배터리 화재 안전 매뉴얼 - 환경 개선",
+                  "department": "안전관리팀",
+                  "document_type": "fire_safety_manual",
+                  "target_audience": "배터리 취급 작업자, 안전관리자, 현장 관리자",
+                  "difficulty_level": "중급",
+                  "estimated_time": 120,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "01_안전관리",
+                  "created_date": "2025-09-18T13:44:34.118931",
+                  "updated_date": "2025-09-19T15:41:23.635000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "박서연": {
+                      "name": "박서연",
+                      "department": "기술안전부",
+                      "role": "검토자",
+                      "expertise": "기술안전 검토",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                }
+              }
+            },
+            "리튬이온 배터리 화재 진압": {
+              "skill_info": {
+                "name": "리튬이온 배터리 화재 진압",
+                "category": "소방안전",
+                "description": "대량 물 분무를 통한 냉각 진압 기술",
+                "keywords": [
+                  "물분무",
+                  "냉각",
+                  "기화열",
+                  "침수",
+                  "질소"
+                ],
+                "difficulty": "고급",
+                "importance_score": 10
+              },
+              "documents": {
+                "767677dc-c21e-435b-868c-67b8abb9a028": {
+                  "doc_id": "767677dc-c21e-435b-868c-67b8abb9a028",
+                  "title": "리튬이온 배터리 화재 안전 매뉴얼",
+                  "department": "안전관리팀",
+                  "document_type": "fire_safety_manual",
+                  "target_audience": "안전관리자, 소방대응팀, 시설관리자",
+                  "difficulty_level": "중급",
+                  "estimated_time": 180,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "01_안전관리",
+                  "created_date": "2025-09-18T13:29:52.962929",
+                  "updated_date": "2025-09-19T15:41:08.494000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                }
+              }
+            },
+            "리튬이온 배터리 안전 기준 적용": {
+              "skill_info": {
+                "name": "리튬이온 배터리 안전 기준 적용",
+                "category": "안전관리",
+                "description": "IEC 62133-2, UL 1642 기반 안전 기준 적용",
+                "keywords": [
+                  "IEC 62133-2",
+                  "UL 1642",
+                  "안전기준",
+                  "리튬이온배터리"
+                ],
+                "difficulty": "중급",
+                "importance_score": 9
+              },
+              "documents": {
+                "f2db2f87-785b-44e4-80f2-fa6cc7d0212e": {
+                  "doc_id": "f2db2f87-785b-44e4-80f2-fa6cc7d0212e",
+                  "title": "배터리 안전 관리 프로토콜 - 품질 개선",
+                  "department": "안전관리",
+                  "document_type": "safety_protocol",
+                  "target_audience": "배터리 제조 작업자, 안전관리자",
+                  "difficulty_level": "중급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "01_안전관리",
+                  "created_date": "2025-09-18T13:36:40.195825",
+                  "updated_date": "2025-09-19T15:39:42.839000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "이수현": {
+                      "name": "이수현",
+                      "department": "품질보증팀",
+                      "role": "검토자",
+                      "expertise": "품질보증 및 검토",
+                      "updated_date": "2025-09-19T15:41:25.770000000+00:00"
+                    },
+                    "박태웅": {
+                      "name": "박태웅",
+                      "department": "생산본부",
+                      "role": "승인자",
+                      "expertise": "생산 총괄 관리",
+                      "updated_date": "2025-09-19T15:41:25.770000000+00:00"
+                    }
+                  }
+                },
+                "0a3fc456-08e7-4882-a428-49e52ecece68": {
+                  "doc_id": "0a3fc456-08e7-4882-a428-49e52ecece68",
+                  "title": "배터리 안전 관리 프로토콜 - 품질 개선",
+                  "department": "안전관리팀",
+                  "document_type": "battery_safety_protocol",
+                  "target_audience": "배터리 제조 작업자, 안전관리자, 품질관리자",
+                  "difficulty_level": "중급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": ".ipynb_checkpoints",
+                  "created_date": "2025-09-18T14:00:32.507852",
+                  "updated_date": "2025-09-19T15:41:25.395000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "이수현": {
+                      "name": "이수현",
+                      "department": "품질보증팀",
+                      "role": "검토자",
+                      "expertise": "품질보증 및 검토",
+                      "updated_date": "2025-09-19T15:41:25.770000000+00:00"
+                    },
+                    "박태웅": {
+                      "name": "박태웅",
+                      "department": "생산본부",
+                      "role": "승인자",
+                      "expertise": "생산 총괄 관리",
+                      "updated_date": "2025-09-19T15:41:25.770000000+00:00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "절차4": {
+          "title": "전지 성능 평가 방법",
+          "skills": {
+            "배터리 성능 시험": {
+              "skill_info": {
+                "name": "배터리 성능 시험",
+                "category": "배터리 품질관리",
+                "description": "용량, 내부저항, 자기방전, 효율성 종합 성능 평가",
+                "keywords": [
+                  "rate capability",
+                  "AC 임피던스",
+                  "자기방전율",
+                  "충방전 효율"
+                ],
+                "difficulty": "중급",
+                "importance_score": 8
+              },
+              "documents": {
+                "67b76366-09bc-4b37-903c-50aa5fcdfb9c": {
+                  "doc_id": "67b76366-09bc-4b37-903c-50aa5fcdfb9c",
+                  "title": "배터리 신뢰성 시험 규격서 - 효율 향상",
+                  "department": "품질관리팀",
+                  "document_type": "reliability_testing",
+                  "target_audience": "배터리 품질관리 담당자, 신뢰성 시험 엔지니어",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "03_품질관리",
+                  "created_date": "2025-09-18T13:04:08.211630",
+                  "updated_date": "2025-09-19T15:38:01.831000000+00:00",
+                  "experts": {
+                    "김준석": {
+                      "name": "김준석",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 안전 관리 프로토콜",
+                      "updated_date": "2025-09-19T15:40:34.588000000+00:00"
+                    }
+                  }
+                },
+                "90004b4e-6ea9-46f8-9e08-d7e31c4621f8": {
+                  "doc_id": "90004b4e-6ea9-46f8-9e08-d7e31c4621f8",
+                  "title": "배터리 신뢰성 시험 규격서 - 신제품 개발",
+                  "department": "품질관리팀",
+                  "document_type": "reliability_testing",
+                  "target_audience": "배터리 품질관리 담당자, 신뢰성 시험 엔지니어",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "03_품질관리",
+                  "created_date": "2025-09-18T13:12:19.905896",
+                  "updated_date": "2025-09-19T15:38:21.292000000+00:00",
+                  "experts": {
+                    "김준호": {
+                      "name": "김준호",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "유해물질 취급 안전관리",
+                      "updated_date": "2025-09-19T15:41:01.283000000+00:00"
+                    },
+                    "박성민": {
+                      "name": "박성민",
+                      "department": "품질관리팀",
+                      "role": "승인자",
+                      "expertise": "품질관리",
+                      "updated_date": "2025-09-19T15:38:21.642000000+00:00"
+                    },
+                    "이현숙": {
+                      "name": "이현숙",
+                      "department": "생산담당",
+                      "role": "승인자",
+                      "expertise": "생산 총괄",
+                      "updated_date": "2025-09-19T15:40:42.064000000+00:00"
+                    }
+                  }
+                },
+                "85baca1f-2c67-41ee-b2e5-f341b654e923": {
+                  "doc_id": "85baca1f-2c67-41ee-b2e5-f341b654e923",
+                  "title": "배터리 신뢰성 시험 규격서 - 품질 개선",
+                  "department": "품질관리팀",
+                  "document_type": "reliability_testing",
+                  "target_audience": "배터리 품질관리 담당자, 신뢰성 시험 엔지니어",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "03_품질관리",
+                  "created_date": "2025-09-18T13:25:03.803127",
+                  "updated_date": "2025-09-19T15:38:23.212000000+00:00",
+                  "experts": {
+                    "김준호": {
+                      "name": "김준호",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "유해물질 취급 안전관리",
+                      "updated_date": "2025-09-19T15:41:01.283000000+00:00"
+                    },
+                    "이영희": {
+                      "name": "이영희",
+                      "department": "기술연구소",
+                      "role": "검토자",
+                      "expertise": "배터리 기술 연구",
+                      "updated_date": "2025-09-19T15:38:23.561000000+00:00"
+                    }
+                  }
+                },
+                "f4bc51ff-6c45-4dc3-bc15-751d7d9d6165": {
+                  "doc_id": "f4bc51ff-6c45-4dc3-bc15-751d7d9d6165",
+                  "title": "배터리 신뢰성 시험 규격서 - 기술 혁신",
+                  "department": "품질관리팀",
+                  "document_type": "reliability_testing",
+                  "target_audience": "배터리 품질관리 담당자, 신뢰성 시험 엔지니어",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "03_품질관리",
+                  "created_date": "2025-09-18T13:17:01.903477",
+                  "updated_date": "2025-09-19T15:38:49.579000000+00:00",
+                  "experts": {
+                    "김동현": {
+                      "name": "김동현",
+                      "department": "품질관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 신뢰성 시험",
+                      "updated_date": "2025-09-19T15:38:49.928000000+00:00"
+                    },
+                    "이수진": {
+                      "name": "이수진",
+                      "department": "기술안전부",
+                      "role": "검토자",
+                      "expertise": "기술안전 검토 및 승인",
+                      "updated_date": "2025-09-19T15:41:33.331000000+00:00"
+                    },
+                    "박민석": {
+                      "name": "박민석",
+                      "department": "품질보증본부",
+                      "role": "승인자",
+                      "expertise": "품질보증 총괄",
+                      "updated_date": "2025-09-19T15:38:49.928000000+00:00"
+                    }
+                  }
+                },
+                "3c9f146d-75ca-4279-9f4e-946dfb86b3f4": {
+                  "doc_id": "3c9f146d-75ca-4279-9f4e-946dfb86b3f4",
+                  "title": "배터리 신뢰성 시험 규격서 - 2024년 하반기",
+                  "department": "품질관리팀",
+                  "document_type": "reliability_testing",
+                  "target_audience": "배터리 품질관리 담당자, 신뢰성 시험 엔지니어",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "03_품질관리",
+                  "created_date": "2025-09-18T13:03:04.127975",
+                  "updated_date": "2025-09-19T15:39:01.027000000+00:00",
+                  "experts": {
+                    "김태현": {
+                      "name": "김태현",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전",
+                      "updated_date": "2025-09-19T15:41:10.602000000+00:00"
+                    }
+                  }
+                },
+                "cc805fe0-3266-4fb5-a853-130b1a0ad571": {
+                  "doc_id": "cc805fe0-3266-4fb5-a853-130b1a0ad571",
+                  "title": "배터리 신뢰성 시험 규격서 - 전기차용",
+                  "department": "품질관리팀",
+                  "document_type": "reliability_testing",
+                  "target_audience": "배터리 품질관리 담당자, 신뢰성 시험 엔지니어",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "03_품질관리",
+                  "created_date": "2025-09-18T13:27:19.416417",
+                  "updated_date": "2025-09-19T15:39:25.778000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "303aabe0-6708-4ba5-a56f-fdcf40245070": {
+                  "doc_id": "303aabe0-6708-4ba5-a56f-fdcf40245070",
+                  "title": "배터리 신뢰성 시험 규격서 - 신제품 개발",
+                  "department": "품질관리팀",
+                  "document_type": "reliability_testing",
+                  "target_audience": "배터리 품질관리 담당자, 신제품 개발 엔지니어",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "03_품질관리",
+                  "created_date": "2025-09-18T13:01:26.995857",
+                  "updated_date": "2025-09-19T15:39:35.208000000+00:00",
+                  "experts": {
+                    "김태현": {
+                      "name": "김태현",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전",
+                      "updated_date": "2025-09-19T15:41:10.602000000+00:00"
+                    },
+                    "이수진": {
+                      "name": "이수진",
+                      "department": "기술안전부",
+                      "role": "검토자",
+                      "expertise": "기술안전 검토 및 승인",
+                      "updated_date": "2025-09-19T15:41:33.331000000+00:00"
+                    },
+                    "박민호": {
+                      "name": "박민호",
+                      "department": "품질보증팀",
+                      "role": "승인자",
+                      "expertise": "품질보증 관리",
+                      "updated_date": "2025-09-19T15:39:35.558000000+00:00"
+                    }
+                  }
+                },
+                "a824722c-ddf4-4501-9acd-9758e6a06cbb": {
+                  "doc_id": "a824722c-ddf4-4501-9acd-9758e6a06cbb",
+                  "title": "배터리 신뢰성 시험 규격서 - 공정 최적화",
+                  "department": "품질관리",
+                  "document_type": "reliability_testing",
+                  "target_audience": "품질관리 담당자, 배터리 시험 엔지니어",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "03_품질관리",
+                  "created_date": "2025-09-18T13:17:37.465888",
+                  "updated_date": "2025-09-19T15:38:36.322000000+00:00",
+                  "experts": {
+                    "김민수": {
+                      "name": "김민수",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 안전 프로토콜",
+                      "updated_date": "2025-09-19T15:40:40.307000000+00:00"
+                    }
+                  }
+                },
+                "de2cf596-87ef-4514-a56d-a28cff0feb4a": {
+                  "doc_id": "de2cf596-87ef-4514-a56d-a28cff0feb4a",
+                  "title": "배터리 신뢰성 시험 규격서 - 품질 개선",
+                  "department": "품질관리팀",
+                  "document_type": "reliability_testing",
+                  "target_audience": "배터리 품질관리 담당자, 신뢰성 시험 엔지니어",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "03_품질관리",
+                  "created_date": "2025-09-18T13:18:14.029344",
+                  "updated_date": "2025-09-19T15:38:42.024000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "이상호": {
+                      "name": "이상호",
+                      "department": "안전관리팀",
+                      "role": "팀장",
+                      "expertise": "안전 관리",
+                      "updated_date": "2025-09-19T15:41:10.602000000+00:00"
+                    }
+                  }
+                },
+                "dfbcdf25-a168-47e4-8bf9-90ebd5ff8dd7": {
+                  "doc_id": "dfbcdf25-a168-47e4-8bf9-90ebd5ff8dd7",
+                  "title": "배터리 신뢰성 시험 규격서 - 안전 강화",
+                  "department": "품질관리팀",
+                  "document_type": "reliability_testing",
+                  "target_audience": "배터리 품질관리 담당자, 신뢰성 시험 엔지니어",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "03_품질관리",
+                  "created_date": "2025-09-18T13:16:29.817764",
+                  "updated_date": "2025-09-19T15:38:13.630000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                }
+              }
+            },
+            "배터리 성능 평가": {
+              "skill_info": {
+                "name": "배터리 성능 평가",
+                "category": "배터리 테스트",
+                "description": "전기화학적 성능 평가 및 임피던스 분석 기술",
+                "keywords": [
+                  "충방전 테스트",
+                  "임피던스",
+                  "용량유지율",
+                  "BMS 연동"
+                ],
+                "difficulty": "중급",
+                "importance_score": 8
+              },
+              "documents": {
+                "da5c70bd-0761-4d34-8dd5-e044f2a1d747": {
+                  "doc_id": "da5c70bd-0761-4d34-8dd5-e044f2a1d747",
+                  "title": "배터리 기술자 역량 개발 프로그램 - 2024년 하반기",
+                  "department": "교육인사",
+                  "document_type": "skill_development",
+                  "target_audience": "배터리 기술자 및 관련 업무 담당자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 6144,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "07_교육인사",
+                  "created_date": "2025-09-18T09:34:37.838106",
+                  "updated_date": "2025-09-19T15:25:50.136000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "f011114e-179e-46a2-bf27-a7dfbaedaa63": {
+                  "doc_id": "f011114e-179e-46a2-bf27-a7dfbaedaa63",
+                  "title": "NCM 배터리 연구개발 보고서 - 해외 공장",
+                  "department": "연구개발팀",
+                  "document_type": "r_and_d_report",
+                  "target_audience": "배터리 연구개발 엔지니어, 해외 공장 기술진",
+                  "difficulty_level": "고급",
+                  "estimated_time": 180,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "04_연구개발",
+                  "created_date": "2025-09-18T10:29:55.272180",
+                  "updated_date": "2025-09-19T15:28:37.796000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "이상호": {
+                      "name": "이상호",
+                      "department": "안전관리팀",
+                      "role": "팀장",
+                      "expertise": "안전 관리",
+                      "updated_date": "2025-09-19T15:41:10.602000000+00:00"
+                    }
+                  }
+                },
+                "e7c009ea-6b34-4945-a0f5-6133cae56bf3": {
+                  "doc_id": "e7c009ea-6b34-4945-a0f5-6133cae56bf3",
+                  "title": "차세대 배터리 소재 연구 보고서 - 공정 최적화",
+                  "department": "연구개발팀",
+                  "document_type": "material_research",
+                  "target_audience": "배터리 소재 연구개발자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 180,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "04_연구개발",
+                  "created_date": "2025-09-18T10:35:52.751868",
+                  "updated_date": "2025-09-19T15:28:39.717000000+00:00",
+                  "experts": {
+                    "김준혁": {
+                      "name": "김준혁",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:31.562000000+00:00"
+                    }
+                  }
+                },
+                "a764bebf-4d78-4d6e-ad84-3c6156dd04b6": {
+                  "doc_id": "a764bebf-4d78-4d6e-ad84-3c6156dd04b6",
+                  "title": "차세대 배터리 소재 연구 보고서 - 인력 양성",
+                  "department": "연구개발팀",
+                  "document_type": "material_research",
+                  "target_audience": "배터리 소재 연구원",
+                  "difficulty_level": "중급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "04_연구개발",
+                  "created_date": "2025-09-18T10:26:15.933075",
+                  "updated_date": "2025-09-19T15:28:59.242000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "박서영": {
+                      "name": "박서영",
+                      "department": "연구개발팀",
+                      "role": "선임",
+                      "expertise": "배터리 소재 검토",
+                      "updated_date": "2025-09-19T15:28:59.610000000+00:00"
+                    }
+                  }
+                },
+                "a3ce652f-9dc5-4712-a3d7-c85df96881b0": {
+                  "doc_id": "a3ce652f-9dc5-4712-a3d7-c85df96881b0",
+                  "title": "차세대 배터리 소재 연구 보고서 - 해외 공장",
+                  "department": "연구개발팀",
+                  "document_type": "material_research",
+                  "target_audience": "배터리 소재 연구개발자, 생산기술자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 180,
+                  "confidential_level": "대외비",
+                  "folder_path": "04_연구개발",
+                  "created_date": "2025-09-18T10:36:54.816071",
+                  "updated_date": "2025-09-19T15:29:05.035000000+00:00",
+                  "experts": {
+                    "김태현": {
+                      "name": "김태현",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전",
+                      "updated_date": "2025-09-19T15:41:10.602000000+00:00"
+                    }
+                  }
+                },
+                "64805616-c355-4880-b1be-7fd6d73932ef": {
+                  "doc_id": "64805616-c355-4880-b1be-7fd6d73932ef",
+                  "title": "차세대 배터리 소재 연구 보고서 - 환경 개선",
+                  "department": "연구개발팀",
+                  "document_type": "material_research",
+                  "target_audience": "배터리 소재 연구개발자, 공정 엔지니어",
+                  "difficulty_level": "고급",
+                  "estimated_time": 180,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "04_연구개발",
+                  "created_date": "2025-09-18T10:47:46.184949",
+                  "updated_date": "2025-09-19T15:29:06.842000000+00:00",
+                  "experts": {
+                    "김민호": {
+                      "name": "김민호",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "유해물질 취급 안전관리",
+                      "updated_date": "2025-09-19T15:41:29.570000000+00:00"
+                    }
+                  }
+                },
+                "2498abca-fa1c-46b5-8d6c-4ffa3a0cbf4e": {
+                  "doc_id": "2498abca-fa1c-46b5-8d6c-4ffa3a0cbf4e",
+                  "title": "NCM 배터리 연구개발 보고서 - 효율 향상",
+                  "department": "연구개발팀",
+                  "document_type": "r_and_d_report",
+                  "target_audience": "배터리 연구개발 엔지니어",
+                  "difficulty_level": "고급",
+                  "estimated_time": 180,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "04_연구개발",
+                  "created_date": "2025-09-18T10:25:44.114774",
+                  "updated_date": "2025-09-19T15:29:12.919000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "fc9ed9fb-743e-4bbc-a52c-2d0220c734f8": {
+                  "doc_id": "fc9ed9fb-743e-4bbc-a52c-2d0220c734f8",
+                  "title": "차세대 배터리 소재 연구 보고서 - 해외 공장",
+                  "department": "연구개발팀",
+                  "document_type": "material_research",
+                  "target_audience": "배터리 소재 연구개발자, 해외 공장 기술진",
+                  "difficulty_level": "고급",
+                  "estimated_time": 180,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "04_연구개발",
+                  "created_date": "2025-09-18T10:31:01.516464",
+                  "updated_date": "2025-09-19T15:29:14.690000000+00:00",
+                  "experts": {
+                    "박민준": {
+                      "name": "박민준",
+                      "department": "생산기술팀",
+                      "role": "책임자",
+                      "expertise": "배터리 셀 조립 공정",
+                      "updated_date": "2025-09-19T15:34:11.585000000+00:00"
+                    }
+                  }
+                },
+                "e4b847b1-8f93-4355-bc16-5610cd7388d9": {
+                  "doc_id": "e4b847b1-8f93-4355-bc16-5610cd7388d9",
+                  "title": "NCM 배터리 연구개발 보고서 - 비용 절감",
+                  "department": "연구개발팀",
+                  "document_type": "r_and_d_report",
+                  "target_audience": "배터리 연구개발 엔지니어, ESS 기술자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 180,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "04_연구개발",
+                  "created_date": "2025-09-18T10:50:12.768737",
+                  "updated_date": "2025-09-19T15:29:18.347000000+00:00",
+                  "experts": {
+                    "김동현": {
+                      "name": "김동현",
+                      "department": "품질관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 신뢰성 시험",
+                      "updated_date": "2025-09-19T15:38:49.928000000+00:00"
+                    }
+                  }
+                },
+                "fac5d05e-0ae1-4ae3-b93e-280e356ca55f": {
+                  "doc_id": "fac5d05e-0ae1-4ae3-b93e-280e356ca55f",
+                  "title": "NCM 배터리 연구개발 보고서 - 글로벌 표준",
+                  "department": "연구개발팀",
+                  "document_type": "r_and_d_report",
+                  "target_audience": "배터리 연구개발 엔지니어, 기술 전문가",
+                  "difficulty_level": "고급",
+                  "estimated_time": 180,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "04_연구개발",
+                  "created_date": "2025-09-18T10:37:43.297646",
+                  "updated_date": "2025-09-19T15:29:20.130000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "이성호": {
+                      "name": "이성호",
+                      "department": "생산기술팀",
+                      "role": "부장",
+                      "expertise": "ESS 제조공정 기술 및 검토",
+                      "updated_date": "2025-09-19T15:37:05.150000000+00:00"
+                    }
+                  }
+                },
+                "ea8d4510-7dc8-4f9c-af50-15d2263e1800": {
+                  "doc_id": "ea8d4510-7dc8-4f9c-af50-15d2263e1800",
+                  "title": "차세대 배터리 소재 연구 보고서 - ESS용",
+                  "department": "연구개발팀",
+                  "document_type": "material_research",
+                  "target_audience": "배터리 소재 연구원, ESS 개발 엔지니어",
+                  "difficulty_level": "고급",
+                  "estimated_time": 180,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "04_연구개발",
+                  "created_date": "2025-09-18T10:51:17.998930",
+                  "updated_date": "2025-09-19T15:29:27.748000000+00:00",
+                  "experts": {
+                    "김민수": {
+                      "name": "김민수",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 안전 프로토콜",
+                      "updated_date": "2025-09-19T15:40:40.307000000+00:00"
+                    }
+                  }
+                },
+                "242b02ee-bc5f-4096-ac2d-d3bf968bb930": {
+                  "doc_id": "242b02ee-bc5f-4096-ac2d-d3bf968bb930",
+                  "title": "NCM 배터리 연구개발 보고서 - 해외 공장",
+                  "department": "연구개발",
+                  "document_type": "r_and_d_report",
+                  "target_audience": "배터리 연구개발 엔지니어, 해외 공장 기술진",
+                  "difficulty_level": "고급",
+                  "estimated_time": 180,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "04_연구개발",
+                  "created_date": "2025-09-18T10:34:52.214238",
+                  "updated_date": "2025-09-19T15:29:35.735000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "e100b332-aa91-496d-b533-be3eb8bbc492": {
+                  "doc_id": "e100b332-aa91-496d-b533-be3eb8bbc492",
+                  "title": "NCM 배터리 연구개발 보고서 - 스마트 팩토리",
+                  "department": "연구개발팀",
+                  "document_type": "r_and_d_report",
+                  "target_audience": "배터리 연구개발자, 공정엔지니어",
+                  "difficulty_level": "고급",
+                  "estimated_time": 180,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "04_연구개발",
+                  "created_date": "2025-09-18T10:40:14.523602",
+                  "updated_date": "2025-09-19T15:29:55.204000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "c824c95b-f1df-4af3-bf22-784272872fd4": {
+                  "doc_id": "c824c95b-f1df-4af3-bf22-784272872fd4",
+                  "title": "차세대 배터리 소재 연구 보고서 - 비용 절감",
+                  "department": "연구개발팀",
+                  "document_type": "material_research",
+                  "target_audience": "배터리 소재 연구개발자, 공정 엔지니어",
+                  "difficulty_level": "고급",
+                  "estimated_time": 180,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "04_연구개발",
+                  "created_date": "2025-09-18T10:30:32.139707",
+                  "updated_date": "2025-09-19T15:30:06.802000000+00:00",
+                  "experts": {
+                    "김성호": {
+                      "name": "김성호",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "유해물질 취급 및 ESS 제조공정 안전관리",
+                      "updated_date": "2025-09-19T15:40:47.865000000+00:00"
+                    }
+                  }
+                },
+                "8d5c6778-25b9-42bc-a4b1-6624ecc0bb66": {
+                  "doc_id": "8d5c6778-25b9-42bc-a4b1-6624ecc0bb66",
+                  "title": "NCM 배터리 연구개발 보고서 - 스마트 팩토리",
+                  "department": "연구개발팀",
+                  "document_type": "r_and_d_report",
+                  "target_audience": "배터리 연구개발 엔지니어, 스마트 팩토리 시스템 설계자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 180,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "04_연구개발",
+                  "created_date": "2025-09-18T10:24:18.736317",
+                  "updated_date": "2025-09-19T15:29:10.859000000+00:00",
+                  "experts": {
+                    "김민수": {
+                      "name": "김민수",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 안전 프로토콜",
+                      "updated_date": "2025-09-19T15:40:40.307000000+00:00"
+                    }
+                  }
+                },
+                "5abc1376-1cf1-4dbe-b607-6ee43762e3d0": {
+                  "doc_id": "5abc1376-1cf1-4dbe-b607-6ee43762e3d0",
+                  "title": "글로벌 배터리 시장 분석 보고서 - 해외 공장 전략 분석",
+                  "department": "경영전략",
+                  "document_type": "market_analysis",
+                  "target_audience": "사업전략팀, 해외사업 담당자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 120,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "08_경영전략",
+                  "created_date": "2025-09-18T09:57:42.843212",
+                  "updated_date": "2025-09-19T15:28:28.116000000+00:00",
+                  "experts": {
+                    "김준혁": {
+                      "name": "김준혁",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:31.562000000+00:00"
+                    }
+                  }
+                },
+                "49d866db-2443-48bf-9e20-519263a27e0d": {
+                  "doc_id": "49d866db-2443-48bf-9e20-519263a27e0d",
+                  "title": "NCM 배터리 연구개발 보고서 - 스마트 팩토리",
+                  "department": "연구개발팀",
+                  "document_type": "r_and_d_report",
+                  "target_audience": "배터리 연구개발 엔지니어, 공정 엔지니어",
+                  "difficulty_level": "고급",
+                  "estimated_time": 180,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "04_연구개발",
+                  "created_date": "2025-09-18T10:38:12.646839",
+                  "updated_date": "2025-09-19T15:29:41.584000000+00:00",
+                  "experts": {
+                    "이민준": {
+                      "name": "이민준",
+                      "department": "연구개발팀",
+                      "role": "책임",
+                      "expertise": "NCM 배터리 연구개발 및 스마트 팩토리",
+                      "updated_date": "2025-09-19T15:29:41.935000000+00:00"
+                    }
+                  }
+                }
+              }
+            },
+            "배터리 성능 분석": {
+              "skill_info": {
+                "name": "배터리 성능 분석",
+                "category": "데이터분석",
+                "description": "내부저항, 전압편차, 용량편차 등 핵심 파라미터 분석",
+                "keywords": [
+                  "내부저항",
+                  "전압편차",
+                  "용량편차",
+                  "BMS테스트"
+                ],
+                "difficulty": "고급",
+                "importance_score": 10
+              },
+              "documents": {
+                "39c01c72-2fe7-4e89-89e2-bc16ac883629": {
+                  "doc_id": "39c01c72-2fe7-4e89-89e2-bc16ac883629",
+                  "title": "배터리 생산 데이터 관리 지침서 - 공정 최적화",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "배터리 생산라인 데이터 관리자, IT 엔지니어",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:53:11.947822",
+                  "updated_date": "2025-09-19T15:36:22.252000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "절차5": {
+          "title": "전지 관리 시스템 이해",
+          "skills": {
+            "배터리 관리 시스템(BMS) 운영": {
+              "skill_info": {
+                "name": "배터리 관리 시스템(BMS) 운영",
+                "category": "전기안전",
+                "description": "셀 전압, 온도, 전류 실시간 모니터링 기술",
+                "keywords": [
+                  "BMS",
+                  "SOH",
+                  "내부저항",
+                  "용량",
+                  "모니터링"
+                ],
+                "difficulty": "중급",
+                "importance_score": 8
+              },
+              "documents": {
+                "767677dc-c21e-435b-868c-67b8abb9a028": {
+                  "doc_id": "767677dc-c21e-435b-868c-67b8abb9a028",
+                  "title": "리튬이온 배터리 화재 안전 매뉴얼",
+                  "department": "안전관리팀",
+                  "document_type": "fire_safety_manual",
+                  "target_audience": "안전관리자, 소방대응팀, 시설관리자",
+                  "difficulty_level": "중급",
+                  "estimated_time": 180,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "01_안전관리",
+                  "created_date": "2025-09-18T13:29:52.962929",
+                  "updated_date": "2025-09-19T15:41:08.494000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                }
+              }
+            },
+            "배터리 관리 시스템(BMS) 설계": {
+              "skill_info": {
+                "name": "배터리 관리 시스템(BMS) 설계",
+                "category": "배터리 기술",
+                "description": "실시간 SOC 모니터링과 예측 분석을 통한 배터리 효율성 향상",
+                "keywords": [
+                  "BMS",
+                  "SOC",
+                  "실시간 모니터링",
+                  "예측 분석"
+                ],
+                "difficulty": "고급",
+                "importance_score": 9
+              },
+              "documents": {
+                "b3cae549-5de5-479d-966a-bd620f92e422": {
+                  "doc_id": "b3cae549-5de5-479d-966a-bd620f92e422",
+                  "title": "글로벌 배터리 시장 분석 보고서 - 디지털 전환",
+                  "department": "경영전략",
+                  "document_type": "market_analysis",
+                  "target_audience": "사업전략팀, 기술개발팀, 경영진",
+                  "difficulty_level": "고급",
+                  "estimated_time": 120,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "08_경영전략",
+                  "created_date": "2025-09-18T09:59:00.044388",
+                  "updated_date": "2025-09-19T15:28:16.808000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                }
+              }
+            },
+            "배터리 SOC 관리": {
+              "skill_info": {
+                "name": "배터리 SOC 관리",
+                "category": "에너지저장시스템",
+                "description": "배터리 충전상태 관리를 통한 에너지 효율성 최적화",
+                "keywords": [
+                  "SOC",
+                  "BESS",
+                  "NCM",
+                  "LFP",
+                  "사이클 수명"
+                ],
+                "difficulty": "중급",
+                "importance_score": 10
+              },
+              "documents": {
+                "801c9565-2c38-4064-afa2-e8c26d060554": {
+                  "doc_id": "801c9565-2c38-4064-afa2-e8c26d060554",
+                  "title": "에너지 관리 시스템 운영 가이드 - 법규 준수",
+                  "department": "환경에너지",
+                  "document_type": "guide",
+                  "target_audience": "에너지관리 담당자",
+                  "difficulty_level": "중급",
+                  "estimated_time": 180,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "06_환경에너지",
+                  "created_date": "2025-09-18T10:57:09.646572",
+                  "updated_date": "2025-09-19T15:31:43.156000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "generated_at": "2025-09-20T20:08:13.304241",
+      "processing_time": null,
+      "total_estimated_hours": 9,
+      "id": 0
+    }
   ]
 }
