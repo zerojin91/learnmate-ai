@@ -96,8 +96,14 @@ class AssessmentState(TypedDict):
 
 class UserInfoSchema(BaseModel):
     topic: str = Field(default="", description="사용자가 직접 언급한 학습 주제만. 예: '파이썬', '영어'. 추론하지 말고 정확한 단어만")
-    constraints: str = Field(default="", description="사용자가 명시적으로 말한 제약조건만. 예: '초보자', '주 3시간'. 없으면 빈 문자열") 
+    constraints: str = Field(default="", description="사용자가 명시적으로 말한 제약조건만. 예: '초보자', '주 3시간'. 없으면 빈 문자열")
     goal: str = Field(default="", description="사용자가 직접 언급한 목표만. 예: '취업', '자격증'. 추측하지 말고 명시된 것만")
+
+class CompletionSchema(BaseModel):
+    topic_complete: bool = Field(description="학습 주제가 명확히 파악되었는가")
+    constraints_complete: bool = Field(description="수준과 시간 투자 정도가 모두 파악되었는가")
+    goal_complete: bool = Field(description="구체적인 학습 목표나 목적이 파악되었는가")
+    missing_info: str = Field(description="부족한 정보가 있다면 무엇인지 설명")
 
 # LLM 초기화 - config에서 설정값 가져오기
 llm = ChatOpenAI(
@@ -142,30 +148,25 @@ class AssessmentAgentSystem:
     def _response_agent(self, state: AssessmentState) -> Command:
         """응답 생성 담당 에이전트"""
         logger.info(f"💬 Response Agent 실행 - Session: {state.get('session_id')}")
-        
-        # 완료 여부 확인
-        topic_complete = bool(state.get("topic"))
-        constraints_complete = bool(state.get("constraints"))
-        goal_complete = bool(state.get("goal"))
-        
-        if topic_complete and constraints_complete and goal_complete:
+
+        # LLM 완성도 판단
+        completion_result = self._is_profile_complete(state)
+
+        if (completion_result.topic_complete and
+            completion_result.constraints_complete and
+            completion_result.goal_complete):
             # 완료된 경우 - 완료 메시지
             response = self._generate_completion_message(state)
             completed = True
         else:
-            # 미완료된 경우 - 다음 질문
-            current_profile = {
-                "topic": state.get("topic", ""),
-                "constraints": state.get("constraints", ""),
-                "goal": state.get("goal", "")
-            }
-            response = self._generate_next_question(current_profile)
+            # 미완료된 경우 - LLM 판단 결과를 활용한 다음 질문
+            response = self._generate_next_question_with_llm_result(state, completion_result)
             completed = False
-        
+
         # 메시지 업데이트
         updated_messages = state.get("messages", []).copy()
         updated_messages.append({"role": "assistant", "content": response})
-        
+
         return Command(
             update={
                 "messages": updated_messages,
@@ -261,24 +262,87 @@ class AssessmentAgentSystem:
 완벽한 정보를 수집했습니다! 이제 맞춤형 학습 계획을 수립할 준비가 되었어요.
         """.strip()
     
+    def _is_profile_complete(self, state: AssessmentState) -> CompletionSchema:
+        """LLM을 사용하여 프로필 완성도를 지능적으로 판단"""
+
+        current_info = f"""
+현재 수집된 정보:
+- 주제: "{state.get('topic', '')}"
+- 제약조건: "{state.get('constraints', '')}"
+- 목표: "{state.get('goal', '')}"
+
+대화 기록:
+{self._format_conversation(state.get('messages', []))}
+"""
+
+        completion_prompt = f"""
+다음 학습 프로필 정보가 완성되었는지 판단해주세요:
+
+{current_info}
+
+판단 기준:
+1. **주제 완성**: 구체적인 학습 분야가 명확한가? (예: "파이썬", "영어", "데이터분석")
+2. **제약조건 완성**: 현재 수준 AND 시간 투자 정도가 모두 파악되었는가?
+   - 수준: "초보자", "중급자" 등
+   - 시간: "주 3시간", "매일 1시간" 등
+3. **목표 완성**: 구체적인 학습 목적이 명확한가? (예: "취업", "업무활용", "자격증")
+
+각 항목별로 완성 여부를 정확히 판단하고, 부족한 정보가 있다면 구체적으로 명시해주세요.
+"""
+
+        try:
+            model_with_structure = llm.with_structured_output(CompletionSchema)
+            return model_with_structure.invoke(completion_prompt)
+        except Exception as e:
+            logger.error(f"LLM 완성도 판단 오류: {e}")
+            # 오류 시 기존 방식으로 폴백
+            return CompletionSchema(
+                topic_complete=bool(state.get("topic")),
+                constraints_complete=bool(state.get("constraints")),
+                goal_complete=bool(state.get("goal")),
+                missing_info="완성도 판단 중 오류 발생"
+            )
+
     def _should_continue(self, state: AssessmentState) -> str:
-        """다음 단계 결정 - 항상 response_agent로"""
-        topic_complete = bool(state.get("topic"))
-        constraints_complete = bool(state.get("constraints"))
-        goal_complete = bool(state.get("goal"))
-        
-        logger.info(f"완성도 체크 - Topic: {topic_complete}, Constraints: {constraints_complete}, Goal: {goal_complete}")
-        
-        # 완료 여부와 관계없이 response_agent에서 처리
-        if topic_complete and constraints_complete and goal_complete:
-            return "complete" 
+        """LLM 기반 완성도 판단"""
+
+        # LLM으로 완성도 판단
+        completion_result = self._is_profile_complete(state)
+
+        logger.info(f"LLM 완성도 판단 - Topic: {completion_result.topic_complete}, "
+                   f"Constraints: {completion_result.constraints_complete}, "
+                   f"Goal: {completion_result.goal_complete}")
+
+        if completion_result.missing_info:
+            logger.info(f"부족한 정보: {completion_result.missing_info}")
+
+        # 모든 항목이 완성되었으면 complete
+        if (completion_result.topic_complete and
+            completion_result.constraints_complete and
+            completion_result.goal_complete):
+            return "complete"
         else:
             return "continue"
     
-    def _generate_next_question(self, profile: Dict) -> str:
-        """다음 질문 생성"""
-        
-        if not profile.get("topic"):
+    def _generate_next_question_with_llm_result(self, state: AssessmentState, completion_result: CompletionSchema) -> str:
+        """LLM 완성도 판단 결과를 활용한 다음 질문 생성"""
+
+        topic = state.get("topic", "")
+        constraints = state.get("constraints", "")
+        goal = state.get("goal", "")
+
+        # 디버깅용 로그 추가
+        logger.info(f"🔍 질문 생성 조건 체크:")
+        logger.info(f"  - topic_complete: {completion_result.topic_complete}")
+        logger.info(f"  - constraints_complete: {completion_result.constraints_complete}")
+        logger.info(f"  - goal_complete: {completion_result.goal_complete}")
+        logger.info(f"  - topic: '{topic}'")
+        logger.info(f"  - constraints: '{constraints}'")
+        logger.info(f"  - goal: '{goal}'")
+
+        # 주제가 완성되지 않은 경우
+        if not completion_result.topic_complete:
+            logger.info("📍 주제 질문 생성")
             return """
 🎯 **어떤 분야를 학습하고 싶으신가요?**
 
@@ -290,20 +354,54 @@ class AssessmentAgentSystem:
 
 자세히 알려주세요!
             """.strip()
-        
-        if not profile.get("constraints"):
-            topic = profile["topic"]
-            return f"""
+
+        # 제약조건이 완성되지 않은 경우
+        elif not completion_result.constraints_complete:
+            logger.info("📍 제약조건 질문 생성")
+            logger.info(f"  missing_info: '{completion_result.missing_info}'")
+            # missing_info를 활용하여 구체적인 질문 생성
+            missing_info = completion_result.missing_info.lower()
+
+            if "시간" in missing_info:
+                return f"""
+📚 **{topic} 학습 시간을 알려주세요!**
+
+현재 수준은 파악했어요: {constraints}
+
+**시간 투자**: 일주일에 몇 시간 정도 공부할 수 있으신가요?
+- 매일 1-2시간
+- 주 3-4시간
+- 주말에만 집중적으로
+- 기타 (구체적으로 알려주세요)
+
+현실적인 학습 계획을 세우기 위해 필요해요!
+                """.strip()
+            elif "수준" in missing_info:
+                return f"""
+📚 **{topic} 학습 수준을 알려주세요!**
+
+**현재 수준**: 완전 초보자이신가요, 아니면 어느 정도 아시나요?
+- 완전 처음 시작
+- 기초는 알고 있음
+- 어느 정도 경험 있음
+- 기타 (구체적으로 알려주세요)
+
+정확한 수준을 알아야 맞춤형 계획을 세울 수 있어요!
+                """.strip()
+            else:
+                # 일반적인 제약조건 질문
+                return f"""
 📚 **{topic} 학습 조건을 알려주세요!**
 
 **현재 수준**: 완전 초보자이신가요, 아니면 어느 정도 아시나요?
 **시간 투자**: 일주일에 몇 시간 정도 공부할 수 있으신가요?
 
 이런 정보가 있어야 현실적인 학습 계획을 세울 수 있어요!
-            """.strip()
-        
-        if not profile.get("goal"):
-            topic = profile["topic"]
+                """.strip()
+
+        # 목표가 완성되지 않은 경우
+        elif not completion_result.goal_complete:
+            logger.info("📍 목표 질문 생성")
             return f"""
 🚀 **{topic} 학습 목표를 알려주세요!**
 
@@ -315,7 +413,7 @@ class AssessmentAgentSystem:
 
 구체적인 목표를 알면 더 맞춤형 로드맵을 제시할 수 있어요!
             """.strip()
-        
+
         return "모든 정보가 수집되었습니다!"
     
     def _format_conversation(self, messages: List[Dict]) -> str:
