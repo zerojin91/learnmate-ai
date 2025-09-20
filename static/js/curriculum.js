@@ -1,0 +1,3116 @@
+/* =============================================================================
+   Curriculum Management Functions
+   ============================================================================= */
+
+// Curriculum generation function
+async function generateCurriculum() {
+    const generateBtn = document.getElementById('generateCurriculumBtn');
+    const durationSelect = document.getElementById('learningDuration');
+
+    if (!generateBtn || !durationSelect) {
+        console.error('커리큘럼 생성 요소를 찾을 수 없습니다.');
+        return;
+    }
+
+    const selectedDuration = durationSelect.value;
+    console.log(`🚀 커리큘럼 생성 시작 - 기간: ${selectedDuration}개월`);
+
+    // 1. Clear existing curriculum data to prevent interference
+    console.log('🗑️ 기존 커리큘럼 데이터 정리 시작');
+    StorageManager.curriculum.clear();
+
+    // Store curriculum generation start time for validation
+    const generationStartTime = Date.now();
+    window.curriculumGenerationStartTime = generationStartTime;
+    console.log('⏰ 커리큘럼 생성 시작 시간 기록:', new Date(generationStartTime).toISOString());
+
+    // 2. Set generation state
+    isGeneratingCurriculum = true;
+
+    // 3. Switch to curriculum tab first
+    switchToTab('curriculum');
+
+    // 4. Show loading state
+    const curriculumContent = document.getElementById('curriculumContent');
+    if (curriculumContent) {
+        displayLoadingState(curriculumContent);
+    }
+
+    // 5. Disable button and show loading state
+    generateBtn.disabled = true;
+    generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 커리큘럼 생성 중...';
+
+    // 6. Initialize progress and start polling
+    const sessionId = getSessionId();
+    if (sessionId) {
+        await initializeProgress(sessionId);
+        startProgressPolling(sessionId);
+    }
+
+    try {
+        // Send curriculum generation request message
+        const curriculumMessage = `${selectedDuration}개월 학습 기간으로 맞춤형 커리큘럼을 생성해주세요.`;
+        messageInput.value = curriculumMessage;
+
+        // Call general sendMessage function
+        await sendMessage();
+
+        // Real-time data reception flag
+        window.curriculumDataReceived = false;
+
+        console.log('✅ 커리큘럼 생성 요청 완료');
+
+    } catch (error) {
+        console.error('❌ 커리큘럼 생성 오류:', error);
+        isGeneratingCurriculum = false;
+        showNotification('커리큘럼 생성 중 오류가 발생했습니다. 다시 시도해주세요.', 'error');
+
+        // Stop progress polling
+        stopProgressPolling();
+
+        // Restore curriculum page on error
+        const curriculumContent = document.getElementById('curriculumContent');
+        if (curriculumContent) {
+            showCurriculumContent(curriculumContent);
+        }
+
+    } finally {
+        // Restore button (but don't clear generation state here - let progress polling handle it)
+        generateBtn.disabled = false;
+        generateBtn.innerHTML = '<i class="fas fa-magic"></i> 맞춤형 커리큘럼 생성';
+
+        // Only clean up if there was an error and polling isn't handling it
+        if (!isGeneratingCurriculum) {
+            window.curriculumGenerationStartTime = null;
+            console.log('🗑️ 오류 발생으로 인한 생성 시간 정리');
+        }
+    }
+}
+
+// Validate if curriculum is newly generated
+function validateNewCurriculum(curriculumData) {
+    try {
+        // If we're currently generating curriculum, any curriculum data is considered new
+        if (isGeneratingCurriculum) {
+            console.log('✅ 커리큘럼 생성 중이므로 데이터를 신규로 판단');
+            return true;
+        }
+
+        // Check basic curriculum data structure
+        if (!curriculumData || !curriculumData.modules || curriculumData.modules.length === 0) {
+            console.log('⚠️ 커리큘럼 데이터 구조가 올바르지 않음');
+            return false;
+        }
+
+        // Check if curriculum generation start time exists
+        const generationStartTime = window.curriculumGenerationStartTime;
+        if (!generationStartTime) {
+            console.log('⚠️ 커리큘럼 생성 시작 시간이 없음, 데이터 존재 여부로 판단');
+            // If no start time but curriculum exists, assume it's new
+            return true;
+        }
+
+        // Check curriculum generated_at timestamp
+        const curriculumGeneratedAt = curriculumData.generated_at;
+        if (!curriculumGeneratedAt) {
+            console.log('⚠️ 커리큘럼 생성 시간 정보가 없음, 관대하게 허용');
+            return true;
+        }
+
+        // Parse generated_at timestamp
+        let generatedTimestamp;
+        if (typeof curriculumGeneratedAt === 'string') {
+            generatedTimestamp = new Date(curriculumGeneratedAt).getTime();
+        } else if (typeof curriculumGeneratedAt === 'number') {
+            generatedTimestamp = curriculumGeneratedAt;
+        } else {
+            console.log('⚠️ 커리큘럼 생성 시간 형식이 올바르지 않음, 관대하게 허용:', curriculumGeneratedAt);
+            return true;
+        }
+
+        // More lenient time comparison (allow 5 minutes before start time for clock skew)
+        const timeDifference = generatedTimestamp - generationStartTime;
+        const isAfterStartTime = timeDifference > -300000; // Allow 5 minutes before start time
+        console.log(`🕐 관대한 시간 비교: 시작시간=${new Date(generationStartTime).toISOString()}, 생성시간=${new Date(generatedTimestamp).toISOString()}, 차이=${timeDifference}ms, 신규여부=${isAfterStartTime}`);
+
+        // Validate session ID match (optional for backward compatibility)
+        const currentSessionId = getSessionId();
+        const curriculumSessionId = curriculumData.session_id;
+        const sessionMatches = !curriculumSessionId || currentSessionId === curriculumSessionId;
+        console.log(`🔑 세션 비교: 현재=${currentSessionId}, 커리큘럼=${curriculumSessionId || '없음'}, 일치여부=${sessionMatches}`);
+
+        return isAfterStartTime && sessionMatches;
+
+    } catch (error) {
+        console.error('❌ 커리큘럼 유효성 검사 오류:', error);
+        return false;
+    }
+}
+
+// Check curriculum completion status
+async function checkCurriculumCompletion() {
+    console.log('🔍 커리큘럼 완료 상태 재확인 시작');
+
+    try {
+        // Check recently generated curriculum with validation
+        const curriculumData = StorageManager.curriculum.get();
+        if (curriculumData) {
+            console.log('📋 커리큘럼 데이터 발견, 유효성 검사 시작:', curriculumData);
+
+            // Validate if this is a newly generated curriculum
+            const isNewCurriculum = validateNewCurriculum(curriculumData);
+            if (!isNewCurriculum) {
+                console.log('⚠️ 기존 커리큘럼 데이터로 판단, 계속 대기');
+
+                // Schedule another check after a delay
+                setTimeout(() => {
+                    console.log('🔄 커리큘럼 완료 상태 재확인 재시도');
+                    checkCurriculumCompletion();
+                }, 2000); // Check again in 2 seconds
+
+                return;
+            }
+
+            console.log('✅ 새로운 커리큘럼 확인됨 - 생성 완료 처리');
+
+            // Stop any ongoing progress polling
+            stopProgressPolling();
+
+            // Clear generation completion flag and start time
+            isGeneratingCurriculum = false;
+            window.curriculumGenerationStartTime = null;
+            console.log('🗑️ 커리큘럼 생성 상태 및 시작 시간 정리 완료');
+
+            // 즉시 커리큘럼 탭으로 전환
+            if (typeof switchToTab === 'function') {
+                switchToTab('curriculum');
+                console.log('📚 커리큘럼 탭으로 자동 전환');
+            }
+
+            // Display curriculum immediately after tab switch
+            setTimeout(() => {
+                const curriculumContent = document.getElementById('curriculumContent');
+                if (curriculumContent) {
+                    displayCurriculumCards(curriculumContent, curriculumData);
+                    showNotification('커리큘럼이 완성되었습니다!', 'success');
+                    console.log('📊 커리큘럼 카드 표시 완료');
+                }
+            }, 100); // 탭 전환 후 짧은 지연
+
+            return;
+        }
+
+        // No curriculum data found yet - schedule another check
+        console.log('⏳ 커리큘럼 데이터 없음, 재시도 예약');
+
+        // Schedule another check after a delay
+        setTimeout(() => {
+            console.log('🔄 커리큘럼 완료 상태 재확인 (데이터 없음)');
+            checkCurriculumCompletion();
+        }, 3000); // Check again in 3 seconds
+
+    } catch (error) {
+        console.error('커리큘럼 완료 확인 오류:', error);
+        isGeneratingCurriculum = false;
+        stopProgressPolling();
+    }
+}
+
+// Show curriculum content
+async function showCurriculumContent(curriculumContent) {
+    // Debug logs
+    console.log('🔍 showCurriculumContent 호출됨');
+    console.log('📊 isGeneratingCurriculum 상태:', isGeneratingCurriculum);
+
+    // Check existing curriculum in localStorage first
+    const existingCurriculum = StorageManager.curriculum.get();
+    console.log('💾 localStorage 커리큘럼 확인:', existingCurriculum ? '있음' : '없음');
+
+    // Check if we're currently generating a curriculum
+    const isGenerating = isGeneratingCurriculum || false;
+    const hasGenerationStartTime = window.curriculumGenerationStartTime || false;
+    console.log('🔍 커리큘럼 생성 상태 확인 - 생성 중:', isGenerating, '시작 시간:', hasGenerationStartTime ? '있음' : '없음');
+
+    if (existingCurriculum) {
+        // If we're in active generation mode, don't show old curriculum
+        if (isGenerating && hasGenerationStartTime) {
+            console.log('📊 커리큘럼 생성 진행 중이므로 기존 데이터 표시를 건너뜀');
+            // Show empty state or loading instead
+            displayEmptyState(curriculumContent);
+            curriculumContent.style.display = 'block';
+            return;
+        }
+
+        console.log('📚 기존 커리큘럼 표시 (localStorage에서)');
+        displayCurriculumCards(curriculumContent, existingCurriculum);
+        curriculumContent.style.display = 'block';
+
+        // Only clear generation flag if we're not actively generating
+        if (!isGenerating) {
+            isGeneratingCurriculum = false;
+            console.log('✅ 생성 플래그 해제됨 (비활성화 상태)');
+        }
+        return;
+    } else {
+        // If we're actively generating, don't query server - it might have stale data
+        if (isGenerating && hasGenerationStartTime) {
+            console.log('📊 커리큘럼 생성 진행 중이므로 서버 조회를 건너뜀 (간섭 방지)');
+            displayLoadingState(curriculumContent);
+            curriculumContent.style.display = 'block';
+            return;
+        }
+
+        // Try to load curriculum from server only when not generating
+        console.log('🔄 서버에서 커리큘럼 데이터 로드 시도');
+        const sessionId = getSessionId();
+
+        if (sessionId) {
+            try {
+                const response = await fetch(`/api/curriculum/${sessionId}`);
+                const curriculumData = await response.json();
+
+                if (response.ok && curriculumData && !curriculumData.error) {
+                    console.log('✅ 서버에서 커리큘럼 데이터 로드 성공');
+
+                    // Save to localStorage for future use
+                    StorageManager.curriculum.set(curriculumData);
+
+                    // Display curriculum
+                    displayCurriculumCards(curriculumContent, curriculumData);
+                    return;
+                } else {
+                    console.log('📝 아직 생성된 커리큘럼이 없습니다:', curriculumData.error || 'No curriculum found');
+                }
+            } catch (error) {
+                console.log('📝 커리큘럼 로드 시도 실패 (정상적임):', error.message);
+                // 이는 정상적인 상황입니다 - 아직 커리큘럼이 생성되지 않은 경우
+            }
+        }
+
+        // Fallback: show loading or empty state
+        if (isGeneratingCurriculum) {
+            console.log('⏳ 커리큘럼 생성 중 - 로딩 표시');
+            displayLoadingState(curriculumContent);
+        } else {
+            console.log('📝 커리큘럼 없음 - 안내 메시지 표시');
+            displayEmptyState(curriculumContent);
+        }
+    }
+
+    curriculumContent.style.display = 'block';
+}
+
+// Display loading state (5-step dynamic loading)
+function displayLoadingState(container) {
+    container.innerHTML = `
+        <div class="curriculum-loading">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+            </div>
+            <h3>커리큘럼 생성을 시작합니다</h3>
+            <p>사용자의 학습 프로필을 바탕으로 최적의 학습 계획을 만들고 있습니다.</p>
+            <div class="loading-steps">
+                <div class="loading-step">
+                    <i class="fas fa-search"></i>
+                    <span>학습 요구사항 분석</span>
+                </div>
+                <div class="loading-step">
+                    <i class="fas fa-route"></i>
+                    <span>학습 경로 설계</span>
+                </div>
+                <div class="loading-step">
+                    <i class="fas fa-building"></i>
+                    <span>커리큘럼 구조 생성</span>
+                </div>
+                <div class="loading-step">
+                    <i class="fas fa-book-open"></i>
+                    <span>학습 자료 수집</span>
+                </div>
+                <div class="loading-step">
+                    <i class="fas fa-check-circle"></i>
+                    <span>최종 검토 및 완성</span>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// Display empty state
+function displayEmptyState(container) {
+    container.innerHTML = `
+        <div class="curriculum-empty">
+            <div class="empty-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h3>아직 생성된 커리큘럼이 없습니다</h3>
+            <p>학습 프로필을 완성한 후, 프로필 카드에서 "맞춤형 커리큘럼 생성" 버튼을 클릭하여 개인화된 학습 계획을 만들어보세요.</p>
+            
+            <div class="profile-status">
+                ${(() => {
+                    const status = getProfileStatus();
+                    return `
+                        <div class="status-header">
+                            <h4>학습 프로필 현황</h4>
+                            <span class="completion-badge ${status.isComplete ? 'complete' : 'incomplete'}">
+                                ${status.completed}/${status.total} 완료
+                            </span>
+                        </div>
+                        <div class="status-steps">
+                            ${['topic', 'constraints', 'goal'].map((step, index) => {
+                                const isCompleted = status.completedSteps.includes(step);
+                                const labels = {
+                                    topic: '학습 주제',
+                                    constraints: '학습 조건', 
+                                    goal: '학습 목표'
+                                };
+                                return `
+                                    <div class="status-step ${isCompleted ? 'completed' : ''}">
+                                        <i class="fas ${isCompleted ? 'fa-check-circle' : 'fa-circle'}"></i>
+                                        <span>${labels[step]}</span>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    `;
+                })()}
+            </div>
+            
+            ${!getProfileStatus().isComplete ? `
+                <div class="empty-actions">
+                    <button onclick="switchToTab('chat')" class="btn btn-primary">
+                        <i class="fas fa-comments"></i>
+                        학습 프로필 완성하기
+                    </button>
+                </div>
+            ` : ''}
+        </div>
+    `;
+}
+
+// Display curriculum cards
+function displayCurriculumCards(container, data) {
+    const modules = data.modules || [];
+    let cardsHtml = '';
+
+    // 진행도 상태 가져오기
+    const completedWeeks = StorageManager.curriculum.progress.get() || [];
+    const totalWeeks = modules.length;
+    const completedCount = completedWeeks.length;
+    const progressPercentage = totalWeeks > 0 ? (completedCount / totalWeeks) * 100 : 0;
+
+    // 헤더 정보
+    cardsHtml += `
+        <div style="margin-bottom: 24px;">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                <div style="
+                    background: linear-gradient(135deg, #a855f7, #ec4899);
+                    color: white;
+                    padding: 6px 12px;
+                    border-radius: 6px;
+                    font-size: 12px;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                ">
+                    ${data.level || 'Beginner'}
+                </div>
+                <div style="color: #6b7280; font-size: 14px;">
+                    ${data.duration_weeks || 0}주 과정
+                </div>
+                <div style="
+                    background: ${progressPercentage > 0 ? '#10b981' : '#f3f4f6'};
+                    color: ${progressPercentage > 0 ? 'white' : '#6b7280'};
+                    padding: 4px 8px;
+                    border-radius: 12px;
+                    font-size: 11px;
+                    font-weight: 600;
+                    margin-left: auto;
+                ">
+                    ${completedCount}/${totalWeeks} 완료
+                </div>
+            </div>
+            <h2 style="
+                font-size: 18px;
+                font-weight: 700;
+                color: #1f2937;
+                margin: 0 0 16px 0;
+            ">
+                ${data.title || '커리큘럼'}
+            </h2>
+
+            <!-- 학습 지도 섹션 -->
+            <div class="learning-map-section" style="margin-bottom: 24px;">
+                <div class="learning-map-header">
+                    <div class="learning-map-title">
+                        <i class="fas fa-project-diagram"></i>
+                        <h3>나의 학습 지도</h3>
+                    </div>
+                    <button class="learning-map-toggle" onclick="toggleLearningMap()">
+                        <i class="fas fa-eye"></i> 나의 학습 지도 보기
+                    </button>
+                </div>
+                <div class="learning-map-container" style="display: none;">
+                    <div class="learning-map-controls">
+                        <button class="map-control-btn" onclick="fitGraphView()">
+                            <i class="fas fa-expand-arrows-alt"></i> 전체 보기
+                        </button>
+                        <button class="map-control-btn" onclick="resetGraphView()">
+                            <i class="fas fa-redo"></i> 초기화
+                        </button>
+                    </div>
+                    <div class="learning-map-graph" id="learningMapGraph"></div>
+                </div>
+            </div>
+
+            <!-- 학습 진행도 트래커 -->
+            <div style="
+                background: #f9fafb;
+                border: 1px solid #e5e7eb;
+                border-radius: 12px;
+                padding: 16px;
+                margin-bottom: 20px;
+            ">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                    <h3 style="
+                        font-size: 14px;
+                        font-weight: 600;
+                        color: #374151;
+                        margin: 0;
+                    ">학습 진행도</h3>
+                    <span style="
+                        font-size: 12px;
+                        color: #6b7280;
+                        font-weight: 500;
+                    ">${Math.round(progressPercentage)}% 완료</span>
+                </div>
+
+                <!-- 진행바 -->
+                <div style="
+                    background: #e5e7eb;
+                    height: 6px;
+                    border-radius: 3px;
+                    overflow: hidden;
+                    margin-bottom: 16px;
+                ">
+                    <div style="
+                        background: linear-gradient(90deg, #a855f7, #ec4899);
+                        height: 100%;
+                        width: ${progressPercentage}%;
+                        transition: width 0.3s ease;
+                        border-radius: 3px;
+                    "></div>
+                </div>
+
+                <!-- 주차별 단계 표시 -->
+                <div style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 4px;
+                    overflow-x: auto;
+                    padding: 4px 0;
+                ">
+                    ${modules.map((module, index) => {
+                        const isCompleted = completedWeeks.includes(index);
+                        const weekColor = index < 4 ? '#a855f7' : index < 8 ? '#ec4899' : '#10b981';
+                        return `
+                            <div style="
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                min-width: 50px;
+                                position: relative;
+                            ">
+                                <div style="
+                                    width: 32px;
+                                    height: 32px;
+                                    border-radius: 50%;
+                                    background: ${isCompleted ? weekColor : '#e5e7eb'};
+                                    color: ${isCompleted ? 'white' : '#9ca3af'};
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    font-size: 12px;
+                                    font-weight: 600;
+                                    transition: all 0.3s ease;
+                                    cursor: pointer;
+                                    border: 2px solid ${isCompleted ? weekColor : '#e5e7eb'};
+                                    box-shadow: ${isCompleted ? '0 2px 8px rgba(168, 85, 247, 0.3)' : 'none'};
+                                " onclick="toggleModuleDetail(${index})">
+                                    ${isCompleted ? '✓' : (index + 1)}
+                                </div>
+                                <div style="
+                                    font-size: 9px;
+                                    color: #6b7280;
+                                    text-align: center;
+                                    margin-top: 4px;
+                                    max-width: 40px;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    white-space: nowrap;
+                                ">
+                                    ${index + 1}주차
+                                </div>
+                                ${index < modules.length - 1 ? `
+                                    <div style="
+                                        position: absolute;
+                                        top: 16px;
+                                        right: -27px;
+                                        width: 20px;
+                                        height: 2px;
+                                        background: ${index < completedCount - 1 ? weekColor : '#e5e7eb'};
+                                        z-index: 1;
+                                    "></div>
+                                ` : ''}
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+
+    // 모듈 카드들을 그리드로 배치 (고정 높이 카드)
+    const rows = Math.ceil(modules.length / 4);
+    const gridHeight = rows * 160 + (rows - 1) * 12; // 카드 높이 160px + 간격 12px
+    cardsHtml += `<div id="curriculumGrid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; min-height: ${gridHeight}px; height: auto;">`;
+
+    modules.forEach((module, index) => {
+        const weekColor = index < 4 ? '#a855f7' : index < 8 ? '#ec4899' : '#10b981';
+        cardsHtml += `
+            <div id="card-${index}" class="curriculum-card" style="
+                background: white;
+                border: 1px solid #e5e7eb;
+                border-radius: 8px;
+                padding: 12px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                height: 160px;
+                position: relative;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+            "
+            onmouseover="this.style.borderColor='${weekColor}'; this.style.boxShadow='0 2px 8px rgba(168, 85, 247, 0.1)'"
+            onmouseout="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'"
+            onclick="toggleModuleDetail(${index})">
+
+                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+                    <div style="
+                        background: ${weekColor};
+                        color: white;
+                        width: 20px;
+                        height: 20px;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 10px;
+                        font-weight: 600;
+                    ">
+                        ${module.week || index + 1}
+                    </div>
+                    <div style="color: #6b7280; font-size: 10px; font-weight: 500;">
+                        ${module.estimated_hours || 8}시간
+                    </div>
+                </div>
+
+                <h3 style="
+                    font-size: 12px;
+                    font-weight: 600;
+                    color: #1f2937;
+                    margin: 0 0 6px 0;
+                    line-height: 1.3;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                ">
+                    ${module.title || `${index + 1}주차 학습`}
+                </h3>
+
+                <p id="description-${index}" style="
+                    font-size: 10px;
+                    color: #6b7280;
+                    margin: 0 0 8px 0;
+                    line-height: 1.3;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    flex: 1;
+                    min-height: 0;
+                ">
+                    ${module.description || '이번 주차의 학습 내용을 다룹니다.'}
+                </p>
+
+                ${module.key_concepts && module.key_concepts.length > 0 ? `
+                    <div id="concepts-${index}" style="margin-top: 4px; display: flex; gap: 2px; flex-wrap: wrap;">
+                        ${module.key_concepts.slice(0, 2).map(concept => `
+                            <span style="
+                                background: #f3f4f6;
+                                color: #6b7280;
+                                padding: 2px 4px;
+                                border-radius: 3px;
+                                font-size: 8px;
+                                font-weight: 500;
+                                max-width: 80px;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                                display: inline-block;
+                            ">${concept}</span>
+                        `).join('')}
+                        ${module.key_concepts.length > 2 ? `<span style="color: #9ca3af; font-size: 8px;">+${module.key_concepts.length - 2}</span>` : ''}
+                    </div>
+                ` : ''}
+            </div>
+        `;
+    });
+
+    cardsHtml += '</div>';
+    container.innerHTML = cardsHtml;
+
+    // Initialize learning map if graph_curriculum data exists
+    setTimeout(() => {
+        const graphContainer = document.getElementById('learningMapGraph');
+        if (graphContainer && data.graph_curriculum) {
+            createLearningMap(graphContainer, data.graph_curriculum);
+        }
+    }, 100); // Small delay to ensure DOM is ready
+}
+
+// Create module card
+function createModuleCard(module, index, completedWeeks) {
+    const isCompleted = completedWeeks.includes(index);
+    
+    return `
+        <div class="module-card ${isCompleted ? 'completed' : ''}">
+            <div class="module-header">
+                <div class="module-number">${index + 1}주차</div>
+                <div class="module-title">
+                    <h3>${module.title}</h3>
+                    <p>${module.description || '이번 주차의 학습 내용을 다룹니다.'}</p>
+                </div>
+                <div class="module-status">
+                    ${isCompleted ? 
+                        '<i class="fas fa-check-circle completed"></i>' : 
+                        '<i class="far fa-circle pending"></i>'
+                    }
+                </div>
+            </div>
+            
+            <div class="module-content">
+                ${module.topics ? `
+                    <div class="module-topics">
+                        <h4><i class="fas fa-list"></i> 학습 주제</h4>
+                        <ul>
+                            ${module.topics.map(topic => `<li>${topic}</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : ''}
+                
+                ${module.resources ? createResourceSection(module.resources) : ''}
+            </div>
+            
+            <div class="module-actions">
+                <button onclick="toggleModuleCompletion(${index})" class="btn ${isCompleted ? 'btn-outline' : 'btn-primary'}">
+                    <i class="fas ${isCompleted ? 'fa-undo' : 'fa-check'}"></i>
+                    ${isCompleted ? '완료 취소' : '학습 완료'}
+                </button>
+            </div>
+        </div>
+    `;
+}
+
+// Create resource section
+function createResourceSection(resources) {
+    let resourcesHtml = '<div class="module-resources"><h4><i class="fas fa-folder-open"></i> 학습 자료</h4>';
+    
+    if (resources.videos && resources.videos.length > 0) {
+        resourcesHtml += `
+            <div class="resource-group">
+                <h5><i class="fas fa-play-circle"></i> 동영상 강의</h5>
+                <div class="resource-list">
+                    ${resources.videos.map((video, idx) => `
+                        <a href="${video.url}" target="_blank" class="resource-item video">
+                            <div class="resource-icon">${idx + 1}</div>
+                            <div class="resource-info">
+                                <div class="resource-title">${video.title}</div>
+                                <div class="resource-duration">${video.duration || '60분'}</div>
+                            </div>
+                            <div class="resource-action">▶️ 재생</div>
+                        </a>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+    
+    if (resources.documents && resources.documents.length > 0) {
+        resourcesHtml += `
+            <div class="resource-group">
+                <h5><i class="fas fa-file-alt"></i> 문서 자료</h5>
+                <div class="resource-list">
+                    ${resources.documents.map((doc, idx) => `
+                        <a href="${doc.url}" target="_blank" class="resource-item document">
+                            <div class="resource-icon">${idx + 1}</div>
+                            <div class="resource-info">
+                                <div class="resource-title">${doc.title}</div>
+                            </div>
+                            <div class="resource-action">📁 다운로드</div>
+                        </a>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+    
+    if (resources.links && resources.links.length > 0) {
+        resourcesHtml += `
+            <div class="resource-group">
+                <h5><i class="fas fa-external-link-alt"></i> 참고 링크</h5>
+                <div class="resource-list">
+                    ${resources.links.map((link, idx) => `
+                        <a href="${link.url}" target="_blank" class="resource-item link">
+                            <div class="resource-icon">${idx + 1}</div>
+                            <div class="resource-info">
+                                <div class="resource-title">${link.title}</div>
+                            </div>
+                            <div class="resource-action">🔗 링크</div>
+                        </a>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+    
+    resourcesHtml += '</div>';
+    return resourcesHtml;
+}
+
+// Toggle module completion
+function toggleModuleCompletion(moduleIndex) {
+    const completedWeeks = StorageManager.curriculum.progress.get() || [];
+    const isCompleted = completedWeeks.includes(moduleIndex);
+    
+    let updatedWeeks;
+    if (isCompleted) {
+        // Remove from completed
+        updatedWeeks = completedWeeks.filter(week => week !== moduleIndex);
+        StorageManager.curriculum.progress.set(updatedWeeks);
+        showNotification(`${moduleIndex + 1}주차 완료를 취소했습니다`);
+    } else {
+        // Add to completed
+        updatedWeeks = [...completedWeeks, moduleIndex].sort((a, b) => a - b);
+        StorageManager.curriculum.progress.set(updatedWeeks);
+        showNotification(`${moduleIndex + 1}주차를 완료했습니다! 🎉`);
+    }
+    
+    // Update progress bar immediately
+    updateProgressBar(updatedWeeks);
+    
+    // Update module card state
+    updateModuleCardState(moduleIndex, !isCompleted);
+    
+    // Optionally refresh entire display (can be commented out for better performance)
+    // const curriculumContent = document.getElementById('curriculumContent');
+    // const curriculumData = StorageManager.curriculum.get();
+    // if (curriculumContent && curriculumData) {
+    //     displayCurriculumCards(curriculumContent, curriculumData);
+    // }
+}
+
+// Update progress bar
+function updateProgressBar(completedWeeks) {
+    const curriculumData = StorageManager.curriculum.get();
+    if (!curriculumData || !curriculumData.modules) return;
+    
+    const totalModules = curriculumData.modules.length;
+    const completedCount = completedWeeks.length;
+    const progressPercent = (completedCount / totalModules) * 100;
+    
+    // Update progress bar
+    const progressFill = document.querySelector('.progress-fill');
+    const progressText = document.querySelector('.progress-summary p');
+    
+    if (progressFill) {
+        progressFill.style.width = `${progressPercent}%`;
+    }
+    
+    if (progressText) {
+        progressText.textContent = `전체 진도: ${completedCount}/${totalModules} 주차 완료`;
+    }
+    
+    // Update header progress indicator if exists
+    const headerProgress = document.querySelector('.curriculum-meta .progress');
+    if (headerProgress) {
+        headerProgress.innerHTML = `<i class="fas fa-chart-line"></i> ${completedCount}/${totalModules} 완료`;
+    }
+}
+
+// Update individual module card state
+function updateModuleCardState(moduleIndex, isCompleted) {
+    const moduleCards = document.querySelectorAll('.module-card');
+    const targetCard = moduleCards[moduleIndex];
+    
+    if (!targetCard) return;
+    
+    // Update card appearance
+    if (isCompleted) {
+        targetCard.classList.add('completed');
+    } else {
+        targetCard.classList.remove('completed');
+    }
+    
+    // Update status icon
+    const statusIcon = targetCard.querySelector('.module-status i');
+    if (statusIcon) {
+        if (isCompleted) {
+            statusIcon.className = 'fas fa-check-circle completed';
+        } else {
+            statusIcon.className = 'far fa-circle pending';
+        }
+    }
+    
+    // Update button
+    const actionButton = targetCard.querySelector('.module-actions button');
+    if (actionButton) {
+        if (isCompleted) {
+            actionButton.className = 'btn btn-outline';
+            actionButton.innerHTML = '<i class="fas fa-undo"></i> 완료 취소';
+        } else {
+            actionButton.className = 'btn btn-primary';
+            actionButton.innerHTML = '<i class="fas fa-check"></i> 학습 완료';
+        }
+    }
+}
+
+// Download curriculum
+function downloadCurriculum() {
+    const curriculumData = StorageManager.curriculum.get();
+    if (!curriculumData) return;
+    
+    const dataStr = JSON.stringify(curriculumData, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(dataBlob);
+    link.download = `curriculum_${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+    
+    showNotification('커리큘럼을 다운로드했습니다');
+}
+
+// Share curriculum
+async function shareCurriculum() {
+    const curriculumData = StorageManager.curriculum.get();
+    if (!curriculumData) return;
+    
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: curriculumData.title || '맞춤형 학습 커리큘럼',
+                text: `${curriculumData.modules.length}주 과정의 맞춤형 학습 커리큘럼입니다.`,
+                url: window.location.href
+            });
+            showNotification('커리큘럼을 공유했습니다');
+        } catch (error) {
+            console.log('공유 취소됨');
+        }
+    } else {
+        // Fallback: copy to clipboard
+        const shareText = `${curriculumData.title}\n\n${curriculumData.modules.map((module, index) => 
+            `${index + 1}주차: ${module.title}`
+        ).join('\n')}`;
+        
+        navigator.clipboard.writeText(shareText).then(() => {
+            showNotification('커리큘럼 정보를 클립보드에 복사했습니다');
+        });
+    }
+}
+
+// Create curriculum content container
+function createCurriculumContent() {
+    const curriculumContent = document.createElement('div');
+    curriculumContent.id = 'curriculumContent';
+    curriculumContent.className = 'content-section curriculum-section';
+    
+    const welcomeSection = document.querySelector('.welcome-section');
+    welcomeSection.parentNode.insertBefore(curriculumContent, welcomeSection.nextSibling);
+    
+    return curriculumContent;
+}
+
+// Toggle module detail modal - using exact original unified HTML file modal style
+function toggleModuleDetail(moduleIndex) {
+    const curriculumData = StorageManager.curriculum.get();
+    if (!curriculumData || !curriculumData.modules) return;
+
+    const module = curriculumData.modules[moduleIndex];
+    if (!module) return;
+
+    // Check if modal already exists
+    let modal = document.getElementById('moduleModal');
+    if (modal) {
+        modal.remove();
+    }
+
+    // Get completion status
+    const completedWeeks = StorageManager.curriculum.progress.get() || [];
+    const isCompleted = completedWeeks.includes(moduleIndex);
+
+    const weekColor = moduleIndex < 4 ? '#a855f7' : moduleIndex < 8 ? '#ec4899' : '#10b981';
+
+    // Create modern, refined modal HTML
+    const modalHtml = `
+        <div id="moduleModal" style="
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 20px;
+        " onclick="closeModuleModal(event)">
+            <div style="
+                background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+                border-radius: 24px;
+                width: 100%;
+                max-width: 1000px;
+                max-height: 92vh;
+                overflow: hidden;
+                box-shadow:
+                    0 32px 64px rgba(0, 0, 0, 0.12),
+                    0 0 0 1px rgba(255, 255, 255, 0.8),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+                animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+                position: relative;
+            " onclick="event.stopPropagation()">
+                <!-- 헤더 -->
+                <div style="
+                    background: linear-gradient(135deg, ${weekColor}15 0%, ${weekColor}08 50%, transparent 100%);
+                    border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+                    padding: 20px 28px;
+                    position: relative;
+                    overflow: hidden;
+                ">
+                    <!-- 배경 장식 -->
+                    <div style="
+                        position: absolute;
+                        top: -50%;
+                        right: -20%;
+                        width: 200px;
+                        height: 200px;
+                        background: radial-gradient(circle, ${weekColor}12 0%, transparent 70%);
+                        border-radius: 50%;
+                        pointer-events: none;
+                    "></div>
+
+                    <button onclick="closeModuleModal()" style="
+                        position: absolute;
+                        top: 24px;
+                        right: 24px;
+                        background: rgba(255, 255, 255, 0.9);
+                        backdrop-filter: blur(8px);
+                        border: 1px solid rgba(148, 163, 184, 0.2);
+                        color: #64748b;
+                        font-size: 18px;
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 12px;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                        font-weight: 300;
+                        z-index: 10;
+                    " onmouseover="this.style.background='rgba(255, 255, 255, 1)'; this.style.color='#374151'; this.style.transform='scale(1.05)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.9)'; this.style.color='#64748b'; this.style.transform='scale(1)'">
+                        ×
+                    </button>
+
+                    <div style="
+                        background: linear-gradient(135deg, ${weekColor} 0%, ${weekColor}cc 100%);
+                        color: white;
+                        padding: 6px 12px;
+                        border-radius: 50px;
+                        font-size: 12px;
+                        font-weight: 600;
+                        margin-bottom: 12px;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 6px;
+                        box-shadow:
+                            0 4px 12px ${weekColor}30,
+                            0 0 0 1px rgba(255, 255, 255, 0.2);
+                        position: relative;
+                        z-index: 5;
+                    ">
+                        <span style="font-size: 12px;">📅</span>
+                        Week ${moduleIndex + 1}
+                    </div>
+
+                    <h2 style="
+                        margin: 0;
+                        font-size: 22px;
+                        font-weight: 700;
+                        line-height: 1.2;
+                        color: #0f172a;
+                        letter-spacing: -0.01em;
+                        position: relative;
+                        z-index: 5;
+                        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+                        background-clip: text;
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                    ">
+                        ${module.title}
+                    </h2>
+
+                    <p style="
+                        margin: 10px 0 0 0;
+                        color: #475569;
+                        font-size: 14px;
+                        line-height: 1.4;
+                        font-weight: 400;
+                        position: relative;
+                        z-index: 5;
+                    ">
+                        ${module.description}
+                    </p>
+                </div>
+
+                <!-- 컨텐츠 -->
+                <div style="
+                    padding: 0;
+                    background: white;
+                    max-height: calc(92vh - 140px);
+                    overflow-y: auto;
+                ">
+                    <div style="padding: 24px;">
+                    ${module.objectives ? `
+                        <div style="
+                            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+                            border-radius: 16px;
+                            padding: 20px;
+                            margin-bottom: 20px;
+                            border: 1px solid rgba(148, 163, 184, 0.1);
+                            box-shadow:
+                                0 8px 32px rgba(0, 0, 0, 0.04),
+                                0 0 0 1px rgba(255, 255, 255, 0.8),
+                                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+                            position: relative;
+                            overflow: hidden;
+                        ">
+                            <!-- 배경 장식 -->
+                            <div style="
+                                position: absolute;
+                                top: -30px;
+                                right: -30px;
+                                width: 100px;
+                                height: 100px;
+                                background: radial-gradient(circle, ${weekColor}08 0%, transparent 70%);
+                                border-radius: 50%;
+                                pointer-events: none;
+                            "></div>
+
+                            <h3 style="
+                                font-size: 18px;
+                                font-weight: 700;
+                                color: #0f172a;
+                                margin-bottom: 16px;
+                                display: flex;
+                                align-items: center;
+                                gap: 10px;
+                                position: relative;
+                                z-index: 5;
+                            ">
+                                <span style="
+                                    background: linear-gradient(135deg, ${weekColor} 0%, ${weekColor}cc 100%);
+                                    color: white;
+                                    width: 36px;
+                                    height: 36px;
+                                    border-radius: 12px;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    font-size: 16px;
+                                    box-shadow:
+                                        0 6px 12px ${weekColor}30,
+                                        0 0 0 1px rgba(255, 255, 255, 0.2);
+                                ">🎯</span>
+                                학습 목표
+                            </h3>
+                            <div style="
+                                display: grid;
+                                gap: 12px;
+                            ">
+                                ${module.objectives.map((obj, idx) => `
+                                    <div style="
+                                        background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+                                        border: 1px solid rgba(148, 163, 184, 0.1);
+                                        border-left: 4px solid ${weekColor};
+                                        padding: 16px;
+                                        border-radius: 12px;
+                                        color: #334155;
+                                        line-height: 1.5;
+                                        font-weight: 500;
+                                        position: relative;
+                                        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+                                    " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 32px rgba(0, 0, 0, 0.08)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.02)'">
+                                        <div style="
+                                            position: absolute;
+                                            top: -10px;
+                                            left: 12px;
+                                            background: linear-gradient(135deg, ${weekColor} 0%, ${weekColor}cc 100%);
+                                            color: white;
+                                            width: 24px;
+                                            height: 24px;
+                                            border-radius: 50%;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            font-size: 11px;
+                                            font-weight: 700;
+                                            box-shadow:
+                                                0 3px 8px ${weekColor}40,
+                                                0 0 0 2px white;
+                                        ">${idx + 1}</div>
+                                        <div style="margin-top: 8px; font-size: 14px;">
+                                            ${obj}
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    ${module.key_concepts && module.key_concepts.length > 0 ? `
+                        <div style="
+                            background: white;
+                            border-radius: 16px;
+                            padding: 24px;
+                            margin-bottom: 24px;
+                            border: 1px solid #e2e8f0;
+                            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+                        ">
+                            <h3 style="
+                                font-size: 20px;
+                                font-weight: 700;
+                                color: #1e293b;
+                                margin-bottom: 20px;
+                                display: flex;
+                                align-items: center;
+                                gap: 12px;
+                            ">
+                                <span style="
+                                    background: linear-gradient(135deg, ${weekColor}20, ${weekColor}10);
+                                    color: ${weekColor};
+                                    width: 36px;
+                                    height: 36px;
+                                    border-radius: 12px;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    font-size: 16px;
+                                ">🔑</span>
+                                핵심 개념
+                            </h3>
+                            <div style="
+                                display: grid;
+                                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                                gap: 16px;
+                            ">
+                                ${module.key_concepts.map((concept, idx) => `
+                                    <div style="
+                                        background: linear-gradient(135deg, ${weekColor}08, ${weekColor}03);
+                                        border: 2px solid ${weekColor}15;
+                                        color: #475569;
+                                        padding: 16px 20px;
+                                        border-radius: 12px;
+                                        font-size: 15px;
+                                        font-weight: 600;
+                                        text-align: center;
+                                        position: relative;
+                                        transition: all 0.2s ease;
+                                        cursor: default;
+                                    " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px ${weekColor}20'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                        <div style="
+                                            position: absolute;
+                                            top: -10px;
+                                            right: 8px;
+                                            background: ${weekColor};
+                                            color: white;
+                                            width: 20px;
+                                            height: 20px;
+                                            border-radius: 50%;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            font-size: 11px;
+                                            font-weight: 700;
+                                        ">${idx + 1}</div>
+                                        ${concept}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    ${module.learning_outcomes && module.learning_outcomes.length > 0 ? `
+                        <div style="
+                            background: white;
+                            border-radius: 16px;
+                            padding: 24px;
+                            margin-bottom: 24px;
+                            border: 1px solid #e2e8f0;
+                            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+                        ">
+                            <h3 style="
+                                font-size: 20px;
+                                font-weight: 700;
+                                color: #1e293b;
+                                margin-bottom: 20px;
+                                display: flex;
+                                align-items: center;
+                                gap: 12px;
+                            ">
+                                <span style="
+                                    background: linear-gradient(135deg, ${weekColor}20, ${weekColor}10);
+                                    color: ${weekColor};
+                                    width: 36px;
+                                    height: 36px;
+                                    border-radius: 12px;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    font-size: 16px;
+                                ">🏆</span>
+                                학습 성과
+                            </h3>
+                            <div style="
+                                display: grid;
+                                gap: 12px;
+                            ">
+                                ${module.learning_outcomes.map((outcome, idx) => `
+                                    <div style="
+                                        background: #f8fafc;
+                                        border: 1px solid #f1f5f9;
+                                        border-left: 4px solid ${weekColor};
+                                        padding: 16px;
+                                        border-radius: 0 12px 12px 0;
+                                        color: #475569;
+                                        line-height: 1.6;
+                                        font-weight: 500;
+                                        position: relative;
+                                    ">
+                                        <div style="
+                                            position: absolute;
+                                            top: -8px;
+                                            left: 12px;
+                                            background: ${weekColor};
+                                            color: white;
+                                            width: 24px;
+                                            height: 24px;
+                                            border-radius: 50%;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            font-size: 12px;
+                                            font-weight: 700;
+                                        ">${idx + 1}</div>
+                                        <div style="margin-top: 8px;">
+                                            ${outcome}
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    ${module.estimated_hours ? `
+                        <div style="
+                            background: white;
+                            border-radius: 16px;
+                            padding: 24px;
+                            margin-bottom: 24px;
+                            border: 1px solid #e2e8f0;
+                            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+                        ">
+                            <h3 style="
+                                font-size: 20px;
+                                font-weight: 700;
+                                color: #1e293b;
+                                margin-bottom: 20px;
+                                display: flex;
+                                align-items: center;
+                                gap: 12px;
+                            ">
+                                <span style="
+                                    background: linear-gradient(135deg, ${weekColor}20, ${weekColor}10);
+                                    color: ${weekColor};
+                                    width: 36px;
+                                    height: 36px;
+                                    border-radius: 12px;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    font-size: 16px;
+                                ">⏰</span>
+                                학습 시간
+                            </h3>
+                            <div style="
+                                background: linear-gradient(135deg, ${weekColor}08, ${weekColor}03);
+                                border: 2px solid ${weekColor}15;
+                                color: #475569;
+                                padding: 20px;
+                                border-radius: 12px;
+                                text-align: center;
+                                font-size: 24px;
+                                font-weight: 700;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                gap: 8px;
+                            ">
+                                <span style="font-size: 20px;">📚</span>
+                                ${module.estimated_hours}시간
+                            </div>
+                            <div style="
+                                text-align: center;
+                                color: #64748b;
+                                font-size: 14px;
+                                margin-top: 12px;
+                                font-weight: 500;
+                            ">
+                                예상 학습 소요 시간
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    ${module.resources ? `
+                        <div style="
+                            background: white;
+                            border-radius: 16px;
+                            padding: 24px;
+                            border: 1px solid #e2e8f0;
+                            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+                        ">
+                            <h3 style="
+                                font-size: 20px;
+                                font-weight: 700;
+                                color: #1e293b;
+                                margin-bottom: 24px;
+                                display: flex;
+                                align-items: center;
+                                gap: 12px;
+                            ">
+                                <span style="
+                                    background: linear-gradient(135deg, ${weekColor}20, ${weekColor}10);
+                                    color: ${weekColor};
+                                    width: 36px;
+                                    height: 36px;
+                                    border-radius: 12px;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    font-size: 16px;
+                                ">📚</span>
+                                학습 자료
+                            </h3>
+
+                            <!-- 탭 네비게이션 -->
+                            <div style="
+                                display: flex;
+                                gap: 8px;
+                                margin-bottom: 20px;
+                                border-bottom: 1px solid #f1f5f9;
+                                padding-bottom: 16px;
+                            ">
+                                ${module.resources.videos && module.resources.videos.length > 0 ? `
+                                    <div style="
+                                        background: linear-gradient(135deg, #fef3c7, #fde68a);
+                                        color: #92400e;
+                                        padding: 8px 16px;
+                                        border-radius: 8px;
+                                        font-size: 13px;
+                                        font-weight: 600;
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 6px;
+                                    ">
+                                        📹 동영상 ${module.resources.videos.length}개
+                                    </div>
+                                ` : ''}
+                                ${module.resources.web_links && module.resources.web_links.length > 0 ? `
+                                    <div style="
+                                        background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+                                        color: #1e40af;
+                                        padding: 8px 16px;
+                                        border-radius: 8px;
+                                        font-size: 13px;
+                                        font-weight: 600;
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 6px;
+                                    ">
+                                        🌐 웹자료 ${module.resources.web_links.length}개
+                                    </div>
+                                ` : ''}
+                                ${module.resources.documents && module.resources.documents.length > 0 ? `
+                                    <div style="
+                                        background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+                                        color: #065f46;
+                                        padding: 8px 16px;
+                                        border-radius: 8px;
+                                        font-size: 13px;
+                                        font-weight: 600;
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 6px;
+                                    ">
+                                        📄 문서 ${module.resources.documents.length}개
+                                    </div>
+                                ` : ''}
+                            </div>
+
+                            <!-- 리소스 리스트 -->
+                            <div style="display: grid; gap: 20px;">
+                                ${module.resources.videos && module.resources.videos.length > 0 ? `
+                                    <div>
+                                        <h4 style="
+                                            font-size: 17px;
+                                            font-weight: 700;
+                                            color: #374151;
+                                            margin-bottom: 12px;
+                                            display: flex;
+                                            align-items: center;
+                                            gap: 8px;
+                                        ">
+                                            <span style="color: #f59e0b;">📹</span>
+                                            동영상 강의
+                                        </h4>
+                                        <div style="display: grid; gap: 10px;">
+                                            ${module.resources.videos.map((video, idx) => `
+                                                <a href="${video.url}" target="_blank" style="
+                                                    display: flex;
+                                                    align-items: center;
+                                                    gap: 12px;
+                                                    background: linear-gradient(135deg, #fffbeb, #fef3c7);
+                                                    border: 1px solid #fed7aa;
+                                                    border-radius: 12px;
+                                                    padding: 16px;
+                                                    text-decoration: none;
+                                                    color: #92400e;
+                                                    transition: all 0.2s ease;
+                                                    position: relative;
+                                                    overflow: hidden;
+                                                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(245, 158, 11, 0.15)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                                    <div style="
+                                                        background: #f59e0b;
+                                                        color: white;
+                                                        width: 40px;
+                                                        height: 40px;
+                                                        border-radius: 10px;
+                                                        display: flex;
+                                                        align-items: center;
+                                                        justify-content: center;
+                                                        font-size: 12px;
+                                                        font-weight: 700;
+                                                        flex-shrink: 0;
+                                                    ">${idx + 1}</div>
+                                                    <div style="flex: 1;">
+                                                        <div style="font-weight: 600; margin-bottom: 4px; font-size: 14px;">
+                                                            ${video.title}
+                                                        </div>
+                                                        <div style="font-size: 12px; color: #a16207;">
+                                                            ${video.duration || '약 30분'} • 동영상 강의
+                                                        </div>
+                                                    </div>
+                                                    <div style="
+                                                        background: rgba(245, 158, 11, 0.2);
+                                                        color: #92400e;
+                                                        padding: 4px 8px;
+                                                        border-radius: 6px;
+                                                        font-size: 11px;
+                                                        font-weight: 600;
+                                                    ">▶ 재생</div>
+                                                </a>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                ` : ''}
+
+                                ${module.resources.web_links && module.resources.web_links.length > 0 ? `
+                                    <div>
+                                        <h4 style="
+                                            font-size: 17px;
+                                            font-weight: 700;
+                                            color: #374151;
+                                            margin-bottom: 12px;
+                                            display: flex;
+                                            align-items: center;
+                                            gap: 8px;
+                                        ">
+                                            <span style="color: #3b82f6;">🌐</span>
+                                            웹 자료
+                                        </h4>
+                                        <div style="display: grid; gap: 10px;">
+                                            ${module.resources.web_links.map((link, idx) => `
+                                                <a href="${link.url}" target="_blank" style="
+                                                    display: flex;
+                                                    align-items: center;
+                                                    gap: 12px;
+                                                    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+                                                    border: 1px solid #93c5fd;
+                                                    border-radius: 12px;
+                                                    padding: 16px;
+                                                    text-decoration: none;
+                                                    color: #1e40af;
+                                                    transition: all 0.2s ease;
+                                                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(59, 130, 246, 0.15)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                                    <div style="
+                                                        background: #3b82f6;
+                                                        color: white;
+                                                        width: 40px;
+                                                        height: 40px;
+                                                        border-radius: 10px;
+                                                        display: flex;
+                                                        align-items: center;
+                                                        justify-content: center;
+                                                        font-size: 12px;
+                                                        font-weight: 700;
+                                                        flex-shrink: 0;
+                                                    ">${idx + 1}</div>
+                                                    <div style="flex: 1;">
+                                                        <div style="font-weight: 600; margin-bottom: 4px; font-size: 14px;">
+                                                            ${link.title}
+                                                        </div>
+                                                        <div style="font-size: 12px; color: #1e40af;">
+                                                            웹 자료 • 온라인 참고자료
+                                                        </div>
+                                                    </div>
+                                                    <div style="
+                                                        background: rgba(59, 130, 246, 0.2);
+                                                        color: #1e40af;
+                                                        padding: 4px 8px;
+                                                        border-radius: 6px;
+                                                        font-size: 11px;
+                                                        font-weight: 600;
+                                                    ">🔗 링크</div>
+                                                </a>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                ` : ''}
+
+                                ${module.resources.documents && module.resources.documents.length > 0 ? `
+                                    <div>
+                                        <h4 style="
+                                            font-size: 17px;
+                                            font-weight: 700;
+                                            color: #374151;
+                                            margin-bottom: 12px;
+                                            display: flex;
+                                            align-items: center;
+                                            gap: 8px;
+                                        ">
+                                            <span style="color: #10b981;">📄</span>
+                                            문서 자료
+                                        </h4>
+                                        <div style="display: grid; gap: 10px;">
+                                            ${module.resources.documents.map((doc, idx) => `
+                                                <a href="${doc.url}" target="_blank" style="
+                                                    display: flex;
+                                                    align-items: center;
+                                                    gap: 12px;
+                                                    background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+                                                    border: 1px solid #86efac;
+                                                    border-radius: 12px;
+                                                    padding: 16px;
+                                                    text-decoration: none;
+                                                    color: #065f46;
+                                                    transition: all 0.2s ease;
+                                                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(16, 185, 129, 0.15)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                                    <div style="
+                                                        background: #10b981;
+                                                        color: white;
+                                                        width: 40px;
+                                                        height: 40px;
+                                                        border-radius: 10px;
+                                                        display: flex;
+                                                        align-items: center;
+                                                        justify-content: center;
+                                                        font-size: 12px;
+                                                        font-weight: 700;
+                                                        flex-shrink: 0;
+                                                    ">${idx + 1}</div>
+                                                    <div style="flex: 1;">
+                                                        <div style="font-weight: 600; margin-bottom: 4px; font-size: 14px;">
+                                                            ${doc.title}
+                                                        </div>
+                                                        <div style="font-size: 12px; color: #065f46;">
+                                                            ${doc.type || 'PDF'} • ${doc.pages || '10'}페이지
+                                                        </div>
+                                                    </div>
+                                                    <div style="
+                                                        background: rgba(16, 185, 129, 0.2);
+                                                        color: #065f46;
+                                                        padding: 4px 8px;
+                                                        border-radius: 6px;
+                                                        font-size: 11px;
+                                                        font-weight: 600;
+                                                    ">📁 다운로드</div>
+                                                </a>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <!-- 학습 완료 섹션 -->
+                    <div style="
+                        margin-top: 20px;
+                        background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+                        border-radius: 16px;
+                        padding: 20px;
+                        border: 1px solid rgba(148, 163, 184, 0.1);
+                        box-shadow:
+                            0 8px 32px rgba(0, 0, 0, 0.04),
+                            0 0 0 1px rgba(255, 255, 255, 0.8),
+                            inset 0 1px 0 rgba(255, 255, 255, 0.9);
+                        position: relative;
+                        overflow: hidden;
+                    ">
+                        <!-- 배경 장식 -->
+                        <div style="
+                            position: absolute;
+                            top: -30px;
+                            right: -30px;
+                            width: 100px;
+                            height: 100px;
+                            background: radial-gradient(circle, ${isCompleted ? '#10b98108' : weekColor + '08'} 0%, transparent 70%);
+                            border-radius: 50%;
+                            pointer-events: none;
+                        "></div>
+
+                        <h3 style="
+                            font-size: 18px;
+                            font-weight: 700;
+                            color: #0f172a;
+                            margin-bottom: 16px;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            position: relative;
+                            z-index: 5;
+                        ">
+                            <span style="
+                                background: linear-gradient(135deg, ${isCompleted ? '#10b981' : weekColor} 0%, ${isCompleted ? '#059669' : weekColor + 'cc'} 100%);
+                                color: white;
+                                width: 36px;
+                                height: 36px;
+                                border-radius: 12px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                font-size: 16px;
+                                box-shadow:
+                                    0 6px 12px ${isCompleted ? '#10b98130' : weekColor + '30'},
+                                    0 0 0 1px rgba(255, 255, 255, 0.2);
+                            ">${isCompleted ? '✅' : '📚'}</span>
+                            학습 진행 상태
+                        </h3>
+
+                        <div style="
+                            display: flex;
+                            align-items: center;
+                            gap: 12px;
+                            padding: 16px;
+                            background: ${isCompleted ?
+                                'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)' :
+                                'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)'
+                            };
+                            border: 1px solid ${isCompleted ? '#86efac' : 'rgba(148, 163, 184, 0.2)'};
+                            border-radius: 12px;
+                            cursor: pointer;
+                            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                            position: relative;
+                            z-index: 5;
+                        " onclick="toggleWeekCompletion(${moduleIndex})"
+                           onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.1)'"
+                           onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+
+                            <input
+                                type="checkbox"
+                                id="completeWeek-${moduleIndex}"
+                                ${isCompleted ? 'checked' : ''}
+                                onclick="event.stopPropagation()"
+                                onchange="toggleWeekCompletion(${moduleIndex})"
+                                style="
+                                    width: 20px;
+                                    height: 20px;
+                                    accent-color: ${weekColor};
+                                    cursor: pointer;
+                                    border-radius: 4px;
+                                "
+                            />
+
+                            <div style="flex: 1;">
+                                <div style="
+                                    font-size: 16px;
+                                    font-weight: 600;
+                                    color: ${isCompleted ? '#065f46' : '#334155'};
+                                    margin-bottom: 2px;
+                                ">
+                                    ${isCompleted ? '학습 완료됨' : '학습 완료 표시'}
+                                </div>
+                                <div style="
+                                    font-size: 13px;
+                                    color: ${isCompleted ? '#059669' : '#64748b'};
+                                    font-weight: 500;
+                                ">
+                                    ${isCompleted ? '이 주차 학습을 완료했습니다' : '모든 학습을 마치면 체크해주세요'}
+                                </div>
+                            </div>
+
+                            ${isCompleted ? `
+                                <button
+                                    onclick="event.stopPropagation(); toggleWeekCompletion(${moduleIndex})"
+                                    style="
+                                        background: rgba(239, 68, 68, 0.1);
+                                        border: 1px solid #fca5a5;
+                                        color: #dc2626;
+                                        padding: 6px 12px;
+                                        border-radius: 8px;
+                                        font-size: 12px;
+                                        font-weight: 600;
+                                        cursor: pointer;
+                                        transition: all 0.2s;
+                                    "
+                                    onmouseover="this.style.background='rgba(239, 68, 68, 0.2)'"
+                                    onmouseout="this.style.background='rgba(239, 68, 68, 0.1)'"
+                                >
+                                    완료 취소
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // 모달을 body에 추가
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+}
+
+// 모달 닫기 - original unified file function
+function closeModuleModal(event) {
+    if (event && event.target !== event.currentTarget) return;
+
+    const modal = document.getElementById('moduleModal');
+    if (modal) {
+        modal.style.animation = 'fadeOut 0.3s ease';
+        setTimeout(() => {
+            modal.remove();
+        }, 300);
+    }
+}
+
+// 주차 완료 상태 토글 - original unified file function
+function toggleWeekCompletion(moduleIndex) {
+    const completedWeeks = StorageManager.curriculum.progress.get() || [];
+    const isCurrentlyCompleted = completedWeeks.includes(moduleIndex);
+
+    if (isCurrentlyCompleted) {
+        // 완료 해제
+        const updatedWeeks = completedWeeks.filter(week => week !== moduleIndex);
+        StorageManager.curriculum.progress.set(updatedWeeks);
+        showNotification(`${moduleIndex + 1}주차 완료 상태가 해제되었습니다.`, 'info');
+    } else {
+        // 완료 추가
+        const updatedWeeks = [...completedWeeks, moduleIndex].sort((a, b) => a - b);
+        StorageManager.curriculum.progress.set(updatedWeeks);
+        showNotification(`🎉 ${moduleIndex + 1}주차를 완료하셨습니다!`, 'success');
+
+        // 완료 효과 애니메이션
+        setTimeout(() => {
+            const checkbox = document.getElementById(`completeWeek-${moduleIndex}`);
+            if (checkbox) {
+                checkbox.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    checkbox.style.transform = 'scale(1)';
+                }, 200);
+            }
+        }, 100);
+    }
+
+    // 완료 처리 후 모달 닫기 및 전체 커리큘럼으로 복귀
+    setTimeout(() => {
+        closeModuleModal();
+
+        // 커리큘럼 페이지로 이동하여 업데이트된 진행률 표시
+        const curriculumContent = document.getElementById('curriculumContent');
+        const curriculumData = StorageManager.curriculum.get();
+        if (curriculumContent && curriculumData) {
+            displayCurriculumCards(curriculumContent, curriculumData);
+        }
+    }, 1000);
+}
+
+// Progress polling variables
+let progressPollingInterval = null;
+let lastProgressStep = 0;
+
+// Initialize progress file
+async function initializeProgress(sessionId) {
+    try {
+        console.log('🚀 진행 상황 초기화 시작:', sessionId);
+
+        const response = await fetch(`/api/progress/${sessionId}/initialize`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                action: 'initialize'
+            })
+        });
+
+        if (response.ok) {
+            console.log('✅ 진행 상황 초기화 완료');
+        } else {
+            console.warn('⚠️ 진행 상황 초기화 실패, 폴링 계속 진행');
+        }
+    } catch (error) {
+        console.warn('⚠️ 진행 상황 초기화 오류, 폴링 계속 진행:', error);
+    }
+}
+
+// Start progress polling
+function startProgressPolling(sessionId) {
+    console.log('📊 진행 상황 폴링 시작:', sessionId);
+
+    // Stop any existing polling
+    stopProgressPolling();
+
+    // Start new polling every 2 seconds
+    progressPollingInterval = setInterval(async () => {
+        try {
+            const response = await fetch(`/api/progress/${sessionId}`);
+            const progressData = await response.json();
+
+            // Update progress if phase_info exists (even if response.ok is false)
+            if (progressData && progressData.phase_info) {
+                updateLoadingProgress(progressData);
+
+                // Stop polling if completed or error
+                if (progressData.current_phase === 'completed' || progressData.current_phase === 'error') {
+                    console.log('📊 진행 상황 폴링 완료:', progressData.current_phase);
+                    stopProgressPolling();
+
+                    if (progressData.current_phase === 'completed') {
+                        // Multiple validation for completion safety
+                        console.log('✅ 커리큘럼 생성 완료 신호 감지, 검증 시작');
+
+                        // Wait for data synchronization then validate multiple times
+                        setTimeout(() => {
+                            validateAndCheckCompletion(sessionId, 1);
+                        }, 1000);
+                    }
+                }
+            } else if (!response.ok) {
+                console.warn('⚠️ 진행 상황 조회 응답 오류:', response.status, progressData);
+            }
+        } catch (error) {
+            console.error('❌ 진행 상황 조회 오류:', error);
+        }
+    }, 2000);
+}
+
+// Stop progress polling
+function stopProgressPolling() {
+    if (progressPollingInterval) {
+        clearInterval(progressPollingInterval);
+        progressPollingInterval = null;
+        console.log('📊 진행 상황 폴링 중지');
+    }
+}
+
+// Validate completion with multiple attempts for safety
+async function validateAndCheckCompletion(sessionId, attempt = 1) {
+    const maxAttempts = 5; // Increased from 3 to 5
+    const delayBetweenAttempts = 1000; // Increased from 500ms to 1000ms
+
+    try {
+        console.log(`🔍 완료 검증 시도 ${attempt}/${maxAttempts}`);
+
+        // Check if curriculum data exists and is valid
+        const curriculumData = StorageManager.curriculum.get();
+        if (curriculumData && validateNewCurriculum(curriculumData)) {
+            console.log(`✅ 검증 성공 (시도 ${attempt}): 새로운 커리큘럼 확인됨`);
+            checkCurriculumCompletion();
+            return;
+        }
+
+        // If validation failed but we still have attempts left
+        if (attempt < maxAttempts) {
+            console.log(`⏳ 검증 실패 (시도 ${attempt}), ${delayBetweenAttempts}ms 후 재시도`);
+            setTimeout(() => {
+                validateAndCheckCompletion(sessionId, attempt + 1);
+            }, delayBetweenAttempts);
+            return;
+        }
+
+        // All attempts failed - fall back to basic completion check
+        console.log(`⚠️ 모든 검증 시도 실패, 기본 완료 체크로 대체`);
+        checkCurriculumCompletion();
+
+    } catch (error) {
+        console.error(`❌ 완료 검증 오류 (시도 ${attempt}):`, error);
+
+        // On error, try again if we have attempts left
+        if (attempt < maxAttempts) {
+            setTimeout(() => {
+                validateAndCheckCompletion(sessionId, attempt + 1);
+            }, delayBetweenAttempts);
+        } else {
+            // Last resort - basic completion check
+            checkCurriculumCompletion();
+        }
+    }
+}
+
+// Update loading progress UI
+function updateLoadingProgress(progressData) {
+    try {
+        if (!progressData || !progressData.phase_info) {
+            console.warn('⚠️ 진행 상황 데이터가 올바르지 않습니다:', progressData);
+            return;
+        }
+
+        const phaseInfo = progressData.phase_info;
+        const currentStep = phaseInfo.step || 1;
+
+        console.log(`📊 진행 상황 업데이트: ${currentStep}/5 - ${phaseInfo.name || '진행 중'}`);
+
+        // Update loading steps
+        const loadingSteps = document.querySelectorAll('.loading-step');
+        if (loadingSteps.length > 0) {
+            loadingSteps.forEach((step, index) => {
+                const stepNumber = index + 1;
+                if (stepNumber <= currentStep) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+
+            // Update main title and description
+            const loadingTitle = document.querySelector('.curriculum-loading h3');
+            const loadingDescription = document.querySelector('.curriculum-loading p');
+
+            if (loadingTitle) {
+                loadingTitle.textContent = phaseInfo.name;
+            }
+            if (loadingDescription) {
+                loadingDescription.textContent = phaseInfo.description;
+            }
+
+            // Animate step transition
+            if (currentStep > lastProgressStep) {
+                const newActiveStep = loadingSteps[currentStep - 1];
+                if (newActiveStep) {
+                    // Add animation effect
+                    newActiveStep.style.transform = 'scale(1.1)';
+                    setTimeout(() => {
+                        newActiveStep.style.transform = 'scale(1)';
+                    }, 300);
+                }
+            }
+
+            lastProgressStep = currentStep;
+        }
+    } catch (error) {
+        console.error('❌ 진행 상황 UI 업데이트 오류:', error);
+    }
+}
+
+/* =============================================================================
+   Learning Map Graph Visualization Functions
+   ============================================================================= */
+
+// Transform graph_curriculum data to Vis.js format
+function transformGraphData(graphCurriculum) {
+    if (!graphCurriculum) return { nodes: [], edges: [] };
+
+    const nodes = [];
+    const edges = [];
+    let nodeId = 0;
+    const procedureNodes = []; // Track procedure nodes for sequential connection
+
+    // Process each procedure (절차1, 절차2, etc.)
+    Object.keys(graphCurriculum).forEach((procedureKey, procedureIndex) => {
+        const procedure = graphCurriculum[procedureKey];
+        if (!procedure || !procedure.title) return;
+
+        // Create procedure node
+        const procedureNodeId = nodeId++;
+        const procedureNode = {
+            id: procedureNodeId,
+            label: procedure.title,
+            title: `절차: ${procedure.title}`,
+            group: 'procedure',
+            level: 0,
+            color: {
+                background: '#e0e7ff',
+                border: '#3730a3',
+                highlight: { background: '#c7d2fe', border: '#312e81' }
+            },
+            font: { color: '#3730a3', size: 42, face: 'Arial', bold: true },
+            shape: 'box',
+            margin: 30,
+            widthConstraint: { minimum: 240, maximum: 400 },
+            heightConstraint: { minimum: 100 },
+            procedureData: procedure // Store procedure data for modal
+        };
+        nodes.push(procedureNode);
+        procedureNodes.push({ id: procedureNodeId, index: procedureIndex }); // Track for sequential connection
+
+        // Process skills within this procedure
+        if (procedure.skills) {
+            const skillKeys = Object.keys(procedure.skills); // 모든 스킬 표시
+            skillKeys.forEach((skillKey, skillIndex) => {
+                const skill = procedure.skills[skillKey];
+                if (!skill) return;
+
+                // Create skill node
+                const skillNodeId = nodeId++;
+                const skillName = skill.skill_info?.name || skillKey;
+                nodes.push({
+                    id: skillNodeId,
+                    label: skillName,
+                    title: `스킬: ${skillName}\n카테고리: ${skill.skill_info?.category || 'N/A'}\n설명: ${skill.skill_info?.description || 'N/A'}`,
+                    group: 'skill',
+                    level: 1,
+                    color: {
+                        background: '#fef3c7',
+                        border: '#92400e',
+                        highlight: { background: '#fde68a', border: '#78350f' }
+                    },
+                    font: { color: '#92400e', size: 32, face: 'Arial' },
+                    shape: 'ellipse',
+                    margin: 20,
+                    widthConstraint: { minimum: 160, maximum: 320 }
+                });
+
+                // Connect procedure to skill
+                edges.push({
+                    from: procedureNodeId,
+                    to: skillNodeId,
+                    arrows: 'to',
+                    color: { color: '#6b7280', highlight: '#374151' },
+                    width: 2
+                });
+
+                // Note: Documents and experts are now only shown in procedure detail modal
+                // All data is preserved in procedureData for detailed view
+            });
+        }
+    });
+
+    // Connect procedure nodes sequentially (절차1 → 절차2 → 절차3 ...)
+    procedureNodes.sort((a, b) => a.index - b.index); // Sort by procedure index
+    for (let i = 0; i < procedureNodes.length - 1; i++) {
+        edges.push({
+            from: procedureNodes[i].id,
+            to: procedureNodes[i + 1].id,
+            arrows: 'to',
+            color: {
+                color: '#3730a3',
+                highlight: '#312e81',
+                opacity: 0.8
+            },
+            width: 3,
+            smooth: {
+                enabled: true,
+                type: 'curvedCW',
+                roundness: 0.2
+            },
+            physics: false, // Keep procedure connections stable
+            dashes: false
+        });
+    }
+
+    return { nodes, edges };
+}
+
+// Create learning map visualization
+function createLearningMap(container, graphData) {
+    if (!window.vis || !window.vis.Network) {
+        console.error('Vis.js not loaded');
+        return null;
+    }
+
+    const { nodes, edges } = transformGraphData(graphData);
+
+    if (nodes.length === 0) {
+        container.innerHTML = `
+            <div class="learning-map-empty">
+                <i class="fas fa-project-diagram"></i>
+                <div>나의 학습 지도 데이터가 없습니다</div>
+            </div>
+        `;
+        return null;
+    }
+
+    // Network options
+    const options = {
+        layout: {
+            hierarchical: {
+                enabled: true,
+                direction: 'UD', // Up-Down
+                sortMethod: 'directed',
+                levelSeparation: 280, // Vertical spacing between levels
+                nodeSpacing: 180, // Compact horizontal spacing between nodes
+                treeSpacing: 120, // Very compact spacing between separate trees
+                blockShifting: false, // Disable to reduce spreading
+                edgeMinimization: true,
+                parentCentralization: true,
+                shakeTowards: 'roots' // Compact layout towards root nodes
+            }
+        },
+        physics: {
+            enabled: true,
+            hierarchicalRepulsion: {
+                nodeDistance: 120, // Reduced to bring nodes closer
+                centralGravity: 0.3, // Add central gravity to compact layout
+                springLength: 80, // Reduced spring length
+                springConstant: 0.01,
+                damping: 0.09,
+                avoidOverlap: 1
+            },
+            stabilization: {
+                enabled: true,
+                iterations: 300, // More iterations for better layout
+                updateInterval: 25,
+                fit: true // Fit to view after stabilization
+            }
+        },
+        nodes: {
+            borderWidth: 3, // Increased from 2
+            shadow: {
+                enabled: true,
+                color: 'rgba(0,0,0,0.15)', // Slightly darker
+                size: 12, // Increased from 10
+                x: 3, // Increased from 2
+                y: 3 // Increased from 2
+            },
+            margin: {
+                top: 15, // Increased from 10
+                bottom: 15, // Increased from 10
+                left: 20, // Increased from 15
+                right: 20 // Increased from 15
+            }
+        },
+        edges: {
+            smooth: {
+                enabled: true,
+                type: 'continuous',
+                roundness: 0.5
+            },
+            shadow: {
+                enabled: true,
+                color: 'rgba(0,0,0,0.1)',
+                size: 5,
+                x: 1,
+                y: 1
+            }
+        },
+        interaction: {
+            hover: true,
+            tooltipDelay: 300,
+            hideEdgesOnDrag: false,
+            hideNodesOnDrag: false
+        }
+    };
+
+    // Create network
+    const data = {
+        nodes: new vis.DataSet(nodes),
+        edges: new vis.DataSet(edges)
+    };
+
+    const network = new vis.Network(container, data, options);
+
+    // Store reference for controls
+    currentNetwork = network;
+
+    // Add event listeners
+    addNetworkEventListeners(network, nodes);
+
+    // Auto fit to view when map is shown - with compact layout
+    setTimeout(() => {
+        if (network) {
+            network.fit({
+                animation: {
+                    duration: 800,
+                    easingFunction: 'easeInOutQuad'
+                },
+                minZoomLevel: 0.8, // Ensure good visibility
+                maxZoomLevel: 1.5
+            });
+
+            // Apply additional compacting after initial layout
+            setTimeout(() => {
+                network.setOptions({
+                    physics: {
+                        enabled: false // Disable physics after layout is set
+                    }
+                });
+            }, 1000);
+        }
+    }, 100);
+
+    return network;
+}
+
+// Add event listeners for network interaction
+function addNetworkEventListeners(network, nodes) {
+    // Hover events for tooltip
+    network.on('hoverNode', function(params) {
+        const node = nodes.find(n => n.id === params.node);
+        if (node) {
+            showGraphTooltip(params.event, node);
+        }
+    });
+
+    network.on('blurNode', function(params) {
+        hideGraphTooltip();
+    });
+
+    // Click events
+    network.on('click', function(params) {
+        if (params.nodes.length > 0) {
+            const nodeId = params.nodes[0];
+            const node = nodes.find(n => n.id === nodeId);
+            if (node) {
+                console.log('Clicked node:', node);
+                // Show modal for procedure nodes
+                if (node.group === 'procedure') {
+                    showProcedureDetail(node);
+                }
+            }
+        }
+    });
+}
+
+// Show graph tooltip
+function showGraphTooltip(event, node) {
+    const tooltip = getOrCreateTooltip();
+
+    tooltip.innerHTML = `
+        <span class="node-type ${node.group}">${getNodeTypeLabel(node.group)}</span>
+        <h4>${node.label}</h4>
+        <p>${node.title || ''}</p>
+    `;
+
+    tooltip.style.left = (event.pageX + 10) + 'px';
+    tooltip.style.top = (event.pageY - 10) + 'px';
+    tooltip.classList.add('visible');
+}
+
+// Hide graph tooltip
+function hideGraphTooltip() {
+    const tooltip = document.getElementById('graphTooltip');
+    if (tooltip) {
+        tooltip.classList.remove('visible');
+    }
+}
+
+// Get or create tooltip element
+function getOrCreateTooltip() {
+    let tooltip = document.getElementById('graphTooltip');
+    if (!tooltip) {
+        tooltip = document.createElement('div');
+        tooltip.id = 'graphTooltip';
+        tooltip.className = 'graph-tooltip';
+        document.body.appendChild(tooltip);
+    }
+    return tooltip;
+}
+
+// Get node type label
+function getNodeTypeLabel(group) {
+    const labels = {
+        procedure: '절차',
+        skill: '스킬',
+        document: '문서',
+        expert: '전문가'
+    };
+    return labels[group] || group;
+}
+
+// Graph control functions
+let currentNetwork = null;
+
+function fitGraphView() {
+    if (currentNetwork) {
+        currentNetwork.fit({
+            animation: {
+                duration: 1000,
+                easingFunction: 'easeInOutQuad'
+            }
+        });
+    }
+}
+
+function resetGraphView() {
+    if (currentNetwork) {
+        currentNetwork.moveTo({
+            position: { x: 0, y: 0 },
+            scale: 1,
+            animation: {
+                duration: 1000,
+                easingFunction: 'easeInOutQuad'
+            }
+        });
+    }
+}
+
+// Toggle learning map visibility
+function toggleLearningMap() {
+    const container = document.querySelector('.learning-map-container');
+    const toggle = document.querySelector('.learning-map-toggle');
+
+    if (!container || !toggle) return;
+
+    const isVisible = container.style.display !== 'none';
+
+    if (isVisible) {
+        container.style.display = 'none';
+        toggle.innerHTML = '<i class="fas fa-eye"></i> 나의 학습 지도 보기';
+    } else {
+        container.style.display = 'block';
+        toggle.innerHTML = '<i class="fas fa-eye-slash"></i> 나의 학습 지도 숨기기';
+
+        // Re-render graph if needed
+        const graphContainer = container.querySelector('.learning-map-graph');
+        if (graphContainer && !graphContainer.hasChildNodes()) {
+            const curriculumData = StorageManager.curriculum.get();
+            if (curriculumData && curriculumData.graph_curriculum) {
+                createLearningMap(graphContainer, curriculumData.graph_curriculum);
+            }
+        }
+    }
+}
+
+// Export functions for global use
+window.generateCurriculum = generateCurriculum;
+window.checkCurriculumCompletion = checkCurriculumCompletion;
+window.showCurriculumContent = showCurriculumContent;
+window.displayLoadingState = displayLoadingState;
+window.displayEmptyState = displayEmptyState;
+window.displayCurriculumCards = displayCurriculumCards;
+window.toggleModuleCompletion = toggleModuleCompletion;
+window.toggleModuleDetail = toggleModuleDetail;
+window.closeModuleModal = closeModuleModal;
+window.toggleWeekCompletion = toggleWeekCompletion;
+window.updateProgressBar = updateProgressBar;
+window.updateModuleCardState = updateModuleCardState;
+window.downloadCurriculum = downloadCurriculum;
+window.shareCurriculum = shareCurriculum;
+window.createCurriculumContent = createCurriculumContent;
+window.startProgressPolling = startProgressPolling;
+window.stopProgressPolling = stopProgressPolling;
+
+// Create circular layout for procedure detail
+function createCircularDetailGraph(procedure, container) {
+    if (!window.vis || !window.vis.Network) {
+        console.error('Vis.js not loaded');
+        return null;
+    }
+
+    const nodes = [];
+    const edges = [];
+    let nodeId = 0;
+
+    // Center coordinates
+    const centerX = 0;
+    const centerY = 0;
+
+    // Radius settings for each level (reduced for better spacing)
+    const skillRadius = 180;
+    const documentRadius = 280;
+    const expertRadius = 380;
+
+    // Create central procedure node
+    const procedureNodeId = nodeId++;
+    nodes.push({
+        id: procedureNodeId,
+        label: procedure.title,
+        title: `절차: ${procedure.title}`,
+        group: 'procedure',
+        x: centerX,
+        y: centerY,
+        fixed: true,
+        color: {
+            background: '#6366f1',
+            border: '#4338ca',
+            highlight: { background: '#5b5fd6', border: '#3730a3' }
+        },
+        font: { color: '#1f2937', size: 16, face: 'Arial', bold: true, strokeWidth: 1, strokeColor: '#ffffff' },
+        shape: 'circle',
+        size: 25,
+        borderWidth: 3
+    });
+
+    if (procedure.skills) {
+        const skillKeys = Object.keys(procedure.skills);
+        const skillCount = skillKeys.length;
+
+        skillKeys.forEach((skillKey, skillIndex) => {
+            const skill = procedure.skills[skillKey];
+            if (!skill) return;
+
+            // Calculate skill position in circle around procedure
+            const skillAngle = (skillIndex / skillCount) * 2 * Math.PI;
+            const skillX = centerX + skillRadius * Math.cos(skillAngle);
+            const skillY = centerY + skillRadius * Math.sin(skillAngle);
+
+            const skillNodeId = nodeId++;
+            const skillName = skill.skill_info?.name || skillKey;
+
+            nodes.push({
+                id: skillNodeId,
+                label: skillName,
+                title: `스킬: ${skillName}\n카테고리: ${skill.skill_info?.category || 'N/A'}\n설명: ${skill.skill_info?.description || 'N/A'}`,
+                group: 'skill',
+                x: skillX,
+                y: skillY,
+                fixed: true,
+                color: {
+                    background: '#f59e0b',
+                    border: '#d97706',
+                    highlight: { background: '#f3a533', border: '#b45309' }
+                },
+                font: { color: '#1f2937', size: 16, face: 'Arial', bold: true, strokeWidth: 1, strokeColor: '#ffffff' },
+                shape: 'circle',
+                size: 25,
+                borderWidth: 3
+            });
+
+            // Connect procedure to skill
+            edges.push({
+                from: procedureNodeId,
+                to: skillNodeId,
+                color: { color: '#374151', opacity: 0.9 },
+                width: 4,
+                smooth: { enabled: false }
+            });
+
+            // Process documents for this skill
+            if (skill.documents) {
+                const documentKeys = Object.keys(skill.documents);
+                const documentCount = documentKeys.length;
+
+                documentKeys.forEach((documentKey, docIndex) => {
+                    const document = skill.documents[documentKey];
+                    if (!document || !document.title) return;
+
+                    // Calculate document position around its skill
+                    const docAngle = skillAngle + ((docIndex - (documentCount - 1) / 2) * 0.3); // Reduced spread for better spacing
+                    const docX = centerX + documentRadius * Math.cos(docAngle);
+                    const docY = centerY + documentRadius * Math.sin(docAngle);
+
+                    const docNodeId = nodeId++;
+                    const docTitle = document.title.length > 15 ? document.title.substring(0, 15) + '...' : document.title;
+
+                    nodes.push({
+                        id: docNodeId,
+                        label: docTitle,
+                        title: `문서: ${document.title}\n부서: ${document.department || 'N/A'}\n난이도: ${document.difficulty_level || 'N/A'}`,
+                        group: 'document',
+                        x: docX,
+                        y: docY,
+                        fixed: true,
+                        color: {
+                            background: '#34d399',
+                            border: '#059669',
+                            highlight: { background: '#6ee7b7', border: '#047857' }
+                        },
+                        font: { color: '#1f2937', size: 14, face: 'Arial', bold: true, strokeWidth: 1, strokeColor: '#ffffff' },
+                        shape: 'square',
+                        size: 20,
+                        borderWidth: 3
+                    });
+
+                    // Connect skill to document
+                    edges.push({
+                        from: skillNodeId,
+                        to: docNodeId,
+                        color: { color: '#6b7280', opacity: 0.8 },
+                        width: 3,
+                        smooth: { enabled: false }
+                    });
+
+                    // Process experts for this document
+                    if (document.experts) {
+                        const expertKeys = Object.keys(document.experts);
+                        const expertCount = expertKeys.length;
+
+                        expertKeys.forEach((expertKey, expertIndex) => {
+                            const expert = document.experts[expertKey];
+                            if (!expert || !expert.name) return;
+
+                            // Calculate expert position around its document
+                            const expertAngle = docAngle + ((expertIndex - (expertCount - 1) / 2) * 0.2); // Reduced spread for better spacing
+                            const expertX = centerX + expertRadius * Math.cos(expertAngle);
+                            const expertY = centerY + expertRadius * Math.sin(expertAngle);
+
+                            const expertNodeId = nodeId++;
+
+                            nodes.push({
+                                id: expertNodeId,
+                                label: expert.name,
+                                title: `전문가: ${expert.name}\n부서: ${expert.department || 'N/A'}\n역할: ${expert.role || 'N/A'}\n전문분야: ${expert.expertise || 'N/A'}`,
+                                group: 'expert',
+                                x: expertX,
+                                y: expertY,
+                                fixed: true,
+                                color: {
+                                    background: '#f472b6',
+                                    border: '#db2777',
+                                    highlight: { background: '#f9a8d4', border: '#be185d' }
+                                },
+                                font: { color: '#1f2937', size: 12, face: 'Arial', bold: true, strokeWidth: 1, strokeColor: '#ffffff' },
+                                shape: 'diamond',
+                                size: 15,
+                                borderWidth: 3
+                            });
+
+                            // Connect document to expert
+                            edges.push({
+                                from: docNodeId,
+                                to: expertNodeId,
+                                color: { color: '#9ca3af', opacity: 0.7 },
+                                width: 2,
+                                smooth: { enabled: false }
+                            });
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    // Create network
+    const data = {
+        nodes: new vis.DataSet(nodes),
+        edges: new vis.DataSet(edges)
+    };
+
+    const options = {
+        physics: { enabled: false }, // Disable physics for fixed positioning
+        interaction: {
+            dragNodes: false,
+            dragView: true,
+            zoomView: true,
+            hover: true,
+            tooltipDelay: 200,
+            hideEdgesOnDrag: false,
+            hideNodesOnDrag: false
+        },
+        nodes: {
+            borderWidth: 3,
+            shadow: {
+                enabled: true,
+                color: 'rgba(0,0,0,0.4)',
+                size: 12,
+                x: 3,
+                y: 3
+            },
+            scaling: {
+                min: 10,
+                max: 50,
+                label: {
+                    enabled: true,
+                    min: 10,
+                    max: 30,
+                    maxVisible: 30,
+                    drawThreshold: 5
+                }
+            }
+        },
+        edges: {
+            smooth: false,
+            shadow: {
+                enabled: true,
+                color: 'rgba(0,0,0,0.1)',
+                size: 3
+            },
+            hoverWidth: 1.5,
+            selectionWidth: 2
+        }
+    };
+
+    const network = new vis.Network(container, data, options);
+
+    // Add interaction event listeners
+    network.on('hoverNode', function(params) {
+        const node = nodes.find(n => n.id === params.node);
+        if (node) {
+            // Enhance visual feedback on hover
+            const updateNode = { ...node };
+            updateNode.borderWidth = 6;
+            updateNode.shadow = {
+                enabled: true,
+                color: 'rgba(0,0,0,0.6)',
+                size: 16,
+                x: 4,
+                y: 4
+            };
+            data.nodes.update(updateNode);
+        }
+    });
+
+    network.on('blurNode', function(params) {
+        const node = nodes.find(n => n.id === params.node);
+        if (node) {
+            // Reset visual state
+            const updateNode = { ...node };
+            updateNode.borderWidth = node.borderWidth || 3;
+            updateNode.shadow = {
+                enabled: true,
+                color: 'rgba(0,0,0,0.4)',
+                size: 12,
+                x: 3,
+                y: 3
+            };
+            data.nodes.update(updateNode);
+        }
+    });
+
+    network.on('click', function(params) {
+        if (params.nodes.length > 0) {
+            const nodeId = params.nodes[0];
+            const node = nodes.find(n => n.id === nodeId);
+            if (node) {
+                // Show node details in a small tooltip-like display
+                showCircularNodeInfo(node, params.pointer.DOM);
+            }
+        }
+    });
+
+    // Fit to view with enhanced animation
+    setTimeout(() => {
+        network.fit({
+            animation: {
+                duration: 800,
+                easingFunction: 'easeInOutCubic'
+            }
+        });
+    }, 100);
+
+    return network;
+}
+
+// Show circular node info tooltip
+function showCircularNodeInfo(node, position) {
+    // Remove existing tooltip
+    const existingTooltip = document.getElementById('circularNodeTooltip');
+    if (existingTooltip) {
+        existingTooltip.remove();
+    }
+
+    // Create tooltip content based on node type
+    let content = '';
+    switch (node.group) {
+        case 'procedure':
+            content = `
+                <div style="font-weight: bold; color: #6366f1; margin-bottom: 8px;">
+                    <i class="fas fa-cog"></i> 절차
+                </div>
+                <div style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">${node.label}</div>
+                <div style="font-size: 12px; color: #64748b;">중심 학습 절차</div>
+            `;
+            break;
+        case 'skill':
+            content = `
+                <div style="font-weight: bold; color: #f59e0b; margin-bottom: 8px;">
+                    <i class="fas fa-star"></i> 스킬
+                </div>
+                <div style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">${node.label}</div>
+                <div style="font-size: 11px; color: #64748b;">학습해야 할 핵심 기술</div>
+            `;
+            break;
+        case 'document':
+            content = `
+                <div style="font-weight: bold; color: #059669; margin-bottom: 8px;">
+                    <i class="fas fa-file-alt"></i> 문서
+                </div>
+                <div style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">${node.label}</div>
+                <div style="font-size: 11px; color: #64748b;">참고 학습 자료</div>
+            `;
+            break;
+        case 'expert':
+            content = `
+                <div style="font-weight: bold; color: #db2777; margin-bottom: 8px;">
+                    <i class="fas fa-user-graduate"></i> 전문가
+                </div>
+                <div style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">${node.label}</div>
+                <div style="font-size: 11px; color: #64748b;">분야 전문가</div>
+            `;
+            break;
+        default:
+            content = `<div>${node.label}</div>`;
+    }
+
+    const tooltip = document.createElement('div');
+    tooltip.id = 'circularNodeTooltip';
+    tooltip.innerHTML = content;
+    tooltip.style.cssText = `
+        position: fixed;
+        left: ${position.x + 10}px;
+        top: ${position.y - 10}px;
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        z-index: 10000;
+        max-width: 200px;
+        font-size: 12px;
+        line-height: 1.4;
+        backdrop-filter: blur(10px);
+        animation: fadeIn 0.2s ease-out;
+    `;
+
+    document.body.appendChild(tooltip);
+
+    // Auto-remove after 3 seconds
+    setTimeout(() => {
+        if (tooltip && tooltip.parentNode) {
+            tooltip.style.animation = 'fadeOut 0.2s ease-out';
+            setTimeout(() => {
+                if (tooltip && tooltip.parentNode) {
+                    tooltip.remove();
+                }
+            }, 200);
+        }
+    }, 3000);
+
+    // Remove on click outside
+    const removeTooltip = (e) => {
+        if (!tooltip.contains(e.target)) {
+            tooltip.remove();
+            document.removeEventListener('click', removeTooltip);
+        }
+    };
+    setTimeout(() => {
+        document.addEventListener('click', removeTooltip);
+    }, 100);
+}
+
+// Show procedure detail modal
+function showProcedureDetail(node) {
+    if (!node || !node.procedureData) return;
+
+    // Check if modal already exists
+    let modal = document.getElementById('procedureModal');
+    if (modal) {
+        modal.remove();
+    }
+
+    const procedure = node.procedureData;
+
+    // Create modern, refined modal HTML (similar to moduleModal style)
+    const modalHtml = `
+        <div id="procedureModal" style="
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        " onclick="closeProcedureModal(event)">
+            <div style="
+                background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+                border-radius: 24px;
+                box-shadow:
+                    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+                    0 0 0 1px rgba(255, 255, 255, 0.05),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+                max-width: 900px;
+                width: 95%;
+                max-height: 90vh;
+                overflow: hidden;
+                position: relative;
+                animation: slideUp 0.3s ease-out;
+            " onclick="event.stopPropagation()">
+
+                <!-- Header -->
+                <div style="
+                    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+                    padding: 32px;
+                    border-radius: 24px 24px 0 0;
+                    position: relative;
+                    overflow: hidden;
+                ">
+                    <div style="
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1.5" fill="white" opacity="0.05"/><circle cx="90" cy="10" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+                        opacity: 0.3;
+                    "></div>
+
+                    <div style="position: relative; z-index: 1;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                            <div style="
+                                background: rgba(255, 255, 255, 0.2);
+                                padding: 8px 16px;
+                                border-radius: 20px;
+                                font-size: 14px;
+                                font-weight: 600;
+                                color: rgba(255, 255, 255, 0.9);
+                                backdrop-filter: blur(10px);
+                                border: 1px solid rgba(255, 255, 255, 0.2);
+                            ">
+                                <i class="fas fa-map-marked-alt"></i> 학습 절차
+                            </div>
+
+                            <button onclick="closeProcedureModal()" style="
+                                background: rgba(255, 255, 255, 0.1);
+                                border: 1px solid rgba(255, 255, 255, 0.2);
+                                color: white;
+                                width: 40px;
+                                height: 40px;
+                                border-radius: 50%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                cursor: pointer;
+                                transition: all 0.2s ease;
+                                backdrop-filter: blur(10px);
+                            ">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
+                        <h2 style="
+                            font-size: 28px;
+                            font-weight: 700;
+                            color: white;
+                            margin: 0;
+                            line-height: 1.2;
+                            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                        ">${procedure.title || '학습 절차'}</h2>
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div style="
+                    padding: 20px;
+                    overflow: hidden;
+                    max-height: calc(90vh - 120px);
+                ">
+                    <div style="
+                        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+                        padding: 16px;
+                        border-radius: 12px;
+                        margin-bottom: 20px;
+                        border: 1px solid #e2e8f0;
+                        text-align: center;
+                    ">
+                        <div style="
+                            font-size: 16px;
+                            font-weight: 600;
+                            color: #334155;
+                            margin-bottom: 8px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 8px;
+                        ">
+                            <i class="fas fa-project-diagram" style="color: #6366f1;"></i>
+                            ${procedure.title} 상세 학습 지도
+                        </div>
+                        <p style="
+                            color: #64748b;
+                            line-height: 1.5;
+                            margin: 0;
+                            font-size: 14px;
+                        ">
+                            중앙의 절차를 중심으로 관련 스킬, 문서, 전문가들이 원형으로 배치됩니다
+                        </p>
+                    </div>
+
+                    <!-- Circular Graph Container -->
+                    <div id="circularGraphContainer" style="
+                        height: 600px;
+                        width: 100%;
+                        background: #ffffff;
+                        border-radius: 12px;
+                        border: 1px solid #e5e7eb;
+                        position: relative;
+                        overflow: hidden;
+                        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                    "></div>
+
+                    <!-- Graph Controls -->
+                    <div style="
+                        margin-top: 16px;
+                        text-align: center;
+                        display: flex;
+                        justify-content: center;
+                        gap: 12px;
+                    ">
+                        <button onclick="fitCircularGraph()" style="
+                            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                            color: white;
+                            border: none;
+                            padding: 8px 16px;
+                            border-radius: 6px;
+                            font-size: 12px;
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            gap: 6px;
+                        ">
+                            <i class="fas fa-expand-arrows-alt"></i> 전체 보기
+                        </button>
+                        <button onclick="resetCircularGraph()" style="
+                            background: linear-gradient(135deg, #64748b, #475569);
+                            color: white;
+                            border: none;
+                            padding: 8px 16px;
+                            border-radius: 6px;
+                            font-size: 12px;
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            gap: 6px;
+                        ">
+                            <i class="fas fa-redo"></i> 초기화
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+
+            @keyframes fadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; }
+            }
+
+            @keyframes slideUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(40px) scale(0.95);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+            }
+
+            /* Enhanced hover effects for graph controls */
+            button:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                transition: all 0.2s ease;
+            }
+        </style>
+    `;
+
+    // Add modal to document
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+    // Create circular graph after modal is added
+    setTimeout(() => {
+        const graphContainer = document.getElementById('circularGraphContainer');
+        if (graphContainer) {
+            window.currentCircularNetwork = createCircularDetailGraph(procedure, graphContainer);
+        }
+    }, 100);
+}
+
+// Circular graph control functions
+function fitCircularGraph() {
+    if (window.currentCircularNetwork) {
+        window.currentCircularNetwork.fit({
+            animation: {
+                duration: 600,
+                easingFunction: 'easeInOutQuad'
+            }
+        });
+    }
+}
+
+function resetCircularGraph() {
+    if (window.currentCircularNetwork) {
+        window.currentCircularNetwork.moveTo({
+            position: { x: 0, y: 0 },
+            scale: 1.0,
+            animation: {
+                duration: 600,
+                easingFunction: 'easeInOutQuad'
+            }
+        });
+    }
+}
+
+// Close procedure modal
+function closeProcedureModal(event) {
+    if (event && event.target !== event.currentTarget) return;
+
+    const modal = document.getElementById('procedureModal');
+    if (modal) {
+        // Clean up circular network reference
+        window.currentCircularNetwork = null;
+
+        modal.style.animation = 'fadeOut 0.2s ease-out';
+        setTimeout(() => {
+            modal.remove();
+        }, 200);
+    }
+}
+
+// Export new graph functions
+window.transformGraphData = transformGraphData;
+window.createLearningMap = createLearningMap;
+window.toggleLearningMap = toggleLearningMap;
+window.fitGraphView = fitGraphView;
+window.resetGraphView = resetGraphView;
+window.showProcedureDetail = showProcedureDetail;
+window.closeProcedureModal = closeProcedureModal;
+window.createCircularDetailGraph = createCircularDetailGraph;
+window.fitCircularGraph = fitCircularGraph;
+window.resetCircularGraph = resetCircularGraph;
+window.showCircularNodeInfo = showCircularNodeInfo;

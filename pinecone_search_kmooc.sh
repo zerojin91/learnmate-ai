@@ -5,4 +5,4 @@ export DEFAULT_NAMESPACE=kmooc_engineering
 # export USE_RERANKER=1
 # export RERANK_CANDIDATES=50
 
-python pinecone_search_kmooc.py
+uv run pinecone_search_kmooc.py

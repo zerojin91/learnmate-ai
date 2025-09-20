@@ -21,6 +21,7 @@ class ActionType(str, Enum):
     GENERATE_CURRICULUM = "generate_curriculum"  # 커리큘럼 생성
     MENTOR_RECOMMENDATION = "mentor_recommendation"  # 전문가 멘토 페르소나 추천
     MENTOR_CHAT = "mentor_chat"  # 전문가 멘토링 대화
+    PROFILING_GENERAL_CHAT = "profiling_general_chat"  # 프로파일링 중 일반 대화
 
 class ActionClassification(BaseModel):
     """액션 분류 결과"""
@@ -140,28 +141,68 @@ class MultiMCPAgent:
     
     
     async def _classify_user_intent(self, message: str) -> ActionClassification:
-        """사용자 메시지를 분류하여 적절한 액션 결정"""
-        
-        # 먼저 멘토 세션 상태 확인
+        """사용자 메시지를 분류하여 적절한 액션 결정 - 프로파일링 우선순위 기반"""
+
+        # 프로파일링 상태 확인 (최우선)
+        profiling_status = await self._get_profiling_status()
+
+        # 🎯 프로파일링 진행 중이면 단순 2분법
+        if profiling_status["in_progress"]:
+            print(f"📊 프로파일링 진행 중 - 2분법 분류 적용")
+
+            # General Chat 여부만 판단
+            general_chat_prompt = f"""다음 메시지가 학습과 완전히 무관한 일상 대화인지 판단하세요:
+
+메시지: "{message}"
+
+**학습 관련으로 보는 경우:**
+- 수준 언급: "완전 초보자", "어려워", "중급자", "고급자", "초보", "처음", "입문", "기초"
+- 목표 언급: "취업", "이직", "프로젝트", "취업 준비", "이직 준비", "프로젝트 준비"
+- 학습 의지: "배우고 싶어", "공부하고 싶어", "학습하고 싶어"
+- 시간 언급: "주 3시간", "주 1시간", "하루 1시간" (선택사항이지만 있으면 학습 관련)
+- 기타 학습 관련 모든 내용
+
+**판단 기준**: 학습과 100% 무관하고 명백한 일상 대화만 general_chat으로 분류
+애매하면 무조건 학습 관련으로 판단하세요. 특히 '수준', '목표', '학습 의지' 와 관련된 메시지는 무조건 학습 관련으로 판단하세요."""
+
+            try:
+                # General Chat 판단을 위한 별도 분류
+                from pydantic import BaseModel, Field
+
+                class GeneralChatCheck(BaseModel):
+                    is_profiling_chat: bool = Field(description="학습 관련 대화 여부")
+
+                checker_model = self.llm.with_structured_output(GeneralChatCheck)
+                check_result = checker_model.invoke(general_chat_prompt)
+
+                if check_result.is_profiling_chat:
+                    print(f"🔍 프로파일링 중 학습 관련으로 분류")
+                    return ActionClassification(action=ActionType.USER_PROFILING)
+                else:
+                    print(f"🔍 프로파일링 중 일반 대화로 분류")
+                    return ActionClassification(action=ActionType.PROFILING_GENERAL_CHAT)
+
+            except Exception as e:
+                print(f"❌ 일반 대화 체크 오류: {e}")
+                # 오류 시 안전하게 프로파일링으로
+                return ActionClassification(action=ActionType.USER_PROFILING)
+
+        # 🎯 프로파일링 진행 중이 아닐 때는 기존 로직
         mentor_session_phase = await self._check_mentor_session_status()
-        
-        classification_prompt = f"""사용자 메시지를 다음 5가지 액션 중 하나로 분류하세요:
+
+        classification_prompt = f"""사용자 메시지를 다음 3가지 액션 중 하나로 분류하세요:
 
 1. **general_chat**: 일반적인 인사, 안부, 감사 등 학습과 무관한 대화
 2. **user_profiling**: 학습 관련 요청이지만 사용자 프로필이 필요한 경우
 3. **generate_curriculum**: 이미 학습 프로필이 있고 커리큘럼/계획 생성을 요청하는 경우
-4. **mentor_recommendation**: 전문가 멘토, 상담, 조언을 요청하는 경우
-5. **mentor_chat**: 이미 멘토가 선택된 상태에서의 대화
 
 사용자 메시지: "{message}"
 현재 멘토 세션 상태: {mentor_session_phase}
 
 ## 분류 기준:
-- "안녕", "고마워", "잘가" 등 → general_chat
-- "~배우고 싶어", "~공부하고 싶어", "~가르쳐줘" 등 → user_profiling  
+- "안녕", "고마워", "잘가", "라면먹고싶어" 등 → general_chat
+- "~배우고 싶어", "~공부하고 싶어", "~가르쳐줘" 등 → user_profiling
 - "커리큘럼 만들어줘", "학습계획 세워줘", "로드맵 보여줘" 등 → generate_curriculum
-- "전문가와 상담", "멘토링", "조언", "전문가 추천" 등 → mentor_recommendation
-- 멘토 세션이 활성화되어 있고 일반적인 질문/대화 → mentor_chat
 
 정확한 액션만 선택하세요."""
 
@@ -294,12 +335,181 @@ class MultiMCPAgent:
             print(f"❌ 일반 대화 오류: {e}")
             yield {"type": "error", "content": f"응답 생성 중 오류가 발생했습니다: {str(e)}"}
 
+    async def _handle_profiling_general_chat_sequential(self, message: str) -> AsyncGenerator[dict, None]:
+        """프로파일링 중 general chat 순차 처리: 일반 응답 → 연결 → 프로파일링"""
+        print(f"🔄 프로파일링 중 일반 대화 순차 처리")
+
+        try:
+            # 1단계: 프로파일링이 진행 중인지 확인
+            profiling_status = await self._get_profiling_status()
+
+            if not profiling_status["in_progress"]:
+                # 프로파일링이 진행중이 아니라면 일반 대화로 처리
+                async for chunk in self._handle_general_chat(message):
+                    yield chunk
+                return
+
+            # 2단계: 프로파일링 상태 확인 및 진행률 표시
+            topic = profiling_status.get("topic", "")
+            constraints = profiling_status.get("constraints", "")
+            goal = profiling_status.get("goal", "")
+
+            # 진행률 계산
+            missing_info = []
+            progress_items = []
+
+            if not topic:
+                missing_info.append("학습 주제")
+                progress_items.append("❌ 학습 주제")
+            else:
+                progress_items.append(f"✅ 학습 주제: {topic}")
+
+            level_keywords = ["초보", "중급", "고급", "수준", "경험", "처음", "입문", "기초"]
+            has_level = any(kw in constraints for kw in level_keywords)
+
+            if not has_level:
+                missing_info.append("현재 수준")
+                progress_items.append("❌ 현재 수준")
+            else:
+                level_part = next((part for part in constraints.split(',') if any(kw in part for kw in level_keywords)), constraints)
+                progress_items.append(f"✅ 현재 수준: {level_part.strip()}")
+
+            if not goal:
+                missing_info.append("학습 목표")
+                progress_items.append("❌ 학습 목표")
+            else:
+                progress_items.append(f"✅ 학습 목표: {goal}")
+
+            completed_count = 3 - len(missing_info)
+            progress_bar = "🟩" * completed_count + "⬜" * len(missing_info)
+
+            # 3단계: 자연스러운 통합 응답 생성
+            next_needed = missing_info[0] if missing_info else None
+
+            integrated_prompt = f"""사용자가 일반적인 대화를 했습니다: "{message}"
+
+이에 대해 친근하게 응답한 후, 자연스럽게 학습 관련 질문으로 연결해주세요.
+
+현재 상황:
+- 학습 주제: {"파악됨 (" + topic + ")" if topic else "아직 필요"}
+- 현재 수준: {"파악됨" if has_level else "아직 필요"}
+- 학습 목표: {"파악됨 (" + goal + ")" if goal else "아직 필요"}
+
+{f"다음에 알아봐야 할 것: {next_needed}" if next_needed else ""}
+
+요구사항:
+1. 먼저 사용자의 말에 공감하고 친근하게 반응
+2. 자연스러운 연결어나 문장으로 학습 관련 질문으로 이어가기
+3. "그런데", "진행률", "상태" 같은 어색한 표현 피하기
+4. 전체 응답이 하나의 자연스러운 대화처럼 느껴지도록
+5. 다음 필요한 정보를 자연스럽게 물어보기
+
+예시:
+사용자: "피곤해"
+응답: "수고 많으셨어요! 😊 오늘 하루 정말 고생하셨네요. 휴식도 중요하지만, 혹시 어떤 분야를 배우고 싶으신지 궁금해요!"
+
+자연스럽고 친근한 하나의 완전한 응답을 만들어주세요."""
+
+            from langchain_core.messages import HumanMessage, SystemMessage
+
+            messages = [
+                SystemMessage(content="당신은 친근하고 자연스러운 학습 멘토입니다. 일반 대화와 학습 질문을 자연스럽게 연결하세요."),
+                HumanMessage(content=integrated_prompt)
+            ]
+
+            # 통합 응답 스트리밍
+            integrated_response = ""
+            async for chunk in self.llm.astream(messages):
+                if hasattr(chunk, 'content') and chunk.content:
+                    integrated_response += chunk.content
+                    print(chunk.content, end="", flush=True)
+                    yield {"type": "message", "content": chunk.content, "node": "integrated_chat"}
+
+            # 간단한 정보 추가 (필요한 경우만)
+            if integrated_response:
+                final_response = integrated_response.strip()
+
+                # 이미 수집된 정보가 있으면 간단히 표시
+                if topic or constraints or goal:
+                    simple_info = "\n\n📝 **현재까지:**"
+                    if topic:
+                        simple_info += f" 주제({topic})"
+                    if constraints:
+                        simple_info += f" 수준 파악됨"
+                    if goal:
+                        simple_info += f" 목표({goal})"
+
+                    final_response += simple_info
+
+                # 대화 기록에 추가
+                self.conversation_history.append({
+                    "role": "assistant",
+                    "content": final_response
+                })
+
+        except Exception as e:
+            print(f"❌ 순차 처리 오류: {e}")
+            yield {"type": "error", "content": f"응답 생성 중 오류가 발생했습니다: {str(e)}"}
+
+    async def _get_profiling_status(self) -> dict:
+        """현재 프로파일링 상태 확인"""
+        try:
+            if not self.current_session_id:
+                return {"in_progress": False, "missing_step": None, "completion_rate": 0}
+
+            from servers.user_assessment import load_session
+            session_data = load_session(self.current_session_id)
+
+            if not session_data:
+                return {"in_progress": False, "missing_step": None, "completion_rate": 0}
+
+            topic = session_data.get("topic", "").strip()
+            constraints = session_data.get("constraints", "").strip()
+            goal = session_data.get("goal", "").strip()
+
+            topic_complete = bool(topic)
+            # 제약조건은 수준만 있어도 완료로 간주 (시간 정보는 선택사항)
+            constraints_complete = bool(constraints and any(kw in constraints for kw in ["초보", "중급", "고급", "수준", "경험", "처음", "입문", "기초"]))
+            goal_complete = bool(goal)
+
+            completed_steps = []
+            if topic_complete: completed_steps.append("topic")
+            if constraints_complete: completed_steps.append("constraints")
+            if goal_complete: completed_steps.append("goal")
+
+            completion_rate = len(completed_steps) / 3.0
+
+            # 다음 필요한 단계 결정
+            missing_step = None
+            if not topic_complete:
+                missing_step = "topic"
+            elif not constraints_complete:
+                missing_step = "constraints"
+            elif not goal_complete:
+                missing_step = "goal"
+
+            is_in_progress = not (topic_complete and constraints_complete and goal_complete)
+
+            return {
+                "in_progress": is_in_progress,
+                "missing_step": missing_step,
+                "completion_rate": completion_rate,
+                "completed_steps": completed_steps,
+                "topic": topic,
+                "constraints": constraints,
+                "goal": goal
+            }
+
+        except Exception as e:
+            print(f"❌ 프로파일링 상태 확인 오류: {e}")
+            return {"in_progress": False, "missing_step": None, "completion_rate": 0}
+
     async def _check_mentor_session_status(self) -> str:
         """현재 멘토 세션 상태 확인"""
         try:
             if not self.current_session_id:
                 return "no_session"
-            
+
             # get_mentor_session_status 도구 찾기
             tools = await self.client.get_tools()
             status_tool = next((tool for tool in tools if tool.name == "get_mentor_session_status"), None)
@@ -438,7 +648,12 @@ class MultiMCPAgent:
             elif classification.action == ActionType.MENTOR_CHAT:
                 async for chunk in self._handle_mentor_chat(message):
                     yield chunk
-                    
+
+            elif classification.action == ActionType.PROFILING_GENERAL_CHAT:
+                # 순차적 처리: General Chat 응답 → 연결어 → 프로파일링
+                async for chunk in self._handle_profiling_general_chat_sequential(message):
+                    yield chunk
+
             else:  # GENERAL_CHAT
                 async for chunk in self._handle_general_chat(message):
                     yield chunk

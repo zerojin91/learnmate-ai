@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dataset Map Test</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/dataset-map.css">
+</head>
+<body>
+    <div class="main-content">
+        <h1>Dataset Map Test</h1>
+        <button onclick="testDatasetMap()">Test Dataset Map Creation</button>
+        <div id="test-results"></div>
+    </div>
+
+    <script src="/static/js/dataset-map.js"></script>
+    <script>
+        async function testDatasetMap() {
+            const results = document.getElementById('test-results');
+            results.innerHTML = '<h3>Testing Dataset Map...</h3>';
+
+            // Test 1: Check if functions are available
+            console.log('🧪 Test 1: Function availability');
+            results.innerHTML += `<p>initializeDatasetMap: ${typeof window.initializeDatasetMap}</p>`;
+            results.innerHTML += `<p>fitDatasetGraph: ${typeof window.fitDatasetGraph}</p>`;
+            results.innerHTML += `<p>resetDatasetGraph: ${typeof window.resetDatasetGraph}</p>`;
+            results.innerHTML += `<p>refreshDatasetGraph: ${typeof window.refreshDatasetGraph}</p>`;
+
+            // Test 2: Create dataset map content manually
+            console.log('🧪 Test 2: Manual content creation');
+            const createDatasetMapContent = function() {
+                const content = document.createElement('div');
+                content.id = 'datasetMapContent';
+                content.innerHTML = `
+                    <div class="dataset-map-header">
+                        <h2>데이터셋 지도</h2>
+                    </div>
+                    <div class="dataset-controls">
+                        <input type="text" id="datasetSearchInput" placeholder="검색...">
+                        <button onclick="fitDatasetGraph()">전체 보기</button>
+                    </div>
+                    <div class="dataset-graph-wrapper">
+                        <div id="datasetGraphContainer" style="height: 500px; border: 1px solid #ddd;">
+                            <div id="datasetGraphLoading">Loading...</div>
+                        </div>
+                    </div>
+                `;
+                return content;
+            };
+
+            const content = createDatasetMapContent();
+            document.querySelector('.main-content').appendChild(content);
+            results.innerHTML += '<p>✅ Dataset map content created</p>';
+
+            // Test 3: Try to initialize
+            console.log('🧪 Test 3: Initialize dataset map');
+            try {
+                if (typeof window.initializeDatasetMap === 'function') {
+                    await window.initializeDatasetMap();
+                    results.innerHTML += '<p>✅ Dataset map initialized</p>';
+                } else {
+                    results.innerHTML += '<p>❌ initializeDatasetMap function not found</p>';
+                }
+            } catch (error) {
+                results.innerHTML += `<p>❌ Initialization failed: ${error.message}</p>`;
+                console.error('Initialization error:', error);
+            }
+        }
+    </script>
+</body>
+</html>
