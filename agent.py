@@ -145,13 +145,11 @@ class MultiMCPAgent:
         # 먼저 멘토 세션 상태 확인
         mentor_session_phase = await self._check_mentor_session_status()
         
-        classification_prompt = f"""사용자 메시지를 다음 5가지 액션 중 하나로 분류하세요:
+        classification_prompt = f"""사용자 메시지를 다음 3가지 액션 중 하나로 분류하세요:
 
 1. **general_chat**: 일반적인 인사, 안부, 감사 등 학습과 무관한 대화
 2. **user_profiling**: 학습 관련 요청이지만 사용자 프로필이 필요한 경우
 3. **generate_curriculum**: 이미 학습 프로필이 있고 커리큘럼/계획 생성을 요청하는 경우
-4. **mentor_recommendation**: 전문가 멘토, 상담, 조언을 요청하는 경우
-5. **mentor_chat**: 이미 멘토가 선택된 상태에서의 대화
 
 사용자 메시지: "{message}"
 현재 멘토 세션 상태: {mentor_session_phase}
@@ -160,11 +158,28 @@ class MultiMCPAgent:
 - "안녕", "고마워", "잘가" 등 → general_chat
 - "~배우고 싶어", "~공부하고 싶어", "~가르쳐줘" 등 → user_profiling  
 - "커리큘럼 만들어줘", "학습계획 세워줘", "로드맵 보여줘" 등 → generate_curriculum
-- "전문가와 상담", "멘토링", "조언", "전문가 추천" 등 → mentor_recommendation
-- 멘토 세션이 활성화되어 있고 일반적인 질문/대화 → mentor_chat
 
 정확한 액션만 선택하세요."""
 
+#         classification_prompt = f"""사용자 메시지를 다음 5가지 액션 중 하나로 분류하세요:
+
+# 1. **general_chat**: 일반적인 인사, 안부, 감사 등 학습과 무관한 대화
+# 2. **user_profiling**: 학습 관련 요청이지만 사용자 프로필이 필요한 경우
+# 3. **generate_curriculum**: 이미 학습 프로필이 있고 커리큘럼/계획 생성을 요청하는 경우
+# 4. **mentor_recommendation**: 전문가 멘토, 상담, 조언을 요청하는 경우
+# 5. **mentor_chat**: 이미 멘토가 선택된 상태에서의 대화
+
+# 사용자 메시지: "{message}"
+# 현재 멘토 세션 상태: {mentor_session_phase}
+
+# ## 분류 기준:
+# - "안녕", "고마워", "잘가" 등 → general_chat
+# - "~배우고 싶어", "~공부하고 싶어", "~가르쳐줘" 등 → user_profiling  
+# - "커리큘럼 만들어줘", "학습계획 세워줘", "로드맵 보여줘" 등 → generate_curriculum
+# - "전문가와 상담", "멘토링", "조언", "전문가 추천" 등 → mentor_recommendation
+# - 멘토 세션이 활성화되어 있고 일반적인 질문/대화 → mentor_chat
+
+# 정확한 액션만 선택하세요."""
         try:
             classifier_model = self.llm.with_structured_output(ActionClassification)
             result = classifier_model.invoke(classification_prompt)
