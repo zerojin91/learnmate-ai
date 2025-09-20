@@ -313,6 +313,30 @@ function displayCurriculumCards(container, data) {
                 ${data.title || '커리큘럼'}
             </h2>
 
+            <!-- 학습 지도 섹션 -->
+            <div class="learning-map-section" style="margin-bottom: 24px;">
+                <div class="learning-map-header">
+                    <div class="learning-map-title">
+                        <i class="fas fa-project-diagram"></i>
+                        <h3>학습 지도</h3>
+                    </div>
+                    <button class="learning-map-toggle" onclick="toggleLearningMap()">
+                        <i class="fas fa-eye"></i> 학습 지도 보기
+                    </button>
+                </div>
+                <div class="learning-map-container" style="display: none;">
+                    <div class="learning-map-controls">
+                        <button class="map-control-btn" onclick="fitGraphView()">
+                            <i class="fas fa-expand-arrows-alt"></i> 전체 보기
+                        </button>
+                        <button class="map-control-btn" onclick="resetGraphView()">
+                            <i class="fas fa-redo"></i> 초기화
+                        </button>
+                    </div>
+                    <div class="learning-map-graph" id="learningMapGraph"></div>
+                </div>
+            </div>
+
             <!-- 학습 진행도 트래커 -->
             <div style="
                 background: #f9fafb;
@@ -521,6 +545,14 @@ function displayCurriculumCards(container, data) {
 
     cardsHtml += '</div>';
     container.innerHTML = cardsHtml;
+
+    // Initialize learning map if graph_curriculum data exists
+    setTimeout(() => {
+        const graphContainer = document.getElementById('learningMapGraph');
+        if (graphContainer && data.graph_curriculum) {
+            createLearningMap(graphContainer, data.graph_curriculum);
+        }
+    }, 100); // Small delay to ensure DOM is ready
 }
 
 // Create module card
@@ -1811,6 +1843,374 @@ function updateLoadingProgress(progressData) {
     }
 }
 
+/* =============================================================================
+   Learning Map Graph Visualization Functions
+   ============================================================================= */
+
+// Transform graph_curriculum data to Vis.js format
+function transformGraphData(graphCurriculum) {
+    if (!graphCurriculum) return { nodes: [], edges: [] };
+
+    const nodes = [];
+    const edges = [];
+    let nodeId = 0;
+
+    // Process each procedure (절차1, 절차2, etc.)
+    Object.keys(graphCurriculum).forEach((procedureKey, procedureIndex) => {
+        const procedure = graphCurriculum[procedureKey];
+        if (!procedure || !procedure.title) return;
+
+        // Create procedure node
+        const procedureNodeId = nodeId++;
+        nodes.push({
+            id: procedureNodeId,
+            label: procedure.title,
+            title: `절차: ${procedure.title}`,
+            group: 'procedure',
+            level: 0,
+            color: {
+                background: '#e0e7ff',
+                border: '#3730a3',
+                highlight: { background: '#c7d2fe', border: '#312e81' }
+            },
+            font: { color: '#3730a3', size: 16, face: 'Arial', bold: true },
+            shape: 'box',
+            margin: 10
+        });
+
+        // Process skills within this procedure
+        if (procedure.skills) {
+            const skillKeys = Object.keys(procedure.skills).slice(0, 2); // 최대 2개
+            skillKeys.forEach((skillKey, skillIndex) => {
+                const skill = procedure.skills[skillKey];
+                if (!skill) return;
+
+                // Create skill node
+                const skillNodeId = nodeId++;
+                const skillName = skill.skill_info?.name || skillKey;
+                nodes.push({
+                    id: skillNodeId,
+                    label: skillName,
+                    title: `스킬: ${skillName}\n카테고리: ${skill.skill_info?.category || 'N/A'}\n설명: ${skill.skill_info?.description || 'N/A'}`,
+                    group: 'skill',
+                    level: 1,
+                    color: {
+                        background: '#fef3c7',
+                        border: '#92400e',
+                        highlight: { background: '#fde68a', border: '#78350f' }
+                    },
+                    font: { color: '#92400e', size: 14, face: 'Arial' },
+                    shape: 'ellipse'
+                });
+
+                // Connect procedure to skill
+                edges.push({
+                    from: procedureNodeId,
+                    to: skillNodeId,
+                    arrows: 'to',
+                    color: { color: '#6b7280', highlight: '#374151' },
+                    width: 2
+                });
+
+                // Process documents within this skill
+                if (skill.documents) {
+                    const documentKeys = Object.keys(skill.documents).slice(0, 2); // 최대 2개
+                    documentKeys.forEach((documentKey, docIndex) => {
+                        const document = skill.documents[documentKey];
+                        if (!document || !document.title) return;
+
+                        // Create document node
+                        const docNodeId = nodeId++;
+                        nodes.push({
+                            id: docNodeId,
+                            label: document.title.length > 20 ? document.title.substring(0, 20) + '...' : document.title,
+                            title: `문서: ${document.title}\n부서: ${document.department || 'N/A'}\n난이도: ${document.difficulty_level || 'N/A'}`,
+                            group: 'document',
+                            level: 2,
+                            color: {
+                                background: '#d1fae5',
+                                border: '#065f46',
+                                highlight: { background: '#a7f3d0', border: '#047857' }
+                            },
+                            font: { color: '#065f46', size: 12, face: 'Arial' },
+                            shape: 'triangle'
+                        });
+
+                        // Connect skill to document
+                        edges.push({
+                            from: skillNodeId,
+                            to: docNodeId,
+                            arrows: 'to',
+                            color: { color: '#9ca3af', highlight: '#6b7280' },
+                            width: 1.5
+                        });
+
+                        // Process experts within this document
+                        if (document.experts) {
+                            const expertKeys = Object.keys(document.experts).slice(0, 2); // 최대 2개
+                            expertKeys.forEach((expertKey, expertIndex) => {
+                                const expert = document.experts[expertKey];
+                                if (!expert || !expert.name) return;
+
+                                // Create expert node
+                                const expertNodeId = nodeId++;
+                                nodes.push({
+                                    id: expertNodeId,
+                                    label: expert.name,
+                                    title: `전문가: ${expert.name}\n부서: ${expert.department || 'N/A'}\n역할: ${expert.role || 'N/A'}\n전문분야: ${expert.expertise || 'N/A'}`,
+                                    group: 'expert',
+                                    level: 3,
+                                    color: {
+                                        background: '#fce7f3',
+                                        border: '#be185d',
+                                        highlight: { background: '#f9a8d4', border: '#9d174d' }
+                                    },
+                                    font: { color: '#be185d', size: 12, face: 'Arial' },
+                                    shape: 'diamond'
+                                });
+
+                                // Connect document to expert
+                                edges.push({
+                                    from: docNodeId,
+                                    to: expertNodeId,
+                                    arrows: 'to',
+                                    color: { color: '#d1d5db', highlight: '#9ca3af' },
+                                    width: 1
+                                });
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });
+
+    return { nodes, edges };
+}
+
+// Create learning map visualization
+function createLearningMap(container, graphData) {
+    if (!window.vis || !window.vis.Network) {
+        console.error('Vis.js not loaded');
+        return null;
+    }
+
+    const { nodes, edges } = transformGraphData(graphData);
+
+    if (nodes.length === 0) {
+        container.innerHTML = `
+            <div class="learning-map-empty">
+                <i class="fas fa-project-diagram"></i>
+                <div>학습 지도 데이터가 없습니다</div>
+            </div>
+        `;
+        return null;
+    }
+
+    // Network options
+    const options = {
+        layout: {
+            hierarchical: {
+                enabled: true,
+                direction: 'UD', // Up-Down
+                sortMethod: 'directed',
+                levelSeparation: 150,
+                nodeSpacing: 200,
+                treeSpacing: 200
+            }
+        },
+        physics: {
+            enabled: true,
+            hierarchicalRepulsion: {
+                nodeDistance: 120,
+                centralGravity: 0.0,
+                springLength: 100,
+                springConstant: 0.01,
+                damping: 0.09
+            }
+        },
+        nodes: {
+            borderWidth: 2,
+            shadow: {
+                enabled: true,
+                color: 'rgba(0,0,0,0.1)',
+                size: 10,
+                x: 2,
+                y: 2
+            },
+            margin: {
+                top: 10,
+                bottom: 10,
+                left: 15,
+                right: 15
+            }
+        },
+        edges: {
+            smooth: {
+                enabled: true,
+                type: 'continuous',
+                roundness: 0.5
+            },
+            shadow: {
+                enabled: true,
+                color: 'rgba(0,0,0,0.1)',
+                size: 5,
+                x: 1,
+                y: 1
+            }
+        },
+        interaction: {
+            hover: true,
+            tooltipDelay: 300,
+            hideEdgesOnDrag: false,
+            hideNodesOnDrag: false
+        }
+    };
+
+    // Create network
+    const data = {
+        nodes: new vis.DataSet(nodes),
+        edges: new vis.DataSet(edges)
+    };
+
+    const network = new vis.Network(container, data, options);
+
+    // Store reference for controls
+    currentNetwork = network;
+
+    // Add event listeners
+    addNetworkEventListeners(network, nodes);
+
+    return network;
+}
+
+// Add event listeners for network interaction
+function addNetworkEventListeners(network, nodes) {
+    // Hover events for tooltip
+    network.on('hoverNode', function(params) {
+        const node = nodes.find(n => n.id === params.node);
+        if (node) {
+            showGraphTooltip(params.event, node);
+        }
+    });
+
+    network.on('blurNode', function(params) {
+        hideGraphTooltip();
+    });
+
+    // Click events
+    network.on('click', function(params) {
+        if (params.nodes.length > 0) {
+            const nodeId = params.nodes[0];
+            const node = nodes.find(n => n.id === nodeId);
+            if (node) {
+                console.log('Clicked node:', node);
+                // 추후 상세 정보 모달 표시 가능
+            }
+        }
+    });
+}
+
+// Show graph tooltip
+function showGraphTooltip(event, node) {
+    const tooltip = getOrCreateTooltip();
+
+    tooltip.innerHTML = `
+        <span class="node-type ${node.group}">${getNodeTypeLabel(node.group)}</span>
+        <h4>${node.label}</h4>
+        <p>${node.title || ''}</p>
+    `;
+
+    tooltip.style.left = (event.pageX + 10) + 'px';
+    tooltip.style.top = (event.pageY - 10) + 'px';
+    tooltip.classList.add('visible');
+}
+
+// Hide graph tooltip
+function hideGraphTooltip() {
+    const tooltip = document.getElementById('graphTooltip');
+    if (tooltip) {
+        tooltip.classList.remove('visible');
+    }
+}
+
+// Get or create tooltip element
+function getOrCreateTooltip() {
+    let tooltip = document.getElementById('graphTooltip');
+    if (!tooltip) {
+        tooltip = document.createElement('div');
+        tooltip.id = 'graphTooltip';
+        tooltip.className = 'graph-tooltip';
+        document.body.appendChild(tooltip);
+    }
+    return tooltip;
+}
+
+// Get node type label
+function getNodeTypeLabel(group) {
+    const labels = {
+        procedure: '절차',
+        skill: '스킬',
+        document: '문서',
+        expert: '전문가'
+    };
+    return labels[group] || group;
+}
+
+// Graph control functions
+let currentNetwork = null;
+
+function fitGraphView() {
+    if (currentNetwork) {
+        currentNetwork.fit({
+            animation: {
+                duration: 1000,
+                easingFunction: 'easeInOutQuad'
+            }
+        });
+    }
+}
+
+function resetGraphView() {
+    if (currentNetwork) {
+        currentNetwork.moveTo({
+            position: { x: 0, y: 0 },
+            scale: 1,
+            animation: {
+                duration: 1000,
+                easingFunction: 'easeInOutQuad'
+            }
+        });
+    }
+}
+
+// Toggle learning map visibility
+function toggleLearningMap() {
+    const container = document.querySelector('.learning-map-container');
+    const toggle = document.querySelector('.learning-map-toggle');
+
+    if (!container || !toggle) return;
+
+    const isVisible = container.style.display !== 'none';
+
+    if (isVisible) {
+        container.style.display = 'none';
+        toggle.innerHTML = '<i class="fas fa-eye"></i> 학습 지도 보기';
+    } else {
+        container.style.display = 'block';
+        toggle.innerHTML = '<i class="fas fa-eye-slash"></i> 학습 지도 숨기기';
+
+        // Re-render graph if needed
+        const graphContainer = container.querySelector('.learning-map-graph');
+        if (graphContainer && !graphContainer.hasChildNodes()) {
+            const curriculumData = StorageManager.curriculum.get();
+            if (curriculumData && curriculumData.graph_curriculum) {
+                createLearningMap(graphContainer, curriculumData.graph_curriculum);
+            }
+        }
+    }
+}
+
 // Export functions for global use
 window.generateCurriculum = generateCurriculum;
 window.checkCurriculumCompletion = checkCurriculumCompletion;
@@ -1829,3 +2229,10 @@ window.shareCurriculum = shareCurriculum;
 window.createCurriculumContent = createCurriculumContent;
 window.startProgressPolling = startProgressPolling;
 window.stopProgressPolling = stopProgressPolling;
+
+// Export new graph functions
+window.transformGraphData = transformGraphData;
+window.createLearningMap = createLearningMap;
+window.toggleLearningMap = toggleLearningMap;
+window.fitGraphView = fitGraphView;
+window.resetGraphView = resetGraphView;
