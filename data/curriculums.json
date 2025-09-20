@@ -29001,5 +29001,2456 @@
       "total_estimated_hours": 168,
       "id": 0
     }
+  ],
+  "31977b19": [
+    {
+      "title": "Python 프로그래밍 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 12,
+      "weekly_hours": 10,
+      "focus_areas": [
+        "backend development",
+        "웹 서버 구축",
+        "데이터베이스 연동"
+      ],
+      "modules": [
+        {
+          "week": 1,
+          "title": "파이썬 환경 설정 및 기본 문법",
+          "description": "이 모듈에서는 파이썬 개발 환경의 초기 설정부터 시작하여 프로그래밍의 기본이 되는 데이터 타입과 제어 구조를 학습합니다. 파이썬의 설치 과정을 단계별로 안내하고, 기본적인 문법 요소들을 실습을 통해 익힙니다.",
+          "objectives": [
+            "Python 개발 환경을 설치하고 실행할 수 있다",
+            "기본 데이터 타입(정수, 실수, 문자열, 불리언)과 변수의 개념을 이해하고 활용할 수 있다",
+            "if문을 사용하여 조건문을 작성하고 실행할 수 있다"
+          ],
+          "learning_outcomes": [
+            "환경 설정을 통해 파이썬 프로그램을 실행할 수 있다",
+            "데이터 타입의 특성을 이해하고 적절한 변수를 선언할 수 있다",
+            "조건문을 활용하여 프로그램의 흐름을 제어할 수 있다"
+          ],
+          "key_concepts": [
+            "Python 설치 및 실행 환경 설정",
+            "기본 데이터 타입 및 메모리 관리",
+            "if 조건문을 활용한 제어 구조"
+          ],
+          "estimated_hours": 5,
+          "resources": {
+            "videos": [
+              {
+                "title": "K-MOOC 강좌",
+                "description": "K-MOOC 온라인 강좌",
+                "url": "https://www.kmooc.kr/view/course/detail/14118",
+                "institution": "세종대학교",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.858747482,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "컴퓨팅 사고력 함양 및 문제 해결 능력 향상.  알고리즘 이해",
+                "description": "컴퓨팅 사고력 개념, 알고리즘 설계 및 구현(파이썬 활용), 데이터 표현(이진수, ASCII, Unicode 등), 데이터 저장 및 검색 알고리즘(선형 검색, 이진 검색, 해...",
+                "url": "https://www.kmooc.kr/view/course/detail/14391",
+                "institution": "경희대학교",
+                "course_goal": "컴퓨팅 사고력 함양 및 문제 해결 능력 향상.  알고리즘 이해, 데이터 표현 및 저장 방식 숙지, 파이썬 프로그래밍 기초 습득.",
+                "duration": "",
+                "difficulty": "교양",
+                "class_time": "",
+                "score": 0.847197056,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "파이썬을 활용한 텍스트 처리 기법(토큰화",
+                "description": "파이썬을 활용한 텍스트 처리 기법(토큰화, 단어 임베딩 등) 습득 및 프로그래밍 실습을 통한 텍스트 데이터 정보화 능력 배양",
+                "url": "https://www.kmooc.kr/view/course/detail/14328",
+                "institution": "호서대학교",
+                "course_goal": "파이썬을 활용한 텍스트 처리 기법(토큰화, 단어 임베딩 등) 습득 및 프로그래밍 실습을 통한 텍스트 데이터 정보화 능력 배양",
+                "duration": "14주",
+                "difficulty": "전공기초 (기본적인 컴퓨팅 언어 사전 학습 권장)",
+                "class_time": "",
+                "score": 0.846680641,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "파이토치(PyTorch)를 활용한 인공지능(AI) 프로그래밍 실습을 통해 AI 원리를 이해하는 것.  기계학습",
+                "description": "파이토치(PyTorch)를 활용한 인공지능(AI) 프로그래밍 실습을 통해 AI 원리를 이해하는 것.  기계학습, 선형/로지스틱 회귀, 인공신경망, CNN 등의 개념과 실제 구현을 다룸.",
+                "url": "https://www.kmooc.kr/view/course/detail/13165",
+                "institution": "한성대학교",
+                "course_goal": "파이토치(PyTorch)를 활용한 인공지능(AI) 프로그래밍 실습을 통해 AI 원리를 이해하는 것.  기계학습, 선형/로지스틱 회귀, 인공신경망, CNN 등의 개념과 실제 구현을 다룸.",
+                "duration": "",
+                "difficulty": "전공기초.",
+                "class_time": "",
+                "score": 0.831390381,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "K-MOOC 강좌",
+                "description": "데이터 개념, 공공데이터 개념 및 형태, 데이터 품질 관리, 시맨틱 웹 및 지식 그래프 개념, SPARQL 질의, RDF 데이터 처리 및 추론, REST API 크롤링 실습 등",
+                "url": "https://www.kmooc.kr/view/course/detail/13462",
+                "institution": "제주대학교",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.827923298,
+                "source": "K-MOOC"
+              }
+            ],
+            "web_links": [
+              {
+                "title": "하루 250원으로 1년 89,000원 전체 과목 무한수강, 최신 개정 수강",
+                "url": "https://ader.naver.com/v1/g_Qkt7hrCpVhyYYzwmMdNGuSg3ZZ1jKhZKmLhxwK65yae3CQ2SpmeiZsJXVk1teFD-LC6HEW7KqyTSErjb_VegW7S9HWGWbvXHyuKosHoK8KoN-5z6opFy82EDNs6jEwek_wTkA7tST5SSNqBD2pp0gnPyUroOb-P3-dBq2xBGo6zgHcvUv3mIuLEc-9gj7-HZkfOe5WcSAzat2HAfCqmsLZdgSLolSWm2Z01iqzdykQlkNwemeM1lqU_MbHgfk-zUynSm7-EjezM731cD5c9nIlIcwNwyR-8259DsvjI3aFWfN56LwE8Uj7skKxWxgm1TbHVeVP8IOZIJJmPW95VtU5oHAsq0ywgobq-c3zzUNwugFsC8bP9pONKyI6QQgKQ3JVvk-30Pz2pbeWpOUm90UEmwrFil4h-7ItyywqwwkBDM_lM4dDp1ZQgpRQndgac08xj9sYrM8-fUBVcP3pJ2XpC0gJ_gpdviWpsFNECCnZ-lIX6xjOYhgZTve5U-eNynvHow4aB_SjKD4DDyD_JKffj4FpokDwefkJB4Ig6owF6cLfRNpp2hQYc2FQazj433-uFamLxaixr_hwBnD0KYuPVysyXlpJ0r3NsLVqVjSaTqUC03OnbY59kbcoK0kb?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ],
+            "documents": [
+              {
+                "title": "[학습자료]머신러닝_1주차 3차시",
+                "description": "03 머신러닝 개발환경 구축\n머신러닝 기초, 머신러닝 알고리즘 용어 정리\n구분 공식사이트 튜토리얼문서\n‐ The Python Tutorial:\n파이썬\n언어 https://www.python.org\n‐ https://docs.python.org/3/tu\n(Python)\ntorial/\n‐ Installing packages:\nhttps://packaging.p...",
+                "content": "03 머신러닝 개발환경 구축\n머신러닝 기초, 머신러닝 알고리즘 용어 정리\n구분 공식사이트 튜토리얼문서\n‐ The Python Tutorial:\n파이썬\n언어 https://www.python.org\n‐ https://docs.python.org/3/tu\n(Python)\ntorial/\n‐ Installing packages:\nhttps://packaging.p",
+                "preview": "03 머신러닝 개발환경 구축\n머신러닝 기초, 머신러닝 알고리즘 용어 정리\n구분 공식사이트 튜토리얼문서\n‐ The Python Tutorial:\n파이썬\n언어 https://www.python.org\n‐ https://docs.python.org/3/tu\n(Python)\ntorial/\n‐ Installing packages:\nhttps://packaging.p",
+                "source": "컴퓨터.통신/[학습자료]머신러닝_1주차 3차시",
+                "category": "컴퓨터.통신",
+                "file_path": "컴퓨터.통신/[학습자료]머신러닝_1주차 3차시.pdf",
+                "file_sha1": "73c68ddba5c1d47376a14dc0aeb3d16f0f64a876",
+                "page": 7.0,
+                "score": 0.878210068,
+                "type": "document",
+                "has_content": true
+              }
+            ],
+            "total_resources": 8,
+            "resources_with_content": 6,
+            "content_coverage": 0.75
+          }
+        },
+        {
+          "week": 2,
+          "title": "파이썬 함수와 모듈 활용",
+          "description": "본 모듈에서는 파이썬에서 함수의 정의와 호출 방법을 배우고, 파이썬의 다양한 내장 모듈과 패키지를 활용하여 프로그램을 확장하는 방법을 학습합니다. 함수 매개변수와 반환값을 효과적으로 구현하는 방법도 다룹니다.",
+          "objectives": [
+            "다양한 형태의 함수(기본 인자, 가변 인자, 키워드 인자)를 정의하고 호출할 수 있다",
+            "내장 모듈(예: math, datetime, os)과 패키지를 활용하여 프로그램을 확장할 수 있다",
+            "함수의 매개변수를 효과적으로 설계하고 반환값을 구현할 수 있다"
+          ],
+          "learning_outcomes": [
+            "함수를 정의하여 코드 재사용성을 높일 수 있다",
+            "모듈과 패키지를 사용하여 파이썬 표준 라이브러리의 기능을 활용할 수 있다",
+            "함수 내에서 매개변수와 반환값을 적절히 처리할 수 있다"
+          ],
+          "key_concepts": [
+            "함수 정의 및 호출의 기본 문법",
+            "다양한 함수 매개변수 형태 (기본값, 가변 인자, 키워드 인자)",
+            "모듈과 패키지의 차이점 및 사용법",
+            "내장 모듈 활용 사례 (math, datetime, os)",
+            "함수 스코핑과 클로저 이해"
+          ],
+          "estimated_hours": 8,
+          "resources": {
+            "videos": [
+              {
+                "title": "K-MOOC 강좌",
+                "description": "K-MOOC 온라인 강좌",
+                "url": "https://www.kmooc.kr/view/course/detail/14118",
+                "institution": "세종대학교",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.860707641,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "컴퓨팅 사고력 함양 및 문제 해결 능력 향상.  알고리즘 이해",
+                "description": "컴퓨팅 사고력 개념, 알고리즘 설계 및 구현(파이썬 활용), 데이터 표현(이진수, ASCII, Unicode 등), 데이터 저장 및 검색 알고리즘(선형 검색, 이진 검색, 해...",
+                "url": "https://www.kmooc.kr/view/course/detail/14391",
+                "institution": "경희대학교",
+                "course_goal": "컴퓨팅 사고력 함양 및 문제 해결 능력 향상.  알고리즘 이해, 데이터 표현 및 저장 방식 숙지, 파이썬 프로그래밍 기초 습득.",
+                "duration": "",
+                "difficulty": "교양",
+                "class_time": "",
+                "score": 0.854370952,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "파이썬을 활용한 텍스트 처리 기법(토큰화",
+                "description": "파이썬을 활용한 텍스트 처리 기법(토큰화, 단어 임베딩 등) 습득 및 프로그래밍 실습을 통한 텍스트 데이터 정보화 능력 배양",
+                "url": "https://www.kmooc.kr/view/course/detail/14328",
+                "institution": "호서대학교",
+                "course_goal": "파이썬을 활용한 텍스트 처리 기법(토큰화, 단어 임베딩 등) 습득 및 프로그래밍 실습을 통한 텍스트 데이터 정보화 능력 배양",
+                "duration": "14주",
+                "difficulty": "전공기초 (기본적인 컴퓨팅 언어 사전 학습 권장)",
+                "class_time": "",
+                "score": 0.852458835,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "K-MOOC 강좌",
+                "description": "인공지능 개념 및 역사, 데이터 및 인식 기술, 머신러닝 및 딥러닝 알고리즘, 다양한 분야(농축업, 뷰티, 의료, 복지 등)의 AI 적용 사례, 파이썬 프로그래밍 및 노코딩 ...",
+                "url": "https://www.kmooc.kr/view/course/detail/14288",
+                "institution": "한국원격대학협의회 AI융합교육원",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.849678516,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "파이썬 기반 딥러닝 모델 이해 및 구현 능력 배양. Google Colab 활용 실습 포함...",
+                "description": "딥러닝 개론, 파이썬 기초, 퍼셉트론, 선형대수 및 미적분, 머신러닝 기초, 선형/로지스틱 회귀, 심층 신경망, CNN/RNN, 비정형 데이터 처리 등.",
+                "url": "https://www.kmooc.kr/view/course/detail/13958",
+                "institution": "성균관대학교",
+                "course_goal": "파이썬 기반 딥러닝 모델 이해 및 구현 능력 배양. Google Colab 활용 실습 포함.",
+                "duration": "6주",
+                "difficulty": "전공기초",
+                "class_time": "",
+                "score": 0.847566962,
+                "source": "K-MOOC"
+              }
+            ],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ],
+            "documents": [
+              {
+                "title": "[학습자료]머신러닝_2주차 2차시",
+                "description": "02 Pandas 이해 및 실습 1\n머신러닝 기초, 머신러닝 알고리즘 용어 정리\n▪ 파이썬의 pip install 사용\n‐ pip install pandas\n‐ (파이썬3) pip3 install pandas\n‐ (pip설치) sudo easy_install pip / sudo easy_install pip3\n출처...",
+                "content": "02 Pandas 이해 및 실습 1\n머신러닝 기초, 머신러닝 알고리즘 용어 정리\n▪ 파이썬의 pip install 사용\n‐ pip install pandas\n‐ (파이썬3) pip3 install pandas\n‐ (pip설치) sudo easy_install pip / sudo easy_install pip3\n출처",
+                "preview": "02 Pandas 이해 및 실습 1\n머신러닝 기초, 머신러닝 알고리즘 용어 정리\n▪ 파이썬의 pip install 사용\n‐ pip install pandas\n‐ (파이썬3) pip3 install pandas\n‐ (pip설치) sudo easy_install pip / sudo easy_install pip3\n출처",
+                "source": "컴퓨터.통신/[학습자료]머신러닝_2주차 2차시",
+                "category": "컴퓨터.통신",
+                "file_path": "컴퓨터.통신/[학습자료]머신러닝_2주차 2차시.pdf",
+                "file_sha1": "4529b9f8a2d832e5caeea3191a6666404b92234c",
+                "page": 6.0,
+                "score": 0.882199645,
+                "type": "document",
+                "has_content": true
+              },
+              {
+                "title": "[학습자료]머신러닝_3주차 1차시",
+                "description": "01 Matplotlib 이해 및 실습\n머신러닝 기초, 머신러닝 알고리즘 용어 정리\n▪ 파이썬의 pip install 사용\n‐ pip install matplotlib\n‐ (파이썬3) pip3 install matplotlib\n‐ (pip설치) sudo easy_install pip / sudo easy_install pip3\n출처...",
+                "content": "01 Matplotlib 이해 및 실습\n머신러닝 기초, 머신러닝 알고리즘 용어 정리\n▪ 파이썬의 pip install 사용\n‐ pip install matplotlib\n‐ (파이썬3) pip3 install matplotlib\n‐ (pip설치) sudo easy_install pip / sudo easy_install pip3\n출처",
+                "preview": "01 Matplotlib 이해 및 실습\n머신러닝 기초, 머신러닝 알고리즘 용어 정리\n▪ 파이썬의 pip install 사용\n‐ pip install matplotlib\n‐ (파이썬3) pip3 install matplotlib\n‐ (pip설치) sudo easy_install pip / sudo easy_install pip3\n출처",
+                "source": "컴퓨터.통신/[학습자료]머신러닝_3주차 1차시",
+                "category": "컴퓨터.통신",
+                "file_path": "컴퓨터.통신/[학습자료]머신러닝_3주차 1차시.pdf",
+                "file_sha1": "5813cbb044f8afbed79479043182b1ad80feb09b",
+                "page": 4.0,
+                "score": 0.87981832,
+                "type": "document",
+                "has_content": true
+              },
+              {
+                "title": "[학습자료] 자율주행제어 이론 및 실습_09주차",
+                "description": "❖\n• 특정 응용 분야나 작업을 위한 확장 모듈 패키지\n(함수,데이터셋, 그래픽, 예제코드를 포함)\n출처 https://kr.mathworks.com/products/matlab.html\n9...",
+                "content": "❖\n• 특정 응용 분야나 작업을 위한 확장 모듈 패키지\n(함수,데이터셋, 그래픽, 예제코드를 포함)\n출처 https://kr.mathworks.com/products/matlab.html\n9",
+                "preview": "❖\n• 특정 응용 분야나 작업을 위한 확장 모듈 패키지\n(함수,데이터셋, 그래픽, 예제코드를 포함)\n출처 https://kr.mathworks.com/products/matlab.html\n9",
+                "source": "교통.운송/[학습자료] 자율주행제어 이론 및 실습_09주차",
+                "category": "교통.운송",
+                "file_path": "교통.운송/[학습자료] 자율주행제어 이론 및 실습_09주차.pdf",
+                "file_sha1": "875c68945efa459d2213bd26ac146c536d1cf135",
+                "page": 8.0,
+                "score": 0.879665732,
+                "type": "document",
+                "has_content": true
+              }
+            ],
+            "total_resources": 9,
+            "resources_with_content": 8,
+            "content_coverage": 0.8888888888888888
+          }
+        },
+        {
+          "week": 3,
+          "title": "객체 지향 프로그래밍 기초",
+          "description": "3주차 모듈에서는 객체 지향 프로그래밍(OOP)의 핵심 개념인 클래스와 객체, 상속과 다형성에 대해 학습합니다. 이 모듈을 통해 프로그램의 구조화 방법과 코드 재사용성을 높이는 방법을 이해하게 됩니다.",
+          "objectives": [
+            "클래스와 객체의 개념을 명확하게 이해하고 설명할 수 있다",
+            "상속과 다형성의 개념을 실제 코드 예제를 통해 설명할 수 있다",
+            "파이썬에서 간단한 클래스를 정의하고 객체를 생성 및 활용할 수 있다"
+          ],
+          "learning_outcomes": [
+            "클래스를 설계하고 객체를 생성하여 문제를 해결할 수 있다",
+            "상속을 통해 코드 재사용성을 높일 수 있는 구조를 설계할 수 있다",
+            "다형성을 활용하여 유연한 코드를 작성할 수 있다"
+          ],
+          "key_concepts": [
+            "클래스와 객체의 정의 및 차이점",
+            "상속을 통한 코드 재사용과 계층적 설계",
+            "다형성(오버라이딩과 오버로딩) 개념"
+          ],
+          "estimated_hours": 6,
+          "resources": {
+            "videos": [
+              {
+                "title": "컴퓨팅 사고력 함양 및 문제 해결 능력 향상.  알고리즘 이해",
+                "description": "컴퓨팅 사고력 개념, 알고리즘 설계 및 구현(파이썬 활용), 데이터 표현(이진수, ASCII, Unicode 등), 데이터 저장 및 검색 알고리즘(선형 검색, 이진 검색, 해...",
+                "url": "https://www.kmooc.kr/view/course/detail/14391",
+                "institution": "경희대학교",
+                "course_goal": "컴퓨팅 사고력 함양 및 문제 해결 능력 향상.  알고리즘 이해, 데이터 표현 및 저장 방식 숙지, 파이썬 프로그래밍 기초 습득.",
+                "duration": "",
+                "difficulty": "교양",
+                "class_time": "",
+                "score": 0.855764866,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "K-MOOC 강좌",
+                "description": "K-MOOC 온라인 강좌",
+                "url": "https://www.kmooc.kr/view/course/detail/14118",
+                "institution": "세종대학교",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.851121426,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "K-MOOC 강좌",
+                "description": "빅데이터 기반 AI 알고리즘 학습. 선형계획법, 정수계획법, 네트워크 모형, 비선형계획법, 발견적 해법, 경사하강법, 유전자 알고리즘, 동적계획법, 마르코프 분석 등 다양한 ...",
+                "url": "https://www.kmooc.kr/view/course/detail/14054",
+                "institution": "한국연구재단 산업교육센터",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "전공 심화",
+                "class_time": "",
+                "score": 0.84350872,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "파이썬을 활용한 텍스트 처리 기법(토큰화",
+                "description": "파이썬을 활용한 텍스트 처리 기법(토큰화, 단어 임베딩 등) 습득 및 프로그래밍 실습을 통한 텍스트 데이터 정보화 능력 배양",
+                "url": "https://www.kmooc.kr/view/course/detail/14328",
+                "institution": "호서대학교",
+                "course_goal": "파이썬을 활용한 텍스트 처리 기법(토큰화, 단어 임베딩 등) 습득 및 프로그래밍 실습을 통한 텍스트 데이터 정보화 능력 배양",
+                "duration": "14주",
+                "difficulty": "전공기초 (기본적인 컴퓨팅 언어 사전 학습 권장)",
+                "class_time": "",
+                "score": 0.842008114,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "만물 인터넷(IoE) 개념과 미래 사회에 미치는 영향 이해",
+                "description": "사물 연결, 사물 프로그래밍(Blockly, Python), 사물 데이터(빅데이터 분석), 사물 자동화(AI, 머신러닝), 사물 보안, IoT 시스템 모델(네트워킹, 아키텍처...",
+                "url": "https://www.kmooc.kr/view/course/detail/14392",
+                "institution": "경희대학교",
+                "course_goal": "만물 인터넷(IoE) 개념과 미래 사회에 미치는 영향 이해, ICT 기초, 휴먼 네트워크 및 인터넷 연결성 개념 학습, IoE 사회·경제적 개념 및 도전 과제 숙지, 미래 네트워크 패러다임 및 새로운 문화 세계 고찰.",
+                "duration": "6주",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.841796398,
+                "source": "K-MOOC"
+              }
+            ],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ],
+            "documents": [
+              {
+                "title": "[학습자료] 자율주행제어 이론 및 실습_11주차",
+                "description": "❖\n⚫ 구현 방식\n출처 https://kr.mathworks.com/\n28...",
+                "content": "❖\n⚫ 구현 방식\n출처 https://kr.mathworks.com/\n28",
+                "preview": "❖\n⚫ 구현 방식\n출처 https://kr.mathworks.com/\n28",
+                "source": "교통.운송/[학습자료] 자율주행제어 이론 및 실습_11주차",
+                "category": "교통.운송",
+                "file_path": "교통.운송/[학습자료] 자율주행제어 이론 및 실습_11주차.pdf",
+                "file_sha1": "14168dd5152fcfa51a057c1116046ba016368b1d",
+                "page": 27.0,
+                "score": 0.880820751,
+                "type": "document",
+                "has_content": true
+              },
+              {
+                "title": "[학습자료]머신러닝_3주차 1차시",
+                "description": "Matplotlib 이해 및 실습...",
+                "content": "Matplotlib 이해 및 실습",
+                "preview": "Matplotlib 이해 및 실습",
+                "source": "컴퓨터.통신/[학습자료]머신러닝_3주차 1차시",
+                "category": "컴퓨터.통신",
+                "file_path": "컴퓨터.통신/[학습자료]머신러닝_3주차 1차시.pdf",
+                "file_sha1": "5813cbb044f8afbed79479043182b1ad80feb09b",
+                "page": 1.0,
+                "score": 0.875425875,
+                "type": "document",
+                "has_content": true
+              }
+            ],
+            "total_resources": 8,
+            "resources_with_content": 7,
+            "content_coverage": 0.875
+          }
+        },
+        {
+          "week": 4,
+          "title": "웹 프레임워크 선택",
+          "description": "이 모듈에서는 웹 개발에서 널리 사용되는 두 가지 대표적인 파이썬 웹 프레임워크인 Flask와 Django를 비교 분석합니다. 각 프레임워크의 특징과 장단점을 이해하고, 프로젝트 요구사항에 따라 적절한 프레임워크를 선택하는 방법을 학습합니다. 또한 선택한 프레임워크의 개발 환경을 설정하는 실습을 진행합니다.",
+          "objectives": [
+            "Flask와 Django 프레임워크의 구조적 특징과 동작 원리를 이해한다",
+            "다양한 프로젝트 요구사항에 따라 적합한 웹 프레임워크를 선택할 수 있는 기준을 확립한다",
+            "선택한 프레임워크의 개발 환경을 구축하고 기본 설정을 수행할 수 있다"
+          ],
+          "learning_outcomes": [
+            "Flask와 Django의 아키텍처 및 주요 구성요소를 설명할 수 있다",
+            "개발 프로젝트의 규모와 복잡성에 따라 프레임워크 선택 기준을 적용할 수 있다",
+            "가상 환경 설정부터 패키지 설치까지 프레임워크 개발 환경을 구성할 수 있다"
+          ],
+          "key_concepts": [
+            "웹 프레임워크의 MVC 패턴",
+            "Flask의 경량 아키텍처와 확장성",
+            "Django의 풀스택 기능과 ORM 시스템",
+            "개발 환경 설정과 가상 환경 구축",
+            "패키지 의존성 관리"
+          ],
+          "estimated_hours": 6,
+          "resources": {
+            "videos": [
+              {
+                "title": "컴퓨팅 사고력 함양 및 문제 해결 능력 향상.  알고리즘 이해",
+                "description": "컴퓨팅 사고력 개념, 알고리즘 설계 및 구현(파이썬 활용), 데이터 표현(이진수, ASCII, Unicode 등), 데이터 저장 및 검색 알고리즘(선형 검색, 이진 검색, 해...",
+                "url": "https://www.kmooc.kr/view/course/detail/14391",
+                "institution": "경희대학교",
+                "course_goal": "컴퓨팅 사고력 함양 및 문제 해결 능력 향상.  알고리즘 이해, 데이터 표현 및 저장 방식 숙지, 파이썬 프로그래밍 기초 습득.",
+                "duration": "",
+                "difficulty": "교양",
+                "class_time": "",
+                "score": 0.861577034,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "K-MOOC 강좌",
+                "description": "K-MOOC 온라인 강좌",
+                "url": "https://www.kmooc.kr/view/course/detail/14118",
+                "institution": "세종대학교",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.853827953,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "K-MOOC 강좌",
+                "description": "웹앱 기본 개념, AWS 서버 설치 및 활용, 리눅스 쉘 명령어, HTML5/CSS3 웹페이지 제작, Javascript 기본 문법 및 활용, React, Ajax, Open...",
+                "url": "https://www.kmooc.kr/view/course/detail/13468",
+                "institution": "한동대학교",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.849241257,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "파이토치(PyTorch)를 활용한 인공지능(AI) 프로그래밍 실습을 통해 AI 원리를 이해하는 것.  기계학습",
+                "description": "파이토치(PyTorch)를 활용한 인공지능(AI) 프로그래밍 실습을 통해 AI 원리를 이해하는 것.  기계학습, 선형/로지스틱 회귀, 인공신경망, CNN 등의 개념과 실제 구현을 다룸.",
+                "url": "https://www.kmooc.kr/view/course/detail/13165",
+                "institution": "한성대학교",
+                "course_goal": "파이토치(PyTorch)를 활용한 인공지능(AI) 프로그래밍 실습을 통해 AI 원리를 이해하는 것.  기계학습, 선형/로지스틱 회귀, 인공신경망, CNN 등의 개념과 실제 구현을 다룸.",
+                "duration": "",
+                "difficulty": "전공기초.",
+                "class_time": "",
+                "score": 0.846923351,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "만물 인터넷(IoE) 개념과 미래 사회에 미치는 영향 이해",
+                "description": "사물 연결, 사물 프로그래밍(Blockly, Python), 사물 데이터(빅데이터 분석), 사물 자동화(AI, 머신러닝), 사물 보안, IoT 시스템 모델(네트워킹, 아키텍처...",
+                "url": "https://www.kmooc.kr/view/course/detail/14392",
+                "institution": "경희대학교",
+                "course_goal": "만물 인터넷(IoE) 개념과 미래 사회에 미치는 영향 이해, ICT 기초, 휴먼 네트워크 및 인터넷 연결성 개념 학습, IoE 사회·경제적 개념 및 도전 과제 숙지, 미래 네트워크 패러다임 및 새로운 문화 세계 고찰.",
+                "duration": "6주",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.842594624,
+                "source": "K-MOOC"
+              }
+            ],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ],
+            "documents": [
+              {
+                "title": "[학습자료]머신러닝_3주차 3차시",
+                "description": "03 Pandas.plot 이해 및 실습\n▪ [Dataset] https://www.kaggle.com/c/titanic/data?select=train.csv\n출처...",
+                "content": "03 Pandas.plot 이해 및 실습\n▪ [Dataset] https://www.kaggle.com/c/titanic/data?select=train.csv\n출처",
+                "preview": "03 Pandas.plot 이해 및 실습\n▪ [Dataset] https://www.kaggle.com/c/titanic/data?select=train.csv\n출처",
+                "source": "컴퓨터.통신/[학습자료]머신러닝_3주차 3차시",
+                "category": "컴퓨터.통신",
+                "file_path": "컴퓨터.통신/[학습자료]머신러닝_3주차 3차시.pdf",
+                "file_sha1": "715138c34b46b2b7d822c40675eebcd4a92a06cd",
+                "page": 10.0,
+                "score": 0.868083537,
+                "type": "document",
+                "has_content": true
+              },
+              {
+                "title": "[학습자료] 자율주행제어 이론 및 실습_11주차",
+                "description": "❖\n⚫ 구현 방식\n출처 https://kr.mathworks.com/\n28...",
+                "content": "❖\n⚫ 구현 방식\n출처 https://kr.mathworks.com/\n28",
+                "preview": "❖\n⚫ 구현 방식\n출처 https://kr.mathworks.com/\n28",
+                "source": "교통.운송/[학습자료] 자율주행제어 이론 및 실습_11주차",
+                "category": "교통.운송",
+                "file_path": "교통.운송/[학습자료] 자율주행제어 이론 및 실습_11주차.pdf",
+                "file_sha1": "14168dd5152fcfa51a057c1116046ba016368b1d",
+                "page": 27.0,
+                "score": 0.86752224,
+                "type": "document",
+                "has_content": true
+              }
+            ],
+            "total_resources": 8,
+            "resources_with_content": 7,
+            "content_coverage": 0.875
+          }
+        },
+        {
+          "week": 5,
+          "title": "기본 웹 애플리케이션 구축",
+          "description": "이 모듈에서는 선택한 웹 프레임워크를 활용하여 실제 웹 애플리케이션의 기초를 다룹니다. 학생들은 기본적인 웹 페이지를 생성하고, URL 라우팅에 대한 개념을 이해하며, 정적 콘텐츠를 제공하는 웹 페이지를 직접 구축해보는 경험을 쌓게 됩니다. 프레임워크의 설치부터 시작하여, 간단한 MVC 구조를 이해하고 실습을 통해 웹 애플리케이션의 초기 형태를 만들어 볼 것입니다.",
+          "objectives": [
+            "구체적인 학습목표1: 선택된 웹 프레임워크(예: Django, Flask, Express.js 등)를 설치하고 초기 설정을 완료할 수 있다.",
+            "학습목표2: URL 라우팅의 기본 원리를 이해하고 간단한 라우팅 규칙을 설정할 수 있다.",
+            "학습목표3: HTML/CSS를 활용하여 정적 콘텐츠를 포함하는 웹 페이지를 구현하고 배포할 수 있다."
+          ],
+          "learning_outcomes": [
+            "내가 배울 수 있는 것1: 선택한 프레임워크 환경에서 기본적인 웹 서버를 구성하고 실행하는 방법을 익힌다.",
+            "내가 배울 수 있는 것2: 사용자 요청에 따라 적절한 페이지를 제공하는 라우팅 로직을 구현할 수 있다."
+          ],
+          "key_concepts": [
+            "핵심개념1: URL 라우팅 개념과 다형성",
+            "핵심개념2: MVC(Model-View-Controller) 패턴의 기초",
+            "핵심개념3: 정적 파일 서빙 및 웹 서버 구조"
+          ],
+          "estimated_hours": 10,
+          "resources": {
+            "videos": [
+              {
+                "title": "K-MOOC 강좌",
+                "description": "웹앱 기본 개념, AWS 서버 설치 및 활용, 리눅스 쉘 명령어, HTML5/CSS3 웹페이지 제작, Javascript 기본 문법 및 활용, React, Ajax, Open...",
+                "url": "https://www.kmooc.kr/view/course/detail/13468",
+                "institution": "한동대학교",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.868274212,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "K-MOOC 강좌",
+                "description": "K-MOOC 온라인 강좌",
+                "url": "https://www.kmooc.kr/view/course/detail/14118",
+                "institution": "세종대학교",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.85648489,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "컴퓨팅 사고력 함양 및 문제 해결 능력 향상.  알고리즘 이해",
+                "description": "컴퓨팅 사고력 개념, 알고리즘 설계 및 구현(파이썬 활용), 데이터 표현(이진수, ASCII, Unicode 등), 데이터 저장 및 검색 알고리즘(선형 검색, 이진 검색, 해...",
+                "url": "https://www.kmooc.kr/view/course/detail/14391",
+                "institution": "경희대학교",
+                "course_goal": "컴퓨팅 사고력 함양 및 문제 해결 능력 향상.  알고리즘 이해, 데이터 표현 및 저장 방식 숙지, 파이썬 프로그래밍 기초 습득.",
+                "duration": "",
+                "difficulty": "교양",
+                "class_time": "",
+                "score": 0.854631901,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "파이토치(PyTorch)를 활용한 인공지능(AI) 프로그래밍 실습을 통해 AI 원리를 이해하는 것.  기계학습",
+                "description": "파이토치(PyTorch)를 활용한 인공지능(AI) 프로그래밍 실습을 통해 AI 원리를 이해하는 것.  기계학습, 선형/로지스틱 회귀, 인공신경망, CNN 등의 개념과 실제 구현을 다룸.",
+                "url": "https://www.kmooc.kr/view/course/detail/13165",
+                "institution": "한성대학교",
+                "course_goal": "파이토치(PyTorch)를 활용한 인공지능(AI) 프로그래밍 실습을 통해 AI 원리를 이해하는 것.  기계학습, 선형/로지스틱 회귀, 인공신경망, CNN 등의 개념과 실제 구현을 다룸.",
+                "duration": "",
+                "difficulty": "전공기초.",
+                "class_time": "",
+                "score": 0.850328445,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "파이썬을 활용한 텍스트 처리 기법(토큰화",
+                "description": "파이썬을 활용한 텍스트 처리 기법(토큰화, 단어 임베딩 등) 습득 및 프로그래밍 실습을 통한 텍스트 데이터 정보화 능력 배양",
+                "url": "https://www.kmooc.kr/view/course/detail/14328",
+                "institution": "호서대학교",
+                "course_goal": "파이썬을 활용한 텍스트 처리 기법(토큰화, 단어 임베딩 등) 습득 및 프로그래밍 실습을 통한 텍스트 데이터 정보화 능력 배양",
+                "duration": "14주",
+                "difficulty": "전공기초 (기본적인 컴퓨팅 언어 사전 학습 권장)",
+                "class_time": "",
+                "score": 0.849767685,
+                "source": "K-MOOC"
+              }
+            ],
+            "web_links": [
+              {
+                "title": "인천파이썬 코딩을 쉽고 빠르게 빅데이터,AI,프론트엔드,백엔드 상위과정의 기초언어",
+                "url": "https://ader.naver.com/v1/MYAtsdpkW9QjEOiOFF8SOFwsT74DeFgEf6HCi6QARcAduzRCqZuJR5n8MIT_XYRBhf7aozlanj9vPSTsuwlKoobpd1d4SL7ub-cY4_Tgaibc40VfWnQfACGHhipmPJME_MEp-HnOGnmiHum9pSSsekuB7RxNCX9q4KG2Uhp3rmmF73vDLTFnyzipifsafdt1gZ7oYt9uQIyzF6wy7xseu1rrKwPTJ1tj99kKJpea2rs7rWQEIrFE2yKtpnUHbjjcu_E0n0wHuKdsb5ZYfv06haH3e99-5sHlDumD69os2eNjYGG_-9sSktW3DqiILE4FAis1EpkKy-v1m87HcS7BIGf_wxHW17BGA0lqTaIuRwFmfKRuNBY6QRQJqbUdtWfGa8Yd4THGXF1Fu-cOSCY5UyFniEj-gGNlwaK-6aBpU_uuq95whjQMeq1GvJ0fL4dT9Fc5LoAUbY7AfiEdocBi_eQf0ySnNScdhpZW1W3IHpIH4r__Sfd1plo_56dO_CcTEvytCQhyWu_u6GgBqqVjTn_oLcJVAgPfRj0n0qm8M_W6ACTubSQSfd8lcMNaP_Vkn2dtQjdOLdiJXn5-jtWWKZukh41yrqvbHZS19d8ISKM=?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ],
+            "documents": [
+              {
+                "title": "[학습자료]머신러닝_1주차 3차시",
+                "description": "03 머신러닝 개발환경 구축\n머신러닝 기초, 머신러닝 알고리즘 용어 정리\n▪ 구글의 Colaboratory는 주피터 노트북 기반의 파이썬 개발을 위한 웹기반\n클라우드 코딩 환경\n▪ Colab 사용 절차\n출처...",
+                "content": "03 머신러닝 개발환경 구축\n머신러닝 기초, 머신러닝 알고리즘 용어 정리\n▪ 구글의 Colaboratory는 주피터 노트북 기반의 파이썬 개발을 위한 웹기반\n클라우드 코딩 환경\n▪ Colab 사용 절차\n출처",
+                "preview": "03 머신러닝 개발환경 구축\n머신러닝 기초, 머신러닝 알고리즘 용어 정리\n▪ 구글의 Colaboratory는 주피터 노트북 기반의 파이썬 개발을 위한 웹기반\n클라우드 코딩 환경\n▪ Colab 사용 절차\n출처",
+                "source": "컴퓨터.통신/[학습자료]머신러닝_1주차 3차시",
+                "category": "컴퓨터.통신",
+                "file_path": "컴퓨터.통신/[학습자료]머신러닝_1주차 3차시.pdf",
+                "file_sha1": "73c68ddba5c1d47376a14dc0aeb3d16f0f64a876",
+                "page": 11.0,
+                "score": 0.880261898,
+                "type": "document",
+                "has_content": true
+              }
+            ],
+            "total_resources": 8,
+            "resources_with_content": 6,
+            "content_coverage": 0.75
+          }
+        },
+        {
+          "week": 6,
+          "title": "RESTful API 개념 및 구현",
+          "description": "이 모듈에서는 웹 애플리케이션의 핵심 요소인 RESTful API의 기본 개념과 설계 원칙을 학습합니다. 클라이언트와 서버 간의 데이터 교환을 위한 표준화된 방법을 이해하고, 대표적인 HTTP 메서드를 활용하여 간단한 API를 구축하는 방법을 배웁니다. Flask와 Django 프레임워크를 사용하여 실제 API 엔드포인트를 구현함으로써 실무에 바로 적용할 수 있는 능력을 기릅니다.",
+          "objectives": [
+            "RESTful API의 기본 개념과 아키텍처를 설명할 수 있다",
+            "HTTP 메서드(GET, POST, PUT, DELETE)의 역할과 사용법을 이해하고 구현할 수 있다",
+            "Flask 또는 Django를 활용하여 CRUD 기능을 수행하는 간단한 API 엔드포인트를 만들 수 있다"
+          ],
+          "learning_outcomes": [
+            "RESTful 설계 원칙에 따라 API를 설계할 수 있다",
+            "실제 프로젝트에 적용 가능한 RESTful API를 구현할 수 있다",
+            "웹 애플리케이션에서 클라이언트와 서버 간의 효과적인 통신 방법을 이해하고 적용할 수 있다"
+          ],
+          "key_concepts": [
+            "Representational State Transfer (REST)의 6가지 아키텍처 제약조건",
+            "HTTP 메서드별 CRUD 연산 매핑 (GET-조회, POST-생성, PUT-갱신, DELETE-삭제)",
+            "Stateless한 특성과 Cacheable 응답 설계"
+          ],
+          "estimated_hours": 8,
+          "resources": {
+            "videos": [
+              {
+                "title": "K-MOOC 강좌",
+                "description": "데이터 개념, 공공데이터 개념 및 형태, 데이터 품질 관리, 시맨틱 웹 및 지식 그래프 개념, SPARQL 질의, RDF 데이터 처리 및 추론, REST API 크롤링 실습 등",
+                "url": "https://www.kmooc.kr/view/course/detail/13462",
+                "institution": "제주대학교",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.860947132,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "K-MOOC 강좌",
+                "description": "K-MOOC 온라인 강좌",
+                "url": "https://www.kmooc.kr/view/course/detail/14118",
+                "institution": "세종대학교",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.854430199,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "K-MOOC 강좌",
+                "description": "웹앱 기본 개념, AWS 서버 설치 및 활용, 리눅스 쉘 명령어, HTML5/CSS3 웹페이지 제작, Javascript 기본 문법 및 활용, React, Ajax, Open...",
+                "url": "https://www.kmooc.kr/view/course/detail/13468",
+                "institution": "한동대학교",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.850467682,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "파이토치(PyTorch)를 활용한 인공지능(AI) 프로그래밍 실습을 통해 AI 원리를 이해하는 것.  기계학습",
+                "description": "파이토치(PyTorch)를 활용한 인공지능(AI) 프로그래밍 실습을 통해 AI 원리를 이해하는 것.  기계학습, 선형/로지스틱 회귀, 인공신경망, CNN 등의 개념과 실제 구현을 다룸.",
+                "url": "https://www.kmooc.kr/view/course/detail/13165",
+                "institution": "한성대학교",
+                "course_goal": "파이토치(PyTorch)를 활용한 인공지능(AI) 프로그래밍 실습을 통해 AI 원리를 이해하는 것.  기계학습, 선형/로지스틱 회귀, 인공신경망, CNN 등의 개념과 실제 구현을 다룸.",
+                "duration": "",
+                "difficulty": "전공기초.",
+                "class_time": "",
+                "score": 0.843767166,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "파이썬을 활용한 텍스트 처리 기법(토큰화",
+                "description": "파이썬을 활용한 텍스트 처리 기법(토큰화, 단어 임베딩 등) 습득 및 프로그래밍 실습을 통한 텍스트 데이터 정보화 능력 배양",
+                "url": "https://www.kmooc.kr/view/course/detail/14328",
+                "institution": "호서대학교",
+                "course_goal": "파이썬을 활용한 텍스트 처리 기법(토큰화, 단어 임베딩 등) 습득 및 프로그래밍 실습을 통한 텍스트 데이터 정보화 능력 배양",
+                "duration": "14주",
+                "difficulty": "전공기초 (기본적인 컴퓨팅 언어 사전 학습 권장)",
+                "class_time": "",
+                "score": 0.84307766,
+                "source": "K-MOOC"
+              }
+            ],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ],
+            "documents": [
+              {
+                "title": "[학습자료] 자율주행제어 이론 및 실습_11주차",
+                "description": "❖\n⚫ 구현 방식\n출처 https://kr.mathworks.com/\n29...",
+                "content": "❖\n⚫ 구현 방식\n출처 https://kr.mathworks.com/\n29",
+                "preview": "❖\n⚫ 구현 방식\n출처 https://kr.mathworks.com/\n29",
+                "source": "교통.운송/[학습자료] 자율주행제어 이론 및 실습_11주차",
+                "category": "교통.운송",
+                "file_path": "교통.운송/[학습자료] 자율주행제어 이론 및 실습_11주차.pdf",
+                "file_sha1": "14168dd5152fcfa51a057c1116046ba016368b1d",
+                "page": 28.0,
+                "score": 0.873015881,
+                "type": "document",
+                "has_content": true
+              },
+              {
+                "title": "[학습자료]머신러닝_1주차 3차시",
+                "description": "03 머신러닝 개발환경 구축\n머신러닝 기초, 머신러닝 알고리즘 용어 정리\n구분 공식사이트 튜토리얼문서\n‐ User guide:\n사이킷런 https://scikit-\nhttps://scikit-learn.org\nlearn.org/stable/user_guide. (Scikit-learn)\nhtml\n라이브러리\n‐ TensorFlow Tutorials:\n텐서플로...",
+                "content": "03 머신러닝 개발환경 구축\n머신러닝 기초, 머신러닝 알고리즘 용어 정리\n구분 공식사이트 튜토리얼문서\n‐ User guide:\n사이킷런 https://scikit-\nhttps://scikit-learn.org\nlearn.org/stable/user_guide. (Scikit-learn)\nhtml\n라이브러리\n‐ TensorFlow Tutorials:\n텐서플로",
+                "preview": "03 머신러닝 개발환경 구축\n머신러닝 기초, 머신러닝 알고리즘 용어 정리\n구분 공식사이트 튜토리얼문서\n‐ User guide:\n사이킷런 https://scikit-\nhttps://scikit-learn.org\nlearn.org/stable/user_guide. (Scikit-learn)\nhtml\n라이브러리\n‐ TensorFlow Tutorials:\n텐서플로",
+                "source": "컴퓨터.통신/[학습자료]머신러닝_1주차 3차시",
+                "category": "컴퓨터.통신",
+                "file_path": "컴퓨터.통신/[학습자료]머신러닝_1주차 3차시.pdf",
+                "file_sha1": "73c68ddba5c1d47376a14dc0aeb3d16f0f64a876",
+                "page": 9.0,
+                "score": 0.862953663,
+                "type": "document",
+                "has_content": true
+              }
+            ],
+            "total_resources": 8,
+            "resources_with_content": 7,
+            "content_coverage": 0.875
+          }
+        },
+        {
+          "week": 7,
+          "title": "SQL 기초 및 데이터베이스 설계",
+          "description": "본 모듈에서는 관계형 데이터베이스의 기본 개념과 SQL의 핵심 문법을 학습합니다. 데이터베이스 모델링의 기초를 다루며, 실제 테이블 구조를 설계하고 쿼리를 작성하는 능력을 배양합니다. 이전 모듈에서 구축한 웹 애플리케이션에 데이터베이스를 연동하여 실질적인 활용 능력을 기릅니다.",
+          "objectives": [
+            "SQL의 기본 문법(SELECT, INSERT, UPDATE, DELETE)을 이해하고 실무에서 활용 가능한 쿼리를 작성할 수 있다",
+            "관계형 데이터베이스의 기본 개념(정규화, 테이블 관계, 제약조건 등)을 설명하고 실무에 적용할 수 있다",
+            "프로젝트 요구사항에 맞는 간단한 테이블 구조를 설계하고 스키마를 정의할 수 있다"
+          ],
+          "learning_outcomes": [
+            "다양한 데이터 조회 및 조작을 위한 SQL 쿼리를 작성할 수 있다",
+            "데이터베이스 내 데이터 무결성을 유지하기 위한 제약조건을 설정할 수 있다",
+            "실전 프로젝트에 데이터베이스를 효과적으로 통합할 수 있다"
+          ],
+          "key_concepts": [
+            "SQL 기본 문법: SELECT, INSERT, UPDATE, DELETE",
+            "관계형 데이터베이스 모델: 테이블, 릴레이션, 키",
+            "데이터베이스 정규화 및 관계 설정"
+          ],
+          "estimated_hours": 6,
+          "resources": {
+            "videos": [
+              {
+                "title": "K-MOOC 강좌",
+                "description": "데이터 모델링 개념, 데이터 모델 역할, SQL 기본 문법, 테이블 생성/검색/조작, 데이터베이스 설계 방법 등",
+                "url": "https://www.kmooc.kr/view/course/detail/13295",
+                "institution": "선문대학교",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.872338295,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "컴퓨팅 사고력 함양 및 문제 해결 능력 향상.  알고리즘 이해",
+                "description": "컴퓨팅 사고력 개념, 알고리즘 설계 및 구현(파이썬 활용), 데이터 표현(이진수, ASCII, Unicode 등), 데이터 저장 및 검색 알고리즘(선형 검색, 이진 검색, 해...",
+                "url": "https://www.kmooc.kr/view/course/detail/14391",
+                "institution": "경희대학교",
+                "course_goal": "컴퓨팅 사고력 함양 및 문제 해결 능력 향상.  알고리즘 이해, 데이터 표현 및 저장 방식 숙지, 파이썬 프로그래밍 기초 습득.",
+                "duration": "",
+                "difficulty": "교양",
+                "class_time": "",
+                "score": 0.869696617,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "K-MOOC 강좌",
+                "description": "데이터 개념, 공공데이터 개념 및 형태, 데이터 품질 관리, 시맨틱 웹 및 지식 그래프 개념, SPARQL 질의, RDF 데이터 처리 및 추론, REST API 크롤링 실습 등",
+                "url": "https://www.kmooc.kr/view/course/detail/13462",
+                "institution": "제주대학교",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.851405144,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "파이썬을 활용한 텍스트 처리 기법(토큰화",
+                "description": "파이썬을 활용한 텍스트 처리 기법(토큰화, 단어 임베딩 등) 습득 및 프로그래밍 실습을 통한 텍스트 데이터 정보화 능력 배양",
+                "url": "https://www.kmooc.kr/view/course/detail/14328",
+                "institution": "호서대학교",
+                "course_goal": "파이썬을 활용한 텍스트 처리 기법(토큰화, 단어 임베딩 등) 습득 및 프로그래밍 실습을 통한 텍스트 데이터 정보화 능력 배양",
+                "duration": "14주",
+                "difficulty": "전공기초 (기본적인 컴퓨팅 언어 사전 학습 권장)",
+                "class_time": "",
+                "score": 0.848692417,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "K-MOOC 강좌",
+                "description": "K-MOOC 온라인 강좌",
+                "url": "https://www.kmooc.kr/view/course/detail/14118",
+                "institution": "세종대학교",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.847996712,
+                "source": "K-MOOC"
+              }
+            ],
+            "web_links": [],
+            "documents": [
+              {
+                "title": "[학습자료]머신러닝_2주차 3차시",
+                "description": "03 Pandas 이해 및 실습 2\n머신러닝 기초, 머신러닝 알고리즘 용어 정리\n▪ 데이터 읽기\n‐ pd.read_file_type(‘file_name’)\n출처...",
+                "content": "03 Pandas 이해 및 실습 2\n머신러닝 기초, 머신러닝 알고리즘 용어 정리\n▪ 데이터 읽기\n‐ pd.read_file_type(‘file_name’)\n출처",
+                "preview": "03 Pandas 이해 및 실습 2\n머신러닝 기초, 머신러닝 알고리즘 용어 정리\n▪ 데이터 읽기\n‐ pd.read_file_type(‘file_name’)\n출처",
+                "source": "컴퓨터.통신/[학습자료]머신러닝_2주차 3차시",
+                "category": "컴퓨터.통신",
+                "file_path": "컴퓨터.통신/[학습자료]머신러닝_2주차 3차시.pdf",
+                "file_sha1": "ac21fd9e8032bdcccd5acf044bb64c60091415c1",
+                "page": 10.0,
+                "score": 0.8835783,
+                "type": "document",
+                "has_content": true
+              },
+              {
+                "title": "[학습자료]머신러닝_3주차 3차시",
+                "description": "03 Pandas.plot 이해 및 실습\n▪ [Dataset] https://www.kaggle.com/datasets/aungpyaeap/supermarket-sales\n출처...",
+                "content": "03 Pandas.plot 이해 및 실습\n▪ [Dataset] https://www.kaggle.com/datasets/aungpyaeap/supermarket-sales\n출처",
+                "preview": "03 Pandas.plot 이해 및 실습\n▪ [Dataset] https://www.kaggle.com/datasets/aungpyaeap/supermarket-sales\n출처",
+                "source": "컴퓨터.통신/[학습자료]머신러닝_3주차 3차시",
+                "category": "컴퓨터.통신",
+                "file_path": "컴퓨터.통신/[학습자료]머신러닝_3주차 3차시.pdf",
+                "file_sha1": "715138c34b46b2b7d822c40675eebcd4a92a06cd",
+                "page": 15.0,
+                "score": 0.881910324,
+                "type": "document",
+                "has_content": true
+              }
+            ],
+            "total_resources": 7,
+            "resources_with_content": 7,
+            "content_coverage": 1.0
+          }
+        },
+        {
+          "week": 8,
+          "title": "Python과 데이터베이스 연동",
+          "description": "이번 주 모듈에서는 Python 프로그래밍 언어를 사용하여 데이터베이스와 연동하는 방법을 학습합니다. SQLite와 PostgreSQL 데이터베이스를 Python에서 어떻게 연결하고, 데이터를 생성(Create), 조회(Read), 수정(Update), 삭제(Delete)하는지 구현하며, ORM(Object-Relational Mapping) 라이브러리를 통해 효율적인 데이터 관리 방법을 익힙니다.",
+          "objectives": [
+            "Python에서 SQLite 및 PostgreSQL 데이터베이스에 연결할 수 있다",
+            "데이터베이스의 CRUD 연산을 Python 코드로 구현할 수 있다",
+            "SQLAlchemy와 같은 ORM 라이브러리를 활용하여 Python 객체와 데이터베이스 테이블 간의 매핑을 구현할 수 있다"
+          ],
+          "learning_outcomes": [
+            "SQL 데이터베이스를 Python 애플리케이션과 통합하는 실무 능력 습득",
+            "데이터베이스 스키마 설계에 따른 Python ORM 구현 능력",
+            "실제 프로젝트에서 데이터베이스 연동 코드를 작성하고 디버깅할 수 있는 역량"
+          ],
+          "key_concepts": [
+            "데이터베이스 연결 설정 및 세션 관리",
+            "SQL 쿼리 작성 및 파이썬에서의 실행",
+            "ORM을 통한 데이터베이스 객체 매핑과 CRUD 연산 자동화"
+          ],
+          "estimated_hours": 15,
+          "resources": {
+            "videos": [
+              {
+                "title": "컴퓨팅 사고력 함양 및 문제 해결 능력 향상.  알고리즘 이해",
+                "description": "컴퓨팅 사고력 개념, 알고리즘 설계 및 구현(파이썬 활용), 데이터 표현(이진수, ASCII, Unicode 등), 데이터 저장 및 검색 알고리즘(선형 검색, 이진 검색, 해...",
+                "url": "https://www.kmooc.kr/view/course/detail/14391",
+                "institution": "경희대학교",
+                "course_goal": "컴퓨팅 사고력 함양 및 문제 해결 능력 향상.  알고리즘 이해, 데이터 표현 및 저장 방식 숙지, 파이썬 프로그래밍 기초 습득.",
+                "duration": "",
+                "difficulty": "교양",
+                "class_time": "",
+                "score": 0.85748291,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "K-MOOC 강좌",
+                "description": "데이터 개념, 공공데이터 개념 및 형태, 데이터 품질 관리, 시맨틱 웹 및 지식 그래프 개념, SPARQL 질의, RDF 데이터 처리 및 추론, REST API 크롤링 실습 등",
+                "url": "https://www.kmooc.kr/view/course/detail/13462",
+                "institution": "제주대학교",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.849755287,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "K-MOOC 강좌",
+                "description": "K-MOOC 온라인 강좌",
+                "url": "https://www.kmooc.kr/view/course/detail/14118",
+                "institution": "세종대학교",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.847599,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "K-MOOC 강좌",
+                "description": "데이터 모델링 개념, 데이터 모델 역할, SQL 기본 문법, 테이블 생성/검색/조작, 데이터베이스 설계 방법 등",
+                "url": "https://www.kmooc.kr/view/course/detail/13295",
+                "institution": "선문대학교",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.84727,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "파이썬을 활용한 텍스트 처리 기법(토큰화",
+                "description": "파이썬을 활용한 텍스트 처리 기법(토큰화, 단어 임베딩 등) 습득 및 프로그래밍 실습을 통한 텍스트 데이터 정보화 능력 배양",
+                "url": "https://www.kmooc.kr/view/course/detail/14328",
+                "institution": "호서대학교",
+                "course_goal": "파이썬을 활용한 텍스트 처리 기법(토큰화, 단어 임베딩 등) 습득 및 프로그래밍 실습을 통한 텍스트 데이터 정보화 능력 배양",
+                "duration": "14주",
+                "difficulty": "전공기초 (기본적인 컴퓨팅 언어 사전 학습 권장)",
+                "class_time": "",
+                "score": 0.845285892,
+                "source": "K-MOOC"
+              }
+            ],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ],
+            "documents": [
+              {
+                "title": "[학습자료]머신러닝_2주차 3차시",
+                "description": "Pandas 이해 및 실습 2...",
+                "content": "Pandas 이해 및 실습 2",
+                "preview": "Pandas 이해 및 실습 2",
+                "source": "컴퓨터.통신/[학습자료]머신러닝_2주차 3차시",
+                "category": "컴퓨터.통신",
+                "file_path": "컴퓨터.통신/[학습자료]머신러닝_2주차 3차시.pdf",
+                "file_sha1": "ac21fd9e8032bdcccd5acf044bb64c60091415c1",
+                "page": 1.0,
+                "score": 0.883074284,
+                "type": "document",
+                "has_content": true
+              },
+              {
+                "title": "[학습자료]머신러닝_3주차 3차시",
+                "description": "03 Pandas.plot 이해 및 실습\n▪ [Dataset] https://www.kaggle.com/datasets/aungpyaeap/supermarket-sales\n출처...",
+                "content": "03 Pandas.plot 이해 및 실습\n▪ [Dataset] https://www.kaggle.com/datasets/aungpyaeap/supermarket-sales\n출처",
+                "preview": "03 Pandas.plot 이해 및 실습\n▪ [Dataset] https://www.kaggle.com/datasets/aungpyaeap/supermarket-sales\n출처",
+                "source": "컴퓨터.통신/[학습자료]머신러닝_3주차 3차시",
+                "category": "컴퓨터.통신",
+                "file_path": "컴퓨터.통신/[학습자료]머신러닝_3주차 3차시.pdf",
+                "file_sha1": "715138c34b46b2b7d822c40675eebcd4a92a06cd",
+                "page": 15.0,
+                "score": 0.88078022,
+                "type": "document",
+                "has_content": true
+              }
+            ],
+            "total_resources": 8,
+            "resources_with_content": 7,
+            "content_coverage": 0.875
+          }
+        },
+        {
+          "week": 9,
+          "title": "웹 서버 기본 개념 이해",
+          "description": "이 모듈에서는 웹 서버의 기본 작동 원리와 현대 웹 애플리케이션 배포에 사용되는 주요 플랫폼들에 대해 학습합니다. 웹 클라이언트와 서버 간의 통신 방식을 이해하고, HTTP 프로토콜의 핵심 개념을 탐구하며, 최종적으로 Heroku와 AWS 같은 클라우드 배포 서비스의 특징과 차이점을 비교 분석합니다.",
+          "objectives": [
+            "웹 서버와 클라이언트 간의 요청-응답 구조와 작동 원리를 이해할 수 있다",
+            "HTTP 프로토콜의 요청 메소드(GET, POST, PUT, DELETE 등)와 상태 코드(200, 404, 500 등)의 기본 개념을 설명할 수 있다",
+            "Heroku, AWS Elastic Beanstalk, Google App Engine 등 주요 클라우드 배포 플랫폼의 특징과 사용 사례를 비교할 수 있다"
+          ],
+          "learning_outcomes": [
+            "웹 서버가 클라이언트의 HTTP 요청을 처리하는 전체 과정을 설명할 수 있다",
+            "다양한 HTTP 메소드의 사용 사례와 적절한 응답 코드를 연결하여 설명할 수 있다",
+            "개발 환경에서 간단한 웹 애플리케이션을 여러 배포 플랫폼에 설정해 볼 수 있다"
+          ],
+          "key_concepts": [
+            "HTTP 요청과 응답 구조 (Method, URL, Headers, Body)",
+            "웹 서버의 동작 원리 (Socket, Thread/Polling, 요청 처리)",
+            "클라우드 기반 배포 플랫폼의 종류와 장단점"
+          ],
+          "estimated_hours": 8,
+          "resources": {
+            "videos": [
+              {
+                "title": "K-MOOC 강좌",
+                "description": "K-MOOC 온라인 강좌",
+                "url": "https://www.kmooc.kr/view/course/detail/14118",
+                "institution": "세종대학교",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.854005814,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "컴퓨팅 사고력 함양 및 문제 해결 능력 향상.  알고리즘 이해",
+                "description": "컴퓨팅 사고력 개념, 알고리즘 설계 및 구현(파이썬 활용), 데이터 표현(이진수, ASCII, Unicode 등), 데이터 저장 및 검색 알고리즘(선형 검색, 이진 검색, 해...",
+                "url": "https://www.kmooc.kr/view/course/detail/14391",
+                "institution": "경희대학교",
+                "course_goal": "컴퓨팅 사고력 함양 및 문제 해결 능력 향상.  알고리즘 이해, 데이터 표현 및 저장 방식 숙지, 파이썬 프로그래밍 기초 습득.",
+                "duration": "",
+                "difficulty": "교양",
+                "class_time": "",
+                "score": 0.852739811,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "K-MOOC 강좌",
+                "description": "웹앱 기본 개념, AWS 서버 설치 및 활용, 리눅스 쉘 명령어, HTML5/CSS3 웹페이지 제작, Javascript 기본 문법 및 활용, React, Ajax, Open...",
+                "url": "https://www.kmooc.kr/view/course/detail/13468",
+                "institution": "한동대학교",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.851923,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "만물 인터넷(IoE) 개념과 미래 사회에 미치는 영향 이해",
+                "description": "사물 연결, 사물 프로그래밍(Blockly, Python), 사물 데이터(빅데이터 분석), 사물 자동화(AI, 머신러닝), 사물 보안, IoT 시스템 모델(네트워킹, 아키텍처...",
+                "url": "https://www.kmooc.kr/view/course/detail/14392",
+                "institution": "경희대학교",
+                "course_goal": "만물 인터넷(IoE) 개념과 미래 사회에 미치는 영향 이해, ICT 기초, 휴먼 네트워크 및 인터넷 연결성 개념 학습, IoE 사회·경제적 개념 및 도전 과제 숙지, 미래 네트워크 패러다임 및 새로운 문화 세계 고찰.",
+                "duration": "6주",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.846058369,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "파이썬을 활용한 텍스트 처리 기법(토큰화",
+                "description": "파이썬을 활용한 텍스트 처리 기법(토큰화, 단어 임베딩 등) 습득 및 프로그래밍 실습을 통한 텍스트 데이터 정보화 능력 배양",
+                "url": "https://www.kmooc.kr/view/course/detail/14328",
+                "institution": "호서대학교",
+                "course_goal": "파이썬을 활용한 텍스트 처리 기법(토큰화, 단어 임베딩 등) 습득 및 프로그래밍 실습을 통한 텍스트 데이터 정보화 능력 배양",
+                "duration": "14주",
+                "difficulty": "전공기초 (기본적인 컴퓨팅 언어 사전 학습 권장)",
+                "class_time": "",
+                "score": 0.838326,
+                "source": "K-MOOC"
+              }
+            ],
+            "web_links": [],
+            "documents": [
+              {
+                "title": "[학습자료]머신러닝_2주차 3차시",
+                "description": "03 Pandas 이해 및 실습 2\n머신러닝 기초, 머신러닝 알고리즘 용어 정리\n▪ Html\n‐ 읽기: pd.read_html(‘sheet url’)\nw_data[0]: 웹페이지 소스코드에서의 첫번째 요소\n‐ Chrome 브라우저에서 웹페이지 소스코드 보기\n해당 웹페이지>> 마우스 우클릭 >> 소스코드 보기(view page source)\n출처...",
+                "content": "03 Pandas 이해 및 실습 2\n머신러닝 기초, 머신러닝 알고리즘 용어 정리\n▪ Html\n‐ 읽기: pd.read_html(‘sheet url’)\nw_data[0]: 웹페이지 소스코드에서의 첫번째 요소\n‐ Chrome 브라우저에서 웹페이지 소스코드 보기\n해당 웹페이지>> 마우스 우클릭 >> 소스코드 보기(view page source)\n출처",
+                "preview": "03 Pandas 이해 및 실습 2\n머신러닝 기초, 머신러닝 알고리즘 용어 정리\n▪ Html\n‐ 읽기: pd.read_html(‘sheet url’)\nw_data[0]: 웹페이지 소스코드에서의 첫번째 요소\n‐ Chrome 브라우저에서 웹페이지 소스코드 보기\n해당 웹페이지>> 마우스 우클릭 >> 소스코드 보기(view page source)\n출처",
+                "source": "컴퓨터.통신/[학습자료]머신러닝_2주차 3차시",
+                "category": "컴퓨터.통신",
+                "file_path": "컴퓨터.통신/[학습자료]머신러닝_2주차 3차시.pdf",
+                "file_sha1": "ac21fd9e8032bdcccd5acf044bb64c60091415c1",
+                "page": 14.0,
+                "score": 0.871769905,
+                "type": "document",
+                "has_content": true
+              },
+              {
+                "title": "[학습자료]머신러닝_2주차 2차시",
+                "description": "Pandas 이해 및 실습 1...",
+                "content": "Pandas 이해 및 실습 1",
+                "preview": "Pandas 이해 및 실습 1",
+                "source": "컴퓨터.통신/[학습자료]머신러닝_2주차 2차시",
+                "category": "컴퓨터.통신",
+                "file_path": "컴퓨터.통신/[학습자료]머신러닝_2주차 2차시.pdf",
+                "file_sha1": "4529b9f8a2d832e5caeea3191a6666404b92234c",
+                "page": 1.0,
+                "score": 0.868932247,
+                "type": "document",
+                "has_content": true
+              }
+            ],
+            "total_resources": 7,
+            "resources_with_content": 7,
+            "content_coverage": 1.0
+          }
+        },
+        {
+          "week": 10,
+          "title": "애플리케이션 배포 실습",
+          "description": "이번 10주차 모듈에서는 웹 애플리케이션을 실제 서버 환경에 배포하는 과정을 실습합니다. Heroku 또는 AWS와 같은 클라우드 플랫폼을 사용하여 애플리케이션을 배포하고, 배포 과정에서 발생할 수 있는 다양한 문제 해결 방법을 학습합니다. 또한 서버 설정과 환경 변수 관리에 대한 기본적인 이해를 확립합니다.",
+          "objectives": [
+            "Python 웹 애플리케이션을 Heroku 또는 AWS 클라우드 플랫폼에 성공적으로 배포할 수 있다",
+            "배포 과정에서 발생하는 일반적인 오류와 문제를 진단하고 해결할 수 있다",
+            "서버 환경 변수와 설정 파일을 효과적으로 관리할 수 있다"
+          ],
+          "learning_outcomes": [
+            "실제 운영 환경에 애플리케이션을 배포하는 실무 능력을 습득",
+            "클라우드 환경에서의 배포 워크플로우 이해",
+            "배포 자동화 스크립트 작성 및 적용 방법 학습"
+          ],
+          "key_concepts": [
+            "클라우드 플랫폼 개요 및 서비스 비교",
+            "CI/CD 파이프라인과 배포 자동화",
+            "환경 변수와 설정 파일 관리 기법"
+          ],
+          "estimated_hours": 8,
+          "resources": {
+            "videos": [
+              {
+                "title": "컴퓨팅 사고력 함양 및 문제 해결 능력 향상.  알고리즘 이해",
+                "description": "컴퓨팅 사고력 개념, 알고리즘 설계 및 구현(파이썬 활용), 데이터 표현(이진수, ASCII, Unicode 등), 데이터 저장 및 검색 알고리즘(선형 검색, 이진 검색, 해...",
+                "url": "https://www.kmooc.kr/view/course/detail/14391",
+                "institution": "경희대학교",
+                "course_goal": "컴퓨팅 사고력 함양 및 문제 해결 능력 향상.  알고리즘 이해, 데이터 표현 및 저장 방식 숙지, 파이썬 프로그래밍 기초 습득.",
+                "duration": "",
+                "difficulty": "교양",
+                "class_time": "",
+                "score": 0.877695084,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "K-MOOC 강좌",
+                "description": "K-MOOC 온라인 강좌",
+                "url": "https://www.kmooc.kr/view/course/detail/14118",
+                "institution": "세종대학교",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.867934227,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "K-MOOC 강좌",
+                "description": "데이터 개념, 공공데이터 개념 및 형태, 데이터 품질 관리, 시맨틱 웹 및 지식 그래프 개념, SPARQL 질의, RDF 데이터 처리 및 추론, REST API 크롤링 실습 등",
+                "url": "https://www.kmooc.kr/view/course/detail/13462",
+                "institution": "제주대학교",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.867596149,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "파이토치(PyTorch)를 활용한 인공지능(AI) 프로그래밍 실습을 통해 AI 원리를 이해하는 것.  기계학습",
+                "description": "파이토치(PyTorch)를 활용한 인공지능(AI) 프로그래밍 실습을 통해 AI 원리를 이해하는 것.  기계학습, 선형/로지스틱 회귀, 인공신경망, CNN 등의 개념과 실제 구현을 다룸.",
+                "url": "https://www.kmooc.kr/view/course/detail/13165",
+                "institution": "한성대학교",
+                "course_goal": "파이토치(PyTorch)를 활용한 인공지능(AI) 프로그래밍 실습을 통해 AI 원리를 이해하는 것.  기계학습, 선형/로지스틱 회귀, 인공신경망, CNN 등의 개념과 실제 구현을 다룸.",
+                "duration": "",
+                "difficulty": "전공기초.",
+                "class_time": "",
+                "score": 0.867545605,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "파이썬을 활용한 텍스트 처리 기법(토큰화",
+                "description": "파이썬을 활용한 텍스트 처리 기법(토큰화, 단어 임베딩 등) 습득 및 프로그래밍 실습을 통한 텍스트 데이터 정보화 능력 배양",
+                "url": "https://www.kmooc.kr/view/course/detail/14328",
+                "institution": "호서대학교",
+                "course_goal": "파이썬을 활용한 텍스트 처리 기법(토큰화, 단어 임베딩 등) 습득 및 프로그래밍 실습을 통한 텍스트 데이터 정보화 능력 배양",
+                "duration": "14주",
+                "difficulty": "전공기초 (기본적인 컴퓨팅 언어 사전 학습 권장)",
+                "class_time": "",
+                "score": 0.866595268,
+                "source": "K-MOOC"
+              }
+            ],
+            "web_links": [
+              {
+                "title": "강남웹개발교육 백엔드, 프론트엔드 입문부터 웹, 앱 개발 어플 실무 제작까지",
+                "url": "https://ader.naver.com/v1/cMqfx9_9sodmmRnTbDxt4OXqJ83XKHCzHdit5hXdwT7ZsPY6lsKDoUG9mQa5-aO1ZTKcv6y56Ol13nZwxcu7Lfrtc4BjP0OZOXt4G79nwFnXAOnkfloz12rwlKblSmEULM1sPciUzFgiRAuWjw-P845wSHB-el7nR4pczJudpaWa3AjfTVo-GzPlIgGCrbnj2vqJxpSjX1qR4WFaTqoN1HRPfRN2buvB2fPjTL1vR-BQX2tv1aTpYKXc8VxZSy4E_l1XMvXhC1ixogCVietv5QFQo5aUIMK-IQQW8p3NQpkCx7iB1w84wBkpThrkwGQNWc1XFaZrG5OOBMplJ-1Mlc2WOt51AnSmLpjGn9HlVxHDf5Gw9AvtW0Zq17PR16k6vrzgBGOMCO6M4TJ0Gtd8i0dc7Eq45nfs5qWmDHDbce1t_HgG5gw3sK9yZFXpJb6JEivMEXqJrBRPaajeRNW98GLr5nojv_tQ9KNrmZGYtBqaPR0zGNiNorTR4WkmCvXJ6Yb7A771P5a3qSJyi2TZuXWTAamWY8vZLk0-OVaIOtnkJJx_31Gf1-XdkvipZrcqvXky83G9R6bE_99_8JzYMzZV2fzWRdHWad70Ca8f76w=?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "MY프로젝트, IT 풀스택 프론트엔드, 1:1취업컨설팅 취업준비&직장인 국비0원",
+                "url": "https://ader.naver.com/v1/71c9I749XOFQmxkNuP1Cq8hXP9d_l5FYtZc3wNzPF_uGgzfqrOC7gLY8Z1fgAKGFEEacV1HsguiPWTp0oEVnSGM5n51UDUQhmXYWJhTmUok1hh7SeZGXLtH_8XhkKr5skVbYF42vBnhzaAGHA7-wHN757s1abB-6lSnl2PI-vjeOd0iPaNBrEKE96WldUJH4HAJCfqTEQOH7UsF_lX2djT6E-snwpOafxAeWK8w44jAgHIziTJ4Ht825VmY1FHu80-BbtbCzm7i3SUXtZvzd50AkJGQM1Jc9kWj9dHcw_FIz9lVsQjUPHvrt3zxWGt3esPaHatwDt1-MTI3jpD8J2I9UnS4WsaDBwkk8MgzXYfqT9ciXECNG-E-etT1F4XHhnbfjblTm8jFKw6pqJE6XgNTgOSrY0mBnJ_FkMpxqoKppuxjKeX5fTNsXwdYukYRcqAr98jV7Fr-oA_7vnwDbr8j33b72mY_Ma8IdGgnPeiwl3wmvQ87EggB-tSIf4b1QqLKeVQRc0RX42A-3gY1rYjMnLUli-Nkcjv0bxvUPFvxZ4asb2pEhVVu5bWYwBgAVv3TKND6SpEtkExhdTOdcsw==?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "앱개발교육 백엔드, 프론트엔드 입문부터 웹, 앱 개발 어플 실무 제작까지 기초자바,c언어,파이썬부터 웹개발,AI빅데이터,정보보안 자격증까지 ALL PASS",
+                "url": "https://ader.naver.com/v1/RFbRKw-ZdrXpnIS1gTwg98dItpfQ-dHJMD1DhUax2SnHORoGCiJCmVDSZIdPqfDwpZzQdHP1DhCG5t7YxNQ-hR5QU2wbh6dwoHsTCI6W8BxmF_g8v-6JAzEYqel96I-eINYztp1vMiZ3CIJILDrx9TItR1bobswcGvHDbCUbUtj_CRnmdyMNrS0ko4ZpkIZrJIC_pgT9cWJc-uelE-gDXy90d0D67kosAFkoWlvlYBN2y_tLi4RPTdoEvjEaVMWKwXUYJ-PivAdy7E-nfP_7slBF6Bn0lqkrywZRtucUTmJW1xKiiGndq8BjTqtiRKL7J8A26K6j68UPmtOj51su-K_XPsLOl-krwHt_3nosUfQ5zmP1B1QkL3d2b3nHGimSQeVtCHXGClemrB0YZ40xRx_ec3akg5sqLNpgdJMcKU1vaUJQuAlrtKFibkU_ypfD4bBGR0MqjHitRQjI2alPryRP8M6PzDHmh-h6lqSFVi0XzB_zvlAm3A3jG926-1YNYUQcNYnVTX-PK9Xp_FsgRzrDBscJCBj__JIBp5yMkxEpUU71XNG5Rr8aSLtNDUY4wje1QTjrNE_K_tOODY6GuA==?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              }
+            ],
+            "documents": [
+              {
+                "title": "[학습자료]머신러닝_3주차 3차시",
+                "description": "· Pandas.plot 을 이해하고 실습을 통해 활용할 수 있다. · Pandas.plot 이해 및 실습...",
+                "content": "· Pandas.plot 을 이해하고 실습을 통해 활용할 수 있다. · Pandas.plot 이해 및 실습",
+                "preview": "· Pandas.plot 을 이해하고 실습을 통해 활용할 수 있다. · Pandas.plot 이해 및 실습",
+                "source": "컴퓨터.통신/[학습자료]머신러닝_3주차 3차시",
+                "category": "컴퓨터.통신",
+                "file_path": "컴퓨터.통신/[학습자료]머신러닝_3주차 3차시.pdf",
+                "file_sha1": "715138c34b46b2b7d822c40675eebcd4a92a06cd",
+                "page": 2.0,
+                "score": 0.896055222,
+                "type": "document",
+                "has_content": true
+              },
+              {
+                "title": "[학습자료]머신러닝_3주차 1차시",
+                "description": "Matplotlib 이해 및 실습...",
+                "content": "Matplotlib 이해 및 실습",
+                "preview": "Matplotlib 이해 및 실습",
+                "source": "컴퓨터.통신/[학습자료]머신러닝_3주차 1차시",
+                "category": "컴퓨터.통신",
+                "file_path": "컴퓨터.통신/[학습자료]머신러닝_3주차 1차시.pdf",
+                "file_sha1": "5813cbb044f8afbed79479043182b1ad80feb09b",
+                "page": 1.0,
+                "score": 0.89598614,
+                "type": "document",
+                "has_content": true
+              },
+              {
+                "title": "[학습자료]머신러닝_2주차 2차시",
+                "description": "· Pandas를 이해하고 실습을 통해 내용을 적용할 수 있다. · Pandas 이해 및 실습 1...",
+                "content": "· Pandas를 이해하고 실습을 통해 내용을 적용할 수 있다. · Pandas 이해 및 실습 1",
+                "preview": "· Pandas를 이해하고 실습을 통해 내용을 적용할 수 있다. · Pandas 이해 및 실습 1",
+                "source": "컴퓨터.통신/[학습자료]머신러닝_2주차 2차시",
+                "category": "컴퓨터.통신",
+                "file_path": "컴퓨터.통신/[학습자료]머신러닝_2주차 2차시.pdf",
+                "file_sha1": "4529b9f8a2d832e5caeea3191a6666404b92234c",
+                "page": 2.0,
+                "score": 0.890167713,
+                "type": "document",
+                "has_content": true
+              }
+            ],
+            "total_resources": 11,
+            "resources_with_content": 8,
+            "content_coverage": 0.7272727272727273
+          }
+        },
+        {
+          "week": 11,
+          "title": "개인 프로젝트 기획",
+          "description": "이번 모듈에서는 웹 개발 기술을 활용해 개인 웹 애플리케이션 프로젝트를 기획하고 계획하는 방법을 학습합니다. 이전 모듈에서 학습한 웹 서버 기본 개념과 애플리케이션 배포 실습을 바탕으로, 실제 프로젝트를 위한 주제 선정부터 일정 계획까지 전 과정을 다룹니다. 참가자들은 자신만의 창의적인 아이디어를 구체화하고 실현 가능한 프로젝트로 발전시키는 능력을 기르게 됩니다.",
+          "objectives": [
+            "자신만의 웹 애플리케이션 아이디어를 도출할 수 있다",
+            "프로젝트 범위와 기능을 구체화할 수 있다",
+            "프로젝트 개발 일정을 계획할 수 있다"
+          ],
+          "learning_outcomes": [
+            "창의적인 웹 애플리케이션 아이디어를 발굴할 수 있다",
+            "도출한 아이디어를 실현 가능한 프로젝트 범위와 기능으로 구체화할 수 있다",
+            "단계별 개발 일정을 체계적으로 수립할 수 있다"
+          ],
+          "key_concepts": [
+            "프로젝트 아이디어 발굴 방법론",
+            "기능 요구사항 명세 작성",
+            "애자일 개발 방법론 기초"
+          ],
+          "estimated_hours": 15,
+          "resources": {
+            "videos": [
+              {
+                "title": "컴퓨팅 사고력 함양 및 문제 해결 능력 향상.  알고리즘 이해",
+                "description": "컴퓨팅 사고력 개념, 알고리즘 설계 및 구현(파이썬 활용), 데이터 표현(이진수, ASCII, Unicode 등), 데이터 저장 및 검색 알고리즘(선형 검색, 이진 검색, 해...",
+                "url": "https://www.kmooc.kr/view/course/detail/14391",
+                "institution": "경희대학교",
+                "course_goal": "컴퓨팅 사고력 함양 및 문제 해결 능력 향상.  알고리즘 이해, 데이터 표현 및 저장 방식 숙지, 파이썬 프로그래밍 기초 습득.",
+                "duration": "",
+                "difficulty": "교양",
+                "class_time": "",
+                "score": 0.860268593,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "파이토치(PyTorch)를 활용한 인공지능(AI) 프로그래밍 실습을 통해 AI 원리를 이해하는 것.  기계학습",
+                "description": "파이토치(PyTorch)를 활용한 인공지능(AI) 프로그래밍 실습을 통해 AI 원리를 이해하는 것.  기계학습, 선형/로지스틱 회귀, 인공신경망, CNN 등의 개념과 실제 구현을 다룸.",
+                "url": "https://www.kmooc.kr/view/course/detail/13165",
+                "institution": "한성대학교",
+                "course_goal": "파이토치(PyTorch)를 활용한 인공지능(AI) 프로그래밍 실습을 통해 AI 원리를 이해하는 것.  기계학습, 선형/로지스틱 회귀, 인공신경망, CNN 등의 개념과 실제 구현을 다룸.",
+                "duration": "",
+                "difficulty": "전공기초.",
+                "class_time": "",
+                "score": 0.859161377,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "K-MOOC 강좌",
+                "description": "데이터 개념, 공공데이터 개념 및 형태, 데이터 품질 관리, 시맨틱 웹 및 지식 그래프 개념, SPARQL 질의, RDF 데이터 처리 및 추론, REST API 크롤링 실습 등",
+                "url": "https://www.kmooc.kr/view/course/detail/13462",
+                "institution": "제주대학교",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.85863781,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "K-MOOC 강좌",
+                "description": "K-MOOC 온라인 강좌",
+                "url": "https://www.kmooc.kr/view/course/detail/14118",
+                "institution": "세종대학교",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.853831291,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "파이썬을 활용한 텍스트 처리 기법(토큰화",
+                "description": "파이썬을 활용한 텍스트 처리 기법(토큰화, 단어 임베딩 등) 습득 및 프로그래밍 실습을 통한 텍스트 데이터 정보화 능력 배양",
+                "url": "https://www.kmooc.kr/view/course/detail/14328",
+                "institution": "호서대학교",
+                "course_goal": "파이썬을 활용한 텍스트 처리 기법(토큰화, 단어 임베딩 등) 습득 및 프로그래밍 실습을 통한 텍스트 데이터 정보화 능력 배양",
+                "duration": "14주",
+                "difficulty": "전공기초 (기본적인 컴퓨팅 언어 사전 학습 권장)",
+                "class_time": "",
+                "score": 0.851911545,
+                "source": "K-MOOC"
+              }
+            ],
+            "web_links": [
+              {
+                "title": "파이썬학원 코딩을 쉽고 빠르게 빅데이터,AI,프론트엔드,백엔드 상위과정의 기초언어",
+                "url": "https://ader.naver.com/v1/5CBWpqFQdErB245m_jMcmK4xaYhHMwGeu7TQR3YnZX7NiQk2VOcQEFIq177DYjWbgCKElk5eIILnoP2XaajRxMvmGXIN8VfP_PMhTCWjO_Jk1R_4j7MVFqlSwEgMc4axdCOP_IhEXtLOOiulJIZozGHmhVdMkQg0-Gu3g2bMMcQWZ1-lUKfGZMA47HveM_Ud8pEaN5zthD2Oh55tDk2h1VcFgVFQgg1ymIZOx49MZSy7JQggYE4TTIaGO_onbkX4Kie6aeWc3pDEFZAeV4g_D7Vcum1AyNyCb6yxVSIrfPDM5mNZCP9Cp-3BuRnhKiavcldmA5_OT2trGTtKoI2eJu-kvBd9ipwU0r3Z_GkmTXiW75ELQhocglYijNvPPyoVxNVEgBY2ZmSS1EV35AO3gKBt-QcRohnXh5G_c766LTjz3Gsg_BQNsD70j7GC9kls0i6CINeiLPjLdHiQc9QODrpYpzxKGGfbPpAW7iQKPv2vyuq0dPMEZMxynPVTf-J8QrYTKoJ3c0UccGlNd3gINTEQwXc00Fzp4jcSwFtUoeE=?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "강남웹개발교육 백엔드, 프론트엔드 입문부터 웹, 앱 개발 어플 실무 제작까지",
+                "url": "https://ader.naver.com/v1/Jb-Nm2Fo5BnW2H3V8fGXoNYTELpdY0rdygqewp2oKLEWFMFuV-3viS2X-Z1aag1IbAZa8zfnlm7wmsazKgryEss33PyXsGUV6onSqTENyyuPlYLKqEcPMPLmvOVZ3EefZI8ROSGZ5K2L_FxQ3P3YPNDDxqHUAx6oj7wa4us7arX2hQmxQDWjLwVxbaKy4KeB0yhLcQnvOHT17ZunjgvOaNC74PWszk-CUCYUE5fDenWJIkDBZZpQ4wNpwsk0tr6pfIiCH-S97h6Ng3h1I3xzWSBe_yBcjKWPJ08TajyyvxdPvVGCMdrSo0m-MGjHYT8Bxlgs6_pIOMSGCBryo7BrHA614hgenCpFErn0SkQ6e2l22HLMW0i72wplOiVKI5eQ2_oDT_Zsq9RoHRVSFhgAvrNIZ_gOVeWM6NGRkyEJlzyoCEasP77jFqg2m32xyhgrzyfxj1VVB__p_52rdrZt4ATMc_Qp9rKQLWebh4lseM8bhAPCtiW7QRqkOaleA-bGtXOP8VCVuvdJ5v5nWF_M9VLkmVj_sGBJY87akmGKK_TPXXjkRAkHQyACUWpwgsos?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "인천파이썬 코딩을 쉽고 빠르게 빅데이터,AI,프론트엔드,백엔드 상위과정의 기초언어",
+                "url": "https://ader.naver.com/v1/5CBWpqFQdErB245m_jMcmOQY9G8HpYaTAepI_5zZRIPE9tZ3XEx2Ms18mZas5tCTDF_Vhk4LHErxOLDbvgaZ9btw5Nq1nOnO8OAuokxvgemhTOjFp2HFLvFpgASX1MaO--poO4xgT_0YKdZp1P6JZM_Mfv_z0C2PLz22aD0nJC7pDKUQ1Q7aw09QGKM4zxD4tN8-itjgRN7dyT9BxV1ZY99Sk1_410Gjh05a-miuzMG2z0fCC2lCObF0DkzpPF3-DmJFyYFJbBs-9RVo-GN29wIVrHzPTphBQz4OKx65liJjk5MSKmR_PQt4R70Qrzbb-jEvJ9Z7OMtQFS6dY_SePEY-ho0Kzi0TJpH0k2P2_IOsHySqjytmfNrX3PsdadMvHOC7lLHyb8CnJ20KssF6IJ7VoLRm-b-02KiB0FrlOYzxgUWAWB8Qj91ATwRAJv-lKM0PY1oOgkOr13_abiDlGGAv9E1d_gzcndj7I0eBgUlE0ke0NldQ518Y8-mwG_WGbfgvUk31l7K4K9U30Q3yefVyhWW0conGcfzjozsAWkQ=?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              }
+            ],
+            "documents": [
+              {
+                "title": "[강의노트]첨단기술을 연결하는 스마트에너지 네트워크_10주차_v1.1_241010",
+                "description": "스마트에너지시스템의 혁신과 도전\n스마트에너지 프로젝트의 기획과 실행...",
+                "content": "스마트에너지시스템의 혁신과 도전\n스마트에너지 프로젝트의 기획과 실행",
+                "preview": "스마트에너지시스템의 혁신과 도전\n스마트에너지 프로젝트의 기획과 실행",
+                "source": "정밀.에너지/[강의노트]첨단기술을 연결하는 스마트에너지 네트워크_10주차_v1.1_241010",
+                "category": "정밀.에너지",
+                "file_path": "정밀.에너지/[강의노트]첨단기술을 연결하는 스마트에너지 네트워크_10주차_v1.1_241010.pdf",
+                "file_sha1": "801fdedb355ed7a239ce0f02fc1d76ecefe98344",
+                "page": 36.0,
+                "score": 0.877362728,
+                "type": "document",
+                "has_content": true
+              }
+            ],
+            "total_resources": 9,
+            "resources_with_content": 6,
+            "content_coverage": 0.6666666666666666
+          }
+        },
+        {
+          "week": 12,
+          "title": "프로젝트 구현 및 발표 준비",
+          "description": "이 모듈에서는 학생들이 개인 프로젝트를 실제로 구현하고 최종 결과물을 완성하는 과정에 집중합니다. 이전 주차에 기획한 프로젝트를 바탕으로 구체적인 구현 단계를 거치며, 프로젝트의 완성도를 높이기 위한 테스트와 디버깅 방법을 학습합니다. 또한, 프로젝트 결과물을 효과적으로 전달하기 위한 발표 자료 제작 및 발표 기술을 습득합니다.",
+          "objectives": [
+            "개인 프로젝트를 완성하고 테스트할 수 있다",
+            "프로젝트 발표 자료를 준비할 수 있다",
+            "학습한 내용을 종합적으로 활용할 수 있다"
+          ],
+          "learning_outcomes": [
+            "완성된 프로젝트 코드를 작성하고 실제 환경에서 테스트할 수 있는 능력",
+            "청중을 고려한 효과적인 발표 자료를 구성하고 발표할 수 있는 능력",
+            "학습 내용을 통합하고 실무에 적용할 수 있는 종합적 사고력"
+          ],
+          "key_concepts": [
+            "프로젝트 구현 및 디버깅",
+            "테스트 케이스 작성과 검증",
+            "효과적인 프레젠테이션 기법"
+          ],
+          "estimated_hours": 15,
+          "resources": {
+            "videos": [
+              {
+                "title": "컴퓨팅 사고력 함양 및 문제 해결 능력 향상.  알고리즘 이해",
+                "description": "컴퓨팅 사고력 개념, 알고리즘 설계 및 구현(파이썬 활용), 데이터 표현(이진수, ASCII, Unicode 등), 데이터 저장 및 검색 알고리즘(선형 검색, 이진 검색, 해...",
+                "url": "https://www.kmooc.kr/view/course/detail/14391",
+                "institution": "경희대학교",
+                "course_goal": "컴퓨팅 사고력 함양 및 문제 해결 능력 향상.  알고리즘 이해, 데이터 표현 및 저장 방식 숙지, 파이썬 프로그래밍 기초 습득.",
+                "duration": "",
+                "difficulty": "교양",
+                "class_time": "",
+                "score": 0.856376648,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "K-MOOC 강좌",
+                "description": "K-MOOC 온라인 강좌",
+                "url": "https://www.kmooc.kr/view/course/detail/14118",
+                "institution": "세종대학교",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.854734421,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "파이토치(PyTorch)를 활용한 인공지능(AI) 프로그래밍 실습을 통해 AI 원리를 이해하는 것.  기계학습",
+                "description": "파이토치(PyTorch)를 활용한 인공지능(AI) 프로그래밍 실습을 통해 AI 원리를 이해하는 것.  기계학습, 선형/로지스틱 회귀, 인공신경망, CNN 등의 개념과 실제 구현을 다룸.",
+                "url": "https://www.kmooc.kr/view/course/detail/13165",
+                "institution": "한성대학교",
+                "course_goal": "파이토치(PyTorch)를 활용한 인공지능(AI) 프로그래밍 실습을 통해 AI 원리를 이해하는 것.  기계학습, 선형/로지스틱 회귀, 인공신경망, CNN 등의 개념과 실제 구현을 다룸.",
+                "duration": "",
+                "difficulty": "전공기초.",
+                "class_time": "",
+                "score": 0.847956181,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "K-MOOC 강좌",
+                "description": "데이터 개념, 공공데이터 개념 및 형태, 데이터 품질 관리, 시맨틱 웹 및 지식 그래프 개념, SPARQL 질의, RDF 데이터 처리 및 추론, REST API 크롤링 실습 등",
+                "url": "https://www.kmooc.kr/view/course/detail/13462",
+                "institution": "제주대학교",
+                "course_goal": "",
+                "duration": "",
+                "difficulty": "",
+                "class_time": "",
+                "score": 0.847466,
+                "source": "K-MOOC"
+              },
+              {
+                "title": "파이썬을 활용한 텍스트 처리 기법(토큰화",
+                "description": "파이썬을 활용한 텍스트 처리 기법(토큰화, 단어 임베딩 등) 습득 및 프로그래밍 실습을 통한 텍스트 데이터 정보화 능력 배양",
+                "url": "https://www.kmooc.kr/view/course/detail/14328",
+                "institution": "호서대학교",
+                "course_goal": "파이썬을 활용한 텍스트 처리 기법(토큰화, 단어 임베딩 등) 습득 및 프로그래밍 실습을 통한 텍스트 데이터 정보화 능력 배양",
+                "duration": "14주",
+                "difficulty": "전공기초 (기본적인 컴퓨팅 언어 사전 학습 권장)",
+                "class_time": "",
+                "score": 0.846765518,
+                "source": "K-MOOC"
+              }
+            ],
+            "web_links": [
+              {
+                "title": "강남프론트엔드 HTML CSS JS React로 완성하는 프론트엔드 취업 로드맵 기초자바,c언어,파이썬부터 웹개발,AI빅데이터,정보보안 자격증까지 ALL PASS",
+                "url": "https://ader.naver.com/v1/zQhG6H7Z9dGsjO6b6_J3q6J-Q69tnjSR0dQBrbLMaMv5rRm1Eucf2CgFC7E2d7nm0Kyz_O0aOSyuPHyKhQabHPn8EL__so2CIWETn08yamaYVNzwg3_b4QfRm87aUo8yZ82Jwi0MXXn8_TVPzvSxgkl2b96R9rY6n5e3_blHC2oBb5tS_7MV736EeHCqySqiNVhXc76DqE8SvoYmAKiG-h-s3_x61dSrhJRh2KCqGJb9JdcQyGiRWSPVL2P7_lLCvyY6U9dHrx0ACuCoIdp5wPgwJVgfILt13GsEoUGipnkYg5K9qBMfK53EjlmZz8XyajNXq2QqCjOkWWx5hIjQr9OgHKcNI7NF98rXOmmMno83_NnAb66TabUEg5qNRoFhstBgaMM6QWXBSkG4dAhDdmh5EQhLj_03PPrnv6Tl9gtc-5A3MIuSzz5G8uJpudZ5N8knnuEpMJdMaVpzXFpNPFsZnSeGskirNdsz9p55ugQIvYbMVG_pua3tAAABJlZZk3qTXMFPjPtRXAtz_jYpzChYgYlWwwjfWZxjcMjVaeWn2wYOp4VyQCwJjg0_xsHZuO0VvMFF-T6Hum1ciWYJng==?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "노원백엔드 JAVA/SQL/Vue.js/Rest/Spring Boot기반 커리큘럼 기초자바,c언어,파이썬부터 웹개발,AI빅데이터,정보보안 자격증까지 ALL PASS",
+                "url": "https://ader.naver.com/v1/EsyLbX490iAXTg4KkYeXUgzEQBwR9Qw04RuxYr_nnVJIo0bIQzL1B2ifdg1JiLJQ1hJI6FnyzB1dzElXBStHhmJ9aSzE6BZMID0c3QReAOvEno5lGCS5TIu8qIPwzV8WtlIXK9hR_KMOKyjk-w6-yBPTGbf13c1SJkQ8WEYcUiU0XJOCrhQDIRe5Kqw_zi4XZyGvPqvUDQKv3Jx3OZVoRkE32JCSa1dbg6OToB646WWPAqavtT7RQ2URSEbtXvvTqRqx5G0DKQdHu2sZ5VueBmfzAd1OqYY2CI6XieiTUcKr6102rgaD8tkupN0EsxFldQ75kGYApkSPvATeHJLkHrx3Rk1PjZd9lpGFkn-lKjZyY50niDUquoObDqEIUjjHkbhi7hAi-l0w2HaxlaHXsFWR1lCs__duXg_zFL7t390IUybBIVreH4jzzbMBTYhIA_vlhDRvXwPa857k9JwuqH2pN8wNSx_URxtz3flOOu_Mait_2BTx2He6IqsO-8hRiFB1bU6c5HYFQyq6FWfD5mdxZG4oCpVH1gSx-HkqFUkGNR5doSIWTruErCtQ45GquZoTbR_sjD_mVV4Kur_Isw==?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "신촌백엔드 JAVA/SQL/Vue.js/Rest/Spring Boot기반 커리큘럼",
+                "url": "https://ader.naver.com/v1/zeYs1ugt154_ckBTrhUu--b__v8aZhVdBeuw9h6zwmvem5ok3Xm5hbT7udBQZyZctQaN3wGxZiJT8SdSefnKEQytXFpAysjf_QRaafE4dddyEKlrHwonplvXg1iCAvcwiXxFET7ZwKZjX05U71LJVKGatAuTC92knHUAnoh4YnegwohET7EplTYphuy8jfyAFM3QrlSw_FlwzSOd90GKOBCamPuT4e3XL2-5AyB8U5_vU0HJ9uI1NcGie80NAiEaWHquOyL2qRdaQVqJi1jeKMtcypR61uF_c4T0uoOrZZeQHGm_rf4JpWF_j4yG_KDadoFBiQf2dL7HtPY1ukKedGWEeBTze42j2SZQ2Jcv4JSS932NgsW8KAoNE4fbRh_9Wx5lbNIDizJ3LZJZORNmVNLXunaeixcbT5QjAwXFYX6_jPktbb6SCD7ZrqTGbHyN3VXHxLRJ_AF22msLarlD_43VUvmJnoYaiPJNwmh2rLCclHIkeqj0nT45hYtqXkd1RpqlIfJ8_8tkcT7YGSm3v3pUCvl0q1gbGlKP0g49lXzikxEYjCtLRXC2xvA0tBY_WNqpEoPqIz0LzVnFyfao9Q==?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              }
+            ],
+            "documents": [
+              {
+                "title": "[학습자료] 자율주행제어 이론 및 실습_11주차",
+                "description": "❖\n⚫ 구현 방식\n출처 https://kr.mathworks.com/\n29...",
+                "content": "❖\n⚫ 구현 방식\n출처 https://kr.mathworks.com/\n29",
+                "preview": "❖\n⚫ 구현 방식\n출처 https://kr.mathworks.com/\n29",
+                "source": "교통.운송/[학습자료] 자율주행제어 이론 및 실습_11주차",
+                "category": "교통.운송",
+                "file_path": "교통.운송/[학습자료] 자율주행제어 이론 및 실습_11주차.pdf",
+                "file_sha1": "14168dd5152fcfa51a057c1116046ba016368b1d",
+                "page": 28.0,
+                "score": 0.88250494,
+                "type": "document",
+                "has_content": true
+              },
+              {
+                "title": "[학습자료]머신러닝_3주차 1차시",
+                "description": "Matplotlib 이해 및 실습...",
+                "content": "Matplotlib 이해 및 실습",
+                "preview": "Matplotlib 이해 및 실습",
+                "source": "컴퓨터.통신/[학습자료]머신러닝_3주차 1차시",
+                "category": "컴퓨터.통신",
+                "file_path": "컴퓨터.통신/[학습자료]머신러닝_3주차 1차시.pdf",
+                "file_sha1": "5813cbb044f8afbed79479043182b1ad80feb09b",
+                "page": 1.0,
+                "score": 0.87593466,
+                "type": "document",
+                "has_content": true
+              }
+            ],
+            "total_resources": 10,
+            "resources_with_content": 7,
+            "content_coverage": 0.7
+          }
+        }
+      ],
+      "overall_goal": "Python을 활용한 웹 개발 기초부터 실제 배포까지의 12주 완성 과정",
+      "basic_resources": [
+        {
+          "title": "인천파이썬 코딩을 쉽고 빠르게 빅데이터,AI,프론트엔드,백엔드 상위과정의 기초언어 기초자바,c언어,파이썬부터 웹개발,AI빅데이터,정보보안 자격증까지 ALL PASS",
+          "url": "https://ader.naver.com/v1/TLVC5rDP22KV_9yWOAd4B_hZiUQvV628PbtNuZF1tv-D-bpHvJOhf-R_ZmSKAtOEBDqf-LEX1xVtE_fcghI5CGR30VsH3rROCpSXcc02WlalJI_UVCx6zVIp-HESZ0jRHnxqtSrW6K6Y_Dl4bL9Ro5cIysUd9uranlObfDNcqCfdW4ocO5lCyzxCk3aqx9pZex7SnJXrVxwlA9og1TpK3y50YivObHk8GzoMo-vw8ieByw1d6sEYYkuDp-hLy4cME2mnOPvQ1HI-Zj0ZWvRBcnArhcI53c9YYe-DGYzR97Ii2rIVPbaeW82qIgwmwksfYqJNuGUusHbKP2pkk4Cc2myuWe9n8YwUeADOq-BtUUEjKUlTgFNj_TXS3EhTRfQXKWwbQLZlkkg3CxkjvR2sga0HsEEXAlayxtnN-DqIEdm6cP0QM8lnEnkwzlv0rWtOD5bwXHDWXeMortMLBl_shLPbgRkVZcVp_VIFLpiiw0qw82LipA2cteU0YfgtIHP1B_Wp7h1COA_0BRrdT8okpU5O8dL-YYp462l5OpSaAhg=?c=naver.search.pc.plsearch&t=0",
+          "source": "Web Search"
+        },
+        {
+          "title": "검색 고객센터",
+          "url": "https://help.naver.com/alias/search/integration/main.naver",
+          "source": "Web Search"
+        }
+      ],
+      "session_id": "31977b19",
+      "original_constraints": "초보자",
+      "original_goal": "백엔드 개발",
+      "learning_path_analysis": "### 1. 이 주제의 핵심 학습 영역\n\nPython 프로그래밍의 핵심 학습 영역은 다음과 같습니다:\n\n- **Python 기초 문법**: 변수, 데이터 타입, 조건문, 반복문, 함수, 모듈 및 패키지\n- **객체 지향 프로그래밍(OOP)**: 클래스, 객체, 상속, 다형성\n- **웹 프레임워크**: Flask 또는 Django와 같은 웹 프레임워크의 기본 개념 및 사용법\n- **RESTful API**: API의 개념, RESTful API 설계 및 구현\n- **데이터베이스**: SQL 기초, 데이터베이스 설계, Python과 데이터베이스 연동 (예: SQLite, PostgreSQL)\n- **서버 구축**: 웹 서버의 기본 개념, 배포 및 호스팅 방법\n\n### 2. beginner 수준에서 시작하여 어떤 순서로 학습해야 하는가?\n\n학습 순서는 다음과 같이 구성할 수 있습니다:\n\n1. **주 1-2: Python 기초 문법**\n   - Python 설치 및 환경 설정\n   - 기본 문법, 데이터 타입, 조건문, 반복문, 함수\n\n2. **주 3: 객체 지향 프로그래밍(OOP)**\n   - 클래스와 객체, 상속, 다형성\n\n3. **주 4-5: 웹 프레임워크 소개**\n   - Flask 또는 Django 선택\n   - 기본적인 웹 애플리케이션 구축\n\n4. **주 6: RESTful API**\n   - RESTful API의 개념\n   - Flask/Django를 사용한 간단한 API 구축\n\n5. **주 7-8: 데이터베이스 연동**\n   - SQL 기초 및 데이터베이스 설계\n   - Python에서 데이터베이스와의 연동 (ORM 사용)\n\n6. **주 9-10: 웹 서버 구축**\n   - 웹 서버의 기본 개념\n   - 배포 및 호스팅 방법 (Heroku, AWS 등)\n\n7. **주 11: 프로젝트**\n   - 개인 프로젝트 기획 및 구현\n   - API 및 데이터베이스 연동 포함\n\n8. **주 12: 프로젝트 완성 및 발표**\n   - 프로젝트 최종 점검 및 발표 준비\n\n### 3. backend development, 웹 서버 구축, 데이터베이스 연동을 고려할 때 중점을 둬야 할 부분은?\n\n- **코드 품질**: 가독성 높은 코드 작성 및 주석 활용\n- **보안**: 사용자 인증 및 권한 관리, SQL 인젝션 방지\n- **성능**: 데이터베이스 쿼리 최적화 및 캐싱 전략\n- **테스트**: 단위 테스트 및 통합 테스트의 중요성\n- **문서화**: API 문서화 및 코드 주석을 통한 이해도 향상\n\n### 4. 12주 동안 현실적으로 달성 가능한 목표는?\n\n- Python 기초 문법 및 OOP 이해\n- Flask 또는 Django를 사용한 간단한 웹 애플리케이션 구축\n- RESTful API 설계 및 구현\n- 데이터베이스와의 연동을 통한 CRUD 기능 구현\n- 개인 프로젝트를 통해 실제 웹 애플리케이션을 완성하고 배포\n\n### 전체 학습 로드맵\n\n| 주차 | 학습 내용                                   | 목표 및 활동                                      |\n|------|-------------------------------------------|-------------------------------------------------|\n| 1    | Python 기초 문법                          | 기본 문법 이해 및 간단한 프로그램 작성         |\n| 2    | Python 기초 문법                          | 함수 및 모듈 사용법 익히기                      |\n| 3    | 객체 지향 프로그래밍(OOP)                | 클래스와 객체 개념 이해 및 간단한 OOP 프로그램 작성 |\n| 4    | 웹 프레임워크 소개 (Flask/Django 선택)   | 웹 애플리케이션 기본 구조 이해 및 설정          |\n| 5    | 웹 프레임워크 활용                        | 간단한 웹 애플리케이션 구축                      |\n| 6    | RESTful API                                | API 개념 이해 및 간단한 API 구축                |\n| 7    | 데이터베이스 기초                         | SQL 기초 및 데이터베이스 설계 이해              |\n| 8    | 데이터베이스 연동                         | Python과 데이터베이스 연동 및 CRUD 구현        |\n| 9    | 웹 서버 구축                              | 웹 서버의 기본 개념 이해 및 배포 방법 학습      |\n| 10   | 웹 서버 구축                              | 실제 서버에 애플리케이션 배포                   |\n| 11   | 개인 프로젝트 기획 및 구현               | 프로젝트 주제 선정 및 구현 시작                 |\n| 12   | 프로젝트 완성 및 발표                    | 최종 점검 및 발표 준비                          |\n\n이 로드맵을 따라가면 12주 동안 Python 프로그래밍의 기본을 익히고, backend development, 웹 서버 구축, 데이터베이스 연동에 대한 실력을 쌓을 수 있습니다.",
+      "graph_curriculum": {
+        "절차1": {
+          "title": "Python 기초 이해",
+          "skills": {
+            "Python 기초": {
+              "skill_info": {},
+              "documents": {}
+            },
+            "Python 프로그래밍": {
+              "skill_info": {
+                "name": "Python 프로그래밍",
+                "category": "프로그래밍",
+                "description": "데이터 분석 및 예측 모델 개발을 위한 Python 활용",
+                "keywords": [
+                  "Python",
+                  "데이터 분석",
+                  "프로그래밍",
+                  "모델 개발"
+                ],
+                "difficulty": "중급",
+                "importance_score": 7
+              },
+              "documents": {
+                "b3a2614a-679f-4a35-babf-81e363181310": {
+                  "doc_id": "b3a2614a-679f-4a35-babf-81e363181310",
+                  "title": "스마트 팩토리 구축 계획서",
+                  "department": "IT디지털",
+                  "document_type": "digitalization",
+                  "target_audience": "배터리 제조 공장 디지털화 담당자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:55:15.278338",
+                  "updated_date": "2025-09-19T15:36:51.464000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "디지털 현장 전문가": {
+                      "name": "디지털 현장 전문가",
+                      "department": "IT디지털",
+                      "role": "전문가",
+                      "expertise": "OT와 IT 연결, BMS 데이터 분석, SOH 예측 모델 튜닝",
+                      "updated_date": "2025-09-19T15:36:51.816000000+00:00"
+                    }
+                  }
+                }
+              }
+            },
+            "Python 데이터 분석": {
+              "skill_info": {
+                "name": "Python 데이터 분석",
+                "category": "데이터 분석",
+                "description": "생산 데이터 분석 및 AI 모델 결과 해석",
+                "keywords": [
+                  "Python",
+                  "데이터 분석",
+                  "AI 모델",
+                  "결과 해석"
+                ],
+                "difficulty": "중급",
+                "importance_score": 7
+              },
+              "documents": {
+                "f6512905-3f96-4f0b-993a-6bc7bcdabfd0": {
+                  "doc_id": "f6512905-3f96-4f0b-993a-6bc7bcdabfd0",
+                  "title": "배터리 기술자 역량 개발 프로그램 - 디지털 전환",
+                  "department": "교육인사",
+                  "document_type": "skill_development",
+                  "target_audience": "배터리 기술자(신입~중급)",
+                  "difficulty_level": "중급",
+                  "estimated_time": 2560,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "07_교육인사",
+                  "created_date": "2025-09-18T09:52:16.723300",
+                  "updated_date": "2025-09-19T15:26:36.778000000+00:00",
+                  "experts": {
+                    "김민수": {
+                      "name": "김민수",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 안전 프로토콜",
+                      "updated_date": "2025-09-19T15:40:40.307000000+00:00"
+                    }
+                  }
+                },
+                "39c01c72-2fe7-4e89-89e2-bc16ac883629": {
+                  "doc_id": "39c01c72-2fe7-4e89-89e2-bc16ac883629",
+                  "title": "배터리 생산 데이터 관리 지침서 - 공정 최적화",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "배터리 생산라인 데이터 관리자, IT 엔지니어",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:53:11.947822",
+                  "updated_date": "2025-09-19T15:36:22.252000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "f38644a7-8eff-4020-bc7a-c2d33a4248d0": {
+                  "doc_id": "f38644a7-8eff-4020-bc7a-c2d33a4248d0",
+                  "title": "스마트 팩토리 구축 계획서 - 기술 혁신",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "전사 제조 부문",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:35:01.670201",
+                  "updated_date": "2025-09-19T15:36:24.179000000+00:00",
+                  "experts": {
+                    "김민철": {
+                      "name": "김민철",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전",
+                      "updated_date": "2025-09-19T15:41:27.686000000+00:00"
+                    },
+                    "데이터 사이언티스트": {
+                      "name": "데이터 사이언티스트",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "AI 모델 개발 및 데이터 분석",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "IoT 엔지니어": {
+                      "name": "IoT 엔지니어",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "IoT 센서 시스템 구축 및 운영",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "디지털 프로세스 전문가": {
+                      "name": "디지털 프로세스 전문가",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "프로세스 디지털화 및 최적화 (신규 채용 12명)",
+                      "updated_date": "2025-09-19T15:36:24.548000000+00:00"
+                    }
+                  }
+                },
+                "1ccc6e53-1bd9-4aa1-bf22-7f1b7ae25c7a": {
+                  "doc_id": "1ccc6e53-1bd9-4aa1-bf22-7f1b7ae25c7a",
+                  "title": "스마트 팩토리 구축 계획서",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "배터리 제조공장 전 직원",
+                  "difficulty_level": "중급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:37:53.559309",
+                  "updated_date": "2025-09-19T15:36:43.665000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "8004bc75-367a-435a-93b5-63d105a7a556": {
+                  "doc_id": "8004bc75-367a-435a-93b5-63d105a7a556",
+                  "title": "배터리 생산 데이터 관리 지침서",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "IT팀, 생산팀, 품질팀, 연구팀",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:53:41.666212",
+                  "updated_date": "2025-09-19T15:36:55.267000000+00:00",
+                  "experts": {
+                    "김태현": {
+                      "name": "김태현",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전",
+                      "updated_date": "2025-09-19T15:41:10.602000000+00:00"
+                    }
+                  }
+                },
+                "98b65c7d-5865-416a-9eae-6f7aafb6f866": {
+                  "doc_id": "98b65c7d-5865-416a-9eae-6f7aafb6f866",
+                  "title": "스마트 팩토리 구축 계획서 - ESS용",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "ESS 제조업체 엔지니어 및 관리자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": ".ipynb_checkpoints",
+                  "created_date": "2025-09-18T12:58:44.258900",
+                  "updated_date": "2025-09-19T15:37:56.155000000+00:00",
+                  "experts": {
+                    "데이터 사이언티스트": {
+                      "name": "데이터 사이언티스트",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "AI 모델 개발 및 데이터 분석",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "IoT 엔지니어": {
+                      "name": "IoT 엔지니어",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "IoT 센서 시스템 구축 및 운영",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "김재현": {
+                      "name": "김재현",
+                      "department": "디지털혁신팀",
+                      "role": "책임자",
+                      "expertise": "스마트 팩토리 구축 및 디지털 트랜스포메이션",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "디지털 트윈 전문가": {
+                      "name": "디지털 트윈 전문가",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "디지털 트윈 모델링 및 시뮬레이션",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    }
+                  }
+                },
+                "e71590c0-bc57-4e4f-88d1-9e7bc85b6c71": {
+                  "doc_id": "e71590c0-bc57-4e4f-88d1-9e7bc85b6c71",
+                  "title": "배터리 생산 데이터 관리 지침서 - 비용 절감",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "IT 엔지니어, 데이터 관리자, 생산 시스템 운영자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:54:15.829973",
+                  "updated_date": "2025-09-19T15:37:12.471000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "박서연": {
+                      "name": "박서연",
+                      "department": "기술안전부",
+                      "role": "검토자",
+                      "expertise": "기술안전 검토",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "이동혁": {
+                      "name": "이동혁",
+                      "department": "IT팀",
+                      "role": "승인자",
+                      "expertise": "IT 인프라 관리",
+                      "updated_date": "2025-09-19T15:37:12.822000000+00:00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "절차2": {
+          "title": "백엔드 개발 기초",
+          "skills": {
+            "Python 데이터 분석 환경": {
+              "skill_info": {
+                "name": "Python 데이터 분석 환경",
+                "category": "분석 도구",
+                "description": "Jupyter, pandas로 MATLAB 대비 비용 절감",
+                "keywords": [
+                  "Python",
+                  "Jupyter",
+                  "pandas",
+                  "scikit-learn"
+                ],
+                "difficulty": "중급",
+                "importance_score": 8
+              },
+              "documents": {
+                "e71590c0-bc57-4e4f-88d1-9e7bc85b6c71": {
+                  "doc_id": "e71590c0-bc57-4e4f-88d1-9e7bc85b6c71",
+                  "title": "배터리 생산 데이터 관리 지침서 - 비용 절감",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "IT 엔지니어, 데이터 관리자, 생산 시스템 운영자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:54:15.829973",
+                  "updated_date": "2025-09-19T15:37:12.471000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "박서연": {
+                      "name": "박서연",
+                      "department": "기술안전부",
+                      "role": "검토자",
+                      "expertise": "기술안전 검토",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "이동혁": {
+                      "name": "이동혁",
+                      "department": "IT팀",
+                      "role": "승인자",
+                      "expertise": "IT 인프라 관리",
+                      "updated_date": "2025-09-19T15:37:12.822000000+00:00"
+                    }
+                  }
+                }
+              }
+            },
+            "Python 기반 데이터 분석": {
+              "skill_info": {
+                "name": "Python 기반 데이터 분석",
+                "category": "데이터 분석",
+                "description": "Pandas, Scikit-learn을 활용한 배터리 데이터 분석",
+                "keywords": [
+                  "Python",
+                  "Pandas",
+                  "Scikit-learn",
+                  "데이터분석"
+                ],
+                "difficulty": "중급",
+                "importance_score": 8
+              },
+              "documents": {
+                "b28154ee-c198-4d64-ae9a-f2c63936bd29": {
+                  "doc_id": "b28154ee-c198-4d64-ae9a-f2c63936bd29",
+                  "title": "스마트 팩토리 구축 계획서 - 품질 개선",
+                  "department": "IT디지털",
+                  "document_type": "digitalization",
+                  "target_audience": "디지털혁신팀, 품질관리자, 현장운영자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내비공개",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:55:42.280368",
+                  "updated_date": "2025-09-19T15:36:53.382000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "c045c38a-3be1-46c6-88ce-6dda6a37735e": {
+                  "doc_id": "c045c38a-3be1-46c6-88ce-6dda6a37735e",
+                  "title": "스마트 팩토리 구축 계획서",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "배터리 제조 공장 엔지니어 및 현장 작업자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:31:56.289864",
+                  "updated_date": "2025-09-19T15:37:16.262000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "7af38bc9-4496-4e77-a6fa-599e7b9bde47": {
+                  "doc_id": "7af38bc9-4496-4e77-a6fa-599e7b9bde47",
+                  "title": "스마트 팩토리 구축 계획서",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "생산직 근로자, 엔지니어, 품질관리팀",
+                  "difficulty_level": "중급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:34:06.050670",
+                  "updated_date": "2025-09-19T15:37:22.023000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "데이터 사이언티스트": {
+                      "name": "데이터 사이언티스트",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "AI 모델 개발 및 데이터 분석",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "IoT 시스템 관리자": {
+                      "name": "IoT 시스템 관리자",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "IoT 센서 네트워크 관리",
+                      "updated_date": "2025-09-19T15:37:22.374000000+00:00"
+                    },
+                    "디지털 트윈 엔지니어": {
+                      "name": "디지털 트윈 엔지니어",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "디지털 트윈 모델링 및 시뮬레이션",
+                      "updated_date": "2025-09-19T15:37:22.374000000+00:00"
+                    }
+                  }
+                },
+                "dc97fe3f-ca4f-43ce-bedc-b6f66f01e3ba": {
+                  "doc_id": "dc97fe3f-ca4f-43ce-bedc-b6f66f01e3ba",
+                  "title": "배터리 생산 데이터 관리 지침서 - 공정 최적화",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "IT 개발자, 품질 관리자, 시스템 관리자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:49:25.790848",
+                  "updated_date": "2025-09-19T15:37:31.454000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "절차3": {
+          "title": "RESTful API 이해",
+          "skills": {
+            "RESTful API 및 OPC-UA 통합": {
+              "skill_info": {
+                "name": "RESTful API 및 OPC-UA 통합",
+                "category": "시스템통합",
+                "description": "레거시 MES와 클라우드 플랫폼 하이브리드 연계",
+                "keywords": [
+                  "RESTful API",
+                  "OPC-UA",
+                  "MES연동",
+                  "하이브리드아키텍처"
+                ],
+                "difficulty": "중급",
+                "importance_score": 9
+              },
+              "documents": {
+                "fba1093a-0dec-4259-baa8-900e345e34f8": {
+                  "doc_id": "fba1093a-0dec-4259-baa8-900e345e34f8",
+                  "title": "스마트 팩토리 구축 계획서 - 배터리 제조업 특화형",
+                  "department": "IT디지털",
+                  "document_type": "digitalization",
+                  "target_audience": "디지털혁신팀, 생산기술팀, 품질관리팀",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:46:37.223047",
+                  "updated_date": "2025-09-19T15:37:50.353000000+00:00",
+                  "experts": {
+                    "김민수": {
+                      "name": "김민수",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 안전 프로토콜",
+                      "updated_date": "2025-09-19T15:40:40.307000000+00:00"
+                    }
+                  }
+                }
+              }
+            },
+            "Python 프로그래밍": {
+              "skill_info": {
+                "name": "Python 프로그래밍",
+                "category": "프로그래밍",
+                "description": "데이터 분석 및 예측 모델 개발을 위한 Python 활용",
+                "keywords": [
+                  "Python",
+                  "데이터 분석",
+                  "프로그래밍",
+                  "모델 개발"
+                ],
+                "difficulty": "중급",
+                "importance_score": 7
+              },
+              "documents": {
+                "b3a2614a-679f-4a35-babf-81e363181310": {
+                  "doc_id": "b3a2614a-679f-4a35-babf-81e363181310",
+                  "title": "스마트 팩토리 구축 계획서",
+                  "department": "IT디지털",
+                  "document_type": "digitalization",
+                  "target_audience": "배터리 제조 공장 디지털화 담당자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:55:15.278338",
+                  "updated_date": "2025-09-19T15:36:51.464000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "디지털 현장 전문가": {
+                      "name": "디지털 현장 전문가",
+                      "department": "IT디지털",
+                      "role": "전문가",
+                      "expertise": "OT와 IT 연결, BMS 데이터 분석, SOH 예측 모델 튜닝",
+                      "updated_date": "2025-09-19T15:36:51.816000000+00:00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "절차4": {
+          "title": "데이터베이스 기초",
+          "skills": {
+            "데이터베이스 기초": {
+              "skill_info": {},
+              "documents": {}
+            },
+            "Oracle 데이터베이스 관리": {
+              "skill_info": {
+                "name": "Oracle 데이터베이스 관리",
+                "category": "데이터베이스관리",
+                "description": "일일 2.3TB 제조데이터 처리 및 관리",
+                "keywords": [
+                  "Oracle 19c",
+                  "데이터베이스",
+                  "대용량데이터",
+                  "데이터처리"
+                ],
+                "difficulty": "중급",
+                "importance_score": 7
+              },
+              "documents": {
+                "47480ebd-70f8-46f7-ac2c-57d4de779580": {
+                  "doc_id": "47480ebd-70f8-46f7-ac2c-57d4de779580",
+                  "title": "MES(제조실행시스템) 운영 매뉴얼 - ESS용",
+                  "department": "IT팀",
+                  "document_type": "manual",
+                  "target_audience": "ESS 제조 MES 운영자, IT 담당자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:38:58.820547",
+                  "updated_date": "2025-09-19T15:37:04.801000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "이성호": {
+                      "name": "이성호",
+                      "department": "생산기술팀",
+                      "role": "부장",
+                      "expertise": "ESS 제조공정 기술 및 검토",
+                      "updated_date": "2025-09-19T15:37:05.150000000+00:00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "절차5": {
+          "title": "백엔드 개발 실습",
+          "skills": {
+            "Python 기반 배터리 데이터 분석": {
+              "skill_info": {
+                "name": "Python 기반 배터리 데이터 분석",
+                "category": "데이터 분석",
+                "description": "PyBaMM, Prophet 등을 활용한 배터리 특성 분석",
+                "keywords": [
+                  "Python",
+                  "PyBaMM",
+                  "Prophet",
+                  "Isolation Forest"
+                ],
+                "difficulty": "고급",
+                "importance_score": 9
+              },
+              "documents": {
+                "cbcd89e5-7536-4f77-ac72-a537166fbab9": {
+                  "doc_id": "cbcd89e5-7536-4f77-ac72-a537166fbab9",
+                  "title": "배터리 생산 데이터 관리 지침서 - 디지털 전환",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "공정 엔지니어, 품질 관리자, 데이터 분석가",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:33:02.130654",
+                  "updated_date": "2025-09-19T15:36:31.790000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "이수현": {
+                      "name": "이수현",
+                      "department": "품질보증팀",
+                      "role": "검토자",
+                      "expertise": "품질보증 및 검토",
+                      "updated_date": "2025-09-19T15:41:25.770000000+00:00"
+                    },
+                    "박대영": {
+                      "name": "박대영",
+                      "department": "IT팀",
+                      "role": "팀장",
+                      "expertise": "IT 시스템 아키텍처",
+                      "updated_date": "2025-09-19T15:36:32.140000000+00:00"
+                    }
+                  }
+                }
+              }
+            },
+            "Python 데이터 분석": {
+              "skill_info": {
+                "name": "Python 데이터 분석",
+                "category": "데이터 분석",
+                "description": "생산 데이터 분석 및 AI 모델 결과 해석",
+                "keywords": [
+                  "Python",
+                  "데이터 분석",
+                  "AI 모델",
+                  "결과 해석"
+                ],
+                "difficulty": "중급",
+                "importance_score": 7
+              },
+              "documents": {
+                "f6512905-3f96-4f0b-993a-6bc7bcdabfd0": {
+                  "doc_id": "f6512905-3f96-4f0b-993a-6bc7bcdabfd0",
+                  "title": "배터리 기술자 역량 개발 프로그램 - 디지털 전환",
+                  "department": "교육인사",
+                  "document_type": "skill_development",
+                  "target_audience": "배터리 기술자(신입~중급)",
+                  "difficulty_level": "중급",
+                  "estimated_time": 2560,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "07_교육인사",
+                  "created_date": "2025-09-18T09:52:16.723300",
+                  "updated_date": "2025-09-19T15:26:36.778000000+00:00",
+                  "experts": {
+                    "김민수": {
+                      "name": "김민수",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 안전 프로토콜",
+                      "updated_date": "2025-09-19T15:40:40.307000000+00:00"
+                    }
+                  }
+                },
+                "39c01c72-2fe7-4e89-89e2-bc16ac883629": {
+                  "doc_id": "39c01c72-2fe7-4e89-89e2-bc16ac883629",
+                  "title": "배터리 생산 데이터 관리 지침서 - 공정 최적화",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "배터리 생산라인 데이터 관리자, IT 엔지니어",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:53:11.947822",
+                  "updated_date": "2025-09-19T15:36:22.252000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "f38644a7-8eff-4020-bc7a-c2d33a4248d0": {
+                  "doc_id": "f38644a7-8eff-4020-bc7a-c2d33a4248d0",
+                  "title": "스마트 팩토리 구축 계획서 - 기술 혁신",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "전사 제조 부문",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:35:01.670201",
+                  "updated_date": "2025-09-19T15:36:24.179000000+00:00",
+                  "experts": {
+                    "김민철": {
+                      "name": "김민철",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전",
+                      "updated_date": "2025-09-19T15:41:27.686000000+00:00"
+                    },
+                    "데이터 사이언티스트": {
+                      "name": "데이터 사이언티스트",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "AI 모델 개발 및 데이터 분석",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "IoT 엔지니어": {
+                      "name": "IoT 엔지니어",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "IoT 센서 시스템 구축 및 운영",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "디지털 프로세스 전문가": {
+                      "name": "디지털 프로세스 전문가",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "프로세스 디지털화 및 최적화 (신규 채용 12명)",
+                      "updated_date": "2025-09-19T15:36:24.548000000+00:00"
+                    }
+                  }
+                },
+                "1ccc6e53-1bd9-4aa1-bf22-7f1b7ae25c7a": {
+                  "doc_id": "1ccc6e53-1bd9-4aa1-bf22-7f1b7ae25c7a",
+                  "title": "스마트 팩토리 구축 계획서",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "배터리 제조공장 전 직원",
+                  "difficulty_level": "중급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:37:53.559309",
+                  "updated_date": "2025-09-19T15:36:43.665000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    }
+                  }
+                },
+                "8004bc75-367a-435a-93b5-63d105a7a556": {
+                  "doc_id": "8004bc75-367a-435a-93b5-63d105a7a556",
+                  "title": "배터리 생산 데이터 관리 지침서",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "IT팀, 생산팀, 품질팀, 연구팀",
+                  "difficulty_level": "고급",
+                  "estimated_time": 240,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:53:41.666212",
+                  "updated_date": "2025-09-19T15:36:55.267000000+00:00",
+                  "experts": {
+                    "김태현": {
+                      "name": "김태현",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전",
+                      "updated_date": "2025-09-19T15:41:10.602000000+00:00"
+                    }
+                  }
+                },
+                "98b65c7d-5865-416a-9eae-6f7aafb6f866": {
+                  "doc_id": "98b65c7d-5865-416a-9eae-6f7aafb6f866",
+                  "title": "스마트 팩토리 구축 계획서 - ESS용",
+                  "department": "디지털혁신팀",
+                  "document_type": "digitalization",
+                  "target_audience": "ESS 제조업체 엔지니어 및 관리자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": ".ipynb_checkpoints",
+                  "created_date": "2025-09-18T12:58:44.258900",
+                  "updated_date": "2025-09-19T15:37:56.155000000+00:00",
+                  "experts": {
+                    "데이터 사이언티스트": {
+                      "name": "데이터 사이언티스트",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "AI 모델 개발 및 데이터 분석",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "IoT 엔지니어": {
+                      "name": "IoT 엔지니어",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "IoT 센서 시스템 구축 및 운영",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "김재현": {
+                      "name": "김재현",
+                      "department": "디지털혁신팀",
+                      "role": "책임자",
+                      "expertise": "스마트 팩토리 구축 및 디지털 트랜스포메이션",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    },
+                    "디지털 트윈 전문가": {
+                      "name": "디지털 트윈 전문가",
+                      "department": "디지털혁신팀",
+                      "role": "전문가",
+                      "expertise": "디지털 트윈 모델링 및 시뮬레이션",
+                      "updated_date": "2025-09-19T15:37:56.520000000+00:00"
+                    }
+                  }
+                },
+                "e71590c0-bc57-4e4f-88d1-9e7bc85b6c71": {
+                  "doc_id": "e71590c0-bc57-4e4f-88d1-9e7bc85b6c71",
+                  "title": "배터리 생산 데이터 관리 지침서 - 비용 절감",
+                  "department": "IT팀",
+                  "document_type": "data_management",
+                  "target_audience": "IT 엔지니어, 데이터 관리자, 생산 시스템 운영자",
+                  "difficulty_level": "고급",
+                  "estimated_time": 480,
+                  "confidential_level": "사내 한정",
+                  "folder_path": "09_IT디지털",
+                  "created_date": "2025-09-18T12:54:15.829973",
+                  "updated_date": "2025-09-19T15:37:12.471000000+00:00",
+                  "experts": {
+                    "김민준": {
+                      "name": "김민준",
+                      "department": "안전관리팀",
+                      "role": "책임자",
+                      "expertise": "배터리 화재 안전관리",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "박서연": {
+                      "name": "박서연",
+                      "department": "기술안전부",
+                      "role": "검토자",
+                      "expertise": "기술안전 검토",
+                      "updated_date": "2025-09-19T15:41:35.206000000+00:00"
+                    },
+                    "이동혁": {
+                      "name": "이동혁",
+                      "department": "IT팀",
+                      "role": "승인자",
+                      "expertise": "IT 인프라 관리",
+                      "updated_date": "2025-09-19T15:37:12.822000000+00:00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "generated_at": "2025-09-21T01:33:13.988554",
+      "processing_time": null,
+      "total_estimated_hours": 110,
+      "id": 0
+    }
   ]
 }
