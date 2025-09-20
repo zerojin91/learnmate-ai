@@ -10,7 +10,8 @@
     <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 
     <!-- Modular CSS -->
-    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/
+                                 .css">
     <link rel="stylesheet" href="/static/css/sidebar.css">
     <link rel="stylesheet" href="/static/css/chat.css">
     <link rel="stylesheet" href="/static/css/components.css">
@@ -21,23 +22,28 @@
     <!-- 사이드바 -->
     {% include 'components/sidebar.html' %}
 
+
     <!-- 메인 컨텐츠 -->
     <div class="main-content">
         <!-- 웰컴 섹션 -->
         <div class="welcome-section">
+
             <div class="ai-avatar"></div>
+
             <h1 class="welcome-title">안녕하세요, <span id="userName">신민수</span>님</h1>
             <p class="welcome-subtitle" id="welcomeSubtitle">오늘 <span class="highlight">무엇을</span> 배우고 싶으신가요?</p>
         </div>
 
         <!-- 채팅과 프로필 영역 -->
         <div class="chat-with-profile">
+          
             {% include 'components/chat.html' %}
             {% include 'components/profile.html' %}
         </div>
 
         <!-- 예시 섹션 -->
         {% include 'components/examples.html' %}
+
     </div>
 
     <!-- 알림 -->
