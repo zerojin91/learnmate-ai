@@ -44,6 +44,9 @@ class CurriculumState(TypedDict):
     learning_path_analysis: Optional[str]
     overall_goal: Optional[str]
 
+    # Neo4j 그래프 검색 결과
+    graph_curriculum: Optional[Dict[str, Any]]
+
     # 모듈 구조
     module_structure: Optional[List[Dict[str, Any]]]
     detailed_modules: Optional[List[Dict[str, Any]]]
@@ -88,6 +91,8 @@ def create_initial_state(
 
         learning_path_analysis=None,
         overall_goal=None,
+
+        graph_curriculum=None,
 
         module_structure=None,
         detailed_modules=None,

@@ -21,8 +21,8 @@
 }
 
 .profile-card.with-curriculum {
-    height: var(--chat-height);
-    overflow-y: auto;
+    height: 450px;
+    overflow: hidden;
 }
 
 .profile-card h3 {

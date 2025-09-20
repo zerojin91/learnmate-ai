@@ -30,6 +30,10 @@ class Config:
     
     # 토큰 계산 설정
     AVERAGE_CHARS_PER_TOKEN = 4  # 한국어/영어 혼합 기준 대략적 토큰 계산
+
+    # Neo4j 설정
+    NEO4J_BASE_URL = "neo4j+s://8aba661d.databases.neo4j.io"
+    NEO4J_USERNAME = "neo4j"
     
     @classmethod
     def get_effective_max_tokens(cls):

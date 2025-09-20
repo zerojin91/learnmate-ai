@@ -2,6 +2,36 @@
    Curriculum Specific Styles
    ============================================================================= */
 
+/* Empty Curriculum State */
+.empty-curriculum {
+    text-align: center;
+    padding: var(--spacing-4xl) var(--spacing-xl);
+    background: var(--surface-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.empty-icon {
+    font-size: 64px;
+    margin-bottom: var(--spacing-xl);
+    opacity: 0.6;
+}
+
+.empty-curriculum h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-md);
+}
+
+.empty-curriculum p {
+    font-size: 16px;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
 /* Curriculum Loading */
 .curriculum-loading {
     text-align: center;
@@ -35,8 +65,9 @@
 .loading-steps {
     display: flex;
     justify-content: center;
-    gap: var(--spacing-2xl);
+    gap: var(--spacing-lg);
     margin-top: var(--spacing-2xl);
+    flex-wrap: wrap;
 }
 
 .loading-step {
@@ -45,22 +76,42 @@
     align-items: center;
     gap: var(--spacing-sm);
     opacity: 0.3;
-    transition: opacity 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: scale(0.95);
+    min-width: 100px;
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-md);
 }
 
 .loading-step.active {
     opacity: 1;
+    transform: scale(1);
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.1));
+    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.2);
 }
 
 .loading-step i {
     font-size: 24px;
     color: var(--border-hover);
+    transition: all 0.3s ease;
+}
+
+.loading-step.active i {
+    color: #a855f7;
+    transform: scale(1.1);
 }
 
 .loading-step span {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-muted);
     text-align: center;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.loading-step.active span {
+    color: var(--text-secondary);
+    font-weight: 600;
 }
 
 /* Curriculum Empty State */
@@ -524,6 +575,182 @@
 
 .content-section::-webkit-scrollbar-thumb:hover {
     background: var(--text-muted);
+}
+
+/* Learning Map Graph Visualization */
+.learning-map-section {
+    margin-bottom: var(--spacing-2xl);
+    background: var(--surface-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.learning-map-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-xl);
+    border-bottom: 1px solid var(--border-color);
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+}
+
+.learning-map-title {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.learning-map-title h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.learning-map-title i {
+    font-size: 24px;
+    color: var(--border-hover);
+}
+
+.learning-map-toggle {
+    background: var(--primary-gradient);
+    color: var(--text-white);
+    border: none;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.learning-map-toggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+}
+
+.learning-map-container {
+    height: 800px; /* Optimized height for compact layout */
+    width: 100%;
+    position: relative;
+    background: #fafbfc;
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    overflow: hidden;
+}
+
+.learning-map-graph {
+    height: 100%;
+    width: 100%;
+}
+
+.learning-map-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--text-muted);
+    font-size: 16px;
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+}
+
+.learning-map-empty i {
+    font-size: 48px;
+    margin-bottom: var(--spacing-lg);
+    opacity: 0.5;
+}
+
+.learning-map-controls {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    display: flex;
+    gap: var(--spacing-sm);
+    z-index: 10;
+}
+
+.map-control-btn {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.map-control-btn:hover {
+    background: var(--text-white);
+    color: var(--border-hover);
+    box-shadow: var(--shadow-sm);
+}
+
+.graph-tooltip {
+    position: absolute;
+    background: var(--text-white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-md);
+    box-shadow: var(--shadow-md);
+    font-size: 14px;
+    max-width: 300px;
+    z-index: 1000;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.graph-tooltip.visible {
+    opacity: 1;
+}
+
+.graph-tooltip h4 {
+    margin: 0 0 var(--spacing-sm) 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.graph-tooltip p {
+    margin: 0;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+.graph-tooltip .node-type {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-sm);
+}
+
+.graph-tooltip .node-type.procedure {
+    background: #e0e7ff;
+    color: #3730a3;
+}
+
+.graph-tooltip .node-type.skill {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.graph-tooltip .node-type.document {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.graph-tooltip .node-type.expert {
+    background: #fce7f3;
+    color: #be185d;
 }
 
 /* Responsive Design */

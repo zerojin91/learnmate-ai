@@ -86,19 +86,33 @@ class SessionLoader:
     def __init__(self, sessions_dir: str = "sessions"):
         self.sessions_dir = sessions_dir
 
+    def get_session_by_id(self, session_id: str) -> Optional[Dict[str, Any]]:
+        try:
+            # Search for the file in the directory and subdirectories
+            for root, _, files in os.walk(self.sessions_dir):
+                for filename in files:
+                    if filename == f"{session_id}.json":
+                        session_path = os.path.join(root, filename)
+                        with open(session_path, 'r', encoding='utf-8') as f:
+                            return json.load(f)
+        except Exception as e:
+            print(f"DEBUG: Error loading session {session_id}: {e}", file=sys.stderr)
+        return None
+
     def get_completed_sessions(self) -> List[Dict[str, Any]]:
         sessions = []
         try:
             if os.path.exists(self.sessions_dir):
-                for filename in os.listdir(self.sessions_dir):
-                    if filename.endswith('.json'):
-                        session_path = os.path.join(self.sessions_dir, filename)
-                        with open(session_path, 'r', encoding='utf-8') as f:
-                            session_data = json.load(f)
-                            # status=='completed' 또는 completed==True 모두 지원
-                            if (session_data.get('status') == 'completed' or
-                                session_data.get('completed') == True):
-                                sessions.append(session_data)
+                for root, _, files in os.walk(self.sessions_dir):
+                    for filename in files:
+                        if filename.endswith('.json'):
+                            session_path = os.path.join(root, filename)
+                            with open(session_path, 'r', encoding='utf-8') as f:
+                                session_data = json.load(f)
+                                # status=='completed' 또는 completed==True 모두 지원
+                                if (session_data.get('status') == 'completed' or
+                                    session_data.get('completed') == True):
+                                    sessions.append(session_data)
         except Exception as e:
             print(f"DEBUG: Error loading sessions: {e}", file=sys.stderr)
         return sessions
@@ -207,18 +221,13 @@ async def generate_curriculum_from_session(session_id: str, user_message: str = 
     if not system_available:
         return {"error": "LangGraph system not available"}
 
-    sessions = session_loader.get_completed_sessions()
-    session_data = None
-
-    for session in sessions:
-        if session["session_id"] == session_id:
-            session_data = session
-            break
+    session_data = session_loader.get_session_by_id(session_id)
 
     if not session_data:
         return {"error": f"Session {session_id} not found"}
 
     print(f"DEBUG: Starting LangGraph curriculum generation for {session_id}", file=sys.stderr)
+    print(f"DEBUG: Session data - topic: {session_data.get('topic')}, constraints: {session_data.get('constraints')}, goal: {session_data.get('goal')}", file=sys.stderr)
 
     try:
         # LangGraph 워크플로우로 커리큘럼 생성
@@ -230,7 +239,14 @@ async def generate_curriculum_from_session(session_id: str, user_message: str = 
             user_message=user_message
         )
 
-        print(f"DEBUG: LangGraph workflow completed successfully", file=sys.stderr)
+        print(f"DEBUG: LangGraph workflow completed", file=sys.stderr)
+        print(f"DEBUG: Generated curriculum type: {type(curriculum)}", file=sys.stderr)
+
+        # fallback 커리큘럼인지 확인
+        if curriculum.get("fallback"):
+            print(f"WARNING: Fallback curriculum was generated", file=sys.stderr)
+        else:
+            print(f"SUCCESS: Complete curriculum generated with graph_curriculum: {'graph_curriculum' in curriculum}", file=sys.stderr)
 
         # 데이터베이스 저장
         curriculum_id = db.save_curriculum(session_id, curriculum)
@@ -243,6 +259,8 @@ async def generate_curriculum_from_session(session_id: str, user_message: str = 
 
     except Exception as e:
         print(f"ERROR: LangGraph curriculum generation failed: {e}", file=sys.stderr)
+        import traceback
+        print(f"ERROR: Stacktrace: {traceback.format_exc()}", file=sys.stderr)
         return {"error": f"Curriculum generation failed: {str(e)}"}
 
 
