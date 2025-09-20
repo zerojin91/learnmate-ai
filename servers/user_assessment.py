@@ -122,35 +122,244 @@ class AssessmentAgentSystem:
         self.workflow = self._create_workflow()
     
     def _create_workflow(self):
-        """Multi-Agent 워크플로우 생성"""
+        """병렬 처리 Multi-Agent 워크플로우"""
         workflow = StateGraph(AssessmentState)
-        
+
         # 에이전트 노드 추가
-        workflow.add_node("extraction_agent", self._extraction_agent) 
-        workflow.add_node("response_agent", self._response_agent)
-        
-        # 단순화된 워크플로우: 추출 -> 응답 -> 종료
-        workflow.add_edge(START, "extraction_agent")
-        
-        workflow.add_conditional_edges(
-            "extraction_agent",
-            self._should_continue,
-            {
-                "complete": "response_agent",
-                "continue": "response_agent"
-            }
-        )
-        
-        workflow.add_edge("response_agent", END)
-        
+        workflow.add_node("parallel_processor", self._parallel_processor)
+
+        # 심플한 플로우: START → 병렬처리 → END
+        workflow.add_edge(START, "parallel_processor")
+        workflow.add_edge("parallel_processor", END)
+
         return workflow.compile()
-    
-    def _response_agent(self, state: AssessmentState) -> Command:
+
+    async def _parallel_processor(self, state: AssessmentState) -> Command:
+        """병렬 처리: 정보 추출과 대화 응답을 동시에 수행"""
+        logger.info(f"🔄 Parallel Processor 실행 - Session: {state.get('session_id')}")
+
+        if not state.get("messages"):
+            return Command(update={"current_agent": "parallel"})
+
+        # 최근 대화 컨텍스트
+        messages_text = self._format_conversation(state["messages"])
+
+        # 현재 상태
+        current_topic = state.get("topic", "")
+        current_constraints = state.get("constraints", "")
+        current_goal = state.get("goal", "")
+
+        # 정보 추출을 먼저 수행
+        import asyncio
+
+        try:
+            # 먼저 정보 추출 수행
+            extraction_result = await self._background_extraction(
+                messages_text, current_topic, current_constraints, current_goal
+            )
+
+            # 추출된 정보로 응답 생성
+            response_result = await self._generate_natural_response(
+                messages_text,
+                extraction_result.get("topic", current_topic),
+                extraction_result.get("constraints", current_constraints),
+                extraction_result.get("goal", current_goal)
+            )
+
+            # 추출된 정보 업데이트
+            updated_topic = extraction_result.get("topic", current_topic)
+            updated_constraints = extraction_result.get("constraints", current_constraints)
+            updated_goal = extraction_result.get("goal", current_goal)
+
+            # 메시지 업데이트
+            updated_messages = state.get("messages", []).copy()
+            updated_messages.append({"role": "assistant", "content": response_result["response"]})
+
+            # 완료 여부 확인
+            completed = (
+                bool(updated_topic) and
+                bool(updated_constraints) and
+                "," in updated_constraints and  # 수준과 시간 둘 다 있는지 확인
+                bool(updated_goal)
+            )
+
+            logger.info(f"병렬 처리 완료 - Topic: {updated_topic}, Constraints: {updated_constraints}, Goal: {updated_goal}")
+
+            return Command(
+                update={
+                    "messages": updated_messages,
+                    "topic": updated_topic,
+                    "constraints": updated_constraints,
+                    "goal": updated_goal,
+                    "completed": completed,
+                    "current_agent": "parallel"
+                }
+            )
+
+        except Exception as e:
+            logger.error(f"병렬 처리 오류: {e}")
+            return Command(update={"current_agent": "parallel"})
+
+    async def _background_extraction(self, messages_text: str, topic: str, constraints: str, goal: str) -> dict:
+        """백그라운드에서 정보 추출 (더 정확하게)"""
+
+        extraction_prompt = f"""
+당신은 사용자 학습 정보를 정확히 추출하는 전문가입니다.
+최근 대화에서 학습 관련 정보를 매우 정확하게 추출하세요.
+
+최근 대화:
+{messages_text}
+
+현재 수집된 정보:
+- topic: "{topic}"
+- constraints: "{constraints}"
+- goal: "{goal}"
+
+## 추출 규칙:
+
+### topic (학습 주제):
+- 사용자가 "배우고 싶다", "공부하고 싶다", "학습하려고" 등과 함께 언급한 구체적 분야
+- 예: "파이썬", "영어", "데이터분석", "웹개발", "머신러닝" 등
+- 기존 값이 있으면 덮어쓰지 말고 유지
+
+### constraints (제약조건):
+- 현재 수준: "초보자", "완전 초보", "기초는 안다", "중급자", "경험 있음" 등
+- 시간 제약: "주 3시간", "매일 1시간", "주말만", "하루 2시간" 등
+- 기존 정보에 새 정보를 추가 (예: 기존 "초보자" + 새로운 "주 3시간" = "초보자, 주 3시간")
+
+### goal (목표):
+- 구체적 목적: "취업", "이직", "자격증", "업무활용", "개인프로젝트", "취미" 등
+- 사용자가 명시한 학습 이유나 목적
+
+**중요**:
+- 새로운 정보가 없으면 기존 값 그대로 반환
+- 명시적으로 언급된 내용만 추출
+- 추론이나 추측 금지
+
+위 대화에서 추출하세요:
+"""
+
+        try:
+            # 더 정확한 스키마
+            class QuickExtraction(BaseModel):
+                topic: str = Field(default="", description="사용자가 언급한 학습 주제")
+                constraints: str = Field(default="", description="수준과 시간 제약")
+                goal: str = Field(default="", description="학습 목표나 목적")
+
+            model = llm.with_structured_output(QuickExtraction)
+            result = await model.ainvoke(extraction_prompt)
+
+            # 더 똑똑한 정보 병합
+            updated_topic = result.topic.strip() if result.topic.strip() else topic
+
+            # constraints 병합 (기존 + 새로운)
+            new_constraints = result.constraints.strip()
+            if new_constraints and new_constraints != constraints:
+                if constraints and new_constraints not in constraints:
+                    updated_constraints = f"{constraints}, {new_constraints}"
+                else:
+                    updated_constraints = new_constraints or constraints
+            else:
+                updated_constraints = constraints
+
+            updated_goal = result.goal.strip() if result.goal.strip() else goal
+
+            logger.info(f"추출 결과 - Topic: '{updated_topic}', Constraints: '{updated_constraints}', Goal: '{updated_goal}'")
+
+            return {
+                "topic": updated_topic,
+                "constraints": updated_constraints,
+                "goal": updated_goal
+            }
+        except Exception as e:
+            logger.error(f"백그라운드 추출 오류: {e}")
+            return {"topic": topic, "constraints": constraints, "goal": goal}
+
+    async def _generate_natural_response(self, messages_text: str, topic: str, constraints: str, goal: str) -> dict:
+        """자연스러운 대화 응답 생성 (추출 정보 반영)"""
+
+        # 대화 횟수 확인 (첫 인사 방지)
+        message_count = len(messages_text.split('\n')) if messages_text else 0
+        is_first_message = message_count <= 1
+
+        # 필요한 정보 파악
+        missing = []
+        if not topic:
+            missing.append("학습 주제")
+        if not constraints or "," not in constraints:
+            if "수준" not in constraints.lower() and "초보" not in constraints.lower():
+                missing.append("현재 수준")
+            if "시간" not in constraints.lower() and "주" not in constraints.lower():
+                missing.append("학습 시간")
+        if not goal:
+            missing.append("학습 목표")
+
+        # 현재 수집된 정보 상태 표시
+        collected_info = ""
+        if topic or constraints or goal:
+            collected_info = "\n📝 **현재 파악된 정보:**\n"
+            if topic:
+                collected_info += f"• 학습 주제: {topic}\n"
+            if constraints:
+                collected_info += f"• 제약 조건: {constraints}\n"
+            if goal:
+                collected_info += f"• 학습 목표: {goal}\n"
+
+        response_prompt = f"""
+당신은 친근하고 도움이 되는 학습 상담사입니다.
+사용자와 자연스러운 대화를 나누면서 필요한 정보를 수집하세요.
+
+현재 대화: {messages_text}
+
+수집된 정보:
+- 학습 주제: {topic if topic else "미정"}
+- 제약조건: {constraints if constraints else "미정"}
+- 학습 목표: {goal if goal else "미정"}
+
+{"아직 필요한 정보: " + ", ".join(missing) if missing else "모든 정보가 수집되었습니다"}
+
+지침:
+1. {"첫 번째 메시지가 아니므로 인사말(안녕하세요, 반갑습니다 등) 사용하지 마세요" if not is_first_message else "첫 번째 메시지이므로 간단한 인사 가능"}
+2. 사용자가 제공한 정보에 대해 구체적으로 공감하고 인정하기
+3. 한 번에 하나의 질문만
+4. 이미 수집된 정보는 다시 묻지 않기
+5. 자연스럽고 친근한 톤 유지
+
+응답을 생성하세요:
+"""
+
+        try:
+            response = await llm.ainvoke(response_prompt)
+
+            # 완료 메시지 처리
+            if not missing:
+                response_text = f"""
+{topic}에 대한 학습 프로필 분석이 완료되었습니다!
+
+📚 **학습 주제**: {topic}
+⚙️ **제약 조건**: {constraints}
+🎯 **학습 목표**: {goal}
+
+이제 맞춤형 학습 계획을 수립할 준비가 되었어요!
+"""
+            else:
+                # 기본 응답에 수집된 정보 상태 추가
+                response_text = response.content
+                if collected_info and topic:  # 정보가 수집되었으면 표시
+                    response_text = response_text + "\n" + collected_info
+
+            return {"response": response_text}
+
+        except Exception as e:
+            logger.error(f"응답 생성 오류: {e}")
+            return {"response": "죄송합니다. 잠시 문제가 발생했습니다. 다시 말씀해주세요."}
+
+    async def _response_agent(self, state: AssessmentState) -> Command:
         """응답 생성 담당 에이전트"""
         logger.info(f"💬 Response Agent 실행 - Session: {state.get('session_id')}")
 
         # LLM 완성도 판단
-        completion_result = self._is_profile_complete(state)
+        completion_result = await self._is_profile_complete(state)
 
         if (completion_result.topic_complete and
             completion_result.constraints_complete and
@@ -175,7 +384,7 @@ class AssessmentAgentSystem:
             }
         )
     
-    def _extraction_agent(self, state: AssessmentState) -> Command:
+    async def _extraction_agent(self, state: AssessmentState) -> Command:
         """정보 추출 담당 에이전트"""
         logger.info(f"🔍 Extraction Agent 실행 - Session: {state.get('session_id')}")
         
@@ -223,7 +432,7 @@ class AssessmentAgentSystem:
 """
             
             model_with_structure = llm.with_structured_output(UserInfoSchema)
-            extracted = model_with_structure.invoke(extraction_prompt)
+            extracted = await model_with_structure.ainvoke(extraction_prompt)
             
             # 기존 정보와 병합 - 기존 정보 우선, 새로운 명시적 정보만 추가
             current_topic = state.get("topic", "")
@@ -262,7 +471,7 @@ class AssessmentAgentSystem:
 완벽한 정보를 수집했습니다! 이제 맞춤형 학습 계획을 수립할 준비가 되었어요.
         """.strip()
     
-    def _is_profile_complete(self, state: AssessmentState) -> CompletionSchema:
+    async def _is_profile_complete(self, state: AssessmentState) -> CompletionSchema:
         """LLM을 사용하여 프로필 완성도를 지능적으로 판단"""
 
         current_info = f"""
@@ -292,7 +501,7 @@ class AssessmentAgentSystem:
 
         try:
             model_with_structure = llm.with_structured_output(CompletionSchema)
-            return model_with_structure.invoke(completion_prompt)
+            return await model_with_structure.ainvoke(completion_prompt)
         except Exception as e:
             logger.error(f"LLM 완성도 판단 오류: {e}")
             # 오류 시 기존 방식으로 폴백
@@ -303,11 +512,11 @@ class AssessmentAgentSystem:
                 missing_info="완성도 판단 중 오류 발생"
             )
 
-    def _should_continue(self, state: AssessmentState) -> str:
+    async def _should_continue(self, state: AssessmentState) -> str:
         """LLM 기반 완성도 판단"""
 
         # LLM으로 완성도 판단
-        completion_result = self._is_profile_complete(state)
+        completion_result = await self._is_profile_complete(state)
 
         logger.info(f"LLM 완성도 판단 - Topic: {completion_result.topic_complete}, "
                    f"Constraints: {completion_result.constraints_complete}, "
@@ -419,7 +628,7 @@ class AssessmentAgentSystem:
     def _format_conversation(self, messages: List[Dict]) -> str:
         """대화 기록을 텍스트로 변환"""
         formatted = []
-        for msg in messages[-10:]:  # 최근 10개 메시지만
+        for msg in messages[-3:]:  # 최근 3개 메시지만 (현재 사용자 입력 + 이전 AI 응답 + 이전 사용자 입력)
             role = "사용자" if msg.get("role") == "user" else "AI"
             content = msg.get("content", "")
             formatted.append(f"{role}: {content}")
@@ -491,7 +700,7 @@ async def user_profiling(user_message: str, session_id: str = None) -> str:
         # Multi-Agent 워크플로우 실행
         logger.info(f"🤖 Multi-Agent 워크플로우 시작 - Session: {session_id}")
         
-        result = assessment_system.workflow.invoke(current_state)
+        result = await assessment_system.workflow.ainvoke(current_state)
         
         # 세션 상태 업데이트
         SESSIONS[session_id] = result
