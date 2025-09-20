@@ -66,7 +66,7 @@ class ParameterAnalyzerAgent(BaseAgent):
 - level: 언급된 경험수준이나 배경지식으로 판단
 - duration_weeks: 언급된 기간이나 목표의 복잡도로 판단
 - focus_areas: 구체적으로 언급된 관심분야나 목표에서 추출
-- weekly_hours: 언급된 시간이나 일반적인 학습 강도로 판단"""
+- weekly_hours: 언급된 시간이 있으면 사용, 없으면 기본값 10시간 사용"""
 
         for attempt in range(max_retries):
             try:
@@ -141,8 +141,8 @@ class ParameterAnalyzerAgent(BaseAgent):
                     duration_weeks = weeks
                     break
 
-        # 시간 감지
-        weekly_hours = 10
+        # 시간 감지 (시간 정보가 없어도 기본값 사용)
+        weekly_hours = 10  # 기본값
         hour_patterns = [
             r'(\d+)\s*시간',
             r'(\d+)\s*hour',
