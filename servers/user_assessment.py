@@ -221,17 +221,16 @@ class AssessmentAgentSystem:
         field_name, field_desc = missing_fields[0]
 
         if field_name == "topic":
-            extraction_prompt = f"""다음 대화에서 학습 주제를 추출하세요.
+            extraction_prompt = f"""사용자 메시지에서 학습하고 싶어하는 주제를 찾아주세요.
 
-대화: {messages_text}
+사용자: {messages_text.split('사용자: ')[-1] if '사용자: ' in messages_text else messages_text}
 
 예시:
-"파이썬 배워보려고" → "파이썬"
-"나 궁중예절을 한번 배워보려고" → "궁중예절"
-"영어 공부하려고" → "영어"
-"보건관리쪽 알아보려고" → "보건관리"
+"영어 배우고 싶어" → 영어
+"파이썬 공부하려고" → 파이썬
+"궁중예절 배워보고 싶어" → 궁중예절
 
-학습 주제만 추출 (없으면 빈 문자열):"""
+사용자가 언급한 학습 주제:"""
 
         elif field_name == "constraints":
             extraction_prompt = f"""다음 대화에서 {topic}에 대한 사용자의 수준을 정확히 판단하세요.

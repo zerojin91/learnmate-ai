@@ -259,17 +259,7 @@ class MultiMCPAgent:
             result = await user_profiling_tool.ainvoke(tool_args)
 
             if result:
-                # 글자별로 스트리밍처럼 출력 (각각 개별 전송)
-                import asyncio
-
-                for char in result:
-                    print(char, end="", flush=True)
-                    yield {"type": "message", "content": char, "node": "user_profiling"}
-                    await asyncio.sleep(0.05)  # 글자별 딜레이
-
-                # 스트리밍 완료 신호
-                yield {"type": "streaming_complete", "node": "user_profiling"}
-
+                # 대화 기록에 추가
                 self.conversation_history.append({"role": "assistant", "content": result})
 
                 # 도구 호출 후 최신 프로필 정보 로드
@@ -290,7 +280,8 @@ class MultiMCPAgent:
                 except Exception as e:
                     print(f"프로필 로드 오류: {e}")
 
-                # 최종 완성된 응답 전송
+                # 응답을 한 번만 전송 (프로필 정보 포함)
+                print(result)
                 response_data = {"type": "message", "content": result, "node": "user_profiling"}
                 if profile_data:
                     response_data["profile"] = profile_data
