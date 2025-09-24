@@ -19,8 +19,6 @@ class ActionType(str, Enum):
     GENERAL_CHAT = "general_chat"           # 일반 대화
     USER_PROFILING = "user_profiling"       # 학습 프로필 수집 필요
     GENERATE_CURRICULUM = "generate_curriculum"  # 커리큘럼 생성
-    MENTOR_RECOMMENDATION = "mentor_recommendation"  # 전문가 멘토 페르소나 추천
-    MENTOR_CHAT = "mentor_chat"  # 전문가 멘토링 대화
     PROFILING_GENERAL_CHAT = "profiling_general_chat"  # 프로파일링 중 일반 대화
 
 class ActionClassification(BaseModel):
@@ -141,80 +139,105 @@ class MultiMCPAgent:
     
     
     async def _classify_user_intent(self, message: str) -> ActionClassification:
-        """사용자 메시지를 분류하여 적절한 액션 결정 - 프로파일링 우선순위 기반"""
+        """사용자 메시지를 분류하여 적절한 액션 결정"""
 
-        # 프로파일링 상태 확인 (최우선)
+        # 프로파일링 상태 확인
         profiling_status = await self._get_profiling_status()
 
-        # 🎯 프로파일링 진행 중이면 단순 2분법
+        # 프로파일링 진행 중인 경우
         if profiling_status["in_progress"]:
-            print(f"📊 프로파일링 진행 중 - 2분법 분류 적용")
+            print(f"📊 프로파일링 진행 중 (완료율: {profiling_status['completion_rate']*100:.0f}%)")
 
-            # General Chat 여부만 판단
-            general_chat_prompt = f"""다음 메시지가 학습과 완전히 무관한 일상 대화인지 판단하세요:
+            # 최근 대화 컨텍스트 포함 (AI 질문 + 사용자 답변 맥락 파악)
+            recent_context = ""
+            if len(self.conversation_history) >= 2:
+                # 마지막 AI 메시지와 현재 사용자 메시지
+                last_ai = self.conversation_history[-1] if self.conversation_history[-1]["role"] == "assistant" else None
+                if last_ai:
+                    recent_context = f"AI 질문: {last_ai['content'][:100]}...\n"
 
-메시지: "{message}"
+            classification_prompt = f"""프로파일링 중인 사용자의 메시지를 분류하세요.
 
-**학습 관련으로 보는 경우:**
-- 수준 언급: "완전 초보자", "어려워", "중급자", "고급자", "초보", "처음", "입문", "기초"
-- 목표 언급: "취업", "이직", "프로젝트", "취업 준비", "이직 준비", "프로젝트 준비"
-- 학습 의지: "배우고 싶어", "공부하고 싶어", "학습하고 싶어"
-- 시간 언급: "주 3시간", "주 1시간", "하루 1시간" (선택사항이지만 있으면 학습 관련)
-- 기타 학습 관련 모든 내용
+{recent_context}사용자 답변: "{message}"
 
-**판단 기준**: 학습과 100% 무관하고 명백한 일상 대화만 general_chat으로 분류
-애매하면 무조건 학습 관련으로 판단하세요. 특히 '수준', '목표', '학습 의지' 와 관련된 메시지는 무조건 학습 관련으로 판단하세요."""
+현재 수집된 정보:
+- 학습 주제: {profiling_status.get('topic', '미수집')}
+- 수준/시간: {profiling_status.get('constraints', '미수집')}
+- 학습 목표: {profiling_status.get('goal', '미수집')}
+
+분류 기준:
+
+1. **profiling_general_chat** (우선 체크): 다음 중 하나에 해당하면 무조건 이것으로 분류
+   - 순수 인사: "안녕", "안녕하세요", "하이", "hi", "hello"
+   - 감사 표현: "고마워", "감사해", "thanks", "고맙습니다"
+   - 작별 인사: "잘가", "바이", "bye", "안녕히"
+   - 완전 일상: "날씨 어때?", "뭐해?", "잘지내?"
+
+2. **user_profiling**: 위에 해당하지 않고 학습 관련 정보가 있는 경우
+   - 학습 주제: 파이썬, 자바, 영어, 외국어, 데이터분석 등
+   - 수준/경험: 초보, 2년 경험, 기초는 알아 등
+   - 학습 목표/이유: 취업, 이직, 프로젝트, 친구들과 대화, 업무에 필요해서 등
+   - 학습 시간: 주 3시간, 매일 1시간 등
+
+**중요**: 먼저 profiling_general_chat을 체크하고, 해당하지 않으면 user_profiling으로 분류하세요."""
 
             try:
-                # General Chat 판단을 위한 별도 분류
                 from pydantic import BaseModel, Field
+                from enum import Enum
 
-                class GeneralChatCheck(BaseModel):
-                    is_profiling_chat: bool = Field(description="학습 관련 대화 여부")
+                class ProfilingAction(str, Enum):
+                    USER_PROFILING = "user_profiling"  # 학습 정보 제공
+                    PROFILING_GENERAL_CHAT = "profiling_general_chat"  # 일반 대화
 
-                checker_model = self.llm.with_structured_output(GeneralChatCheck)
-                check_result = checker_model.invoke(general_chat_prompt)
+                class ProfilingClassification(BaseModel):
+                    action: ProfilingAction = Field(
+                        description="user_profiling(학습주제/수준/목표 관련) 또는 profiling_general_chat(일상대화)"
+                    )
 
-                if check_result.is_profiling_chat:
-                    print(f"🔍 프로파일링 중 학습 관련으로 분류")
+                classifier = self.llm.with_structured_output(ProfilingClassification)
+                result = classifier.invoke(classification_prompt)
+
+                print(f"🔍 분류: {result.action}")
+
+                if result.action == ProfilingAction.USER_PROFILING:
                     return ActionClassification(action=ActionType.USER_PROFILING)
                 else:
-                    print(f"🔍 프로파일링 중 일반 대화로 분류")
                     return ActionClassification(action=ActionType.PROFILING_GENERAL_CHAT)
 
             except Exception as e:
-                print(f"❌ 일반 대화 체크 오류: {e}")
-                # 오류 시 안전하게 프로파일링으로
+                print(f"❌ 분류 오류: {e}")
                 return ActionClassification(action=ActionType.USER_PROFILING)
 
-        # 🎯 프로파일링 진행 중이 아닐 때는 기존 로직
-        mentor_session_phase = await self._check_mentor_session_status()
+        # 프로파일링 완료된 경우
+        else:
+            print(f"✅ 프로파일링 완료 상태")
 
-        classification_prompt = f"""사용자 메시지를 다음 3가지 액션 중 하나로 분류하세요:
-
-1. **general_chat**: 일반적인 인사, 안부, 감사 등 학습과 무관한 대화
-2. **user_profiling**: 학습 관련 요청이지만 사용자 프로필이 필요한 경우
-3. **generate_curriculum**: 이미 학습 프로필이 있고 커리큘럼/계획 생성을 요청하는 경우
+            classification_prompt = f"""사용자 메시지의 의도를 분류하세요.
 
 사용자 메시지: "{message}"
-현재 멘토 세션 상태: {mentor_session_phase}
 
-## 분류 기준:
-- "안녕", "고마워", "잘가", "라면먹고싶어" 등 → general_chat
-- "~배우고 싶어", "~공부하고 싶어", "~가르쳐줘" 등 → user_profiling
-- "커리큘럼 만들어줘", "학습계획 세워줘", "로드맵 보여줘" 등 → generate_curriculum
+분류 기준:
+1. **generate_curriculum**: 커리큘럼/학습계획 생성 요청 또는 긍정적 응답
+   - 예: "커리큘럼 만들어줘", "학습 계획 세워줘", "로드맵 보여줘"
+   - 예: "응", "좋아", "시작해줘", "네", "그래", "해줘", "만들어줘"
+   - 예: "맞춤형 계획 만들어줘", "생성해줘", "시작하자"
 
-정확한 액션만 선택하세요."""
+2. **user_profiling**: 새로운 학습 주제 또는 프로필 수정
+   - 예: "다른 것도 배우고 싶어", "목표가 바뀌었어", "아니 다시 할게"
 
-        try:
-            classifier_model = self.llm.with_structured_output(ActionClassification)
-            result = classifier_model.invoke(classification_prompt)
-            print(f"🔍 의도 분류 결과: {result.action}")
-            return result
-        except Exception as e:
-            print(f"❌ 의도 분류 오류: {e}")
-            # 기본값으로 일반 대화 선택
-            return ActionClassification(action=ActionType.GENERAL_CHAT)
+3. **general_chat**: 일반 대화 (커리큘럼과 무관한)
+   - 예: "고마워", "안녕", "뭐하고 있어?"
+
+**중요**: 프로파일링 완료 후 긍정적인 응답은 대부분 generate_curriculum으로 분류하세요."""
+
+            try:
+                classifier = self.llm.with_structured_output(ActionClassification)
+                result = classifier.invoke(classification_prompt)
+                print(f"🔍 의도 분류: {result.action}")
+                return result
+            except Exception as e:
+                print(f"❌ 분류 오류: {e}")
+                return ActionClassification(action=ActionType.GENERAL_CHAT)
 
     async def _handle_user_profiling(self, message: str) -> AsyncGenerator[dict, None]:
         """user_profiling 도구를 사용한 프로필 수집"""
@@ -234,11 +257,21 @@ class MultiMCPAgent:
             print(f"🔧 user_profiling 호출: {tool_args}")
             
             result = await user_profiling_tool.ainvoke(tool_args)
-            
+
             if result:
-                print(result, end="", flush=True)
+                # 글자별로 스트리밍처럼 출력 (각각 개별 전송)
+                import asyncio
+
+                for char in result:
+                    print(char, end="", flush=True)
+                    yield {"type": "message", "content": char, "node": "user_profiling"}
+                    await asyncio.sleep(0.05)  # 글자별 딜레이
+
+                # 스트리밍 완료 신호
+                yield {"type": "streaming_complete", "node": "user_profiling"}
+
                 self.conversation_history.append({"role": "assistant", "content": result})
-                
+
                 # 도구 호출 후 최신 프로필 정보 로드
                 profile_data = None
                 try:
@@ -252,14 +285,16 @@ class MultiMCPAgent:
                                 'goal': session_data.get('goal', '')
                             }
                             profile_data = {k: v for k, v in profile_info.items() if v}
-                            print(f"📊 최신 프로필 로드: {profile_data}")
+                            if profile_data:  # 비어있지 않을 때만 출력
+                                print(f"📊 현재 프로필: {profile_data}")
                 except Exception as e:
                     print(f"프로필 로드 오류: {e}")
-                
+
+                # 최종 완성된 응답 전송
                 response_data = {"type": "message", "content": result, "node": "user_profiling"}
                 if profile_data:
                     response_data["profile"] = profile_data
-                    
+
                 yield response_data
                 
         except Exception as e:
@@ -287,10 +322,15 @@ class MultiMCPAgent:
             print(f"🔧 generate_curriculum_from_session 호출: {tool_args}")
             
             result = await curriculum_tool.ainvoke(tool_args)
-            
+
             if result:
                 print(result, end="", flush=True)
                 self.conversation_history.append({"role": "assistant", "content": result})
+
+                # 탭 전환 신호 먼저 전송
+                yield {"type": "curriculum_created", "content": "✅ 맞춤형 커리큘럼이 생성되었습니다! 상단의 \"나의 커리큘럼\" 탭에서 확인해보세요."}
+
+                # 일반 메시지도 전송
                 yield {"type": "message", "content": result, "node": "generate_curriculum"}
                 
         except Exception as e:
@@ -302,12 +342,22 @@ class MultiMCPAgent:
         print(f"💬 일반 대화 처리")
         
         try:
-            # LearnAI 성격의 일반 대화 프롬프트
-            system_prompt = """당신은 LearnAI의 친근한 학습 멘토입니다.
-            
-따뜻하고 격려하는 성격으로 사용자와 자연스럽게 대화하세요.
-일반적인 인사, 안부, 감사 등에 친근하게 응답하되, 
-항상 학습에 대한 관심을 열어두고 도움이 필요하면 언제든 말해달라고 격려하세요."""
+            # LearnAI 성격의 일반 대화 프롬프트 - 학습으로 자연스럽게 유도
+            system_prompt = """당신은 LearnMate의 친근한 학습 멘토입니다.
+
+사용자의 일반적인 대화(인사, 안부, 감사 등)에 자연스럽게 응답한 후,
+반드시 학습 관련 질문으로 대화를 유도하세요.
+
+응답 구조:
+1. 사용자 메시지에 대한 적절한 일반 응답 (1-2문장)
+2. 자연스러운 연결어 사용
+3. 학습 관련 질문으로 유도 (예: "혹시 요즘 배우고 싶은 것이 있으신가요?", "새로 도전해보고 싶은 분야는 없으신가요?")
+
+예시:
+- 사용자: "안녕하세요" → "안녕하세요! 반갑습니다. 혹시 오늘 새로 배워보고 싶은 것이 있으신가요?"
+- 사용자: "고마워" → "천만에요! 그런데 혹시 요즘 관심 있는 학습 분야가 있으신가요?"
+
+LearnMate는 학습 서비스이므로 항상 학습 방향으로 대화를 이끌어야 합니다."""
 
             from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
             
@@ -397,6 +447,10 @@ class MultiMCPAgent:
 
 {f"다음에 알아봐야 할 것: {next_needed}" if next_needed else ""}
 
+**중요**: 이미 학습 주제가 "{topic}"로 정해져 있습니다. 절대 다른 주제를 묻지 말고, 반드시 {topic}에 대한 {next_needed if next_needed else "추가 정보"}를 물어보세요.
+
+**필수 요구사항**: 응답 마지막에 반드시 "{topic}에 대한 질문"을 포함해야 합니다.
+
 요구사항:
 1. 먼저 사용자의 말에 공감하고 친근하게 반응
 2. 자연스러운 연결어나 문장으로 학습 관련 질문으로 이어가기
@@ -405,15 +459,18 @@ class MultiMCPAgent:
 5. 다음 필요한 정보를 자연스럽게 물어보기
 
 예시:
-사용자: "피곤해"
-응답: "수고 많으셨어요! 😊 오늘 하루 정말 고생하셨네요. 휴식도 중요하지만, 혹시 어떤 분야를 배우고 싶으신지 궁금해요!"
+사용자: "피곤해" (주제가 이미 파이썬으로 정해진 상태)
+응답: "수고 많으셨어요! 😊 오늘 하루 정말 고생하셨네요. 휴식도 중요하지만, 파이썬 경험이 어느 정도 있으신지 궁금해요!"
+
+사용자: "아니..." (주제가 이미 파이썬으로 정해진 상태)
+응답: "그렇군요! 😊 괜찮아요. 그런데 파이썬 경험이 어느 정도 있으신가요? 처음 시작하시는 건가요, 아니면 조금 해보셨나요?"
 
 자연스럽고 친근한 하나의 완전한 응답을 만들어주세요."""
 
             from langchain_core.messages import HumanMessage, SystemMessage
 
             messages = [
-                SystemMessage(content="당신은 친근하고 자연스러운 학습 멘토입니다. 일반 대화와 학습 질문을 자연스럽게 연결하세요."),
+                SystemMessage(content=f"당신은 친근하고 자연스러운 학습 멘토입니다. 사용자의 학습 주제는 이미 '{topic}'로 정해져 있으므로, 반드시 {topic}에 대한 정보만 물어보세요. 다른 주제는 절대 묻지 마세요."),
                 HumanMessage(content=integrated_prompt)
             ]
 
@@ -504,125 +561,7 @@ class MultiMCPAgent:
             print(f"❌ 프로파일링 상태 확인 오류: {e}")
             return {"in_progress": False, "missing_step": None, "completion_rate": 0}
 
-    async def _check_mentor_session_status(self) -> str:
-        """현재 멘토 세션 상태 확인"""
-        try:
-            if not self.current_session_id:
-                return "no_session"
 
-            # get_mentor_session_status 도구 찾기
-            tools = await self.client.get_tools()
-            status_tool = next((tool for tool in tools if tool.name == "get_mentor_session_status"), None)
-            
-            if not status_tool:
-                return "no_mentor_tool"
-            
-            # 도구 실행
-            result = await status_tool.ainvoke({"session_id": self.current_session_id})
-            
-            if isinstance(result, dict):
-                if result.get("status") == "active":
-                    return result.get("phase", "persona_recommendation")
-            return "inactive"
-            
-        except Exception as e:
-            print(f"❌ 멘토 세션 상태 확인 오류: {e}")
-            return "error"
-
-    async def _handle_mentor_recommendation(self, message: str) -> AsyncGenerator[dict, None]:
-        """전문가 멘토 페르소나 추천 처리"""
-        print(f"🎯 멘토 페르소나 추천 시작")
-        
-        try:
-            # analyze_and_recommend_personas 도구 찾기
-            tools = await self.client.get_tools()
-            recommend_tool = next((tool for tool in tools if tool.name == "analyze_and_recommend_personas"), None)
-            
-            if not recommend_tool:
-                yield {"type": "error", "content": "멘토 추천 도구를 찾을 수 없습니다."}
-                return
-            
-            # 도구 실행
-            tool_args = {"message": message, "session_id": self.current_session_id}
-            print(f"🔧 analyze_and_recommend_personas 호출: {tool_args}")
-            
-            result = await recommend_tool.ainvoke(tool_args)
-            
-            if result:
-                print(result, end="", flush=True)
-                self.conversation_history.append({"role": "assistant", "content": result})
-                yield {"type": "message", "content": result, "node": "mentor_recommendation"}
-                
-        except Exception as e:
-            print(f"❌ 멘토 추천 오류: {e}")
-            yield {"type": "error", "content": f"멘토 추천 중 오류가 발생했습니다: {str(e)}"}
-
-    async def _handle_mentor_chat(self, message: str) -> AsyncGenerator[dict, None]:
-        """전문가 멘토링 대화 처리"""
-        print(f"👨‍🏫 전문가 멘토링 대화 처리")
-        
-        try:
-            # 페르소나 선택인지 일반 멘토링인지 확인
-            if any(keyword in message.lower() for keyword in ["선택", "고르", "결정", "원해"]):
-                # 페르소나 선택 처리
-                select_tool = None
-                tools = await self.client.get_tools()
-                select_tool = next((tool for tool in tools if tool.name == "select_persona"), None)
-                
-                if select_tool:
-                    # 메시지에서 페르소나 ID 추출 (간단한 매핑)
-                    persona_mapping = {
-                        "건축": "architecture",
-                        "토목": "civil_urban", "도시": "civil_urban",
-                        "교통": "transport", "운송": "transport",
-                        "기계": "mechanical", "금속": "mechanical",
-                        "전기": "electrical", "전자": "electrical",
-                        "정밀": "precision_energy", "에너지": "precision_energy",
-                        "소재": "materials", "재료": "materials",
-                        "컴퓨터": "computer", "통신": "computer",
-                        "산업": "industrial",
-                        "화공": "chemical"
-                    }
-                    
-                    selected_persona = None
-                    for key, value in persona_mapping.items():
-                        if key in message:
-                            selected_persona = value
-                            break
-                    
-                    if selected_persona:
-                        tool_args = {"persona_id": selected_persona, "session_id": self.current_session_id}
-                        result = await select_tool.ainvoke(tool_args)
-                        
-                        if result:
-                            print(result, end="", flush=True)
-                            self.conversation_history.append({"role": "assistant", "content": result})
-                            yield {"type": "message", "content": result, "node": "mentor_selection"}
-                            return
-            
-            # 일반 멘토링 대화 처리
-            expert_tool = None
-            tools = await self.client.get_tools()
-            expert_tool = next((tool for tool in tools if tool.name == "expert_mentoring"), None)
-            
-            if not expert_tool:
-                yield {"type": "error", "content": "전문가 멘토링 도구를 찾을 수 없습니다."}
-                return
-            
-            # 도구 실행
-            tool_args = {"message": message, "session_id": self.current_session_id}
-            print(f"🔧 expert_mentoring 호출: {tool_args}")
-            
-            result = await expert_tool.ainvoke(tool_args)
-            
-            if result:
-                print(result, end="", flush=True)
-                self.conversation_history.append({"role": "assistant", "content": result})
-                yield {"type": "message", "content": result, "node": "mentor_chat"}
-                
-        except Exception as e:
-            print(f"❌ 멘토 채팅 오류: {e}")
-            yield {"type": "error", "content": f"멘토링 중 오류가 발생했습니다: {str(e)}"}
 
     async def _handle_unified_conversation(self, message: str) -> AsyncGenerator[dict, None]:
         """분류 기반 대화 처리 - with_structured_output으로 명확한 액션 선택"""
@@ -639,14 +578,6 @@ class MultiMCPAgent:
                     
             elif classification.action == ActionType.GENERATE_CURRICULUM:
                 async for chunk in self._handle_curriculum_generation(message):
-                    yield chunk
-                    
-            elif classification.action == ActionType.MENTOR_RECOMMENDATION:
-                async for chunk in self._handle_mentor_recommendation(message):
-                    yield chunk
-                    
-            elif classification.action == ActionType.MENTOR_CHAT:
-                async for chunk in self._handle_mentor_chat(message):
                     yield chunk
 
             elif classification.action == ActionType.PROFILING_GENERAL_CHAT:
@@ -667,8 +598,14 @@ class MultiMCPAgent:
     
     def clear_conversation(self):
         """대화 기록 초기화"""
-        self.conversation_history = []
-        self.current_session_id = None
+        # 기본 인사말로 재설정
+        self.conversation_history = [
+            {
+                "role": "assistant",
+                "content": "안녕하세요! LearnAI 입니다. 어떤 주제에 대해 배우고 싶으신지 알려주시면 맞춤형 학습 계획을 함께 만들어보겠습니다!"
+            }
+        ]
+        # 세션 ID는 main.py에서 설정하므로 여기서는 초기화하지 않음
         print("💬 대화 기록이 초기화되었습니다.")
     
     def _extract_content(self, content) -> Optional[str]:

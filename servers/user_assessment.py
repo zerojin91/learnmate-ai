@@ -175,19 +175,16 @@ class AssessmentAgentSystem:
             updated_messages = state.get("messages", []).copy()
             updated_messages.append({"role": "assistant", "content": response_result["response"]})
 
-            # 완료 여부 확인 (시간 정보는 선택사항)
-            # 수준만 있어도 constraints 완료로 간주
-            constraints_ok = (
-                updated_constraints and
-                any(kw in updated_constraints for kw in ["초보", "중급", "고급", "수준", "경험", "처음", "입문", "기초"])
-            )
+            # 완료 여부 확인 - LLM 추출 결과 신뢰
             completed = (
-                bool(updated_topic) and
-                constraints_ok and
-                bool(updated_goal)
+                bool(updated_topic.strip()) and
+                bool(updated_constraints.strip()) and
+                bool(updated_goal.strip())
             )
 
-            logger.info(f"병렬 처리 완료 - Topic: {updated_topic}, Constraints: {updated_constraints}, Goal: {updated_goal}")
+            logger.info(f"병렬 처리 완료 - Topic: '{updated_topic}', Constraints: '{updated_constraints}', Goal: '{updated_goal}'")
+            logger.info(f"완료 판단 - Topic존재: {bool(updated_topic.strip())}, Constraints존재: {bool(updated_constraints.strip())}, Goal존재: {bool(updated_goal.strip())}")
+            logger.info(f"최종 완료 상태: {completed}")
 
             return Command(
                 update={
@@ -205,76 +202,109 @@ class AssessmentAgentSystem:
             return Command(update={"current_agent": "parallel"})
 
     async def _background_extraction(self, messages_text: str, topic: str, constraints: str, goal: str) -> dict:
-        """백그라운드에서 정보 추출 (더 정확하게)"""
+        """백그라운드에서 정보 추출 - 비어있는 필드 1개만 추출"""
 
-        extraction_prompt = f"""
-당신은 사용자 학습 정보를 정확히 추출하는 전문가입니다.
-최근 대화에서 학습 관련 정보를 매우 정확하게 추출하세요.
+        # 비어있는 필드 확인
+        missing_fields = []
+        if not topic.strip():
+            missing_fields.append(("topic", "학습 주제"))
+        if not constraints.strip():
+            missing_fields.append(("constraints", "현재 수준"))
+        if not goal.strip():
+            missing_fields.append(("goal", "학습 목표"))
 
-최근 대화:
+        # 모두 채워졌으면 그대로 반환
+        if not missing_fields:
+            return {"topic": topic, "constraints": constraints, "goal": goal}
+
+        # 첫 번째 빠진 필드만 추출
+        field_name, field_desc = missing_fields[0]
+
+        if field_name == "topic":
+            extraction_prompt = f"""다음 대화에서 학습 주제를 추출하세요.
+
+대화: {messages_text}
+
+예시:
+"파이썬 배워보려고" → "파이썬"
+"나 궁중예절을 한번 배워보려고" → "궁중예절"
+"영어 공부하려고" → "영어"
+"보건관리쪽 알아보려고" → "보건관리"
+
+학습 주제만 추출 (없으면 빈 문자열):"""
+
+        elif field_name == "constraints":
+            extraction_prompt = f"""다음 대화에서 {topic}에 대한 사용자의 수준을 정확히 판단하세요.
+
+대화 내용:
 {messages_text}
 
-현재 수집된 정보:
-- topic: "{topic}"
-- constraints: "{constraints}"
-- goal: "{goal}"
+주제: {topic}
 
-## 추출 규칙:
-
-### topic (학습 주제):
-- 사용자가 "배우고 싶다", "공부하고 싶다", "학습하려고" 등과 함께 언급한 구체적 분야
-- 예: "파이썬", "영어", "데이터분석", "웹개발", "머신러닝" 등
-- 기존 값이 있으면 덮어쓰지 말고 유지
-
-### constraints (제약조건):
-- 현재 수준: "초보자", "완전 초보", "기초는 안다", "중급자", "경험 있음" 등
-- 시간 제약: "주 3시간", "매일 1시간", "주말만", "하루 2시간" 등
-- 기존 정보에 새 정보를 추가 (예: 기존 "초보자" + 새로운 "주 3시간" = "초보자, 주 3시간")
-
-### goal (목표):
-- 구체적 목적: "취업", "이직", "자격증", "업무활용", "개인프로젝트", "취미" 등
-- 사용자가 명시한 학습 이유나 목적
+수준 판단 기준:
+- **초보자**: "처음", "모르겠어", "배우고 싶어", "전혀 몰라"
+- **중급자**: "기초는 알아", "어느정도 해", "조금 할줄 알아", "1-3년 경험"
+- **고급자**: "전문적으로", "잘해", "가르쳐줄 수 있어", "3년 이상 경험", "해외 거주", "업무에서 사용"
 
 **중요**:
-- 새로운 정보가 없으면 기존 값 그대로 반환
-- 명시적으로 언급된 내용만 추출
-- 추론이나 추측 금지
+- "2년 해외 거주" = 중급자 이상
+- "외국에서 살았어" = 중급자 이상
+- 경험/거주 기간이 언급되면 그에 맞는 수준으로 판단
 
-위 대화에서 추출하세요:
-"""
+{topic} 수준만 추출:"""
+
+        else:  # goal
+            extraction_prompt = f"""다음 대화에서 {topic} 학습 목표를 정확히 추출하세요.
+
+대화 내용:
+{messages_text}
+
+주제: {topic}
+
+목표 예시:
+- "취업하려고" → "취업"
+- "이직 준비" → "이직"
+- "프로젝트 하려고" → "프로젝트"
+- "친구들과 대화하려고" → "친구들과 대화"
+- "업무에 필요해서" → "업무 활용"
+- "명시적 목표 없으면" → ""
+
+AI가 "왜 배우려고 하시나요?" 같은 질문을 했다면, 그에 대한 사용자의 답변에서 목표를 추출하세요.
+
+{topic} 학습 목표만 추출:"""
 
         try:
-            # 더 정확한 스키마
-            class QuickExtraction(BaseModel):
-                topic: str = Field(default="", description="사용자가 언급한 학습 주제")
-                constraints: str = Field(default="", description="수준과 시간 제약")
-                goal: str = Field(default="", description="학습 목표나 목적")
+            # 단일 필드 추출
+            class SingleFieldExtraction(BaseModel):
+                value: str = Field(default="", description=f"{field_desc} 추출")
 
-            model = llm.with_structured_output(QuickExtraction)
+            model = llm.with_structured_output(SingleFieldExtraction)
             result = await model.ainvoke(extraction_prompt)
 
-            # 더 똑똑한 정보 병합
-            updated_topic = result.topic.strip() if result.topic.strip() else topic
+            # 결과 업데이트
+            extracted_value = result.value.strip()
+            logger.info(f"LLM 추출 결과 - field: {field_name}, raw value: '{result.value}', stripped: '{extracted_value}'")
 
-            # constraints 병합 (기존 + 새로운)
-            new_constraints = result.constraints.strip()
-            if new_constraints and new_constraints != constraints:
-                if constraints and new_constraints not in constraints:
-                    updated_constraints = f"{constraints}, {new_constraints}"
+            if field_name == "topic" and extracted_value:
+                if topic:  # 기존 주제가 있으면 병합
+                    updated_topic = f"{topic} - {extracted_value}" if extracted_value not in topic else topic
                 else:
-                    updated_constraints = new_constraints or constraints
-            else:
-                updated_constraints = constraints
+                    updated_topic = extracted_value
+                logger.info(f"추출 결과 - Topic: '{updated_topic}'")
+                return {"topic": updated_topic, "constraints": constraints, "goal": goal}
 
-            updated_goal = result.goal.strip() if result.goal.strip() else goal
+            elif field_name == "constraints" and extracted_value:
+                logger.info(f"추출 결과 - Constraints: '{extracted_value}'")
+                return {"topic": topic, "constraints": extracted_value, "goal": goal}
 
-            logger.info(f"추출 결과 - Topic: '{updated_topic}', Constraints: '{updated_constraints}', Goal: '{updated_goal}'")
+            elif field_name == "goal" and extracted_value:
+                logger.info(f"추출 결과 - Goal: '{extracted_value}'")
+                return {"topic": topic, "constraints": constraints, "goal": extracted_value}
 
-            return {
-                "topic": updated_topic,
-                "constraints": updated_constraints,
-                "goal": updated_goal
-            }
+            # 추출 실패 시 기존 값 유지
+            logger.info(f"{field_desc} 추출 실패 - 기존 값 유지")
+            return {"topic": topic, "constraints": constraints, "goal": goal}
+
         except Exception as e:
             logger.error(f"백그라운드 추출 오류: {e}")
             return {"topic": topic, "constraints": constraints, "goal": goal}
@@ -297,26 +327,16 @@ class AssessmentAgentSystem:
         else:
             progress_items.append(f"✅ 학습 주제: {topic}")
 
-        # 2. 현재 수준 (필수) + 학습 시간 (선택)
-        level_keywords = ["초보", "중급", "고급", "수준", "경험", "처음", "입문", "기초"]
-        time_keywords = ["시간", "주", "일", "매일"]
-
-        has_level = any(kw in constraints for kw in level_keywords)
-        has_time = any(kw in constraints for kw in time_keywords)
+        # 2. 현재 수준 (필수) + 학습 시간 (선택) - LLM 추출 결과 신뢰
+        has_level = bool(constraints.strip())  # constraints가 비어있지 않으면 수준 정보 있다고 보기
 
         if not has_level:
             missing.append("현재 수준")
             progress_items.append("❌ 현재 수준")
         else:
-            level_part = next((part for part in constraints.split(',') if any(kw in part for kw in level_keywords)), constraints)
-            progress_items.append(f"✅ 현재 수준: {level_part.strip()}")
+            progress_items.append(f"✅ 현재 수준: {constraints.strip()}")
 
-        if not has_time and has_level:  # 수준이 있으면 시간도 체크
-            progress_items.append("⚪ 학습 시간 (선택사항)")
-        elif has_time:
-            time_part = next((part for part in constraints.split(',') if any(kw in part for kw in time_keywords)), "")
-            if time_part:
-                progress_items.append(f"✅ 학습 시간: {time_part.strip()}")
+        # 시간 정보는 선택사항이므로 처리하지 않음
 
         # 3. 학습 목표
         if not goal:
@@ -340,33 +360,7 @@ class AssessmentAgentSystem:
             if goal:
                 collected_info += f"• 목표: {goal}\n"
 
-        response_prompt = f"""
-당신은 친근하고 도움이 되는 학습 상담사입니다.
-사용자와 자연스러운 대화를 나누면서 필요한 정보를 수집하세요.
-
-현재 대화: {messages_text}
-
-수집된 정보:
-- 학습 주제: {topic if topic else "아직 파악 안됨"}
-- 현재 수준: {"파악됨 (" + level_part.strip() + ")" if has_level else "아직 파악 안됨"}
-- 학습 목표: {goal if goal else "아직 파악 안됨"}
-
-다음에 알아야 할 정보: {missing[0] if missing else "모든 정보 완료"}
-
-지침:
-1. {"첫 번째 메시지가 아니므로 인사말(안녕하세요, 반갑습니다 등) 사용하지 마세요" if not is_first_message else "첫 번째 메시지이므로 간단한 인사 가능"}
-2. 사용자가 제공한 정보에 대해 구체적으로 공감하고 인정하기
-3. 다음 필요한 정보를 자연스럽게 물어보되, 진행률이나 단계에 대한 언급은 하지 말 것
-4. 이미 수집된 정보는 다시 묻지 않기
-5. 자연스럽고 친근한 톤으로 대화하듯이 질문
-6. **중요**: "현재 상태", "진행률", "n/3 완료" 같은 표현 사용 금지
-
-응답을 생성하세요:
-"""
-
         try:
-            response = await llm.ainvoke(response_prompt)
-
             # 완료 메시지 처리
             if not missing:
                 response_text = f"""
@@ -378,10 +372,45 @@ class AssessmentAgentSystem:
 커리큘럼 생성을 시작하시겠어요?
 """
             else:
-                # 기본 응답에 필요한 경우만 상태 추가
-                response_text = response.content
-                if collected_info and len([x for x in [topic, constraints, goal] if x]) >= 1:
-                    response_text += collected_info
+                # LLM으로 자연스러운 질문 생성
+                next_info = missing[0]
+
+                if next_info == "학습 주제":
+                    llm_prompt = f"""친근한 학습 상담사로서 학습 주제를 자연스럽게 물어보세요.
+
+대화 맥락: {messages_text}
+
+자연스럽고 친근하게 1-2문장으로 질문하세요."""
+
+                elif next_info == "현재 수준":
+                    llm_prompt = f"""친근한 학습 상담사로서 {topic}에 대한 경험 수준을 자연스럽게 물어보세요.
+
+대화 맥락: {messages_text}
+주제: {topic}
+
+자연스럽고 친근하게 1-2문장으로 질문하세요."""
+
+                elif next_info == "학습 목표":
+                    llm_prompt = f"""친근한 학습 상담사로서 {topic} 학습 목표나 목적을 자연스럽게 물어보세요.
+
+대화 맥락: {messages_text}
+주제: {topic}
+수준: {constraints}
+
+반드시 "왜", "목적", "목표", "이유" 중 하나를 포함하여 질문하세요.
+예시: "왜 {topic}을 배우려고 하시나요?", "{topic}을 배우시는 목적이 있으실까요?"
+
+자연스럽고 친근하게 1-2문장으로 질문하세요."""
+
+                else:
+                    llm_prompt = "추가 정보가 필요합니다."
+
+                # LLM 호출하여 자연스러운 질문 생성
+                if next_info in ["학습 주제", "현재 수준", "학습 목표"]:
+                    llm_response = await llm.ainvoke(llm_prompt)
+                    response_text = llm_response.content
+                else:
+                    response_text = llm_prompt
 
             return {"response": response_text}
 
