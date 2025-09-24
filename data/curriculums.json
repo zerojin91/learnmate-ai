@@ -39466,5 +39466,527 @@
       "total_estimated_hours": 240,
       "id": 0
     }
+  ],
+  "50aef83a": [
+    {
+      "title": "파이썬 Learning Path",
+      "level": "beginner",
+      "duration_weeks": 12,
+      "weekly_hours": 15,
+      "focus_areas": [
+        "대시 보드"
+      ],
+      "modules": [
+        {
+          "week": 1,
+          "title": "파이썬 기본 문법 입문",
+          "description": "이 모듈에서는 파이썬 프로그래밍의 기초를 학습합니다. 변수 선언과 사용법을 익히고, 데이터 타입의 기본 개념을 이해하며, 간단한 산술 연산 및 출력문 작성 방법을 배웁니다.",
+          "objectives": [
+            "변수를 선언하고 사용하는 방법 익히기",
+            "정수, 실수, 문자열 등 다양한 데이터 타입 이해하기",
+            "산술 연산자와 조건문의 기본 구조 학습하기"
+          ],
+          "learning_outcomes": [
+            "다양한 데이터 타입으로 변수에 값 저장하기",
+            "연산자를 사용하여 기본적인 수학 연산 수행하기",
+            "조건문과 반복문을 활용하여 간단한 논리 제어 구현하기"
+          ],
+          "key_concepts": [
+            "변수 선언 및 할당: var_name = value",
+            "데이터 타입의 종류와 사용법: int, float, str",
+            "산술 연산자: +, -, *, /, %",
+            "조건문 기본 구조: if/else 구문",
+            "반복문 기초: for, while 문"
+          ],
+          "estimated_hours": 14,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": [],
+            "total_resources": 0,
+            "resources_with_content": 0,
+            "content_coverage": 0.0
+          }
+        },
+        {
+          "week": 2,
+          "title": "파이썬 기본 문법 심화",
+          "description": "이번 2주차 모듈에서는 파이썬의 조건문과 반복문에 대해 깊이 있게 학습합니다. 이전 주에 배운 기초 지식을 바탕으로 더 복잡한 조건들을 다루고, 다양한 형태의 반복 구조를 활용하여 실제 문제 해결 능력을 향상시킵니다.",
+          "objectives": [
+            "다양한 조건문(if, elif, else)을 활용하여 동적 프로그래밍 수행능력 습득",
+            "for와 while 루프를 사용하여 효율적이고 재사용 가능한 코드 작성 능력 배양",
+            "복잡한 논리 구조에서 조건과 반복을 효과적으로 조합하여 프로그램 설계 능력 개발"
+          ],
+          "learning_outcomes": [
+            "여러 조건을 동시에 평가하는 다중 조건문 활용법 마스터",
+            "반복문의 종류와 각각의 사용 상황을 이해하고 적절한 루프 선택 능력 향상",
+            "조건부로 데이터 처리를 수행하는 다양한 패턴 이해 및 구현"
+          ],
+          "key_concepts": [
+            "다중 조건 평가를 위한 if-elif-else 구조",
+            "무한 반복과 종료 조건이 있는 while 루프",
+            "정해진 횟수 반복의 for 루프와 리스트/컬렉션 처리 방법"
+          ],
+          "estimated_hours": 15,
+          "resources": {
+            "videos": [],
+            "web_links": [
+              {
+                "title": "IT개발 기초 코딩부터 실무 중심 프로젝트까지 그린에서 한번에 해결",
+                "url": "https://ader.naver.com/v1/JOQOO_UqdA1OyYMKA9eENc1aQbQ6ydOjPQU3T4lJCBOfYEXosRFez8OyT59DblEgCKy_KFKaxrsFhc-yAKlvKMtPCYe6XieZkh6TS9UP6ueJAwYNPboAjM2tB_dL-_24CqfkJ7I-91b9iUNEtbWe--Iw1v7W3FnC32OIyvxFaKXn3Vz_Weo-nHJRtYOt7S2-kcPm1ntlDQHF5CQ70Q1Lxcye_gE7pBecsgKlOX5oXweVsOXiMlac7sz5LOeQcIzI_v-dzECXhnoBlgQ0AcijKdsqJW4U3E9O25FA9kXlPKkBv6n013Cvgju4OOZqUuHixpn8vKglOlS0bdusO4Pb9LJxy5cuUwV-sDcvW8fXDeWeVHsQYA-CpTVFuRHQiyYMAXncwJjPL3SAJkru8EW8D8wUdaUd7y6Rk-qJBMwYZpVTCDi5FhyLo9F5LTMzfD0zCo1F45gYMRhkG_fIZOrq0c7ITAm9BAX7z_1SRuA_y5rgYM4Mszk7gkoZ0QhLaVGQ?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ],
+            "documents": [],
+            "total_resources": 2,
+            "resources_with_content": 0,
+            "content_coverage": 0.0
+          }
+        },
+        {
+          "week": 3,
+          "title": "함수 및 모듈 기초",
+          "description": "이 모듈에서는 파이썬 프로그래밍의 핵심적인 요소인 함수에 대해 학습합니다. 함수는 코드를 재사용할 수 있게 해주는 기본적인 프로그래밍 도구로, 함수의 정의와 호출 방법을 익히고 이를 통해 프로그램의 구조화와 가독성을 향상시키는 방법을 배웁니다. 또한 표준 라이브러리를 활용하여 다양한 문제 해결 기능을 구현하는 기초를 다집니다.",
+          "objectives": [
+            "함수를 정의하고 변수 인수를 사용하여 값을 전달하는 실습 수행",
+            "다양한 경우에서 함수를 호출하고 반환값을 처리하는 방법 학습",
+            "표준 라이브러리의 함수들을 탐색하고 이를 활용한 기본 프로그래밍 기법 습득"
+          ],
+          "learning_outcomes": [
+            "파이썬에서 사용자 정의 함수를 직접 작성하고 실행할 수 있음",
+            "함수 내에서 변수, 리스트, 딕셔너리 등 다양한 데이터 구조를 효율적으로 다룰 수 있음",
+            "다양한 표준 라이브러리 함수들을 검색하고 문제 해결에 적용할 수 있는 능력 개발"
+          ],
+          "key_concepts": [
+            "함수 정의와 호출의 기본 원리 및 문법",
+            "인수 전달 방식(값, 참조, 키워드 인수)",
+            "불리언 값과 반환문을 활용한 함수 결과 처리",
+            "표준 라이브러리 함수들의 사용 방법과 응용 사례"
+          ],
+          "estimated_hours": 14,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": [],
+            "total_resources": 0,
+            "resources_with_content": 0,
+            "content_coverage": 0.0
+          }
+        },
+        {
+          "week": 4,
+          "title": "데이터 구조 기초",
+          "description": "이번 주차에서는 프로그래밍의 핵심 개념인 다양한 데이터 구조를 학습합니다. 리스트, 튜플, 딕셔너리, 집합과 같은 기본 자료구조의 특성을 이해하고, 이를 활용한 문제 해결 방법을 익히며, 파이썬으로 직접 구현해 봄으로써 실무에서의 활용도를 높입니다.",
+          "objectives": [
+            "다양한 데이터 구조(List, Tuple, Dictionary, Set)의 개념과 특징을 이해한다",
+            "자료구조 간 변환 방법을 익히고 활용할 수 있다",
+            "실제 문제 상황에서 적절한 자료구조를 선택하고 구현할 수 있다",
+            "효율적인 알고리즘 설계에 자료구조 개념을 적용할 수 있다"
+          ],
+          "learning_outcomes": [
+            "데이터를 효율적으로 저장하고 관리하기 위한 여러 구조 중 적합한 것을 선택할 수 있다",
+            "리스트, 튜플, 딕셔너리, 집합 간의 변환과 활용 방법을 실습할 수 있다",
+            "복잡한 데이터 처리 문제를 구조적으로 분해하고 해결할 수 있는 능력을 기를 수 있다"
+          ],
+          "key_concepts": [
+            "리스트(List): 순서가 있고 중복 허용되며 수정 가능한 선형 구조",
+            "튜플(Tuple): 순서가 있지만 불변성을 가지는 고정된 구조",
+            "딕셔너리(Dictionary): 키-값 쌍으로 이루어진 연관 배열형 구조",
+            "집합(Set): 중복을 허용하지 않는 자료구조와 집합 연산의 이해"
+          ],
+          "estimated_hours": 18,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": [],
+            "total_resources": 0,
+            "resources_with_content": 0,
+            "content_coverage": 0.0
+          }
+        },
+        {
+          "week": 5,
+          "title": "파일 입출력 기초",
+          "description": "이 모듈에서는 파이썬 프로그램에서 데이터를 파일에 저장하고 불러오는 기본적인 방법을 학습합니다. 텍스트 파일의 읽기/쓰기 작업과 CSV 형식의 데이터 파싱 및 작성 능력을 키워 실제 프로젝트에서 활용 가능한 실용적인 기술을 습득하게 됩니다.",
+          "objectives": [
+            "다양한 텍스트 파일 형식을 읽고 쓰는 기본 방법을 익힌다.",
+            "파이썬의 csv 모듈을 활용하여 CSV 파일을 파싱하고 새로운 CSV 파일을 작성하는 방법을 학습한다.",
+            "파일 입출력 시 발생할 수 있는 예외 상황을 처리하는 기본적인 방법을 이해한다."
+          ],
+          "learning_outcomes": [
+            "텍스트 파일에서 데이터를 효율적으로 읽고 쓸 수 있다.",
+            "CSV 형식의 데이터를 파이썬 리스트로 변환하거나 리스트를 CSV 파일로 저장할 수 있다.",
+            "파일 작업 중 발생하는 일반적인 오류들을 효과적으로 처리할 수 있다."
+          ],
+          "key_concepts": [
+            "텍스트 파일 읽기/쓰기를 위한 `open()`, `read(), readline(), write()` 메서드의 사용법",
+            "CSV 데이터 파싱을 위한 `csv.DictReader`와 `csv.writer` 객체 활용 방법",
+            "파일 작업 시 예외 처리를 위한 `try-except` 블록 사용과 파일 경로 처리"
+          ],
+          "estimated_hours": 16,
+          "resources": {
+            "videos": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ],
+            "documents": [],
+            "total_resources": 1,
+            "resources_with_content": 0,
+            "content_coverage": 0.0
+          }
+        },
+        {
+          "week": 6,
+          "title": "Pandas 활용법",
+          "description": "이번 6주차에서는 Python의 데이터 분석 라이브러리인 Pandas를 활용하여 데이터프레임을 생성하고 기본적인 통계 분석을 수행하는 방법을 학습합니다. 이전 주차들에서 익힌 기초 지식을 바탕으로 실제 데이터 처리와 분석에 필요한 핵심 기술을 익히게 됩니다.",
+          "objectives": [
+            "Pandas를 사용하여 다양한 형태의 데이터를 DataFrame으로 구조화하기",
+            "데이터프레임 내의 기본 통계 함수를 활용하여 데이터 특성 분석하기"
+          ],
+          "learning_outcomes": [
+            "여러 종류의 데이터를 Pandas DataFrame으로 변환하여 활용할 수 있다",
+            "데이터프레임에 대한 기본적인 통계 분석(평균, 중앙값, 분산 등)을 수행할 수 있다"
+          ],
+          "key_concepts": [
+            "DataFrame 구조 생성 및 조작 방법",
+            "통계 함수를 활용한 데이터 요약 및 분석 기법",
+            "결측치 처리와 데이터 정제 기술"
+          ],
+          "estimated_hours": 14,
+          "resources": {
+            "videos": [],
+            "web_links": [
+              {
+                "title": "빅데이터, AI활용 국비지원과정, 취업맞춤형 포트폴리오 제작, 실무 프로젝트 교육",
+                "url": "https://ader.naver.com/v1/eCypR_6THrmAzbs47kMh9FXBjTa74M4TLMVjG6Ztg4HO5NlmwNzZFQaaowUj92Gw8LqdNUZ3wPBIYmJHxH6qFao0_OMgye35VjIUaeMvFprKeYh3919SsfKoXcgXsLYVGLe9-GEBCeO5esYh90vvVGvdVy4KWxIS36-bWqVZ6aEYCvbagpqylWZcpa_JxkoUCIWRVmRz4hsgKotNgeFZatyli0NOM3tRq29clO4yNbL1oqEcDtzCmeCKT9lNU_qHI18MDBpK6OVU7NmQzKxPR9qLCf7HZXaYuaUpDZOX9hLra6KK7XKIOVHvv8Q69v0XNVJImoSY1fUxnwiKgl5LzHYslNUVUBG0vCXdkIVnOLDHBpmHGn4gGvTAedqEQO-aKYRLODKxgOXS29SiO74YOPEwIgs8AZc0miSmCZvaPD7TtC8Nej2GkChSyeKVOkAtduWoGaKQxbYL4d4zdWvtgDHjpkGB1t_NakwTkAneF_4=?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ],
+            "documents": [],
+            "total_resources": 2,
+            "resources_with_content": 0,
+            "content_coverage": 0.0
+          }
+        },
+        {
+          "week": 7,
+          "title": "Matplotlib/Seaborn 기초 시각화",
+          "description": "이 모듈에서는 데이터 분석과 과학적 컴퓨팅을 위한 핵심 도구인 Matplotlib와 Seaborn 라이브러리를 사용하여 기본적인 시각화 기법을 학습합니다. 라인 그래프, 막대 차트, 산점도 등 다양한 차트 생성 방법을 익히고, 시각화 디자인의 기본 원리를 이해하여 데이터의 패턴과 추세를 효과적으로 표현하는 능력을 기릅니다.",
+          "objectives": [
+            "Matplotlib를 활용하여 기본 차트(라인, 막대, 파이, 히스토그램)를 생성하고 커스터마이징하는 방법 학습",
+            "Seaborn 라이브러리를 사용하여 고급 시각화 기법(그룹화, 레이아웃 관리)을 구현하는 능력 개발",
+            "데이터의 특성에 맞는 적절한 시각화 도구 선택 및 적용 방법 습득"
+          ],
+          "learning_outcomes": [
+            "다양한 유형의 차트를 코드로 구현하고 데이터 스토리텔링 요소를 추가할 수 있음",
+            "Matplotlib와 Seaborn의 고급 기능(레이아웃, 테마, 커스터마이징)을 활용하여 전문적인 보고서용 그래프 제작 가능",
+            "시각화 라이브러리의 기본 개념과 원리를 이해하고 다른 시각화 도구와 비교하여 선택할 수 있는 판단력 개발"
+          ],
+          "key_concepts": [
+            "축 설정, 레이블링, 범례 추가 등 차트 요소의 세부적인 스타일링 방법",
+            "Matplotlib와 Seaborn에서 제공하는 그룹화 기능을 활용한 다차원 데이터 시각화 기술",
+            "시각화 디자인 원칙(색상 이론, 크기 비율, 대비)과 데이터 표현의 효과성"
+          ],
+          "estimated_hours": 15,
+          "resources": {
+            "videos": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ],
+            "documents": [],
+            "total_resources": 1,
+            "resources_with_content": 0,
+            "content_coverage": 0.0
+          }
+        },
+        {
+          "week": 8,
+          "title": "대시 보드 도구 소개",
+          "description": "이 모듈에서는 Python의 Dash 또는 Streamlit 라이브러리를 사용하여 웹 기반 인터랙티브 대시보드 애플리케이션을 만드는 기초를 학습합니다. 이전 모듈들에서 다룬 데이터 분석 및 시각화 능력을 활용하여, 대화형 데이터 인터페이스를 구축하는 방법을 배웁니다.",
+          "objectives": [
+            "Dash 또는 Streamlit 설치와 기본 사용법 익히기",
+            "간단한 대시보드 프로젝트를 실제로 실행하기"
+          ],
+          "learning_outcomes": [
+            "웹 애플리케이션 개발의 기본 개념 이해",
+            "대화형 대시보드를 위한 프론트엔드-백엔드 통합 방법 습득",
+            "실제 비즈니스 문제 해결을 위한 데이터 시각화 구현 능력 향상"
+          ],
+          "key_concepts": [
+            "Dash와 Streamlit 라이브러리의 주요 기능 및 차이점",
+            "Seaborn 또는 Matplotlib과의 연동을 통한 대화형 시각화 생성",
+            "Flask와의 통합 및 웹 서버 설정 방법"
+          ],
+          "estimated_hours": 14,
+          "resources": {
+            "videos": [],
+            "web_links": [
+              {
+                "title": "R프로그래밍교육 R을 이용한 통계계산,인공지능 오픈소스분석, 빅데이터~머신러닝까지",
+                "url": "https://ader.naver.com/v1/S1YfJ2hDGFNzf6MGE2faHg7SX2Hjapq7PBBxaijrpCpubkkDOb0kSqjZKOKAoHrKp0b_tFITQOYztfBI8HKlMoS5blBGe45ehP3LYw6OJVJy_BV3M94urbY2vDZpAnNoremdDHKHnTyosKLtZs-bm4U8FNNyyp6WU6c_mizNdUs6vIU7v9luO8tsk11klW5mHvqhJqyxKmPwUQevsFAyyrU7H_7K8v-Jc1Cj6DEhEdSSH-quYwHm_fd5L9sNLW6WlrV5PR4Ug3sruweFSqTHh0eGKoWPhj39iRf9dXuatxPHMaq07HGUgc7VsgeN-BPzuGGG49QaTBntDlHIWNb0aXMgNz_ev3cv57hntx_QzHeDkcyuvJZ6jFegz6m381aDG3iS8phCnAnJcc2DhBKZarueT5DYXislXAkNz5rZN0ZfGCOjVOJiLrqMEWWRNFkquaULiy4E3ocTcQNZuSStpMvc5NSEH6d2rEPs4aMcS74KDnxtFCDC4z1W4vXLre2f?c=naver.search.pc.plsearch&t=0",
+                "source": "Web Search"
+              },
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ],
+            "documents": [],
+            "total_resources": 2,
+            "resources_with_content": 0,
+            "content_coverage": 0.0
+          }
+        },
+        {
+          "week": 9,
+          "title": "대시 보드 개발 1단계",
+          "description": "본 모듈에서는 이전에 학습한 Matplotlib과 Seaborn을 활용하여 대시 보드의 기본 시각화 요소를 추가하는 방법을 다룹니다. 대시보드 개발의 첫 단계로, 데이터 시각화 요소들을 통합하고 실제 대시보드 환경에서 활용할 수 있는 차트 구현 방법을 학습합니다.",
+          "objectives": [
+            "기본 차트(선 그래프, 막대 그래프, 파이 차트)를 Dash 애플리케이션에 구현하는 방법 습득",
+            "대시 보드 내에서 데이터 시각화 모듈을 동적으로 통합하는 능력 개발",
+            "기존 대시보드 도구의 기능을 활용하여 효과적인 정보 전달 시각화 구성"
+          ],
+          "learning_outcomes": [
+            "Matplotlib과 Seaborn 라이브러리를 사용하여 다양한 유형의 차트를 직접 구현할 수 있음",
+            "Dash 애플리케이션 내에서 시각적인 데이터 표현 요소를 효과적으로 통합할 수 있는 방법 이해",
+            "대시 보드 개발에 필요한 기본적인 프로그래밍 지식과 도구 활용 능력 습득"
+          ],
+          "key_concepts": [
+            "Matplotlib과 Seaborn을 활용한 시각화 라이브러리 통합",
+            "대시 보드 애플리케이션의 모듈화 및 재사용성 구현",
+            "데이터를 시각적으로 효과적으로 표현하는 차트 작성 기법"
+          ],
+          "estimated_hours": 15,
+          "resources": {
+            "videos": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ],
+            "documents": [],
+            "total_resources": 1,
+            "resources_with_content": 0,
+            "content_coverage": 0.0
+          }
+        },
+        {
+          "week": 10,
+          "title": "대시 보드 개발 2단계",
+          "description": "이번 10주차에서는 이전 주차에서 구축한 대시보드의 기초를 바탕으로 사용자 입력 처리와 동적 데이터 업데이트 기능을 구현합니다. 사용자가 직접 데이터를 입력하고 실시간으로 변화하는 대시보드를 만드는 방법과 이를 위한 기술적 접근 방식을 배우게 됩니다.",
+          "objectives": [
+            "폼 요소를 활용하여 사용자로부터 텍스트, 숫자, 날짜 등 다양한 타입의 데이터를 입력받는 방법을 익힌다",
+            "서버와 클라이언트 간의 비동기 통신을 통해 실시간으로 데이터를 업데이트하고 대시보드에 반영하는 구현 기술을 습득한다",
+            "사용자 인터랙션에 기반한 조건부 로직을 적용하여 대시보드의 동적 표현 방식을 다양화한다"
+          ],
+          "learning_outcomes": [
+            "폼 요소를 활용한 사용자 입력 처리 방법을 이해하고 구현할 수 있다",
+            "HTTP POST 요청과 쿠키를 사용하여 서버와 실시간 데이터 통신을 설정할 수 있다",
+            "다양한 데이터 타입에 따른 적절한 입력 검증 및 처리 로직을 작성할 수 있다"
+          ],
+          "key_concepts": [
+            "HTML 폼 요소(form tag, input type)의 활용법",
+            "서버 사이드에서 POST 요청 처리하기 위한 Node.js 미들웨어 활용",
+            "브라우저 내 비동기 이벤트를 통한 실시간 업데이트 구현",
+            "데이터 타입에 따른 클라이언트-서버 간 데이터 변환 방법"
+          ],
+          "estimated_hours": 14,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": [],
+            "total_resources": 0,
+            "resources_with_content": 0,
+            "content_coverage": 0.0
+          }
+        },
+        {
+          "week": 11,
+          "title": "개인 대시 보드 프로젝트",
+          "description": "이번 주차에서는 이전 모듈에서 준비한 개인 데이터셋을 활용하여 실제 작동 가능한 대시보드를 완성하고, 모든 기능을 통합하여 테스트하는 과정을 진행합니다. 데이터 정제부터 시각화, 최종 통합까지의 전 과정을 실습하며 실무 경험을 쌓게 됩니다.",
+          "objectives": [
+            "개인이 보유한 실제 데이터셋을 기반으로 완성도 높은 대시 보드를 설계한다",
+            "데이터베이스 연동, API 호출 등 다양한 백엔드 기능을 통합하여 대시보드 전체 시스템을 구축한다",
+            "실제 사용자 관점에서 테스트를 진행하고 품질 개선점을 도출하여 대시보드를 완성한다"
+          ],
+          "learning_outcomes": [
+            "개인 데이터와 공공 데이터를 효과적으로 활용하여 의미 있는 인사이트를 도출할 수 있다",
+            "대시보드의 핵심 기능들 간의 상호작용을 설계하고 구현하는 능력을 습득한다",
+            "사용자 피드백을 반영하여 대시보드를 지속적으로 개선할 수 있는 방법론을 이해한다"
+          ],
+          "key_concepts": [
+            "데이터 정제 및 전처리 과정에서의 실무 기술",
+            "데이터베이스와의 연동을 통한 실시간 데이터 처리 방법",
+            "다양한 시각화 도구를 활용한 효과적인 정보 전달 기법",
+            "대시보드 사용자 경험(UX) 설계 원칙",
+            "테스트 주도 개발(TDD) 방법론"
+          ],
+          "estimated_hours": 17,
+          "resources": {
+            "videos": [],
+            "web_links": [],
+            "documents": [],
+            "total_resources": 0,
+            "resources_with_content": 0,
+            "content_coverage": 0.0
+          }
+        },
+        {
+          "week": 12,
+          "title": "최종 점검과 피드백",
+          "description": "이 모듈에서는 한 학기 동안의 학습을 정리하고, 개인 대시 보드 프로젝트를 완성하여 발표하는 과정을 다룹니다. 이전 주차에서 개발한 대시 보드의 완성도를 높이고, 효과적인 발표 방법을 연습하며, 전체 학습 경험에 대한 자기성찰과 동료 평가를 진행합니다.",
+          "objectives": [
+            "개인 대시 보드 프로젝트를 최종 점검하고 개선하기",
+            "효과적인 프레젠테이션 기술을 습득하고 실제 발표할 수 있다",
+            "한 학기 동안의 학습 성과를 평가하고 향후 발전 방향을 설정할 수 있다"
+          ],
+          "learning_outcomes": [
+            "데이터 시각화 도구를 활용하여 완성된 대시 보드를 제작할 수 있다",
+            "프레젠테이션 스킬을 향상시켜 청중 앞에서 전문적인 발표를 할 수 있다",
+            "자기 주도적 학습 능력과 협업 능력을 종합적으로 평가할 수 있다"
+          ],
+          "key_concepts": [
+            "대시 보드의 최종 점검 및 개선 방법",
+            "효과적인 프레젠테이션 스토리텔링 기법",
+            "동료 피드백을 통한 자기성찰 및 발전 전략"
+          ],
+          "estimated_hours": 14,
+          "resources": {
+            "videos": [],
+            "web_links": [
+              {
+                "title": "검색 고객센터",
+                "url": "https://help.naver.com/alias/search/integration/main.naver",
+                "source": "Web Search"
+              }
+            ],
+            "documents": [],
+            "total_resources": 1,
+            "resources_with_content": 0,
+            "content_coverage": 0.0
+          }
+        }
+      ],
+      "overall_goal": "파이썬 기초부터 대시 보드 개발까지의 체계적 학습을 통한 데이터 분석 도구 개발자 양성",
+      "basic_resources": [
+        {
+          "title": "IT개발 기초 코딩부터 실무 중심 프로젝트까지 그린에서 한번에 해결 프론트엔드/백엔드/풀스택 개발자 취업 교육, 자바, 스프링 기반 웹/앱개발",
+          "url": "https://ader.naver.com/v1/j7pYEVqj_CBzwZkLqSlt-_NsFPeSxVbu1mbnz5w33yRuIcYD3VxV4laEtK6mSATd5fbAzZhxTtvT409K-Yo-ToaXPoBkQYlC0s8pbvIu9yquGhInhzVCsfTwSntp0jk7g9rkX4Jl1QrB_SAolVgXQ6AOxpCgNXL3kJC-i-kGp02iNCPI2czG7fmeJr89TGYtjwznrZtjpzqUKV9oMPSRTzT6Y3yG_9vxfA_bw1Fb_Ju4XzzWNz_Kv2PwKuFgVLX_20MQcrpGB-Pz49ME5NwwYQZGvTzew7cTNObYEx60KPxFdf5drWZ0wYwkqCblFXcDI_eI87n2kN963-DM1vrD_931V1TRTXpo1Vl-6S3-9x_6nAls8bFtYJX5Q6cHQkUgt8CnaOCmxFEDFcUoorJgTwEwqzXp2q6pgjMxW6VCivfvMSqnHSOUlXgaI1IM8xZItfvkHrC7imuEDnCaCkW9Dlv9_1cLLDF0wSQxjWHolhVpLbZ1v5iL7ymxxNFOS3kC?c=naver.search.pc.plsearch&t=0",
+          "source": "Web Search"
+        },
+        {
+          "title": "검색 고객센터",
+          "url": "https://help.naver.com/alias/search/integration/main.naver",
+          "source": "Web Search"
+        }
+      ],
+      "session_id": "50aef83a",
+      "original_constraints": "초보자",
+      "original_goal": "팀에서 대시 보드 만들려고",
+      "learning_path_analysis": "### 1. 이 주제의 핵심 학습 영역은 무엇인가?\n파이썬을 배우기 위한 핵심 학습 영역은 다음과 같습니다:\n\n- **기본 문법**: 변수, 데이터 타입, 연산자, 조건문, 반복문 등.\n- **함수 및 모듈**: 함수 정의, 인수, 반환값, 모듈 사용법.\n- **데이터 구조**: 리스트, 튜플, 딕셔너리, 집합 등.\n- **파일 입출력**: 파일 읽기 및 쓰기.\n- **라이브러리 사용**: 데이터 분석 및 시각화를 위한 주요 라이브러리(예: Pandas, Matplotlib, Seaborn).\n- **대시 보드 도구**: 대시 보드를 만들기 위한 라이브러리(예: Dash, Streamlit).\n- **웹 기술 기초**: HTML, CSS, JavaScript의 기초(대시 보드의 UI/UX 관련).\n\n### 2. Beginner 수준에서 시작하여 어떤 순서로 학습해야 하는가?\n학습 순서는 다음과 같이 구성할 수 있습니다:\n\n1. **주 1-2: 파이썬 기본 문법**\n   - 변수, 데이터 타입, 연산자, 조건문, 반복문 학습.\n   - 간단한 프로그램 작성.\n\n2. **주 3: 함수 및 모듈**\n   - 함수 정의 및 호출, 인수와 반환값.\n   - 표준 라이브러리 및 외부 모듈 사용법.\n\n3. **주 4: 데이터 구조**\n   - 리스트, 튜플, 딕셔너리, 집합의 사용법.\n   - 데이터 구조를 활용한 간단한 문제 해결.\n\n4. **주 5: 파일 입출력**\n   - 텍스트 파일 읽기 및 쓰기.\n   - CSV 파일 처리.\n\n5. **주 6-7: 데이터 분석 라이브러리**\n   - Pandas: 데이터프레임 생성, 조작, 기본 분석.\n   - Matplotlib/Seaborn: 기본적인 데이터 시각화.\n\n6. **주 8: 대시 보드 도구 소개**\n   - Dash 또는 Streamlit 설치 및 기본 사용법.\n   - 간단한 대시 보드 만들기.\n\n7. **주 9-10: 대시 보드 개발**\n   - 데이터 시각화 요소 추가.\n   - 사용자 입력 처리 및 동적 업데이트 기능 구현.\n\n8. **주 11: 프로젝트 작업**\n   - 개인 프로젝트로 대시 보드 완성.\n   - 데이터 분석 및 시각화 결과를 대시 보드에 통합.\n\n9. **주 12: 피드백 및 최종 점검**\n   - 프로젝트 발표 및 피드백.\n   - 추가 학습 자료 및 다음 단계 제안.\n\n### 3. 대시 보드를 고려할 때 중점을 둬야 할 부분은?\n- **사용자 경험(UX)**: 대시 보드는 사용자가 쉽게 이해하고 사용할 수 있어야 함. UI 디자인의 기초를 이해하고 적용할 필요가 있음.\n- **데이터 시각화**: 데이터를 효과적으로 전달하기 위한 적절한 차트 및 그래프 선택.\n- **상호작용성**: 사용자 입력을 받아들이고, 데이터가 동적으로 업데이트되는 기능 구현.\n- **성능 최적화**: 대시 보드의 성능을 고려하여 데이터 처리 및 시각화 최적화.\n\n### 4. 12주 동안 현실적으로 달성 가능한 목표는?\n- **기본적인 파이썬 프로그래밍 능력**: 조건문, 반복문, 함수 사용 가능.\n- **데이터 분석 및 시각화**: Pandas와 Matplotlib을 사용하여 데이터를 분석하고 시각화할 수 있음.\n- **대시 보드 개발**: Dash 또는 Streamlit을 사용하여 간단한 대시 보드를 만들 수 있음.\n- **개인 프로젝트 완성**: 실제 데이터를 기반으로 한 대시 보드를 완성하고 발표할 수 있음.\n\n### 전체 학습 로드맵\n| 주차 | 학습 내용                              | 목표                                      |\n|------|-------------------------------------|-----------------------------------------|\n| 1    | 파이썬 기본 문법                     | 기본 문법 이해 및 간단한 프로그램 작성 |\n| 2    | 파이썬 기본 문법                     | 조건문 및 반복문 활용                   |\n| 3    | 함수 및 모듈                        | 함수 정의 및 모듈 사용법 익히기        |\n| 4    | 데이터 구조                          | 리스트, 튜플, 딕셔너리 활용             |\n| 5    | 파일 입출력                         | 텍스트 및 CSV 파일 처리                 |\n| 6    | Pandas 사용법                       | 데이터프레임 생성 및 조작               |\n| 7    | Matplotlib/Seaborn                  | 데이터 시각화 기본 이해                 |\n| 8    | Dash/Streamlit 소개                  | 간단한 대시 보드 만들기                 |\n| 9    | 대시 보드 개발                      | 데이터 시각화 요소 추가                 |\n| 10   | 대시 보드 개발                      | 사용자 입력 처리 및 동적 업데이트 구현  |\n| 11   | 개인 프로젝트 작업                  | 대시 보드 완성 및 데이터 통합           |\n| 12   | 피드백 및 최종 점검                 | 프로젝트 발표 및 추가 학습 방향 제시   |\n\n이 로드맵을 통해 학습자는 파이썬의 기초부터 대시 보드 개발까지 체계적으로 학습할 수 있습니다.",
+      "graph_curriculum": {
+        "절차1": {
+          "title": "파이썬 기초 이해",
+          "skills": {
+            "파이썬 기초": {
+              "skill_info": {
+                "name": "파이썬 기초",
+                "category": "기초",
+                "description": "파이썬의 기본 개념과 원리 학습",
+                "keywords": [
+                  "파이썬",
+                  "기초",
+                  "개념"
+                ],
+                "difficulty": "beginner",
+                "importance_score": 8
+              },
+              "documents": {
+                "basic_doc": {
+                  "doc_id": "fallback_basic",
+                  "title": "파이썬 기초 학습 가이드",
+                  "department": "교육",
+                  "document_type": "guide",
+                  "target_audience": "파이썬 학습자",
+                  "difficulty_level": "beginner",
+                  "estimated_time": 120,
+                  "experts": {
+                    "교육전문가": {
+                      "name": "교육전문가",
+                      "department": "교육",
+                      "role": "전문가",
+                      "expertise": "파이썬 교육 및 컨설팅"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "절차2": {
+          "title": "파이썬 실습 및 응용",
+          "skills": {
+            "파이썬 실습": {
+              "skill_info": {
+                "name": "파이썬 실습",
+                "category": "실습",
+                "description": "파이썬을 활용한 실제 프로젝트 수행",
+                "keywords": [
+                  "파이썬",
+                  "실습",
+                  "프로젝트"
+                ],
+                "difficulty": "beginner",
+                "importance_score": 9
+              },
+              "documents": {
+                "practice_doc": {
+                  "doc_id": "fallback_practice",
+                  "title": "파이썬 실습 프로젝트 가이드",
+                  "department": "교육",
+                  "document_type": "project",
+                  "target_audience": "파이썬 학습자",
+                  "difficulty_level": "beginner",
+                  "estimated_time": 180,
+                  "experts": {
+                    "프로젝트매니저": {
+                      "name": "프로젝트매니저",
+                      "department": "교육",
+                      "role": "매니저",
+                      "expertise": "파이썬 프로젝트 관리"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "generated_at": "2025-09-24T21:30:40.994471",
+      "processing_time": null,
+      "total_estimated_hours": 180,
+      "id": 0
+    }
   ]
 }
