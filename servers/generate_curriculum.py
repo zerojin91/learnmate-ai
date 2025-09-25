@@ -12,6 +12,8 @@ import sys
 from langchain_openai import ChatOpenAI
 from pydantic import BaseModel, Field
 from enum import Enum
+import time
+from functools import lru_cache
 
 # 프로젝트 경로 추가
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -146,8 +148,13 @@ mcp = FastMCP(
     port=8006,  # 기존 포트 사용
 )
 
+# 전역 캐시 및 성능 최적화 변수
+_content_cache = {}
+_semaphore = None
+
 # LLM 및 워크플로우 초기화
 def initialize_system():
+    global _semaphore
     try:
         llm = ChatOpenAI(
             base_url=Config.LLM_BASE_URL,
@@ -159,6 +166,8 @@ def initialize_system():
         )
 
         workflow = create_curriculum_workflow(llm)
+        # 동시 LLM 호출 제한 (최대 12개)
+        _semaphore = asyncio.Semaphore(12)
         return llm, workflow, True
     except Exception as e:
         print(f"ERROR: System initialization failed: {e}", file=sys.stderr)
@@ -248,43 +257,9 @@ async def generate_curriculum_from_session(session_id: str, user_message: str = 
         else:
             print(f"SUCCESS: Complete curriculum generated with graph_curriculum: {'graph_curriculum' in curriculum}", file=sys.stderr)
 
-        # 강의자료 자동 생성 (graph_curriculum이 있는 경우에만)
-        lecture_generation_success = True
-        if "graph_curriculum" in curriculum and "modules" in curriculum and not curriculum.get("fallback"):
-            print(f"DEBUG: Generating lecture notes for {session_id}", file=sys.stderr)
-            try:
-                # 병렬로 모든 모듈의 강의자료 생성
-                lecture_notes = await _generate_lecture_notes_concurrent(curriculum["modules"], curriculum["graph_curriculum"], llm)
-                
-                # 생성된 강의자료 검증
-                successful_notes = 0
-                for i, module in enumerate(curriculum["modules"]):
-                    if i < len(lecture_notes) and lecture_notes[i] and not ("오류가 발생했습니다" in lecture_notes[i]):
-                        # 유효한 강의자료인지 검증 (최소 길이 확인)
-                        if len(lecture_notes[i].strip()) > 50:
-                            module["lecture_note"] = lecture_notes[i]
-                            successful_notes += 1
-                        else:
-                            print(f"WARNING: Generated lecture note too short for week {module.get('week', i+1)}", file=sys.stderr)
-                            lecture_generation_success = False
-                    else:
-                        print(f"WARNING: Failed to generate lecture note for week {module.get('week', i+1)}", file=sys.stderr)
-                        lecture_generation_success = False
-                
-                if successful_notes == len(curriculum["modules"]):
-                    print(f"SUCCESS: All {successful_notes} lecture notes generated successfully", file=sys.stderr)
-                    curriculum["lecture_notes_complete"] = True
-                else:
-                    print(f"WARNING: Only {successful_notes}/{len(curriculum['modules'])} lecture notes generated", file=sys.stderr)
-                    curriculum["lecture_notes_complete"] = False
-                    lecture_generation_success = False
-                    
-            except Exception as e:
-                print(f"ERROR: Lecture note generation failed: {e}", file=sys.stderr)
-                import traceback
-                print(f"ERROR: Lecture note stacktrace: {traceback.format_exc()}", file=sys.stderr)
-                curriculum["lecture_notes_complete"] = False
-                lecture_generation_success = False
+        # 강의자료 생성은 이제 워크플로우 내부에서 처리됨
+        lecture_generation_success = curriculum.get("lecture_notes_complete", False)
+        print(f"DEBUG: Lecture notes generation status from workflow: {lecture_generation_success}", file=sys.stderr)
 
         # 데이터베이스 저장
         curriculum_id = db.save_curriculum(session_id, curriculum)
@@ -475,77 +450,138 @@ async def generate_lecture_notes(user_id: str, curriculum_id: int = 0, week: Opt
         return {"error": f"Lecture note generation failed: {str(e)}"}
 
 
-def _extract_relevant_content(graph_curriculum: Dict) -> Dict[str, List[Dict]]:
-    """Extract and index content from graph_curriculum for faster lookup"""
+def _extract_relevant_content_cached(graph_curriculum: Dict) -> Dict[str, List[Dict]]:
+    """Extract and index content from graph_curriculum with caching"""
+    global _content_cache
+
+    # 캐시 키 생성 (graph_curriculum의 해시)
+    cache_key = hash(str(sorted(graph_curriculum.items())))
+
+    if cache_key in _content_cache:
+        print(f"DEBUG: Using cached content index", file=sys.stderr)
+        return _content_cache[cache_key]
+
+    print(f"DEBUG: Building new content index", file=sys.stderr)
+    start_time = time.time()
+
     content_index = {}
-    
+
     for _, step_data in graph_curriculum.items():
         step_title = step_data.get("title", "").lower()
         skills = step_data.get("skills", {})
-        
+
         for skill_name, skill_data in skills.items():
             documents = skill_data.get("documents", {})
             for _, doc_data in documents.items():
                 content = doc_data.get("content", "")
                 if content:
-                    # 키워드로 인덱싱
-                    keywords = [step_title, skill_name.lower()] + step_title.split()
-                    for keyword in keywords:
-                        if keyword not in content_index:
-                            content_index[keyword] = []
-                        content_index[keyword].append({
-                            "source": f"{step_data.get('title', '')} - {skill_name}",
-                            "content": content[:1500]  # 길이 제한으로 프롬프트 최적화
-                        })
-    
+                    # 키워드로 인덱싱 (최적화됨)
+                    keywords = [step_title, skill_name.lower()]
+                    keywords.extend(step_title.split())
+
+                    for keyword in set(keywords):  # 중복 제거
+                        if keyword and len(keyword) > 2:  # 의미있는 키워드만
+                            if keyword not in content_index:
+                                content_index[keyword] = []
+                            content_index[keyword].append({
+                                "source": f"{step_data.get('title', '')} - {skill_name}",
+                                "content": content[:800]  # 더 짧게 제한
+                            })
+
+    # 캐시에 저장 (메모리 제한을 위해 최대 5개까지만)
+    if len(_content_cache) >= 5:
+        # 가장 오래된 항목 제거
+        oldest_key = next(iter(_content_cache))
+        del _content_cache[oldest_key]
+
+    _content_cache[cache_key] = content_index
+
+    build_time = time.time() - start_time
+    print(f"DEBUG: Content index built in {build_time:.2f}s with {len(content_index)} keywords", file=sys.stderr)
+
     return content_index
+
+def _extract_relevant_content(graph_curriculum: Dict) -> Dict[str, List[Dict]]:
+    """Legacy wrapper for compatibility"""
+    return _extract_relevant_content_cached(graph_curriculum)
 
 
 async def _generate_lecture_notes_concurrent(modules: List[Dict], graph_curriculum: Dict, llm) -> List[str]:
-    """Generate lecture notes for multiple modules concurrently"""
-    import asyncio
-    
-    # 콘텐츠 인덱싱 (한 번만 수행)
-    content_index = _extract_relevant_content(graph_curriculum)
-    
-    # 병렬로 강의자료 생성
+    """Generate lecture notes for multiple modules concurrently with semaphore control"""
+    global _semaphore
+
+    start_time = time.time()
+    print(f"DEBUG: Starting concurrent lecture note generation for {len(modules)} modules", file=sys.stderr)
+
+    # 콘텐츠 인덱싱 (한 번만 수행, 캐시됨)
+    content_index = _extract_relevant_content_cached(graph_curriculum)
+
+    # Semaphore로 제어되는 병렬 강의자료 생성
     tasks = [
-        _generate_single_lecture_note_optimized(module, content_index, llm)
+        _generate_single_lecture_note_with_semaphore(module, content_index, llm)
         for module in modules
     ]
-    
-    return await asyncio.gather(*tasks)
 
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+
+    # 예외 처리
+    lecture_notes = []
+    for i, result in enumerate(results):
+        if isinstance(result, Exception):
+            print(f"ERROR: Failed to generate lecture note for module {i+1}: {result}", file=sys.stderr)
+            lecture_notes.append(f"# {modules[i].get('title', f'Week {i+1}')}\\n\\n강의자료 생성 중 오류가 발생했습니다: {str(result)}")
+        else:
+            lecture_notes.append(result)
+
+    total_time = time.time() - start_time
+    print(f"DEBUG: Concurrent lecture note generation completed in {total_time:.2f}s", file=sys.stderr)
+
+    return lecture_notes
+
+
+async def _generate_single_lecture_note_with_semaphore(module: Dict, content_index: Dict, llm) -> str:
+    """Generate lecture note with semaphore control for better resource management"""
+    global _semaphore
+
+    async with _semaphore:
+        return await _generate_single_lecture_note_optimized(module, content_index, llm)
 
 async def _generate_single_lecture_note_optimized(module: Dict, content_index: Dict, llm) -> str:
     """Generate lecture note for a single module using pre-indexed content"""
-    
+
     week = module["week"]
     title = module["title"]
     description = module.get("description", "")
     objectives = module.get("objectives", [])
     key_concepts = module.get("key_concepts", [])
-    
-    # 관련 콘텐츠를 인덱스에서 빠르게 검색
+
+    start_time = time.time()
+
+    # 관련 콘텐츠를 인덱스에서 빠르게 검색 (더 효율적)
     relevant_contents = []
-    for concept in key_concepts:
+    searched_keywords = set()
+
+    for concept in key_concepts[:3]:  # 최대 3개 개념만 처리
         concept_lower = concept.lower()
-        for keyword in [concept_lower] + concept_lower.split():
-            if keyword in content_index:
-                relevant_contents.extend(content_index[keyword][:2])  # 각 키워드당 최대 2개
-                
-    # 중복 제거 및 제한
+        keywords = [concept_lower] + [kw for kw in concept_lower.split() if len(kw) > 2]
+
+        for keyword in keywords:
+            if keyword not in searched_keywords and keyword in content_index:
+                relevant_contents.extend(content_index[keyword][:1])  # 각 키워드당 1개만
+                searched_keywords.add(keyword)
+
+    # 중복 제거 및 제한 (더 엄격)
     unique_contents = []
     seen_sources = set()
-    for content in relevant_contents[:4]:  # 최대 4개로 제한
+    for content in relevant_contents[:2]:  # 최대 2개로 더 제한
         if content["source"] not in seen_sources:
             unique_contents.append(content)
             seen_sources.add(content["source"])
-    
-    # 간소화된 프롬프트로 성능 향상
-    reference_text = "\n\n".join([f"**{content['source']}**\n{content['content'][:800]}" 
-                                  for content in unique_contents[:2]])
-    
+
+    # 더 간소화된 참고자료
+    reference_text = "\n\n".join([f"**{content['source']}**\n{content['content'][:500]}"
+                                  for content in unique_contents[:1]])  # 1개만 사용
+
     prompt = f"""주차: {week}주차 - {title}
 
 학습목표: {', '.join(objectives[:2])}
@@ -574,16 +610,23 @@ async def _generate_single_lecture_note_optimized(module: Dict, content_index: D
 초보자도 이해하기 쉽게 친근한 톤으로 작성하세요."""
 
     try:
+        llm_start = time.time()
         response = await llm.ainvoke(prompt)
+        llm_time = time.time() - llm_start
+
+        total_time = time.time() - start_time
+        print(f"DEBUG: Week {week} lecture note generated in {total_time:.2f}s (LLM: {llm_time:.2f}s)", file=sys.stderr)
+
         return response.content
     except Exception as e:
+        print(f"ERROR: Week {week} lecture note generation failed: {e}", file=sys.stderr)
         return f"# {week}주차: {title}\n\n강의자료 생성 중 오류가 발생했습니다: {str(e)}"
 
 
 async def _generate_single_lecture_note(module: Dict, graph_curriculum: Dict, llm) -> str:
     """Generate lecture note for a single module using graph_curriculum content (legacy)"""
-    content_index = _extract_relevant_content(graph_curriculum)
-    return await _generate_single_lecture_note_optimized(module, content_index, llm)
+    content_index = _extract_relevant_content_cached(graph_curriculum)
+    return await _generate_single_lecture_note_with_semaphore(module, content_index, llm)
 
 
 if __name__ == "__main__":
