@@ -7,9 +7,9 @@ load_dotenv()
 
 class Config:
     # LLM 설정
-    LLM_BASE_URL = "https://api.friendli.ai/dedicated/v1"
+    LLM_BASE_URL = "https://5fda9b8efc58.ngrok-free.app/v1" #"https://api.friendli.ai/dedicated/v1"
     LLM_API_KEY = os.getenv("LLM_API_KEY")
-    LLM_MODEL = "depnct19r37qy14"    
+    LLM_MODEL = "midm-2.0-q8_0:base" #"depnct19r37qy14"
     
     LLM_TEMPERATURE = 0.0
     LLM_MAX_TOKENS = 2048  # 응답 생성용 최대 토큰 수
