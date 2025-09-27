@@ -489,8 +489,9 @@ function debounce(func, wait) {
  * 알림 표시
  */
 function showNotification(message, type = 'info') {
-    if (typeof window.showNotification === 'function') {
-        window.showNotification(message, type);
+    // 무한 재귀 방지를 위해 다른 이름의 전역 함수 확인
+    if (typeof window.globalShowNotification === 'function') {
+        window.globalShowNotification(message, type);
     } else {
         console.log(`[${type.toUpperCase()}] ${message}`);
     }

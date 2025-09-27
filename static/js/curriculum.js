@@ -663,6 +663,35 @@ function displayCurriculumCards(container, data) {
                         ${module.key_concepts.length > 2 ? `<span style="color: #9ca3af; font-size: 8px;">+${module.key_concepts.length - 2}</span>` : ''}
                     </div>
                 ` : ''}
+
+                ${module.lecture_note ? `
+                    <!-- 강의자료 버튼 -->
+                    <div style="
+                        position: absolute;
+                        bottom: 8px;
+                        right: 8px;
+                    ">
+                        <button onclick="event.stopPropagation(); window.toggleLectureNote(${index})" 
+                                style="
+                                    background: ${weekColor};
+                                    color: white;
+                                    border: none;
+                                    border-radius: 4px;
+                                    padding: 4px 6px;
+                                    font-size: 8px;
+                                    cursor: pointer;
+                                    font-weight: 600;
+                                    transition: all 0.2s ease;
+                                    opacity: 0.9;
+                                "
+                                onmouseover="this.style.opacity='1'; this.style.transform='scale(1.05)'"
+                                onmouseout="this.style.opacity='0.9'; this.style.transform='scale(1)'"
+                                title="강의자료 보기">
+                            <i class="fas fa-book-open" style="margin-right: 2px;"></i>
+                            강의자료
+                        </button>
+                    </div>
+                ` : ''}
             </div>
         `;
     });
@@ -3102,6 +3131,251 @@ function closeProcedureModal(event) {
     }
 }
 
+// Lecture note functionality
+let currentLectureModal = null;
+
+function toggleLectureNote(weekIndex) {
+    console.log('toggleLectureNote called with weekIndex:', weekIndex);
+    
+    // 기존 모달이 있으면 제거
+    if (currentLectureModal) {
+        currentLectureModal.remove();
+        currentLectureModal = null;
+    }
+
+    // 현재 커리큘럼 데이터에서 해당 주차의 강의자료 가져오기
+    let curriculumData = null;
+    try {
+        if (typeof StorageManager !== 'undefined' && StorageManager.curriculum) {
+            curriculumData = StorageManager.curriculum.get();
+        }
+    } catch (error) {
+        console.error('Error accessing StorageManager:', error);
+    }
+    console.log('Curriculum data:', curriculumData);
+    
+    if (!curriculumData || !curriculumData.modules || !curriculumData.modules[weekIndex]) {
+        console.log('No curriculum data found');
+        if (typeof showNotification === 'function') {
+            showNotification('강의자료를 찾을 수 없습니다.', 'error');
+        } else {
+            alert('강의자료를 찾을 수 없습니다.');
+        }
+        return;
+    }
+
+    const module = curriculumData.modules[weekIndex];
+    const lectureNote = module.lecture_note;
+    
+    console.log('Module:', module);
+    console.log('Lecture note:', lectureNote);
+    
+    if (!lectureNote) {
+        console.log('No lecture note found');
+        if (typeof showNotification === 'function') {
+            showNotification('강의자료가 아직 생성되지 않았습니다.', 'info');
+        } else {
+            alert('강의자료가 아직 생성되지 않았습니다.');
+        }
+        return;
+    }
+
+    // 모달 생성
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        animation: fadeIn 0.3s ease-out;
+    `;
+
+    modal.innerHTML = `
+        <div style="
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            max-width: 800px;
+            max-height: 80vh;
+            width: 90%;
+            overflow: hidden;
+            animation: slideUp 0.3s ease-out;
+        ">
+            <!-- 헤더 -->
+            <div style="
+                background: linear-gradient(135deg, #a855f7, #ec4899);
+                color: white;
+                padding: 20px 24px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            ">
+                <div>
+                    <h3 style="margin: 0; font-size: 18px; font-weight: 700;">
+                        ${module.week}주차: ${module.title}
+                    </h3>
+                    <p style="margin: 4px 0 0 0; opacity: 0.9; font-size: 14px;">
+                        강의자료
+                    </p>
+                </div>
+                <button onclick="window.closeLectureModal()" style="
+                    background: none;
+                    border: none;
+                    color: white;
+                    font-size: 24px;
+                    cursor: pointer;
+                    padding: 0;
+                    width: 32px;
+                    height: 32px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 8px;
+                    transition: background 0.2s;
+                " onmouseover="this.style.background='rgba(255,255,255,0.2)'" 
+                   onmouseout="this.style.background='none'">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- 컨텐츠 -->
+            <div style="
+                padding: 24px;
+                overflow-y: auto;
+                max-height: calc(80vh - 80px);
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                line-height: 1.6;
+            ">
+                <div class="lecture-content" style="
+                    color: #374151;
+                    font-size: 14px;
+                ">${formatLectureContent(lectureNote)}</div>
+            </div>
+        </div>
+    `;
+
+    // 클릭으로 모달 닫기
+    modal.onclick = (e) => {
+        if (e.target === modal) {
+            window.closeLectureModal();
+        }
+    };
+
+    document.body.appendChild(modal);
+    currentLectureModal = modal;
+
+    // CSS 애니메이션 추가
+    if (!document.querySelector('#lecture-modal-styles')) {
+        const styles = document.createElement('style');
+        styles.id = 'lecture-modal-styles';
+        styles.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            @keyframes fadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; }
+            }
+            @keyframes slideUp {
+                from { transform: translateY(20px); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+            .lecture-content h1, .lecture-content h2, .lecture-content h3 {
+                color: #1f2937;
+                margin: 24px 0 12px 0;
+                font-weight: 700;
+            }
+            .lecture-content h1 { font-size: 24px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px; }
+            .lecture-content h2 { font-size: 20px; color: #a855f7; }
+            .lecture-content h3 { font-size: 16px; color: #ec4899; }
+            .lecture-content p { margin: 12px 0; }
+            .lecture-content ul, .lecture-content ol { margin: 12px 0; padding-left: 24px; }
+            .lecture-content li { margin: 4px 0; }
+            .lecture-content code {
+                background: #f3f4f6;
+                padding: 2px 6px;
+                border-radius: 4px;
+                font-family: 'SFMono-Regular', Consolas, monospace;
+                font-size: 13px;
+                color: #d946ef;
+            }
+            .lecture-content pre {
+                background: #f9fafb;
+                border: 1px solid #e5e7eb;
+                border-radius: 8px;
+                padding: 16px;
+                overflow-x: auto;
+                font-family: 'SFMono-Regular', Consolas, monospace;
+                font-size: 13px;
+                margin: 16px 0;
+            }
+            .lecture-content blockquote {
+                border-left: 4px solid #a855f7;
+                padding-left: 16px;
+                margin: 16px 0;
+                background: #faf5ff;
+                padding: 12px 16px;
+                border-radius: 0 8px 8px 0;
+            }
+        `;
+        document.head.appendChild(styles);
+    }
+}
+
+function closeLectureModal() {
+    if (currentLectureModal) {
+        currentLectureModal.style.animation = 'fadeOut 0.2s ease-out';
+        setTimeout(() => {
+            if (currentLectureModal) {
+                currentLectureModal.remove();
+                currentLectureModal = null;
+            }
+        }, 200);
+    }
+}
+
+function formatLectureContent(content) {
+    if (!content) return '<p>강의자료가 없습니다.</p>';
+    
+    // 마크다운 스타일 텍스트를 HTML로 변환
+    let formatted = content
+        // 헤더 변환
+        .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+        .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+        .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+        // 볼드 텍스트
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        // 이탤릭 텍스트
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        // 코드 블록
+        .replace(/```([\s\S]*?)```/g, '<pre>$1</pre>')
+        // 인라인 코드
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        // 리스트 (간단한 변환)
+        .replace(/^- (.*$)/gim, '<li>$1</li>')
+        // 줄바꿈을 <p> 태그로 변환
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/\n/g, '<br>');
+    
+    // 리스트 태그들을 <ul>로 감싸기
+    formatted = formatted.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
+    
+    // <p> 태그로 전체 감싸기
+    if (!formatted.startsWith('<h1>') && !formatted.startsWith('<h2>') && !formatted.startsWith('<h3>')) {
+        formatted = '<p>' + formatted + '</p>';
+    }
+    
+    return formatted;
+}
+
 // Export new graph functions
 window.transformGraphData = transformGraphData;
 window.createLearningMap = createLearningMap;
@@ -3113,4 +3387,8 @@ window.closeProcedureModal = closeProcedureModal;
 window.createCircularDetailGraph = createCircularDetailGraph;
 window.fitCircularGraph = fitCircularGraph;
 window.resetCircularGraph = resetCircularGraph;
+
+// Export lecture note functions
+window.toggleLectureNote = toggleLectureNote;
+window.closeLectureModal = closeLectureModal;
 window.showCircularNodeInfo = showCircularNodeInfo;

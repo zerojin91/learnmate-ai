@@ -286,19 +286,40 @@ async function sendMessage() {
                                 aiMessageElement = addMessageToChat('', 'ai');
                             }
 
-                            fullAiResponse += parsed.content;
-                            console.log('📊 전체 응답 길이:', fullAiResponse.length);
+                            // user_profiling 노드의 응답인 경우 타이핑 애니메이션 처리
+                            console.log('🔍 노드 확인:', parsed.node);
+                            if (parsed.node === 'user_profiling' || (!parsed.node && parsed.profile)) {
+                                console.log('⌨️ user_profiling 타이핑 애니메이션 시작');
 
-                            // 큰 JSON의 경우 UI 업데이트를 디바운스
-                            if (fullAiResponse.length > 5000) {
-                                // 큰 응답의 경우 500ms마다 업데이트
-                                clearTimeout(window.updateTimeout);
-                                window.updateTimeout = setTimeout(() => {
+                                // 타이핑 애니메이션 함수
+                                const typeMessage = async (text, element) => {
+                                    let currentText = '';
+                                    for (let i = 0; i < text.length; i++) {
+                                        currentText += text[i];
+                                        updateMessageContent(element, currentText);
+                                        await new Promise(resolve => setTimeout(resolve, 30)); // 30ms 간격
+                                    }
+                                };
+
+                                // 비동기로 타이핑 애니메이션 실행
+                                typeMessage(parsed.content, aiMessageElement);
+                                fullAiResponse = parsed.content; // 전체 응답 저장
+                            } else if (parsed.node && parsed.node !== 'user_profiling') {
+                                // user_profiling이 아닌 다른 노드의 경우 기존 방식대로 처리
+                                fullAiResponse += parsed.content;
+                                console.log('📊 전체 응답 길이:', fullAiResponse.length);
+
+                                // 큰 JSON의 경우 UI 업데이트를 디바운스
+                                if (fullAiResponse.length > 5000) {
+                                    // 큰 응답의 경우 500ms마다 업데이트
+                                    clearTimeout(window.updateTimeout);
+                                    window.updateTimeout = setTimeout(() => {
+                                        updateMessageContent(aiMessageElement, fullAiResponse);
+                                    }, 500);
+                                } else {
+                                    // 작은 응답은 즉시 업데이트
                                     updateMessageContent(aiMessageElement, fullAiResponse);
-                                }, 500);
-                            } else {
-                                // 작은 응답은 즉시 업데이트
-                                updateMessageContent(aiMessageElement, fullAiResponse);
+                                }
                             }
                         }
 

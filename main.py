@@ -159,11 +159,15 @@ async def chat(chat_request: Request):
                     content = chunk.get("content", "")
                     if content:
                         response_data = {'content': content}
-                        
+
+                        # node 정보 추가 (user_profiling 응답 구분용)
+                        if chunk.get("node"):
+                            response_data['node'] = chunk.get("node")
+
                         # agent.py에서 전달된 프로필 정보 사용
                         if chunk.get("profile"):
                             response_data['profile'] = chunk.get("profile")
-                        
+
                         yield f"data: {json.dumps(response_data)}\n\n"
             
             yield f"data: {json.dumps({'done': True})}\n\n"
