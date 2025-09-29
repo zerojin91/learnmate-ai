@@ -3,7 +3,9 @@ LangGraph 기반 커리큘럼 생성 워크플로우
 """
 import os
 import json
-from typing import Dict, Any
+import asyncio
+import time
+from typing import Dict, Any, List
 from datetime import datetime
 from langgraph.graph import StateGraph, START, END
 from langchain_openai import ChatOpenAI
@@ -67,21 +69,27 @@ class CurriculumGeneratorWorkflow:
                 },
                 ProcessingPhase.VALIDATION: {
                     "step": 5,
-                    "total": 5,
-                    "name": "최종 검토 및 완성",
-                    "description": "커리큘럼을 검토하고 최종 완성하고 있습니다"
+                    "total": 7,
+                    "name": "최종 검토",
+                    "description": "커리큘럼 내용을 검토하고 있습니다"
+                },
+                ProcessingPhase.LECTURE_CONTENT_GENERATION: {
+                    "step": 6,
+                    "total": 7,
+                    "name": "강의자료 생성",
+                    "description": "각 주차별 강의자료를 생성하고 있습니다"
                 },
                 ProcessingPhase.INTEGRATION: {
-                    "step": 5,
-                    "total": 5,
-                    "name": "최종 검토 및 완성",
-                    "description": "커리큘럼을 검토하고 최종 완성하고 있습니다"
+                    "step": 7,
+                    "total": 7,
+                    "name": "최종 완성",
+                    "description": "커리큘럼 생성을 완료하고 있습니다"
                 },
                 ProcessingPhase.COMPLETED: {
-                    "step": 5,
-                    "total": 5,
+                    "step": 7,
+                    "total": 7,
                     "name": "완료",
-                    "description": "커리큘럼 생성이 완료되었습니다"
+                    "description": "커리큘럼과 강의자료 생성이 완료되었습니다"
                 }
             }
 
@@ -115,13 +123,14 @@ class CurriculumGeneratorWorkflow:
 
             # 각 단계별 고정 진행률 매핑
             phase_progress = {
-                ProcessingPhase.PARAMETER_ANALYSIS: 20,
-                ProcessingPhase.LEARNING_PATH_PLANNING: 40,
-                ProcessingPhase.MODULE_STRUCTURE_DESIGN: 60,
-                ProcessingPhase.CONTENT_DETAIL_GENERATION: 75,
-                ProcessingPhase.RESOURCE_COLLECTION: 85,
-                ProcessingPhase.VALIDATION: 95,
-                ProcessingPhase.INTEGRATION: 100
+                ProcessingPhase.PARAMETER_ANALYSIS: 15,
+                ProcessingPhase.LEARNING_PATH_PLANNING: 30,
+                ProcessingPhase.MODULE_STRUCTURE_DESIGN: 45,
+                ProcessingPhase.CONTENT_DETAIL_GENERATION: 60,
+                ProcessingPhase.RESOURCE_COLLECTION: 75,
+                ProcessingPhase.VALIDATION: 85,
+                ProcessingPhase.LECTURE_CONTENT_GENERATION: 90,
+                ProcessingPhase.INTEGRATION: 95
             }
             progress_percent = phase_progress.get(phase, 0)
 
@@ -184,6 +193,9 @@ class CurriculumGeneratorWorkflow:
         workflow.add_node("validation",
                          self._wrap_agent_execution(agents["validation_agent"].execute,
                                                    ProcessingPhase.VALIDATION, "최종 검토"))
+        workflow.add_node("lecture_generation",
+                         self._wrap_agent_execution(self._generate_lecture_notes,
+                                                   ProcessingPhase.LECTURE_CONTENT_GENERATION, "강의자료 생성"))
         workflow.add_node("integration",
                          self._wrap_agent_execution(agents["integration_agent"].execute,
                                                    ProcessingPhase.INTEGRATION, "통합 및 완성"))
@@ -199,7 +211,9 @@ class CurriculumGeneratorWorkflow:
         workflow.add_edge("content_detail_generation", "resource_collection")
 
         workflow.add_edge("resource_collection", "validation")
-        workflow.add_edge("validation", "integration")
+        workflow.add_edge("validation", "lecture_generation")
+        # 강의자료 생성 완료 후 바로 최종 완성으로 이동
+        workflow.add_edge("lecture_generation", "integration")
         workflow.add_edge("integration", END)
 
         # 에러 처리
@@ -262,6 +276,160 @@ class CurriculumGeneratorWorkflow:
             "generated_at": "fallback",
             "fallback": True
         }
+
+    async def _generate_lecture_notes(self, state: CurriculumState) -> CurriculumState:
+        """워크플로우 내에서 강의자료 생성"""
+        print("DEBUG: Starting lecture note generation in workflow", flush=True)
+
+        # 현재 상태에서 커리큘럼 정보 가져오기 (올바른 key 사용)
+        modules = state.get("detailed_modules", [])
+        graph_curriculum = state.get("graph_curriculum", {})
+
+        print(f"DEBUG: Found {len(modules)} modules and graph_curriculum: {bool(graph_curriculum)}", flush=True)
+
+        if not modules or not graph_curriculum:
+            print("WARNING: No modules or graph_curriculum found, skipping lecture generation", flush=True)
+            return state
+
+        try:
+            # 강의자료 생성 (기존 최적화된 함수 재사용)
+            lecture_notes = await self._generate_lecture_notes_concurrent(modules, graph_curriculum)
+
+            # 생성된 강의자료를 각 모듈에 추가
+            successful_notes = 0
+            for i, module in enumerate(modules):
+                if i < len(lecture_notes) and lecture_notes[i] and not ("오류가 발생했습니다" in lecture_notes[i]):
+                    # 유효한 강의자료인지 검증
+                    if len(lecture_notes[i].strip()) > 50:
+                        module["lecture_note"] = lecture_notes[i]
+                        successful_notes += 1
+                    else:
+                        print(f"WARNING: Generated lecture note too short for week {module.get('week', i+1)}", flush=True)
+                else:
+                    print(f"WARNING: Failed to generate lecture note for week {module.get('week', i+1)}", flush=True)
+
+            if successful_notes == len(modules):
+                print(f"SUCCESS: All {successful_notes} lecture notes generated in workflow", flush=True)
+                state["lecture_notes_complete"] = True
+            else:
+                print(f"WARNING: Only {successful_notes}/{len(modules)} lecture notes generated in workflow", flush=True)
+                state["lecture_notes_complete"] = False
+
+            # 업데이트된 modules를 state에 반영
+            state["detailed_modules"] = modules
+
+        except Exception as e:
+            print(f"ERROR: Workflow lecture note generation failed: {e}", flush=True)
+            import traceback
+            print(f"ERROR: Stacktrace: {traceback.format_exc()}", flush=True)
+            state["lecture_notes_complete"] = False
+
+        return state
+
+    async def _generate_lecture_notes_concurrent(self, modules: List[Dict], graph_curriculum: Dict) -> List[str]:
+        """워크플로우에서 사용할 강의자료 동시 생성"""
+        # 콘텐츠 인덱싱 (캐시됨)
+        content_index = self._extract_relevant_content_cached(graph_curriculum)
+
+        # Semaphore로 제어되는 병렬 강의자료 생성
+        semaphore = asyncio.Semaphore(12)  # 최대 12개 동시 생성
+
+        async def generate_with_semaphore(module):
+            async with semaphore:
+                return await self._generate_single_lecture_note_optimized(module, content_index)
+
+        tasks = [generate_with_semaphore(module) for module in modules]
+        results = await asyncio.gather(*tasks, return_exceptions=True)
+
+        # 예외 처리
+        lecture_notes = []
+        for i, result in enumerate(results):
+            if isinstance(result, Exception):
+                print(f"ERROR: Failed to generate lecture note for module {i+1}: {result}", flush=True)
+                lecture_notes.append(f"# {modules[i].get('title', f'Week {i+1}')}\\n\\n강의자료 생성 중 오류가 발생했습니다: {str(result)}")
+            else:
+                lecture_notes.append(result)
+
+        return lecture_notes
+
+    def _extract_relevant_content_cached(self, graph_curriculum: Dict) -> Dict[str, List[Dict]]:
+        """콘텐츠 인덱싱 - 간소화된 버전"""
+        content_index = {}
+
+        for _, step_data in graph_curriculum.items():
+            step_title = step_data.get("title", "").lower()
+            skills = step_data.get("skills", {})
+
+            for skill_name, skill_data in skills.items():
+                documents = skill_data.get("documents", {})
+                for _, doc_data in documents.items():
+                    content = doc_data.get("content", "")
+                    if content:
+                        keywords = [step_title, skill_name.lower()]
+                        keywords.extend(step_title.split())
+
+                        for keyword in set(keywords):
+                            if keyword and len(keyword) > 2:
+                                if keyword not in content_index:
+                                    content_index[keyword] = []
+                                content_index[keyword].append({
+                                    "source": f"{step_data.get('title', '')} - {skill_name}",
+                                    "content": content[:500]
+                                })
+
+        return content_index
+
+    async def _generate_single_lecture_note_optimized(self, module: Dict, content_index: Dict) -> str:
+        """단일 강의자료 생성"""
+        week = module["week"]
+        title = module["title"]
+        description = module.get("description", "")
+        objectives = module.get("objectives", [])
+        key_concepts = module.get("key_concepts", [])
+
+        # 관련 콘텐츠 검색
+        relevant_contents = []
+        for concept in key_concepts[:2]:
+            concept_lower = concept.lower()
+            if concept_lower in content_index:
+                relevant_contents.extend(content_index[concept_lower][:1])
+
+        reference_text = "\\n\\n".join([f"**{content['source']}**\\n{content['content'][:400]}"
+                                      for content in relevant_contents[:1]])
+
+        prompt = f"""주차: {week}주차 - {title}
+
+학습목표: {', '.join(objectives[:2])}
+핵심개념: {', '.join(key_concepts[:2])}
+
+참고자료:
+{reference_text}
+
+다음 구조로 간단명료한 강의자료를 작성하세요:
+
+# {week}주차: {title}
+
+## 학습 개요
+{description[:80]}의 목적과 중요성
+
+## 핵심 개념
+- 개념 1: 설명
+- 개념 2: 설명
+
+## 실습 예제
+구체적이고 실용적인 예제 1개
+
+## 정리
+핵심 내용 요약 (3줄 이내)
+
+초보자도 이해하기 쉽게 친근한 톤으로 작성하세요."""
+
+        try:
+            response = await self.llm.ainvoke(prompt)
+            return response.content
+        except Exception as e:
+            print(f"ERROR: Week {week} lecture note generation failed: {e}", flush=True)
+            return f"# {week}주차: {title}\\n\\n강의자료 생성 중 오류가 발생했습니다: {str(e)}"
 
     async def generate_curriculum(
         self,
